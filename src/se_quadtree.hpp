@@ -67,6 +67,7 @@ class se_quadtree
     protected:
     
  /*! Get the chunk index ([0, k^d[) of a submatrix point.
+ **** TODO: PREGUNTA: como están indexados? cual es el orden
  *
  * Gets a point in the global matrix and returns its corresponding chunk
  * in the submatrix specified.

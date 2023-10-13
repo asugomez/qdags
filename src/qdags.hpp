@@ -1,6 +1,6 @@
 #ifndef INCLUDED_QDAGS
 #define INCLUDED_QDAGS
-
+// por la linea 194 esta el EXTEND del mapeo
 #include <sdsl/bit_vectors.hpp>
 #include "se_quadtree.hpp"
 
@@ -190,14 +190,14 @@ class qdag
              if (is_extended_qdag) delete M;       
         }
        
-
+|       // extend del paper!!
         qdag* extend(att_set &attribute_set_A)
         {
-            uint16_t dim = attribute_set_A.size();
-            uint16_t dim_prime = attribute_set.size();
-            uint64_t p = std::pow(Q->getK(), dim);            
+            uint16_t dim = attribute_set_A.size(); // d
+            uint16_t dim_prime = attribute_set.size(); // d'
+            uint64_t p = std::pow(Q->getK(), dim);       // tamaño del mapeo     2^d
             
-            type_mapping_M* _M = new type_mapping_M[p];
+            type_mapping_M* _M = new type_mapping_M[p]; // mapeo
             
             uint64_t mask;
             uint64_t i, i_prime;            
@@ -225,7 +225,7 @@ class qdag
             q->is_extended_qdag = true;
             q->Msize = p; // this.Msize;
             
-            return q;
+            return q; //el nuevo qdag extendido
         }
 
 
@@ -278,7 +278,8 @@ class qdag
 
 
         // This is for a binary relation, i.e., a k^2-tree with 4 children per node
-        void createTableExtend5()
+        // son tablas precomputadas para materializar los nodos
+        void createTableExtend5()  // para join con 5 atributos, se constuyen al momento del join
         {
             uint64_t i, j;
             uint32_t x, B;
@@ -302,7 +303,7 @@ class qdag
         }
         
         // This is for a binary relation, i.e., a k^2-tree with 4 children per node
-        void createTableExtend4()
+        void createTableExtend4() // para join con 4 atributos
         {
             uint64_t i, j;
             uint32_t x, B;
@@ -326,7 +327,7 @@ class qdag
         }
 
         // This is for a binary relation, i.e., a k^2-tree with 4 children per node
-        void createTableExtend3()
+        void createTableExtend3() // para join con 3 atributos
         {
             uint64_t i, j;
             uint32_t x, B=16;
@@ -349,6 +350,12 @@ class qdag
             }
         }
 
+        // materializa el nodo del qdag, uno llega a un nodo en el quadtree que existe, pero conceptualmente 
+        // corresponde a un qdags q no existe en realidad.
+        // esta funcion materializa el nodo en el qdag (donde no existe)
+        // por ejem, quadtree con 4 nodos
+        // pero trabajo en dimension 5 --> se extiende a 32 hijos
+        // a partir de esos 4 bits, te genera el de 32 inmediatamente
         inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t* rank_vector) {
             uint64_t r = Q->rank(level, node);
             return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
