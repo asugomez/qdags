@@ -7,7 +7,7 @@
 using namespace sdsl;
 using namespace std;
 
-
+//TODO: que hace cada una de las funciones: rank? get4bits?
 class rank_bv_64
 {
     uint64_t* seq;
@@ -34,7 +34,7 @@ class rank_bv_64
             if (i%64 == 0)
                 block[cur_word++] = count; 
                 
-            if (bv[i]) {
+            if (bv[i]) { // count the 1s
                 count++;
                 seq[i/64] |= (1L<<(i%64));
             }
@@ -51,7 +51,7 @@ class rank_bv_64
         return block[i>>6] + bits::cnt(seq[i>>6] & ~(0xffffffffffffffff << (i&0x3f)));  
     }
 
-    inline uint8_t get_4_bits(uint64_t start_pos)
+    inline uint8_t get_4_bits(uint64_t start_pos) // TODO: entenderla!? retorna los 4 bits del bitvector desde start_pos?
     {
         return ((seq[start_pos >> 6] >>(start_pos & 0x3f) ) & 0x0f);
     }

@@ -1,4 +1,8 @@
-
+// cada una de las query tiene su codigo
+// j --> una forma q sale en el paper
+// p --> caminos
+// s --> cuadrados
+// t --> triangulos
 #include <fstream>
 #include<bits/stdc++.h>
 #include<ratio>
@@ -8,7 +12,7 @@
 using namespace std::chrono;
 
 
-#include "../src/joins.cpp"
+#include "../src/joins.cpp" // incluir al joins incluye al resto
 
 high_resolution_clock::time_point start_select, stop_select;
 double total_time_select = 0.0;       
@@ -20,7 +24,7 @@ duration<double> time_span_select;
 #define AT_V 3
 
 
-std::vector<std::vector<uint64_t>>* read_relation(const std::string filename, uint16_t n_Atts)
+std::vector<std::vector<uint64_t>>* read_relation(const std::string filename, uint16_t n_Atts) // TODO: ver si hay una opcion mas optima
 {
     std::ifstream input_stream(filename); 
     uint64_t x;
@@ -62,24 +66,26 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char** argv)
 {
-    qdag::att_set att_R;
-    qdag::att_set att_S;
-    qdag::att_set att_T;
+    // 3 tablas R, S y T
+    qdag::att_set att_R; // R(Y,X)
+    qdag::att_set att_S; // S(Z,X)
+    qdag::att_set att_T; // T(X,V)
     
     att_R.push_back(AT_Y); att_R.push_back(AT_X); 
     att_S.push_back(AT_Z); att_S.push_back(AT_X); 
     att_T.push_back(AT_X); att_T.push_back(AT_V);
     
-    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); 
+    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
     
-    std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
+    // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
+    std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion 
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
     
     uint64_t grid_side = 52000000; // es como +infty para wikidata 
     
     //cout << "R" << endl;
-    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size());
+    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     //cout << "S" << endl;
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //cout << "T" << endl;
@@ -101,7 +107,8 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
    
-    Join_Result = parMultiJoin(Q, true, 1000); // warmup join
+   // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
+    Join_Result = parMultiJoin(Q, true, 1000); // warmup join -> activar el caché
  
     start = high_resolution_clock::now();    
     
@@ -114,4 +121,7 @@ int main(int argc, char** argv)
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     
     return 0;
+
+    // en runquery le paso cada una de las 3 tablas
+    // no entiendo los valores de las tablas, aah si son el mismo numero entonces se comparte, pero como
 }

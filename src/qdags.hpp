@@ -27,7 +27,7 @@ class qdag
         
         typedef vector<uint64_t> att_set;
 
-	 private:
+	private:
         se_quadtree* Q;
 	            
         type_mapping_M*    M;    // mapping
@@ -191,7 +191,7 @@ class qdag
         }
        
 |       // extend del paper!!
-        qdag* extend(att_set &attribute_set_A)
+        qdag* extend(att_set &attribute_set_A) //extiende el qdag a ese set de atributos
         {
             uint16_t dim = attribute_set_A.size(); // d
             uint16_t dim_prime = attribute_set.size(); // d'
