@@ -306,6 +306,10 @@ class se_quadtree{
         uint8_t getD(){
             return d;
         }
+
+        rank_bv_64* getBv(){
+            return bv;
+        }
         
         
         inline uint64_t rank(uint16_t level, uint64_t node){ 
@@ -539,7 +543,6 @@ class se_quadtree{
                 break;
             case 8:   
                 n_children = 1;
-                children_array[0] = 3;
                 break;
             case 9:   
                 n_children = 2;
@@ -608,6 +611,7 @@ class se_quadtree{
 
         /**
          * Count the number of leaves a node has.
+         * En el primer llamado, init_node = fin_node
         */
         uint64_t get_num_leaves(uint16_t level, uint64_t init_node, uint64_t fin_node, uint64_t* rank_array, uint64_t r){
             if(level == getHeight()){
@@ -618,6 +622,13 @@ class se_quadtree{
                 init_node = get_child(1, level, init_node);
                 fin_node = get_child(n_children_fin, level, fin_node);
                 return get_num_leaves(level, init_node, fin_node, rank_array, r)
+            }
+        }
+        
+        void printBv(){
+            cout<< "call to se_quadtree --> printBv";
+            for(int i = 0; i < bv->size ; i++){
+                bv[i].print();
             }
         }
 

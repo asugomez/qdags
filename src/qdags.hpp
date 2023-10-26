@@ -276,6 +276,15 @@ class qdag
             return M[i];        
         }
 
+        rank_bv_64* getBv(){
+            return Q.getBv();
+        }
+
+        void printBv(){
+            cout<< "call to qdags --> printBv";
+            //Q.printBv();
+        }
+
 
         // This is for a binary relation, i.e., a k^2-tree with 4 children per node
         // son tablas precomputadas para materializar los nodos

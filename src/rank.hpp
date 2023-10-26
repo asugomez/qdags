@@ -79,6 +79,13 @@ class rank_bv_64
 	       + 2*sizeof(uint64_t);
     }
 
+    void print(){
+        cout<< "call to rank --> print";
+        for (int i=0; i < u; i++){
+            cout << "h_" << i ;
+        } 
+    }
+
 };
 
 #endif
