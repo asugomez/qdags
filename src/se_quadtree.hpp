@@ -614,25 +614,6 @@ public:
     }
 
     /**
-     * Return the index of the i-th child of the node in a level
-    */
-    uint64_t get_child(uint64_t node, uint64_t i, uint16_t level) {
-        uint64_t n_children = get_num_children(level, node);
-        if (i > n_children || level == getHeight()) {
-            return -1;
-        } else {
-            // TODO: see pdf in ipad, return something, position node v.
-            //bv[level++].rank(i);
-            uint64_t rank_vector[64];
-            uint8_t node_i = k_d * node + i; // absolute position of the i-th child of the node in the level ++
-            level += 1;
-            uint64_t r = this->rank(level, node_i);//Q->rank(level, node);
-            uint8_t node_x = get_node(level, node_i, rank_vector, r);
-            return node_x;
-        }
-    }
-
-    /**
      *
      * @param level of the node
      * @param node the i-th 1 of the level

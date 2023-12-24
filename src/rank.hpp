@@ -3,121 +3,109 @@
 
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/int_vector_buffer.hpp>
-#include<bits/stdc++.h> 
+#include<bits/stdc++.h>
 
 using namespace sdsl;
 using namespace std;
 
 
-class rank_bv_64
-{
-    uint64_t* seq;
-    uint32_t* block;
+class rank_bv_64 {
+    uint64_t *seq;
+    uint32_t *block;
     uint64_t u;  //bit vector length
     uint64_t n; // # ones
-    
-   public:
+
+public:
     rank_bv_64() = default;
-    
-    rank_bv_64(bit_vector &bv)
-    {
+
+    rank_bv_64(bit_vector &bv) {
         uint64_t i;
         uint8_t byte_mask;
         uint32_t cur_word = 0, count = 0;
 
-        u = bv.size();   
-             
-        seq = new uint64_t[(u+63)/64]();     
-        block = new uint32_t[(u+63)/64]();
-        
+        u = bv.size();
+
+        seq = new uint64_t[(u + 63) / 64]();
+        block = new uint32_t[(u + 63) / 64]();
+
         for (i = 0; i < u; ++i) {
- 
-            if (i%64 == 0)
-                block[cur_word++] = count; 
-                
+
+            if (i % 64 == 0)
+                block[cur_word++] = count;
+
             if (bv[i]) { // count the 1s
                 count++;
-                seq[i/64] |= (1L<<(i%64));
-            }
-            else 
-                seq[i/64] &= ~(1L<<(i%64));
-            	
+                seq[i / 64] |= (1L << (i % 64));
+            } else
+                seq[i / 64] &= ~(1L << (i % 64));
+
         }
         n = count;
     }
 
     // number of 1s in B[1,i]
-    inline uint64_t rank(uint64_t i) 
-    {
-        return block[i>>6] + bits::cnt(seq[i>>6] & ~(0xffffffffffffffff << (i&0x3f)));  
+    inline uint64_t rank(uint64_t i) {
+        return block[i >> 6] + bits::cnt(seq[i >> 6] & ~(0xffffffffffffffff << (i & 0x3f)));
     }
 
     // los 4 bits que definen un nodo
     // TODO: pregunta: maximo de hijos sería 16 entonces??
-    inline uint8_t get_4_bits(uint64_t start_pos) 
-    {
-        return ((seq[start_pos >> 6] >>(start_pos & 0x3f) ) & 0x0f);
-    }
-   
-    inline uint8_t get_2_bits(uint64_t start_pos)
-    {
-        return ((seq[start_pos >> 6] >>(start_pos & 0x3f) ) & 0x03);
+    inline uint8_t get_4_bits(uint64_t start_pos) {
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
     }
 
-    inline uint64_t n_ones_4_bits(uint64_t start_pos){
-        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f) ) & 0x0f);
+    inline uint8_t get_2_bits(uint64_t start_pos) {
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
+    }
+
+    inline uint64_t n_ones_4_bits(uint64_t start_pos) {
+        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
         uint64_t counter = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            if(x & (1 << i)){
-                counter+=1;
+        for (int i = 0; i < 4; i++) {
+            if (x & (1 << i)) {
+                counter += 1;
             }
         }
         return counter;
     }
- 
+
     // number of bits in the bv
-    inline uint64_t size()
-    {
-        return u;    
+    inline uint64_t size() {
+        return u;
     }
 
-    inline uint64_t n_ones()
-    {
+    inline uint64_t n_ones() {
         return n;
     }
 
-    inline uint64_t size_in_bytes()
-    {
-        return sizeof(uint64_t)*((u+63)/64) + sizeof(uint32_t)*(u+63)/64 
-	       + sizeof(uint64_t*) + sizeof(uint32_t*)
-	       + 2*sizeof(uint64_t);
+    inline uint64_t size_in_bytes() {
+        return sizeof(uint64_t) * ((u + 63) / 64) + sizeof(uint32_t) * (u + 63) / 64
+               + sizeof(uint64_t *) + sizeof(uint32_t *)
+               + 2 * sizeof(uint64_t);
     }
 
-    void print_4_bits(uint64_t start_pos)
-    {
-        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f) ) & 0x0f);
+    void print_4_bits(uint64_t start_pos) {
+        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
 
 
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";
     }
 
-    void print(){
+    void print() {
         char res[1000];
         //000000000000000000001011111111001111101110001000111110 0110111111
-        uint64_t i=0;
-        while ( i < u){
-             //uint8_t bits = get_2_bits(i);
-             print_4_bits(i);
-             //for(int j = 0; j < bits.s; j++){
-               //  cout << bits ;
-             //}
-             // }
-            i=i+4;
+        uint64_t i = 0;
+        while (i < u) {
+            //uint8_t bits = get_2_bits(i);
+            print_4_bits(i);
+            //for(int j = 0; j < bits.s; j++){
+            //  cout << bits ;
+            //}
+            // }
+            i = i + 4;
         }
         cout << endl;
     }
