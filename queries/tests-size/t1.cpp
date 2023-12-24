@@ -12,7 +12,8 @@
 using namespace std::chrono;
 
 
-#include "../../src/joins.cpp" // incluir al joins incluye al resto
+#include <algorithm>
+#include "../../src/qdags.hpp" 
 
 high_resolution_clock::time_point start_select, stop_select;
 double total_time_select = 0.0;       
@@ -75,7 +76,7 @@ int main(int argc, char** argv)
     // att_S.push_back(AT_Z); att_S.push_back(AT_X); 
     // att_T.push_back(AT_X); att_T.push_back(AT_V);
     
-    std::string strRel_R(argv[1])); // nombre de los archivos
+    std::string strRel_R(argv[1]); // nombre de los archivos
     
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion 
@@ -100,7 +101,8 @@ int main(int argc, char** argv)
  
     start = high_resolution_clock::now();    
     
-    qdag_rel_R.printBv();
+    //qdag_rel_R.printBv();
+    qdag_rel_R.get_num_leaves();
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

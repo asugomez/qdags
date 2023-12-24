@@ -24,7 +24,7 @@
 #include <queue>
 #include <stdexcept>
 #include <tuple>
-#include <fstream> 
+#include <fstream>
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/k2_tree_helper.hpp>
 #include <sdsl/int_vector_buffer.hpp>
@@ -45,615 +45,669 @@
 using namespace sdsl;
 using namespace std;
 
-class se_quadtree{
+class se_quadtree {
+public:
+    typedef k2_tree_ns::idx_type idx_type;
+    typedef k2_tree_ns::size_type size_type;
 
-    public:
-        typedef k2_tree_ns::idx_type idx_type;
-        typedef k2_tree_ns::size_type size_type;
+private:
+    rank_bv_64 *bv;   // arreglo de bitvector por nivel
 
-    private:
-        rank_bv_64   *bv;   // arreglo de bitvector por nivel
-        
-        //rank_support_v<> *bv_rank;
+    //rank_support_v<> *bv_rank;
 
-        uint16_t    height;   // number of levels of the tree
+    uint16_t height;   // number of levels of the tree
 
-        uint8_t     k;
-        uint8_t     d;
-        size_type   k_d;
-        vector<uint64_t> total_ones;
-        uint64_t    ref_count;
+    uint8_t k;
+    uint8_t d;
+    size_type k_d; // aridad??
+    vector<uint64_t> total_ones;
+    uint64_t ref_count;
 
-    protected:
-    
-        /*! Get the chunk index ([0, k^d[) of a submatrix point.
-        **** TODO: PREGUNTA: como están indexados? cual es el orden
-        *
-        * Gets a point in the global matrix and returns its corresponding chunk
-        * in the submatrix specified.
-        *
-        * \param point vector representing the d dimensional point.
-        * \param offset vector with the upper-left point of the global matrix
-        * \param l size of the chunk at the submatrix.
-        * \param k the k parameter from the k^2 tree.
-        * \returns the index of the chunk containing the point at the submatrix.
-        */    
-        uint16_t get_chunk_idx(vector<idx_type> &point, idx_type* offset,
-                               size_type l, uint8_t _k){
-            uint16_t i, _d = point.size();
-            uint16_t total_sum = 0, _k_aux = 1;
-                        
-            for (i = _d-1; i > 0; --i) {
-                total_sum += ((point[i]-offset[i])/l)*_k_aux;
-                _k_aux *= _k;
-            }
-            
-            total_sum += ((point[0]-offset[0])/l)*_k_aux;
-            return total_sum;
+protected:
+
+    /*! Get the chunk index ([0, k^d[) of a submatrix point.
+    **** TODO: PREGUNTA: como están indexados? cual es el orden
+    *
+    * Gets a point in the global matrix and returns its corresponding chunk
+    * in the submatrix specified.
+    *
+    * \param point vector representing the d dimensional point.
+    * \param offset vector with the upper-left point of the global matrix
+    * \param l size of the chunk at the submatrix.
+    * \param k the k parameter from the k^2 tree.
+    * \returns the index of the chunk containing the point at the submatrix.
+    */
+    uint16_t get_chunk_idx(vector<idx_type> &point, idx_type *offset,
+                           size_type l, uint8_t _k) {
+        uint16_t i, _d = point.size();
+        uint16_t total_sum = 0, _k_aux = 1;
+
+        for (i = _d - 1; i > 0; --i) {
+            total_sum += ((point[i] - offset[i]) / l) * _k_aux;
+            _k_aux *= _k;
         }
-        
-        //! Build a space efficient quadtree from a set of d-dimensional points
-        /*! This method takes a vector of d-dimensional points 
-         *  and the grid-side size. It takes linear time over the amount of
-         *  points to build the quadtree representation.
-         *  \param edges A non-empty vector with the d-dimensional points
-         *  \param size side of the grid containing the points, all the point 
-                        coordinates in vector edges must be within [0, size[
-         */
-        void build_from_edges(std::vector<std::vector<idx_type>>& edges,
-                              const size_type size, uint8_t __k, uint8_t __d){
 
-            typedef std::tuple<idx_type, idx_type, size_type, idx_type*> t_part_tuple;
-           
-            k = __k;
-            d = __d;  
-            height = std::ceil(std::log(size)/std::log(k));
-            height = height > 1 ? height : 1; // If size == 0
-            
-            bv = new rank_bv_64[height];
-            total_ones.reserve(height);
-                        
-            k_d = std::pow(k, d);
-                        
-            bit_vector k_t_ = bit_vector(k_d, 0);  // OJO, cuidado con esto
+        total_sum += ((point[0] - offset[0]) / l) * _k_aux;
+        return total_sum;
+    }
 
-            std::queue<t_part_tuple> q;
-            idx_type t = 0, last_level = 0;
-            idx_type i, j, r_0, c_0, it, c, r, z;
-            size_type l = std::pow(k, height - 1);
-            
-            std::vector<idx_type> pos_by_chunk(k_d + 1, 0);
-            
-            idx_type* top_left_point = new idx_type[d]();
-            idx_type* top_left_point_aux;            
-            
-            q.push(t_part_tuple(0, edges.size(), l, top_left_point));
+    //! Build a space efficient quadtree from a set of d-dimensional points
+    /*! This method takes a vector of d-dimensional points
+     *  and the grid-side size. It takes linear time over the amount of
+     *  points to build the quadtree representation.
+     *  \param edges A non-empty vector with the d-dimensional points
+     *  \param size side of the grid containing the points, all the point
+                    coordinates in vector edges must be within [0, size[
+     */
+    void build_from_edges(std::vector<std::vector<idx_type>> &edges,
+                          const size_type size, uint8_t __k, uint8_t __d) {
 
-            size_type cur_l = l, cur_level = 0, n_ones = 0;
-            
-            while (!q.empty()) {
-                
-                std::vector<idx_type> amount_by_chunk(k_d, 0);
-                std::tie(i, j, l, top_left_point) = q.front();
-                q.pop();
-                
-                if (l != cur_l) {                    
-                    cur_l = l;
-                    k_t_.resize(t);
-                    
-                    [cur_level] = rank_bv_64(k_t_);
-                    total_ones[cur_level] =  bv[cur_level].n_ones();    
-                    cur_level++;
-                    t = 0;
-                    k_t_.resize(0);
-                    k_t_ = bit_vector(k_d*n_ones, 0);                    
-                    n_ones = 0;
-                }
-                
-                // Get size for each chunk
-                for (it = i; it < j; it++)              
-                    amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
-              
-                if (l == 1) {
-                    for (it = 0; it < k_d; it++,t++)
-                        if (amount_by_chunk[it] != 0)
-                             k_t_[t] = 1;
-                         else
-                             k_t_[t] = 0;
-                    // At l == 1 no new elements are enqueued 
-                    continue;
-                }
+        typedef std::tuple<idx_type, idx_type, size_type, idx_type *> t_part_tuple;
 
-                // Set starting position in the vector for each chunk
-                pos_by_chunk[0] = i;
-                
-                for (it = 1; it < k_d; it++)
-                    pos_by_chunk[it] = pos_by_chunk[it - 1] + amount_by_chunk[it - 1];
-                // To handle the last case when it = k_d - 1
-                pos_by_chunk[k_d] = j;
-                
-                // Push to the queue every non zero elements chunk
-                for (it = 0; it < k_d; it++,t++){
-                    // If not empty chunk, set bit to 1
-                    if (amount_by_chunk[it] != 0) {
-                        uint16_t p = std::pow(k, d-1);
-                        idx_type it_aux = it;                        
-                        c = it % k;
+        k = __k;
+        d = __d;
+        height = std::ceil(std::log(size) / std::log(k));
+        height = height > 1 ? height : 1; // If size == 0
+
+        bv = new rank_bv_64[height];
+        total_ones.reserve(height);
+
+        k_d = std::pow(k, d);
+
+        bit_vector k_t_ = bit_vector(k_d, 0);  // OJO, cuidado con esto
+
+        std::queue<t_part_tuple> q;
+        idx_type t = 0, last_level = 0;
+        idx_type i, j, r_0, c_0, it, c, r, z;
+        size_type l = std::pow(k, height - 1);
+
+        std::vector<idx_type> pos_by_chunk(k_d + 1, 0);
+
+        idx_type *top_left_point = new idx_type[d]();
+        idx_type *top_left_point_aux;
+
+        q.push(t_part_tuple(0, edges.size(), l, top_left_point));
+
+        size_type cur_l = l, cur_level = 0, n_ones = 0;
+
+        while (!q.empty()) {
+
+            std::vector<idx_type> amount_by_chunk(k_d, 0);
+            std::tie(i, j, l, top_left_point) = q.front();
+            q.pop();
+
+            if (l != cur_l) {
+                cur_l = l;
+                k_t_.resize(t);
+                bv[cur_level] = rank_bv_64(k_t_);
+                total_ones[cur_level] = bv[cur_level].n_ones();
+                cur_level++;
+                t = 0;
+                k_t_.resize(0);
+                k_t_ = bit_vector(k_d * n_ones, 0);
+                n_ones = 0;
+            }
+
+            // Get size for each chunk
+            for (it = i; it < j; it++)
+                amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
+
+            if (l == 1) {
+                for (it = 0; it < k_d; it++, t++)
+                    if (amount_by_chunk[it] != 0)
                         k_t_[t] = 1;
-                        n_ones++;
-                        
-                        top_left_point_aux = new idx_type[d]();                        
-                                               
-                        for (z = 0; z < d-1; ++z) {
-                            r = it_aux / p;
-                            it_aux -= r*p;
-                            p /= k;
-                            top_left_point_aux[z] = top_left_point[z] + r*l;
-                        }
-                        
-                        top_left_point_aux[d-1] = top_left_point[d-1] + c*l;
-
-                        q.push(t_part_tuple(pos_by_chunk[it],
-                                            pos_by_chunk[it + 1],
-                                            l/k,
-                                            top_left_point_aux));
-                    }
                     else
                         k_t_[t] = 0;
-                }
-                    
-                idx_type chunk;
-                
-                // Sort edges' vector
-                for (unsigned ch = 0; ch < k_d; ch++) {
-                    idx_type be = ch == 0 ? i : pos_by_chunk[ch - 1];
-                    for (it = pos_by_chunk[ch]; it < be + amount_by_chunk[ch];) {
-                        chunk = get_chunk_idx(edges[it],top_left_point, l, k);
+                // At l == 1 no new elements are enqueued
+                continue;
+            }
 
-                        if (pos_by_chunk[chunk] != it)
-                            std::iter_swap(edges.begin() + it,
-                                           edges.begin() + pos_by_chunk[chunk]);
-                        else
-                            it++;
-                        pos_by_chunk[chunk]++;
+            // Set starting position in the vector for each chunk
+            pos_by_chunk[0] = i;
+
+            for (it = 1; it < k_d; it++)
+                pos_by_chunk[it] = pos_by_chunk[it - 1] + amount_by_chunk[it - 1];
+            // To handle the last case when it = k_d - 1
+            pos_by_chunk[k_d] = j;
+
+            // Push to the queue every non zero elements chunk
+            for (it = 0; it < k_d; it++, t++)
+                // If not empty chunk, set bit to 1
+                if (amount_by_chunk[it] != 0) {
+                    uint16_t p = std::pow(k, d - 1);
+                    idx_type it_aux = it;
+                    c = it % k;
+                    k_t_[t] = 1;
+                    n_ones++;
+
+                    top_left_point_aux = new idx_type[d]();
+
+                    for (z = 0; z < d - 1; ++z) {
+                        r = it_aux / p;
+                        it_aux -= r * p;
+                        p /= k;
+                        top_left_point_aux[z] = top_left_point[z] + r * l;
                     }
-                }
-                delete [] top_left_point; 
 
-            }
+                    top_left_point_aux[d - 1] = top_left_point[d - 1] + c * l;
 
-            k_t_.resize(t);
-            bv[height-1] = rank_bv_64(k_t_);
-            
-            total_ones[height-1] = bv[height-1].n_ones();    
-        
-        }   
+                    q.push(t_part_tuple(pos_by_chunk[it],
+                                        pos_by_chunk[it + 1],
+                                        l / k,
+                                        top_left_point_aux));
+                } else
+                    k_t_[t] = 0;
 
-   public:
+            idx_type chunk;
 
-        se_quadtree() = default;
-        
-        uint64_t size(){
-            uint64_t i, s = 0;
-            for (i = 0; i < height; i++)
-                s += bv[i].size_in_bytes(); 
-            
-            return s + total_ones.size()*sizeof(uint64_t); 
-        }
+            // Sort edges' vector
+            for (unsigned ch = 0; ch < k_d; ch++) {
+                idx_type be = ch == 0 ? i : pos_by_chunk[ch - 1];
+                for (it = pos_by_chunk[ch]; it < be + amount_by_chunk[ch];) {
+                    chunk = get_chunk_idx(edges[it], top_left_point, l, k);
 
-
-        //! Constructor
-        /*! This constructor takes a vector of edges describing the graph
-         *  and the graph size. It takes linear time over the amount of
-         *  edges to build the k_d representation.
-         *  \param edges A vector with all the edges of the graph, it can
-         *               not be empty.
-         *  \param size grid side, all the point coordinates in edges
-                        vector must be within 0 and size ([0, size[).
-         */ 
- 
-        se_quadtree(std::vector<std::vector<idx_type>>& edges,
-                const size_type grid_side, uint8_t __k, uint8_t __d){
-            assert(grid_side > 0);
-            assert(edges.size() > 0);
-
-            build_from_edges(edges, grid_side, __k, __d);
-            ref_count = 1;
-        }
-        
-        
-        se_quadtree(vector<uint64_t> _bv[], const size_type grid_side, uint8_t _k, uint8_t _d){
-            k = _k;
-            d = _d;  
-            height = std::ceil(std::log(grid_side)/std::log(k));
-            height = height > 1 ? height : 1; // If size == 0
-            
-            bv = new rank_bv_64[height];
-            total_ones.reserve(height);
-                        
-            k_d = std::pow(k, d);
-            
-            // cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;            
-            
-	        // OJO con lo que sigue, tengo que hacer este constructor de buena manera
-		
-            /*for (uint64_t i = 0; i < height; i++) {
-                bv[i] = new sdsl::sd_vector<>(_bv[i].begin(),_bv[i].end());
-                bv_rank[i] = sd_vector<>::rank_1_type(bv[i]);
-                bv_select[i] = sd_vector<>::select_1_type(bv[i]);
-                total_ones[i] = bv_rank[i].rank(bv[i]->size());    
-            }*/
-            
-        }
-        
-        
-        ~se_quadtree(){
-            ref_count--;
-            if (ref_count == 0)
-                delete [] bv;
-        }
-        
-        void inc_ref_count(){
-            ref_count++;
-        }
- 
-	
-        uint8_t getK(){
-            return k;
-        }         
-        
-
-        uint8_t getD(){
-            return d;
-        }
-
-        rank_bv_64* getBv(){
-            return bv;
-        }
-        
-        
-        inline uint64_t rank(uint16_t level, uint64_t node){ 
-            return bv[level].rank(node);
-        }
-
-        inline uint8_t get_node_lastlevel(uint16_t level, uint64_t node){
-            if (k_d == 4)
-                return bv[level].get_4_bits(node);
-            else
-                return bv[level].get_2_bits(node);
-        }
-
-        inline uint8_t get_node(uint16_t level, uint64_t node, uint64_t* rank_array, uint64_t r){
-            uint8_t nd;// = bv[level].get_4_bits(node);
-            if (k_d == 4) {
-            nd = bv[level].get_4_bits(node);
-            switch(nd) {
-	        case 0:   break;
-            case 1:   
-                rank_array[0] = r+1;
-                break;
-            case 2:   
-                rank_array[1] = r+1;
-                break;
-            case 3:   
-                rank_array[0] = r+1;
-                rank_array[1] = r+2;
-                break;
-            case 4:   
-                rank_array[2] = r+1;
-                break;
-            case 5:   
-                rank_array[0] = r+1;
-                rank_array[2] = r+2;
-                break;
-            case 6:   
-                rank_array[1] = r+1;
-                rank_array[2] = r+2;
-                break;
-            case 7:   
-                rank_array[0] = r+1;
-                rank_array[1] = r+2;
-                rank_array[2] = r+3;
-                break;
-            case 8:   
-                rank_array[3] = r+1;
-                break;
-            case 9:   
-                rank_array[0] = r+1;
-                rank_array[3] = r+2;
-                break;				    
-            case 10:  
-                rank_array[1] = r+1;
-                rank_array[3] = r+2;
-                break;
-            case 11:  
-                rank_array[0] = r+1;
-                rank_array[1] = r+2;
-                rank_array[3] = r+3;
-                break;
-            case 12:  
-                rank_array[2] = r+1;
-                rank_array[3] = r+2;
-                break;
-            case 13:  
-                rank_array[0] = r+1;
-                rank_array[2] = r+2;
-                rank_array[3] = r+3;
-                break;
-            case 14:  
-                rank_array[1] = r+1;
-                rank_array[2] = r+2;
-                rank_array[3] = r+3;
-                break;
-            case 15:  
-                rank_array[0] = r+1;
-                rank_array[1] = r+2;
-                rank_array[2] = r+3;
-                rank_array[3] = r+4;
-                            break;
-            }
-            }
-            else {
-                nd = bv[level].get_2_bits(node);
-                switch(nd) {
-                    case 0: break;
-                    case 1: rank_array[0] = r+1;
-                            break;
-                    case 2: rank_array[1] = r+1;
-                            break;
-                    case 3: rank_array[0] = r+1;
-                            rank_array[1] = r+2;
-                            break;
+                    if (pos_by_chunk[chunk] != it)
+                        std::iter_swap(edges.begin() + it,
+                                       edges.begin() + pos_by_chunk[chunk]);
+                    else
+                        it++;
+                    pos_by_chunk[chunk]++;
                 }
             }
+            delete[] top_left_point;
 
-            return nd;
         }
 
-        // TODO: fix identation 
-        void get_children(uint16_t level, uint64_t node, uint64_t* children_array, uint64_t &n_children){
-            if (k_d == 4)
-            switch(bv[level].get_4_bits(node)) {
-	        case 0:   
-                n_children = 0;
-		          break;
-            case 1:  
-                n_children = 1;
-                children_array[0] = 0;
-                break;
-            case 2:   
-                n_children = 1;
-                children_array[0] = 1;
-                break;
-            case 3:   
-                n_children = 2;
-                children_array[0] = 0;
-                children_array[1] = 1;
-                break;
-            case 4:   
-                n_children = 1;
-                children_array[0] = 2;
-                break;
-            case 5:   
-                n_children = 2;
-                children_array[0] = 0;
-                children_array[1] = 2;
-                break;
-            case 6:   
-                n_children = 2;
-                children_array[0] = 1;
-                children_array[1] = 2;
-                break;
-            case 7:   
-                n_children = 3;
-                children_array[0] = 0;
-                children_array[1] = 1;
-                children_array[2] = 2;
-                break;
-            case 8:   
-                n_children = 1;
-                children_array[0] = 3;
-                break;
-            case 9:   
-                n_children = 2;
-                children_array[0] = 0;
-                children_array[1] = 3;
-                break;				    
-            case 10:  
-                n_children = 2;
-                children_array[0] = 1;
-                children_array[1] = 3;
-                break;
-            case 11:  
-                n_children = 3;
-                children_array[0] = 0;
-                children_array[1] = 1;
-                children_array[2] = 3;
-                break;
-            case 12:  
-                n_children = 2;
-                children_array[0] = 2;
-                children_array[1] = 3;
-                break;
-            case 13:  
-                n_children = 3;
-                children_array[0] = 0;
-                children_array[1] = 2;
-                children_array[2] = 3;
-                break;
-            case 14:  
-                n_children = 3;
-                children_array[0] = 1;
-                children_array[1] = 2;
-                children_array[2] = 3;
-                break;
-            case 15:  
-                n_children = 4;
-                children_array[0] = 0;
-                children_array[1] = 1;
-                children_array[2] = 2;
-                children_array[3] = 3;
-                            break;
-            }
-            else 
-            if (k_d == 2)
-            switch(bv[level].get_2_bits(node)) {
-                case 0: n_children = 0;
-                        break;
-                case 1: n_children = 1;
-                        children_array[0] = 0;
-                        break;
-                case 2: n_children = 1;
-                        children_array[0] = 1;
-                        break;
-                case 3: n_children = 2;
-                        children_array[0] = 0;
-                        children_array[1] = 1;
-                        break;
-            }
+        k_t_.resize(t);
+        bv[height - 1] = rank_bv_64(k_t_);
 
-        }	
+        total_ones[height - 1] = bv[height - 1].n_ones();
 
-        uint64_t get_num_children(uint16_t level, uint64_t node,uint64_t &n_children){
-            if (k_d == 4)
-            switch(bv[level].get_4_bits(node)) {
-	        case 0:   
-                n_children = 0;
-		        break;
-            case 1:  
-                n_children = 1;
-                break;
-            case 2:   
-                n_children = 1;
-                break;
-            case 3:   
-                n_children = 2;
-                break;
-            case 4:   
-                n_children = 1;
-                break;
-            case 5:   
-                n_children = 2;
-                break;
-            case 6:   
-                n_children = 2;
-                break;
-            case 7:   
-                n_children = 3;
-                break;
-            case 8:   
-                n_children = 1;
-                break;
-            case 9:   
-                n_children = 2;
-                break;				    
-            case 10:  
-                n_children = 2;
-                break;
-            case 11:  
-                n_children = 3;
-                break;
-            case 12:  
-                n_children = 2;
-                break;
-            case 13:  
-                n_children = 3;
-                break;
-            case 14:  
-                n_children = 3;
-                break;
-            case 15:  
-                n_children = 4;
-                break;
-            }
-            else 
-            if (k_d == 2)
-            switch(bv[level].get_2_bits(node)) {
-                case 0: n_children = 0;
-                        break;
-                case 1: n_children = 1;
-                        break;
-                case 2: n_children = 1;
-                        break;
-                case 3: n_children = 2;
-                        break;
-            }
-        }
+    }
 
-        uint64_t total_ones_level(uint16_t level){
-            return total_ones[level];        
-        }        
-        
+public:
 
-        uint64_t getKD(){
-            return k_d;        
-        }
-                
-        
-        uint16_t getHeight(){
-            return height;        
-        }
+    se_quadtree() = default;
 
-        /**
-         * Return the index node's child. The level of the child has to be level++.
-        */
-        uint64_t get_child(uint64_t i, uint16_t level, uint64_t node){
-            uint64_t n_children;
-            get_num_children(level, node, &n_children) // TODO: see use of &
-            if(i > n_children || level == getHeight()){
-                return null;
-            } else{
-                // TODO: see pdf in ipad, return something, position node v.
-                bv[level++].rank(i);
-                return 0 ;
-            }
-        }
+    uint64_t size() {
+        uint64_t i, s = 0;
+        for (i = 0; i < height; i++)
+            s += bv[i].size_in_bytes();
 
-        /**
-         * Count the number of leaves a node has.
-         * En el primer llamado, init_node = fin_node
-        */
-        uint64_t get_num_leaves(uint16_t level, uint64_t init_node, uint64_t fin_node, uint64_t* rank_array, uint64_t r){
-            if(level == getHeight()){
-                return count(init_node, fin_node); // TODO_ contar en ese nivel el nro de unos desde ini a fin
-            } else{
-                uint64_t n_children_fin;
-                get_num_children(level, fin_node, &n_children_fin);
-                init_node = get_child(1, level, init_node);
-                fin_node = get_child(n_children_fin, level, fin_node);
-                return get_num_leaves(level, init_node, fin_node, rank_array, r)
-            }
-        }
-        
-        void printBv(){
-            cout<< "call to se_quadtree --> printBv";
-            for(int i = 0; i < bv->size ; i++){
-                bv[i].print();
-            }
-        }
+        return s + total_ones.size() * sizeof(uint64_t);
+    }
 
-                 
- /*       void print(std::ofstream &ost) {         
-           uint64_t i, j, aa_r, zz;
-                      
-           for (i = 0; i < height; i++) {
-               if (bv[i].size() > 0)
-                   aa_r = bv_rank[i].rank(bv[i].size());
-               else
-                   aa_r = 0;               
-               ost << aa_r << ": ";
-            	
-               for (zz = j = 0; zz < aa_r; j++) {
-                   if ((bv[i])[j]) {
-                       ost << '1';
-                       zz++;                   
-                   }
-                   else
-                       ost << '0';
-               }
-               ost << endl;         
-            }
+
+    //! Constructor
+    /*! This constructor takes a vector of edges describing the graph
+     *  and the graph size. It takes linear time over the amount of
+     *  edges to build the k_d representation.
+     *  \param edges A vector with all the edges of the graph, it can
+     *               not be empty.
+     *  \param size grid side, all the point coordinates in edges
+                    vector must be within 0 and size ([0, size[).
+     */
+
+    se_quadtree(std::vector<std::vector<idx_type>> &edges,
+                const size_type grid_side, uint8_t __k, uint8_t __d) {
+        assert(grid_side > 0);
+        assert(edges.size() > 0);
+
+        build_from_edges(edges, grid_side, __k, __d);
+        ref_count = 1;
+    }
+
+
+    se_quadtree(vector<uint64_t> _bv[], const size_type grid_side, uint8_t _k, uint8_t _d) {
+        k = _k;
+        d = _d;
+        height = std::ceil(std::log(grid_side) / std::log(k));
+        height = height > 1 ? height : 1; // If size == 0
+
+        bv = new rank_bv_64[height];
+        total_ones.reserve(height);
+
+        k_d = std::pow(k, d);
+
+        // cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;
+
+        // OJO con lo que sigue, tengo que hacer este constructor de buena manera
+
+        /*for (uint64_t i = 0; i < height; i++) {
+            bv[i] = new sdsl::sd_vector<>(_bv[i].begin(),_bv[i].end());
+            bv_rank[i] = sd_vector<>::rank_1_type(bv[i]);
+            bv_select[i] = sd_vector<>::select_1_type(bv[i]);
+            total_ones[i] = bv_rank[i].rank(bv[i]->size());
         }*/
 
+    }
+
+
+    ~se_quadtree() {
+        ref_count--;
+        if (ref_count == 0)
+            delete[] bv;
+    }
+
+    void inc_ref_count() {
+        ref_count++;
+    }
+
+
+    uint8_t getK() {
+        return k;
+    }
+
+
+    uint8_t getD() {
+        return d;
+    }
+
+    rank_bv_64 *getBv() {
+        return bv;
+    }
+
+
+    inline uint64_t rank(uint16_t level, uint64_t node) {
+        return bv[level].rank(node);
+    }
+
+    inline uint8_t get_node_lastlevel(uint16_t level, uint64_t node) {
+        if (k_d == 4)
+            return bv[level].get_4_bits(node);
+        else
+            return bv[level].get_2_bits(node);
+    }
+
+    /**
+     * TODO: como funciona
+     * @param level
+     * @param node
+     * @param rank_array
+     * @param r
+     * @return
+     */
+    inline uint8_t get_node(uint16_t level, uint64_t node, uint64_t *rank_array, uint64_t r) {
+        uint8_t nd;// = bv[level].get_4_bits(node);
+        if (k_d == 4) {
+            nd = bv[level].get_4_bits(node);
+            switch (nd) {
+                case 0:
+                    break;
+                case 1:
+                    rank_array[0] = r + 1;
+                    break;
+                case 2:
+                    rank_array[1] = r + 1;
+                    break;
+                case 3:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    break;
+                case 4:
+                    rank_array[2] = r + 1;
+                    break;
+                case 5:
+                    rank_array[0] = r + 1;
+                    rank_array[2] = r + 2;
+                    break;
+                case 6:
+                    rank_array[1] = r + 1;
+                    rank_array[2] = r + 2;
+                    break;
+                case 7:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    rank_array[2] = r + 3;
+                    break;
+                case 8:
+                    rank_array[3] = r + 1;
+                    break;
+                case 9:
+                    rank_array[0] = r + 1;
+                    rank_array[3] = r + 2;
+                    break;
+                case 10:
+                    rank_array[1] = r + 1;
+                    rank_array[3] = r + 2;
+                    break;
+                case 11:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    rank_array[3] = r + 3;
+                    break;
+                case 12:
+                    rank_array[2] = r + 1;
+                    rank_array[3] = r + 2;
+                    break;
+                case 13:
+                    rank_array[0] = r + 1;
+                    rank_array[2] = r + 2;
+                    rank_array[3] = r + 3;
+                    break;
+                case 14:
+                    rank_array[1] = r + 1;
+                    rank_array[2] = r + 2;
+                    rank_array[3] = r + 3;
+                    break;
+                case 15:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    rank_array[2] = r + 3;
+                    rank_array[3] = r + 4;
+                    break;
+            }
+        } else {
+            nd = bv[level].get_2_bits(node);
+            switch (nd) {
+                case 0:
+                    break;
+                case 1:
+                    rank_array[0] = r + 1;
+                    break;
+                case 2:
+                    rank_array[1] = r + 1;
+                    break;
+                case 3:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    break;
+            }
+        }
+
+        return nd;
+    }
+
+
+    void get_children(uint16_t level, uint64_t node, uint64_t *children_array, uint64_t &n_children) {
+        if (k_d == 4)
+            switch (bv[level].get_4_bits(node)) {
+                case 0:
+                    n_children = 0;
+                    break;
+                case 1:
+                    n_children = 1;
+                    children_array[0] = 0;
+                    break;
+                case 2:
+                    n_children = 1;
+                    children_array[0] = 1;
+                    break;
+                case 3:
+                    n_children = 2;
+                    children_array[0] = 0;
+                    children_array[1] = 1;
+                    break;
+                case 4:
+                    n_children = 1;
+                    children_array[0] = 2;
+                    break;
+                case 5:
+                    n_children = 2;
+                    children_array[0] = 0;
+                    children_array[1] = 2;
+                    break;
+                case 6:
+                    n_children = 2;
+                    children_array[0] = 1;
+                    children_array[1] = 2;
+                    break;
+                case 7:
+                    n_children = 3;
+                    children_array[0] = 0;
+                    children_array[1] = 1;
+                    children_array[2] = 2;
+                    break;
+                case 8:
+                    n_children = 1;
+                    children_array[0] = 3;
+                    break;
+                case 9:
+                    n_children = 2;
+                    children_array[0] = 0;
+                    children_array[1] = 3;
+                    break;
+                case 10:
+                    n_children = 2;
+                    children_array[0] = 1;
+                    children_array[1] = 3;
+                    break;
+                case 11:
+                    n_children = 3;
+                    children_array[0] = 0;
+                    children_array[1] = 1;
+                    children_array[2] = 3;
+                    break;
+                case 12:
+                    n_children = 2;
+                    children_array[0] = 2;
+                    children_array[1] = 3;
+                    break;
+                case 13:
+                    n_children = 3;
+                    children_array[0] = 0;
+                    children_array[1] = 2;
+                    children_array[2] = 3;
+                    break;
+                case 14:
+                    n_children = 3;
+                    children_array[0] = 1;
+                    children_array[1] = 2;
+                    children_array[2] = 3;
+                    break;
+                case 15:
+                    n_children = 4;
+                    children_array[0] = 0;
+                    children_array[1] = 1;
+                    children_array[2] = 2;
+                    children_array[3] = 3;
+                    break;
+            }
+        else if (k_d == 2)
+            switch (bv[level].get_2_bits(node)) {
+                case 0:
+                    n_children = 0;
+                    break;
+                case 1:
+                    n_children = 1;
+                    children_array[0] = 0;
+                    break;
+                case 2:
+                    n_children = 1;
+                    children_array[0] = 1;
+                    break;
+                case 3:
+                    n_children = 2;
+                    children_array[0] = 0;
+                    children_array[1] = 1;
+                    break;
+            }
+
+    }
+
+    // entrega el maximo numero de hijos por nodo
+    // ejemplo, grilla de 16 --> num_children =  4
+    uint64_t get_num_children(uint16_t level, uint64_t node) {
+        uint64_t n_children;
+        if (k_d == 4) {
+            switch (bv[level].get_4_bits(node)) {
+                case 0:
+                    n_children = 0;
+                    break;
+                case 1:
+                    n_children = 1;
+                    break;
+                case 2:
+                    n_children = 1;
+                    break;
+                case 3:
+                    n_children = 2;
+                    break;
+                case 4:
+                    n_children = 1;
+                    break;
+                case 5:
+                    n_children = 2;
+                    break;
+                case 6:
+                    n_children = 2;
+                    break;
+                case 7:
+                    n_children = 3;
+                    break;
+                case 8:
+                    n_children = 1;
+                    break;
+                case 9:
+                    n_children = 2;
+                    break;
+                case 10:
+                    n_children = 2;
+                    break;
+                case 11:
+                    n_children = 3;
+                    break;
+                case 12:
+                    n_children = 2;
+                    break;
+                case 13:
+                    n_children = 3;
+                    break;
+                case 14:
+                    n_children = 3;
+                    break;
+                case 15:
+                    n_children = 4;
+                    break;
+            }
+        } else if (k_d == 2) {
+            switch (bv[level].get_2_bits(node)) {
+                case 0:
+                    n_children = 0;
+                    break;
+                case 1:
+                    n_children = 1;
+                    break;
+                case 2:
+                    n_children = 1;
+                    break;
+                case 3:
+                    n_children = 2;
+                    break;
+            }
+        }
+        return n_children;
+    }
+
+    uint64_t total_ones_level(uint16_t level) {
+        return total_ones[level];
+    }
+
+
+    uint64_t getKD() {
+        return k_d;
+    }
+
+
+    uint16_t getHeight() {
+        return height;
+    }
+
+    /**
+     * Return the index of the i-th child of the node in a level
+    */
+    uint64_t get_child(uint64_t node, uint64_t i, uint16_t level) {
+        uint64_t n_children = get_num_children(level, node);
+        if (i > n_children || level == getHeight()) {
+            return -1;
+        } else {
+            // TODO: see pdf in ipad, return something, position node v.
+            //bv[level++].rank(i);
+            uint64_t rank_vector[64];
+            uint8_t node_i = k_d * node + i; // absolute position of the i-th child of the node in the level ++
+            level += 1;
+            uint64_t r = this->rank(level, node_i);//Q->rank(level, node);
+            uint8_t node_x = get_node(level, node_i, rank_vector, r);
+            return node_x;
+        }
+    }
+
+    /**
+     *
+     * @param level of the node
+     * @param node the i-th 1 of the level
+     * @return number of leaves of the node
+     */
+    uint64_t get_num_leaves(uint16_t level, uint64_t node){
+        if(level >= getHeight() -1 ){
+            return 0;
+        }
+        uint64_t n_children = bv[level].n_ones_4_bits(node*k_d);
+        uint64_t start_pos_next_level = bv[level].rank(node*k_d);
+        uint64_t first_child = start_pos_next_level;// * k_d;
+        uint64_t last_child = (start_pos_next_level + n_children-1);//*k_d
+        return get_num_leaves_aux(level+1, first_child, last_child);
+    }
+
+    /**
+     * Count the number of leaves a node has.
+     * @param level of the node's children
+     * @param first_child the position in the level of the first child of the node.
+     * @param last_child the position in the level of the last child of the node.
+     * @return the number of leaves
+     *
+    */
+    uint64_t get_num_leaves_aux(uint16_t level, uint64_t first_child, uint64_t last_child) {
+        if (level == getHeight()-1) { // in the last level we have to count the 1s between a range
+            uint64_t init = bv[level].rank(first_child*k_d);
+            uint64_t fin = bv[level].rank(last_child*k_d + k_d-1);
+            uint64_t total = fin - init;
+            cout << "Total: " << total << endl;
+            return total;
+        } else { // otherwise, we continue to descend recursively down to the first child and to the last child
+            uint64_t n_children_last = bv[level].n_ones_4_bits(last_child*k_d);
+            uint64_t start_pos_next_level_first_child = bv[level].rank(first_child*k_d);
+            uint64_t start_pos_next_level_last_child = bv[level].rank(last_child*k_d);
+            first_child = start_pos_next_level_first_child;// * k_d;
+            last_child = (start_pos_next_level_last_child + n_children_last-1);//*k_d
+            level += 1;
+            return get_num_leaves_aux(level, first_child, last_child);
+        }
+    }
+
+    void printBv() {
+        cout << "call to se_quadtree --> printBv. Size bv = " << bv->size() << endl;
+        uint16_t h = getHeight();
+        for (int i = 0; i < h; i++) {
+            cout << "size bv[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
+            bv[i].print();
+            cout << endl;
+        }
+    }
+
+
+    /*       void print(std::ofstream &ost) {
+              uint64_t i, j, aa_r, zz;
+
+              for (i = 0; i < height; i++) {
+                  if (bv[i].size() > 0)
+                      aa_r = bv_rank[i].rank(bv[i].size());
+                  else
+                      aa_r = 0;
+                  ost << aa_r << ": ";
+
+                  for (zz = j = 0; zz < aa_r; j++) {
+                      if ((bv[i])[j]) {
+                          ost << '1';
+                          zz++;
+                      }
+                      else
+                          ost << '0';
+                  }
+                  ost << endl;
+               }
+           }*/
+
 };
+
 #endif

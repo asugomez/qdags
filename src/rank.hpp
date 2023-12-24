@@ -3,11 +3,12 @@
 
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/int_vector_buffer.hpp>
+#include<bits/stdc++.h> 
 
 using namespace sdsl;
 using namespace std;
 
-//TODO: que hace cada una de las funciones: rank? get4bits?
+
 class rank_bv_64
 {
     uint64_t* seq;
@@ -45,13 +46,15 @@ class rank_bv_64
         n = count;
     }
 
-
+    // number of 1s in B[1,i]
     inline uint64_t rank(uint64_t i) 
     {
         return block[i>>6] + bits::cnt(seq[i>>6] & ~(0xffffffffffffffff << (i&0x3f)));  
     }
 
-    inline uint8_t get_4_bits(uint64_t start_pos) // TODO: entenderla!? retorna los 4 bits del bitvector desde start_pos?
+    // los 4 bits que definen un nodo
+    // TODO: pregunta: maximo de hijos sería 16 entonces??
+    inline uint8_t get_4_bits(uint64_t start_pos) 
     {
         return ((seq[start_pos >> 6] >>(start_pos & 0x3f) ) & 0x0f);
     }
@@ -59,6 +62,18 @@ class rank_bv_64
     inline uint8_t get_2_bits(uint64_t start_pos)
     {
         return ((seq[start_pos >> 6] >>(start_pos & 0x3f) ) & 0x03);
+    }
+
+    inline uint64_t n_ones_4_bits(uint64_t start_pos){
+        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f) ) & 0x0f);
+        uint64_t counter = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            if(x & (1 << i)){
+                counter+=1;
+            }
+        }
+        return counter;
     }
  
     // number of bits in the bv
@@ -79,11 +94,32 @@ class rank_bv_64
 	       + 2*sizeof(uint64_t);
     }
 
+    void print_4_bits(uint64_t start_pos)
+    {
+        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f) ) & 0x0f);
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            cout << ((x & (1 << i)) ? "1" : "0");
+        }
+        cout << " ";
+    }
+
     void print(){
-        cout<< "call to rank --> print";
-        for (int i=0; i < u; i++){
-            cout << "h_" << i ;
-        } 
+        char res[1000];
+        //000000000000000000001011111111001111101110001000111110 0110111111
+        uint64_t i=0;
+        while ( i < u){
+             //uint8_t bits = get_2_bits(i);
+             print_4_bits(i);
+             //for(int j = 0; j < bits.s; j++){
+               //  cout << bits ;
+             //}
+             // }
+            i=i+4;
+        }
+        cout << endl;
     }
 
 };

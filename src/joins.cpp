@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <algorithm> 
 #include "qdags.hpp"
 #include "parallel_for.hpp"
 

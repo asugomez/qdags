@@ -190,7 +190,7 @@ class qdag
              if (is_extended_qdag) delete M;       
         }
        
-|       // extend del paper!!
+       // extend del paper!!
         qdag* extend(att_set &attribute_set_A) //extiende el qdag a ese set de atributos
         {
             uint16_t dim = attribute_set_A.size(); // d
@@ -276,16 +276,30 @@ class qdag
             return M[i];        
         }
 
-        rank_bv_64* getBv(){
-            return Q.getBv();
+        rank_bv_64* getBv()
+        {
+            return Q->getBv();
         }
 
-        void printBv(){
-            cout<< "call to qdags --> printBv";
-            //Q.printBv();
+        void printBv()
+        {
+            cout<< "call to qdags --> printBv" << endl;
+            Q->printBv();
         }
 
+        /**
+         * Get the number of leaves a node has.
+         * @param level of the node
+         * @param node the i-th 1 of that level
+         * @return
+         */
+        uint64_t get_num_leaves(uint16_t level, uint64_t node){
+            return Q->get_num_leaves(level,node);
+        }
 
+        void get_children(uint16_t level, uint64_t node, uint64_t* children_array, uint64_t &n_children){
+            return Q->get_children(level, node,children_array,n_children);
+        }
         // This is for a binary relation, i.e., a k^2-tree with 4 children per node
         // son tablas precomputadas para materializar los nodos
         void createTableExtend5()  // para join con 5 atributos, se constuyen al momento del join
