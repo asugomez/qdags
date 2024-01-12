@@ -108,11 +108,11 @@ int main(int argc, char** argv)
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    Join_Result = parMultiJoin(Q, true, 1000); // warmup join -> activar el caché
+    Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
  
     start = high_resolution_clock::now();    
     
-    Join_Result = parMultiJoin(Q, true, 1000); 
+    Join_Result = multiJoin(Q, true, 1000);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

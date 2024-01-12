@@ -136,6 +136,7 @@ public:
          const uint64_t _grid_side,
          uint8_t k, uint8_t d
     ) {
+        // OJO PIOJO: aqui el constructor no está terminado: no pasa el bv de enteros a bits!
         Q = new se_quadtree(bv, _grid_side, k, d);
 
         Msize = std::pow(k, d);
@@ -385,11 +386,11 @@ public:
     //    Q->print(ofs);
     //}
     void printBv() {
-        cout << "call to qdags --> printBv" << endl;
         Q->printBv();
     }
 
     /**
+     * TODO: how to know which child is it the node (the first, second, ...., the last one)
      * Get the number of leaves a node has.
      * @param level of the node
      * @param node the i-th 1 of that level
@@ -397,6 +398,16 @@ public:
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node) {
         return Q->get_num_leaves(level, node);
+    }
+
+    /**
+     *
+     * @param level
+     * @param node
+     * @return the number of child the node it is
+     */
+    uint64_t which_node(uint16_t level, uint64_t node){
+
     }
 };
 

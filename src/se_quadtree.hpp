@@ -55,11 +55,11 @@ private:
 
     //rank_support_v<> *bv_rank;
 
-    uint16_t height;   // number of levels of the tree
+    uint16_t height;   // number of levels of the tree [0,..., height-1]
 
-    uint8_t k;
-    uint8_t d;
-    size_type k_d; // aridad??
+    uint8_t k; // k_d--tree
+    uint8_t d; // number of attributs
+    size_type k_d; // aridad?? k^d
     vector<uint64_t> total_ones;
     uint64_t ref_count;
 
@@ -307,8 +307,7 @@ public:
         return bv;
     }
 
-
-    inline uint64_t rank(uint16_t level, uint64_t node) {
+    inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in bv[level][0,i]
         return bv[level].rank(node);
     }
 
@@ -620,10 +619,14 @@ public:
      * @return number of leaves of the node
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node){
-        if(level >= getHeight() -1 ){
+        if(level > getHeight()){
             return 0;
         }
-        uint64_t n_children = bv[level].n_ones_4_bits(node*k_d);
+        uint64_t n_children;// = bv[level].n_ones_from_pos(node*k_d, k_d);
+        if(k_d==4)
+            n_children = bv[level].n_ones_4_bits(node*k_d);
+        else
+            n_children = bv[level].n_ones_2_bits(node*k_d);
         uint64_t start_pos_next_level = bv[level].rank(node*k_d);
         uint64_t first_child = start_pos_next_level;// * k_d;
         uint64_t last_child = (start_pos_next_level + n_children-1);//*k_d
@@ -641,12 +644,19 @@ public:
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t first_child, uint64_t last_child) {
         if (level == getHeight()-1) { // in the last level we have to count the 1s between a range
             uint64_t init = bv[level].rank(first_child*k_d);
-            uint64_t fin = bv[level].rank(last_child*k_d + k_d-1);
+            uint64_t fin = bv[level].rank(last_child*k_d + k_d);
             uint64_t total = fin - init;
+            //cout << "Total: " << first_child * k_d << endl;
+            //cout << "Total: " << last_child * k_d + k_d -1<< endl;
+            //cout << "Total: " << fin << " " << init << endl;
             cout << "Total: " << total << endl;
             return total;
         } else { // otherwise, we continue to descend recursively down to the first child and to the last child
-            uint64_t n_children_last = bv[level].n_ones_4_bits(last_child*k_d);
+            uint64_t n_children_last;
+            if(k_d==2)
+                n_children_last = bv[level].n_ones_2_bits(last_child*k_d);
+            else
+                n_children_last = bv[level].n_ones_4_bits(last_child*k_d);
             uint64_t start_pos_next_level_first_child = bv[level].rank(first_child*k_d);
             uint64_t start_pos_next_level_last_child = bv[level].rank(last_child*k_d);
             first_child = start_pos_next_level_first_child;// * k_d;
@@ -657,11 +667,10 @@ public:
     }
 
     void printBv() {
-        cout << "call to se_quadtree --> printBv. Size bv = " << bv->size() << endl;
-        uint16_t h = getHeight();
-        for (int i = 0; i < h; i++) {
+        //cout << "call to se_quadtree --> printBv. Size bv = " << bv->size() << endl;
+        for (int i = 0; i < getHeight(); i++) {
             cout << "size bv[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
-            bv[i].print();
+            this->getBv()[i].print(k_d);
             cout << endl;
         }
     }

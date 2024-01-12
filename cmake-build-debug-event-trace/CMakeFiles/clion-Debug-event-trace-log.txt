@@ -1,0 +1,2 @@
+Cannot generate 'Debug-event-trace' into /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug-event-trace
+CMakeCache.txt is found in the project dir, only in-source generation will be performed.
