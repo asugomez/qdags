@@ -306,8 +306,10 @@ bool parAND(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut, std::
     bool result = false;
     //uint64_t root_temp[nQ];
     bool just_zeroes = true;
+    // TODO: porq fijo 16?
     uint64_t k_d[16 /*nQ*/]; //CUIDADO, solo hasta 16 relaciones por query
 
+    // TODO: pq pone fijo 512? además es max 5 attr distintos
     uint16_t children_to_recurse[512 /*p*/]; // CUIDADO, solo hasta 9 atributos distintos por query
 
     uint64_t i;

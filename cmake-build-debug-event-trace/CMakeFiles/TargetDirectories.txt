@@ -1,3 +1,0 @@
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug-event-trace/CMakeFiles/main.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug-event-trace/CMakeFiles/edit_cache.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug-event-trace/CMakeFiles/rebuild_cache.dir

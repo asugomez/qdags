@@ -393,22 +393,32 @@ public:
      * TODO: how to know which child is it the node (the first, second, ...., the last one)
      * Get the number of leaves a node has.
      * @param level of the node
-     * @param node the i-th 1 of that level
-     * @return
+     * @param node the node
+     * @return number of leaves the node has
      */
-    uint64_t get_num_leaves(uint16_t level, uint64_t node) {
+    uint64_t get_num_leaves(int16_t level, uint64_t node) {
+        // TODO: compare node with its position in the children[] and if it's a 1, compute get_num_leaves.
+        // Otherwise, do not compute
+        // bv[level][node] == 0
         return Q->get_num_leaves(level, node);
     }
 
     /**
-     *
-     * @param level
-     * @param node
-     * @return the number of child the node it is
+     * TODO: poner ejemplo (diff entre esta y get_num_leaves)
+     * TODO: change the parent is the j-th node 0 or 1 in the level -1
+     * @param level of the child. -1 if is the root
+     * @param parent the parent of the child.
+     * @param child the i-th node (0 or 1) of the level
+     * @return number of leaves of the ith-child of the parent
      */
-    uint64_t which_node(uint16_t level, uint64_t node){
-
+    uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
+        // TODO: compare node with its position in the children[] and if it's a 1, compute get_num_leaves.
+        // Otherwise, do not compute
+        // bv[level][node] == 0
+        return Q->get_num_leaves_ith_node(level, parent, child);
     }
+
+
 };
 
 #endif

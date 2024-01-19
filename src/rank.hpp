@@ -43,7 +43,7 @@ public:
         n = count;
     }
 
-    // number of 1s in B[0,i]
+    // number of 1s in B[0,i-1]
     inline uint64_t rank(uint64_t i) {
         // 0x3f = 00111111
         // i >> 6 : dividir por 64 (tamaño bloque)
@@ -104,6 +104,24 @@ public:
         return sizeof(uint64_t) * ((u + 63) / 64) + sizeof(uint32_t) * (u + 63) / 64
                + sizeof(uint64_t *) + sizeof(uint32_t *)
                + 2 * sizeof(uint64_t);
+    }
+
+    /**
+     *
+     * @param parent
+     * @param child the i-th child
+     * @param k_d
+     * @return the bit of the ith-child of the parent
+     */
+    bool get_bit(uint64_t parent, uint64_t child, uint64_t k_d){
+        uint8_t x;
+        if(k_d == 4) {
+            x = get_4_bits(parent*k_d);
+        } else {
+            x = get_2_bits(parent*k_d);
+        }
+        return (x & (1 << child)) != 0;
+
     }
 
     void print_4_bits(uint64_t start_pos) {

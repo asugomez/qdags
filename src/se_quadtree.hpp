@@ -59,7 +59,7 @@ private:
 
     uint8_t k; // k_d--tree
     uint8_t d; // number of attributs
-    size_type k_d; // aridad?? k^d
+    size_type k_d; // k^d
     vector<uint64_t> total_ones;
     uint64_t ref_count;
 
@@ -613,24 +613,64 @@ public:
     }
 
     /**
+     * TODO: poner ejemplo (diff entre esta y get_num_leaves)
+     * TODO: change the parent is the j-th node 0 or 1 in the level -1
+     * @param level of the child. -1 if is the root
+     * @param parent the parent of the child.
+     * @param child the i-th node (0 or 1) of the level
+     * @return number of leaves of the ith-child of the parent
+     */
+    uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
+        if(level == -1){
+            return get_num_leaves(0,0);
+        } else if(level >= 0) {
+            // child is the number of 1 in the level-1. , maybe is good to have the parent, start_pos and i the bit
+            cout << "BIT is: " << bv[level].get_bit(parent, child, k_d) << endl;
+            // get whether is 0 or 1 the ith-child of the parent
+            if (bv[level].get_bit(parent, child, k_d)) {
+                //level += 1;
+                uint64_t node = bv[level].rank(parent*k_d + child + 1) - 1; // TODO: actualizar node
+                cout << "parent*k_d + child " << parent*k_d + child + 1<< endl;
+                cout << "node is " << node << endl;
+                cout << "level is " << level << endl;
+                return get_num_leaves(level, node);
+            } else {
+                cout << "1) no leaves" << endl;
+                return 0;
+            }
+        } else{
+            cout << "2) no leaves" << endl;
+            return 0;
+        }
+    }
+
+    /**
      *
-     * @param level of the node
-     * @param node the i-th 1 of the level
+     * @param level of the parent. -1 if is the root
+     * @param node the i-th 1 of the parent
      * @return number of leaves of the node
      */
-    uint64_t get_num_leaves(uint16_t level, uint64_t node){
-        if(level > getHeight()){
+    uint64_t get_num_leaves(int16_t level, uint64_t node){
+        if(level == -1){
+            cout << "TOTAL is: " << bv[getHeight()-1].n_ones() << endl;
+            return bv[getHeight()-1].n_ones();
+        }
+        if(level >= getHeight() -1 || bv[level].n_ones() < node) {
+            cout << "level > get height: " << getHeight() << endl;
             return 0;
         }
         uint64_t n_children;// = bv[level].n_ones_from_pos(node*k_d, k_d);
         if(k_d==4)
-            n_children = bv[level].n_ones_4_bits(node*k_d);
+            n_children = bv[level].n_ones_4_bits(node * k_d);
         else
-            n_children = bv[level].n_ones_2_bits(node*k_d);
-        uint64_t start_pos_next_level = bv[level].rank(node*k_d);
+            n_children = bv[level].n_ones_2_bits(node * k_d);
+        cout << "number of 1s: " << bv[level].n_ones() << " of the level " << level << endl;
+
+        uint64_t start_pos_next_level = bv[level].rank(node * k_d) - 1;
         uint64_t first_child = start_pos_next_level;// * k_d;
         uint64_t last_child = (start_pos_next_level + n_children-1);//*k_d
         return get_num_leaves_aux(level+1, first_child, last_child);
+
     }
 
     /**
@@ -642,13 +682,13 @@ public:
      *
     */
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t first_child, uint64_t last_child) {
-        if (level == getHeight()-1) { // in the last level we have to count the 1s between a range
+        if (level >= getHeight()-1) { // in the last level we have to count the 1s between a range
             uint64_t init = bv[level].rank(first_child*k_d);
             uint64_t fin = bv[level].rank(last_child*k_d + k_d);
             uint64_t total = fin - init;
             //cout << "Total: " << first_child * k_d << endl;
             //cout << "Total: " << last_child * k_d + k_d -1<< endl;
-            //cout << "Total: " << fin << " " << init << endl;
+            cout << "Total: " << fin << " " << init << endl;
             cout << "Total: " << total << endl;
             return total;
         } else { // otherwise, we continue to descend recursively down to the first child and to the last child

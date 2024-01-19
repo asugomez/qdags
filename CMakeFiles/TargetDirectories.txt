@@ -1,3 +1,0 @@
-/Users/asugomez/Desktop/Magister/Tesis/qdags/CMakeFiles/qdags.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/CMakeFiles/edit_cache.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/CMakeFiles/rebuild_cache.dir
