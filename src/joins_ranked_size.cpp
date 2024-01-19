@@ -5,6 +5,7 @@
 #include "qdags.hpp"
 #include "parallel_for.hpp"
 #include "qdagWeight.cpp"
+#include "utils.cpp"
 
 
 /**
@@ -125,13 +126,12 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 if(insert){
                     uint16_t next_level = cur_level+1;
                     // insert the i-th node of this level
-                    // TODO: convert the uint64_t into bit array
-                    ceil(2.3);
-                    vector<bool> nodePath = new vector<bool>(ceil(log2(p)));
-                    for(uint16_t j = 0; j < ceil(log2(p)); j++){
-                        nodePath[j] = (i >> j) & 1;
+                    vector<bool> nodePath;// = new vector<bool>(ceil(log2(p)));
+                    decToBinary(i, nodePath);
+                    // TODO: check the result
+                    for(uint16_t j = 0; j < nodePath.size(); j++){
+                        tupleQdags.bv.push_back(nodePath[j]);
                     }
-                    tupleQdags.bv.push_back(0);
                     qdagWeight this_node = {next_level, i, total_weight, &bv} ;
                     pq.push(this_node);
                 }

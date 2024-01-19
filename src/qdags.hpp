@@ -405,6 +405,7 @@ public:
 
     /**
      * TODO: poner ejemplo (diff entre esta y get_num_leaves)
+     * TODO: modigy to parent be as same as the child (the i-th node 1 or 0)
      * TODO: change the parent is the j-th node 0 or 1 in the level -1
      * @param level of the child. -1 if is the root
      * @param parent the parent of the child.
