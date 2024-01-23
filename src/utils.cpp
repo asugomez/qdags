@@ -39,6 +39,12 @@ uint64_t* getPointCoordFromBitvectorPath(std::vector<bool> bv, uint16_t k_d){
 
 }
 
+uint64_t* getCoordinates(std::vector<bool> bv, uint16_t l){
+    uint64_t* pointCoord = new uint64_t[l];
+
+    return pointCoord;
+}
+
 
 // function to convert decimal to binary
 void decToBinary(uint64_t n, std::vector<bool> &bits){

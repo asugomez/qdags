@@ -9,8 +9,8 @@
  * Example: level = -1, node = 0, weight = 30 --> prioridad de la raiz
  */
 struct qdagWeight {
-    uint16_t level;
-    uint64_t node; // the i-th node of that level (the quadrant)
+    uint16_t level; // the level of the node
+    uint64_t node; // the i-th non-empty node (1) of that level (the quadrant)
     uint64_t weight; // priority or number of leaves
     vector<bool> bv;  // the bits that encode the path down the leaf.
     bool operator<(const qdagWeight& qd) const {

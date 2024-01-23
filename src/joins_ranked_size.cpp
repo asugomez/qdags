@@ -82,22 +82,27 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t cur_node = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         if(cur_level == max_level){
-
+            // TODO: output coordinates
+            uint16_t l = log2(p);
+            uint64_t* coordinates = getCoordinates(tupleQdags.bv, l);
 
         } else{
             // calcular la prioridad de cada tupla e insertar la struct a la priority queue
             for(uint64_t i = 0; i < p ; i++){
                 bool insert = true;
+                uint64_t n_empty_nodes = 0;
                 uint64_t total_weight = partial_results ? UINT64_MAX : 0;
                 // TODO: maybe before doing this, see if there is an empty node (evittar hacer este calculo)
                 // TODO: hacer esto mas rapido
                 for(uint16_t j = 0; j < nQ; j++){
                     // for partial results, compute the num leaves
                     if(partial_results){
+                        // TODO: ver si es cur_level o cur_level ++;
                         uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, cur_node, i);
                         // empty node
                         if(n_leaves_ith_node == 0){
                             insert = false;
+                            n_empty_nodes += 1;
                             break;
                         }
                         if (n_leaves_ith_node < total_weight) {
@@ -132,7 +137,8 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                     for(uint16_t j = 0; j < nodePath.size(); j++){
                         tupleQdags.bv.push_back(nodePath[j]);
                     }
-                    qdagWeight this_node = {next_level, i, total_weight, &bv} ;
+                    uint64_t node_parent = i - n_empty_nodes;
+                    qdagWeight this_node = {next_level, node_parent, total_weight, &bv} ;
                     pq.push(this_node);
                 }
 

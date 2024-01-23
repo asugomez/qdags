@@ -614,7 +614,6 @@ public:
 
     /**
      * TODO: poner ejemplo (diff entre esta y get_num_leaves)
-     * TODO: change the parent is the j-th node 0 or 1 in the level -1
      * @param level of the child. -1 if is the root
      * @param parent the parent of the child.
      * @param child the i-th node (0 or 1) of the level
