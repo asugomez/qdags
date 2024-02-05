@@ -112,7 +112,14 @@ int main(int argc, char **argv) {
     cout << "-----------" << endl;
     cout << "relacion R" << endl;
     qdag_rel_R.printBv();
-    qdag_rel_R.get_num_leaves(1, 1);
+    cout << "leaveeees R" << endl;
+    qdag_rel_R.get_num_leaves_ith_node(-1,-1,-1);
+    cout << "leaveeees R" << endl;
+    qdag_rel_R.get_num_leaves_ith_node(-1,-1,1);
+    cout << "leaveeees R" << endl;
+    qdag_rel_R.get_num_leaves_ith_node(0,0,0);
+    cout << "leaveeees R" << endl;
+    qdag_rel_R.get_num_leaves_ith_node(0, 0,1);
     /*cout << "-----------" << endl;
     cout << "relacion S" << endl;
     qdag_rel_S.printBv();
@@ -127,26 +134,7 @@ int main(int argc, char **argv) {
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
 
-    int nMask = 0;
-    int num_coord = 3;
-    int len_bv = 13;
-    for (int i = 0; i < len_bv; i=i+num_coord)  {
-        int mask = 1 << i;
-        nMask |= (1 << i);
-    }
-    // atrasar el bit en una posición
-    // esto se debiese hacer par
-    /*for(int j = 0; j < num_coord; j++){
-        nMask << 1;
-    }*/
 
-    int nMask2 = (1 << num_coord) - 1;
-
-    // Ajusta el número de bits en nMask según len_bv
-    nMask2 <<= (len_bv / num_coord) * num_coord;
-
-    cout << nMask << endl;
-    cout << nMask2 << endl;
 
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 

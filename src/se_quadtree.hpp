@@ -614,24 +614,33 @@ public:
 
     /**
      * TODO: poner ejemplo (diff entre esta y get_num_leaves)
-     * @param level of the child. -1 if is the root
-     * @param parent the parent of the child.
+     * @param level of the parent. -1 if is the root
+     * @param parent the parent of the child. -1 if if the root. The j-th 1 of the level-1.
      * @param child the i-th node (0 or 1) of the level
      * @return number of leaves of the ith-child of the parent
+     * Example:
+     * 0101
+     * 0100 1001
+     * 1111 0001 1000
+     * get_num_leaves_ith_node(-1,-1,-1) --> 6
+     * get_num_leaves_ith_node(-1,-1,1) --> 4
+     * get_num_leaves_ith_node(0,0,0) --> 0
+     * get_num_leaves_ith_node(0,0,1) --> 4
      */
+     // TODO_ fix this!X
     uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
-        if(level == -1){
-            return get_num_leaves(0,0);
+        if(level == -1 && parent == -1 && child == -1){
+            return get_num_leaves(-1,0);
+        } else if(level==-1 && child!=-1){
+            child = bv[0].rank(child + 1) - 1 ; // se le resta 1 por temas de índice
+            cout << "child is " << child << endl;
+            return get_num_leaves(0,child);
         } else if(level >= 0) {
-            // child is the number of 1 in the level-1. , maybe is good to have the parent, start_pos and i the bit
-            cout << "BIT is: " << bv[level].get_bit(parent, child, k_d) << endl;
-            // get whether is 0 or 1 the ith-child of the parent
+            level+=1;
             if (bv[level].get_bit(parent, child, k_d)) {
-                //level += 1;
-                uint64_t node = bv[level].rank(parent*k_d + child + 1) - 1; // TODO: actualizar node
-                cout << "parent*k_d + child " << parent*k_d + child + 1<< endl;
-                cout << "node is " << node << endl;
-                cout << "level is " << level << endl;
+                cout << "bit is 1" << endl;
+                uint64_t node = bv[level].rank(parent*k_d + child + 1) - 1;
+                cout << "num 1 en bv[level] hasta la posicion del hijo"  << node << endl;
                 return get_num_leaves(level, node);
             } else {
                 cout << "1) no leaves" << endl;
@@ -683,10 +692,10 @@ public:
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t first_child, uint64_t last_child) {
         if (level >= getHeight()-1) { // in the last level we have to count the 1s between a range
             uint64_t init = bv[level].rank(first_child*k_d);
-            uint64_t fin = bv[level].rank(last_child*k_d + k_d);
+            uint64_t fin = bv[level].rank(last_child*k_d + k_d + 1);
             uint64_t total = fin - init;
-            //cout << "Total: " << first_child * k_d << endl;
-            //cout << "Total: " << last_child * k_d + k_d -1<< endl;
+            cout << "Total: " << first_child * k_d << endl;
+            cout << "Total: " << last_child * k_d + k_d << endl;
             cout << "Total: " << fin << " " << init << endl;
             cout << "Total: " << total << endl;
             return total;

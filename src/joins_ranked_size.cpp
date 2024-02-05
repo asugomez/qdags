@@ -63,14 +63,13 @@ uint64_t computeWeight(uint64_t* qdagsWeights, uint64_t type){
  * @param nQ number of Qdags
  * @param max_level
  * @param pq
+ * @param partial_results if we are computing partial or ranked results.
  * @param type_priority_fun 0 sum , 1 maximum
  * @param type_order_fun 0 num leaves, 1 density
- * @param partial_results if we are computing partial or ranked results.
  * @return
  */
 bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
-                 uint16_t max_level,
-                 vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
+                 uint64_t max_level,
                  bool bounded_result, uint64_t UPPER_BOUND,
                  priority_queue<qdagWeight>& pq, bool partial_results, uint16_t type_priority_fun, uint16_t type_order_fun) {
     // TODO: see if p is correct or it has to be the k_d
@@ -82,10 +81,12 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t cur_node = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         if(cur_level == max_level){
+            uint16_t l = log2(p); // bits number to define the node's children
             // TODO: output coordinates
-            uint16_t l = log2(p);
-            uint64_t* coordinates = getCoordinates(tupleQdags.bv, l);
-
+            // TODO: las coordenadas de un qdag seran las de los otros iguales?
+            // TOODO: esta operacion es lenta, podríamos tener una tabla guardada
+            //uint64_t* coordinates = getCoordinates(tupleQdags.bv, l);
+            cout << tupleQdags.bv << endl;
         } else{
             // calcular la prioridad de cada tupla e insertar la struct a la priority queue
             for(uint64_t i = 0; i < p ; i++){
@@ -98,7 +99,7 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                     // for partial results, compute the num leaves
                     if(partial_results){
                         // TODO: ver si es cur_level o cur_level ++;
-                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, cur_node, i);
+                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level++, cur_node, i);
                         // empty node
                         if(n_leaves_ith_node == 0){
                             insert = false;
@@ -129,17 +130,22 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 }
                 // insert tre struct in the pri queue
                 if(insert){
-                    uint16_t next_level = cur_level+1;
+                    int16_t next_level = cur_level+1;
                     // insert the i-th node of this level
-                    vector<bool> nodePath;// = new vector<bool>(ceil(log2(p)));
-                    decToBinary(i, nodePath);
-                    // TODO: check the result
-                    for(uint16_t j = 0; j < nodePath.size(); j++){
-                        tupleQdags.bv.push_back(nodePath[j]);
+                    int8_t size_bits = (int8_t) log2(p);
+                    std::bitset<64> ith_node(i); // convert the i-th node to binary
+                    uint64_t bv = 0;
+                    // for example: 01 00 00 00 --> it's 64
+                    for(uint8_t j = 0; j < size_bits; j++){
+                        if(ith_node[j]){
+                            bv += 2^(j+(max_level-cur_level)*size_bits);
+                        }
                     }
-                    uint64_t node_parent = i - n_empty_nodes;
-                    qdagWeight this_node = {next_level, node_parent, total_weight, &bv} ;
-                    pq.push(this_node);
+                    tupleQdags.bv += bv; // add the bits to the bitvector
+
+                    uint64_t node_parent = i - n_empty_nodes; // the i-th non-empty node (1) of that level (the quadrant)
+                    qdagWeight this_node = {next_level, node_parent, total_weight, tupleQdags.bv} ;
+                    pq.push(this_node); // add the tuple to the queue
                 }
 
             }
@@ -150,21 +156,20 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
     return true;
 }
-/**
- * operations:
- * first_child
- * last_child
- * count nro 1 entre un rango de bitvector
- * 
- * Louds_tree.hpp --> size_type (number of children)
- *                  --> child(v,i)
-*/
 
-// multi join:
-// recibe un vector de qdags
-// si se quiere una cota (las primeras 1000 tuplas por ejemplo) --> true
-// UPPER_BOUND --> 1000
-qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
+
+/**
+ *
+ * @param Q vector of qdags
+ * @param bounded_result if we have to stop computing the results after a certain number of tuples.
+ * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
+ * @param partial_results whether we are computing partial or ranked results.
+ * @param type_priority_fun 0 sum , 1 maximum. (p1+p2+...+pn) or max(p1,p2,...,pn)
+ * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
+ * @return
+ */
+qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
+                                  bool partial_results, uint16_t type_priority_fun, uint16_t type_order_fun) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -182,8 +187,7 @@ qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t
     qdag *Q_star[Q.size()]; // arreglo de qdags Q start
     uint64_t Q_roots[Q.size()]; // arreglo de enteros: mantiene el nodo actual en el q estas en cada uno de los qdags (el arreglo te dice en donde estas)
 
-    for (uint64_t i = 0; i < Q.size(); i++) // iteras por los qdags de la query y se eextiende cada uno de los qdags
-    {
+    for (uint64_t i = 0; i < Q.size(); i++){ // iteras por los qdags de la query y se eextiende cada uno de los qdags
         // preprocesamiento
         Q_star[i] = Q[i].extend(A); // extender los qdags en base al conjunto A
         if (A.size() == 3)
@@ -212,7 +216,11 @@ qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t
 
     // ---------------  everything is the same up to here --------------- //
     // arreglo de qdags extendidos, arreglo de roots, también se necesita el nivel, la altura, bv es la respuesta, arreglo de ult. posicion, cantidad de atributos, si debe tener cota, nro de la cota
-    AND_ordered(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
+    uint64_t max_level = Q_star[0]->getHeight() - 1;
+    priority_queue<qdagWeight> pq;
+    pq.push({-1, 0, 1, 0}); // insert the root of the qdag
+    AND_ordered(Q_star, Q_roots, Q.size(), max_level, bounded_result, UPPER_BOUND,
+                pq, partial_results, type_priority_fun,  type_order_fun);
     // constuyo el qdag con bv
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
