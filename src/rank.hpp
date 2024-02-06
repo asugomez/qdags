@@ -124,6 +124,18 @@ public:
 
     }
 
+    bool get_ith_bit(uint64_t i, uint64_t k_d){
+        uint8_t x;
+        uint64_t segment = i/k_d;
+        if(k_d == 4) {
+            x = get_4_bits(segment);
+        } else {
+            x = get_2_bits(segment);
+        }
+        i = i% k_d;
+        return (x & (1 << i)) != 0;
+    }
+
     void print_4_bits(uint64_t start_pos) {
         uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
 

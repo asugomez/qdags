@@ -396,11 +396,11 @@ public:
      * @param node the node
      * @return number of leaves the node has
      */
-    uint64_t get_num_leaves(int16_t level, uint64_t node) {
+    uint64_t get_leaves_ith_node(int16_t level, uint64_t node) {
         // TODO: compare node with its position in the children[] and if it's a 1, compute get_num_leaves.
         // Otherwise, do not compute
         // bv[level][node] == 0
-        return Q->get_num_leaves(level, node);
+        return Q->get_leaves_ith_node(level, node);
     }
 
     /**

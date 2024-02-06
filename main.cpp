@@ -112,6 +112,32 @@ int main(int argc, char **argv) {
     cout << "-----------" << endl;
     cout << "relacion R" << endl;
     qdag_rel_R.printBv();
+    /*cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(-1,-1)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(0,0)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(0,1)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(0,2)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(1,0)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(1,1)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(1,2)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(1,3)<< endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(2,3) << endl;*/
+    cout << "leaveeees R" << endl;
+    //cout << qdag_rel_R.get_leaves_ith_node(0,3) << endl;
+    cout << "leaveeees R" << endl;
+    // dcout << qdag_rel_R.get_leaves_ith_node(1,6) << endl;
+    cout << "leaveeees R" << endl;
+    cout << qdag_rel_R.get_leaves_ith_node(1,7) << endl;
+    /*cout << "relacion R" << endl;
+    qdag_rel_R.printBv();
     cout << "leaveeees R" << endl;
     qdag_rel_R.get_num_leaves_ith_node(-1,-1,-1);
     cout << "leaveeees R" << endl;
@@ -119,7 +145,7 @@ int main(int argc, char **argv) {
     cout << "leaveeees R" << endl;
     qdag_rel_R.get_num_leaves_ith_node(0,0,0);
     cout << "leaveeees R" << endl;
-    qdag_rel_R.get_num_leaves_ith_node(0, 0,1);
+    qdag_rel_R.get_num_leaves_ith_node(0, 0,1);*/
     /*cout << "-----------" << endl;
     cout << "relacion S" << endl;
     qdag_rel_S.printBv();
