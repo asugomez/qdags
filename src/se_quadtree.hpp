@@ -605,15 +605,10 @@ public:
             return 0;
         }
         uint64_t siblings = rank(level,node);
-        //uint64_t children;
         uint64_t n_children;
         uint64_t children_array[k_d];
         level++;
         get_children(level,siblings*k_d, children_array,n_children);
-        /*if(k_d == 2)
-            children = bv[level+1].n_ones_2_bits(siblings * k_d);
-        else
-            children = bv[level+1].n_ones_4_bits(siblings * k_d);*/
         if(level == getHeight()-1){
             return n_children;
         }
