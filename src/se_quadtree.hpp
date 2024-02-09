@@ -311,11 +311,7 @@ public:
         return bv[level].rank(node);
     }
 
-    inline bool get_ith_bit(uint16_t level, uint64_t node){
-        return bv[level].get_ith_bit(node, k_d);
-    }
-
-    inline uint8_t get_node_lastlevel(uint16_t level, uint64_t node) {
+    inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
         if (k_d == 4)
             return bv[level].get_4_bits(node);
         else
@@ -422,6 +418,17 @@ public:
     }
 
 
+    /**
+     *
+     * @param level of the node
+     * @param node the i-th 1 of the level
+     * @param children_array will have the index of the children of the node.
+     * @param n_children will correspond to the number of children of the node
+     * @example: the 2-th node of the level 1 is 1001, then the children array will be:
+     * children_array[0] = 0
+     * children_array[1] = 3
+     * And n_children = 2.
+     */
     void get_children(uint16_t level, uint64_t node, uint64_t *children_array, uint64_t &n_children) {
         if (k_d == 4)
             switch (bv[level].get_4_bits(node)) {
@@ -441,7 +448,7 @@ public:
                     children_array[0] = 0;
                     children_array[1] = 1;
                     break;
-                case 4:
+                case 4: // 0100
                     n_children = 1;
                     children_array[0] = 2;
                     break;
@@ -455,7 +462,7 @@ public:
                     children_array[0] = 1;
                     children_array[1] = 2;
                     break;
-                case 7:
+                case 7: // 0111
                     n_children = 3;
                     children_array[0] = 0;
                     children_array[1] = 1;
@@ -465,7 +472,7 @@ public:
                     n_children = 1;
                     children_array[0] = 3;
                     break;
-                case 9:
+                case 9: // 1001
                     n_children = 2;
                     children_array[0] = 0;
                     children_array[1] = 3;
@@ -486,7 +493,7 @@ public:
                     children_array[0] = 2;
                     children_array[1] = 3;
                     break;
-                case 13:
+                case 13: // 1101
                     n_children = 3;
                     children_array[0] = 0;
                     children_array[1] = 2;
@@ -528,80 +535,6 @@ public:
 
     }
 
-    // entrega el maximo numero de hijos por nodo
-    // ejemplo, grilla de 16 --> num_children =  4
-    uint64_t get_num_children(uint16_t level, uint64_t node) {
-        uint64_t n_children;
-        if (k_d == 4) {
-            switch (bv[level].get_4_bits(node)) {
-                case 0:
-                    n_children = 0;
-                    break;
-                case 1:
-                    n_children = 1;
-                    break;
-                case 2:
-                    n_children = 1;
-                    break;
-                case 3:
-                    n_children = 2;
-                    break;
-                case 4:
-                    n_children = 1;
-                    break;
-                case 5:
-                    n_children = 2;
-                    break;
-                case 6:
-                    n_children = 2;
-                    break;
-                case 7:
-                    n_children = 3;
-                    break;
-                case 8:
-                    n_children = 1;
-                    break;
-                case 9:
-                    n_children = 2;
-                    break;
-                case 10:
-                    n_children = 2;
-                    break;
-                case 11:
-                    n_children = 3;
-                    break;
-                case 12:
-                    n_children = 2;
-                    break;
-                case 13:
-                    n_children = 3;
-                    break;
-                case 14:
-                    n_children = 3;
-                    break;
-                case 15:
-                    n_children = 4;
-                    break;
-            }
-        } else if (k_d == 2) {
-            switch (bv[level].get_2_bits(node)) {
-                case 0:
-                    n_children = 0;
-                    break;
-                case 1:
-                    n_children = 1;
-                    break;
-                case 2:
-                    n_children = 1;
-                    break;
-                case 3:
-                    n_children = 2;
-                    break;
-            }
-        }
-        return n_children;
-    }
-
     uint64_t total_ones_level(uint16_t level) {
         return total_ones[level];
     }
@@ -616,200 +549,114 @@ public:
         return height;
     }
 
-    uint64_t get_leaves_ith_node(int16_t level, uint64_t node){
-        if(level == -1){
-            return bv[getHeight()-1].n_ones();
+    /**
+     *
+     * @param level of the node
+     * @param node the i-th position of the level.
+     * @return 0 or 1 if the node is empty or not.
+     */
+    inline bool get_ith_bit(uint16_t level, uint64_t node){
+        return bv[level].get_ith_bit(node, k_d);
+    }
+
+    void test_rank(){
+        for(uint16_t level = 0; level < height; level++){
+            cout << "level is " << level << endl;
+            cout << "total ones : " << total_ones_level(level) << endl;
+            for(uint64_t node = 0; node < bv[level].size(); node++){
+                cout << "rank(" << level << "," << node << ") = " << rank(level,node) << endl;
+            }
         }
-        if(level == getHeight()-1){
-            return 1;
+        cout << "final " << rank(2,12) << endl;
+    }
+
+    void test_get_4_bits(){
+        for(uint16_t level = 0; level < height; level++){
+            cout << "level is " << level << endl;
+            for(uint64_t node = 0; node < bv[level].size(); node++){
+                cout << "get_4_bits(" << level << "," << node << ") = " << endl;
+                bv[level].print_4_bits(node);
+                cout << endl;
+            }
+        }
+    }
+
+    /**
+     * @param level of the node. -1 if is the root
+     * @param node the i-th node (0 or 1) of the level
+     * @return number of leaves of the ith-node of the level.
+     * @example
+     * 0101
+     * 0100 1001
+     * 1111 0001 1000
+     * get_num_leaves(-1,0) --> 6
+     * get_num_leaves(0,0) --> 0
+     * get_num_leaves(0,1) --> 4
+     * get_num_leaves(2,7) --> 1
+     */
+    uint64_t get_num_leaves(int16_t level, uint64_t node){
+        if(level == -1){
+            return total_ones_level(getHeight()-1);
+        }
+        if(level == getHeight()-1){ // leaf
+            return get_ith_bit(level, node);
         }
         if(get_ith_bit(level, node) == 0){
             return 0;
         }
         uint64_t siblings = rank(level,node);
-        uint64_t children;
-        if(k_d == 2)
+        //uint64_t children;
+        uint64_t n_children;
+        uint64_t children_array[k_d];
+        level++;
+        get_children(level,siblings*k_d, children_array,n_children);
+        /*if(k_d == 2)
             children = bv[level+1].n_ones_2_bits(siblings * k_d);
         else
-            children = bv[level+1].n_ones_4_bits(siblings * k_d);
-        if(level == getHeight()-2){
-            return children;
+            children = bv[level+1].n_ones_4_bits(siblings * k_d);*/
+        if(level == getHeight()-1){
+            return n_children;
         }
-        return get_leaves_aux(level+1, children, siblings); // siblings*k_d es mi start position en el siguiente nivel
+        return get_num_leaves_aux(level, n_children, siblings); // siblings*k_d es mi start position en el siguiente nivel
     }
 
-    uint64_t get_leaves_aux(int16_t level, uint64_t children, uint64_t siblings){
+    /**
+     *
+     * @param level current level
+     * @param children number of children of the parent (i-th node).
+     * @param siblings number of left siblings. It's useful to have as a starting position.
+     * @return the number of children of the i-th node.
+     */
+    uint64_t get_num_leaves_aux(int16_t level, uint64_t children, uint64_t siblings){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
             return children;
         }
-        return get_leaves_aux(level+1, children, siblings);
+        return get_num_leaves_aux(level+1, children, siblings);
     }
+
     /**
-     * TODO: poner ejemplo (diff entre esta y get_num_leaves)
-     * @param level of the parent. -1 if is the root
-     * @param parent the parent of the child. -1 if if the root. The j-th 1 of the level-1.
-     * @param child the i-th node (0 or 1) of the level
-     * @return number of leaves of the ith-child of the parent
-     * Example:
-     * 0101
-     * 0100 1001
-     * 1111 0001 1000
-     * get_num_leaves_ith_node(-1,-1,-1) --> 6
-     * get_num_leaves_ith_node(-1,-1,1) --> 4
-     * get_num_leaves_ith_node(0,0,0) --> 0
-     * get_num_leaves_ith_node(0,0,1) --> 4
+     *
+     * @param level of the parent. -2 if it is the grandparent of the root. -1 if it is the parent of the root.
+     * @param parent the i-th 1 of the level.
+     * @param child the index of the child, 0,1,..., k_d-1.
+     * @return the number of leaves of the i-th child of the parent node.
      */
-     // TODO_ fix this!X
-    uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
-        if(level == -1 && parent == -1 && child == -1){
+    uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child){
+        // number of leaves of the entire tree
+        if(level == -2)
             return get_num_leaves(-1,0);
-        } else if(level==-1 && child!=-1){
-            child = bv[0].rank(child + 1) - 1 ; // se le resta 1 por temas de índice
-            cout << "child is " << child << endl;
-            return get_num_leaves(0,child);
-        } else if(level >= 0) {
-            level+=1;
-            if (bv[level].get_bit(parent, child, k_d)) {
-                cout << "bit is 1" << endl;
-                uint64_t node = bv[level].rank(parent*k_d + child + 1) - 1;
-                cout << "num 1 en bv[level] hasta la posicion del hijo"  << node << endl;
-                return get_num_leaves(level, node);
-            } else {
-                cout << "1) no leaves" << endl;
-                return 0;
-            }
-        } else{
-            cout << "2) no leaves" << endl;
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param level of the node. -1 if is the root.
-     * @param node the i-th 1 of the level.
-     * @return number of leaves of the node
-     * Example:
-     * 0101
-     * 0100 1001
-     * 1111 0001 1000
-     * get_num_leaves(-1,0) --> 6
-     * get_num_leaves(0,0) --> 4
-     * get_num_leaves(0,1) --> 2
-     * get_num_leaves(0,2) --> 0
-     * get_num_leaves(1,0) --> 4
-     * get_num_leaves(1,1) --> 1
-     * get_num_leaves(1,2) --> 1
-     * get_num_leaves(1,3) --> 0
-     * get_num_leaves(2,3) --> 1
-     */
-    uint64_t get_num_leaves(int16_t level, uint64_t node){
+        //parent is the root
         if(level == -1){
-            cout << "TOTAL is: " << bv[getHeight()-1].n_ones() << endl;
-            return bv[getHeight()-1].n_ones();
+            return get_num_leaves(0, child);
         }
-        if(level >= getHeight() -1 || bv[level].n_ones() < node) {
-            cout << "level > get height: " << getHeight() << endl;
+        // check there is enought nodes in the level
+        if(total_ones_level(level) <= parent)
             return 0;
-        }
-        uint64_t n_children;// = bv[level].n_ones_from_pos(node*k_d, k_d);
-        if(k_d==4)
-            n_children = bv[level].n_ones_4_bits(node * k_d);
-        else
-            n_children = bv[level].n_ones_2_bits(node * k_d);
-        cout << "number of 1s: " << bv[level].n_ones() << " of the level " << level << endl;
-
-        uint64_t start_pos_next_level = bv[level].rank(node * k_d);
-        uint64_t first_child = start_pos_next_level;// * k_d;
-        uint64_t last_child = (start_pos_next_level + (n_children-1)*k_d-1);//*k_d
-        return get_num_leaves_aux(level+1, first_child, last_child);
-
+        return get_num_leaves(level+1,parent*k_d+child);
     }
 
-
-    // node is the index of the node in the level. Can be a 0 or 1.
-    uint64_t get_num_leaves_v2(int16_t level, uint64_t node){
-        if(level == -1){
-            cout << "TOTAL is: " << bv[getHeight()-1].n_ones() << endl;
-            return bv[getHeight()-1].n_ones();
-        }
-        if(level >= getHeight() -1 || bv[level].n_ones() < node) {
-            cout << "level > get height: " << getHeight() << endl;
-            return 0;
-        }
-        uint64_t n_children;// = bv[level].n_ones_from_pos(node*k_d, k_d);
-        if(k_d==4)
-            n_children = bv[level].n_ones_4_bits(node * k_d);
-        else
-            n_children = bv[level].n_ones_2_bits(node * k_d);
-        cout << "number of 1s: " << bv[level].n_ones() << " of the level " << level << endl;
-
-        uint64_t siblings = bv[level].rank(node);
-        uint64_t first_child = siblings * k_d;
-        uint64_t last_child = siblings + k_d -1;// (start_pos_next_level + (n_children-1)*k_d-1);//*k_d
-        return get_num_leaves_aux_v2(level+1, first_child, last_child);
-
-    }
-
-    uint64_t get_num_leaves_aux_v2 (uint16_t level, uint64_t first_child, uint64_t last_child) {
-        if (level >= getHeight()-1) { // in the last level we have to count the 1s between a range
-            uint64_t init = bv[level].rank(first_child);
-            uint64_t fin = bv[level].rank(last_child + 1);
-            uint64_t total = fin - init;
-            cout << "Total: " << first_child * k_d << endl;
-            cout << "Total: " << last_child * k_d + k_d << endl;
-            cout << "Total: " << fin << " " << init << endl;
-            cout << "Total: " << total << endl;
-            return total;
-        } else { // otherwise, we continue to descend recursively down to the first child and to the last child
-            uint64_t n_children_last;
-            if(k_d==2)
-                n_children_last = bv[level+1].n_ones_2_bits(last_child*k_d);
-            else
-                n_children_last = bv[level+1].n_ones_4_bits(last_child*k_d);
-            uint64_t start_pos_next_level_first_child = first_child*k_d;//bv[level].rank(first_child*k_d);
-            uint64_t start_pos_next_level_last_child = last_child*k_d;// bv[level].rank(last_child*k_d);
-            first_child = start_pos_next_level_first_child;// * k_d;
-            last_child = (start_pos_next_level_last_child + n_children_last-1);//*k_d
-            level += 1;
-            return get_num_leaves_aux(level, first_child, last_child);
-        }
-    }
-
-    /**
-     * Count the number of leaves a node has.
-     * @param level of the node's children
-     * @param first_child the position in the level of the first child of the node.
-     * @param last_child the position in the level of the last child of the node.
-     * @return the number of leaves
-     *
-    */
-    uint64_t get_num_leaves_aux(uint16_t level, uint64_t first_child, uint64_t last_child) {
-        if (level >= getHeight()-1) { // in the last level we have to count the 1s between a range
-            uint64_t init = bv[level].rank(first_child);
-            uint64_t fin = bv[level].rank(last_child + 1);
-            uint64_t total = fin - init;
-            cout << "Total: " << first_child * k_d << endl;
-            cout << "Total: " << last_child * k_d + k_d << endl;
-            cout << "Total: " << fin << " " << init << endl;
-            cout << "Total: " << total << endl;
-            return total;
-        } else { // otherwise, we continue to descend recursively down to the first child and to the last child
-            uint64_t n_children_last;
-            if(k_d==2)
-                n_children_last = bv[level+1].n_ones_2_bits(last_child*k_d);
-            else
-                n_children_last = bv[level+1].n_ones_4_bits(last_child*k_d);
-            uint64_t start_pos_next_level_first_child = first_child*k_d;//bv[level].rank(first_child*k_d);
-            uint64_t start_pos_next_level_last_child = last_child*k_d;// bv[level].rank(last_child*k_d);
-            first_child = start_pos_next_level_first_child;// * k_d;
-            last_child = (start_pos_next_level_last_child + n_children_last-1);//*k_d
-            level += 1;
-            return get_num_leaves_aux(level, first_child, last_child);
-        }
-    }
 
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size bv = " << bv->size() << endl;

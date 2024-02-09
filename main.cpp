@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 8; //52000000; // es como +infty para wikidata
+    uint64_t grid_side = 32; //52000000; // es como +infty para wikidata
 
     //cout << "R" << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
@@ -108,46 +108,15 @@ int main(int argc, char **argv) {
 
     start = high_resolution_clock::now();
 
-    //qdag_rel_R.printBv();
     cout << "-----------" << endl;
     cout << "relacion R" << endl;
     qdag_rel_R.printBv();
-    /*cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(-1,-1)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(0,0)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(0,1)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(0,2)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(1,0)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(1,1)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(1,2)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(1,3)<< endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(2,3) << endl;*/
-    cout << "leaveeees R" << endl;
-    //cout << qdag_rel_R.get_leaves_ith_node(0,3) << endl;
-    cout << "leaveeees R" << endl;
-    // dcout << qdag_rel_R.get_leaves_ith_node(1,6) << endl;
-    cout << "leaveeees R" << endl;
-    cout << qdag_rel_R.get_leaves_ith_node(1,7) << endl;
-    /*cout << "relacion R" << endl;
-    qdag_rel_R.printBv();
-    cout << "leaveeees R" << endl;
-    qdag_rel_R.get_num_leaves_ith_node(-1,-1,-1);
-    cout << "leaveeees R" << endl;
-    qdag_rel_R.get_num_leaves_ith_node(-1,-1,1);
-    cout << "leaveeees R" << endl;
-    qdag_rel_R.get_num_leaves_ith_node(0,0,0);
-    cout << "leaveeees R" << endl;
-    qdag_rel_R.get_num_leaves_ith_node(0, 0,1);*/
-    /*cout << "-----------" << endl;
-    cout << "relacion S" << endl;
+
+    cout << "-----------" << endl;
+    //qdag_rel_R.test_get_4_bits();
+    //qdag_rel_R.test_rank();
+
+    /*cout << "relacion S" << endl;
     qdag_rel_S.printBv();
     qdag_rel_S.get_num_leaves(0, 0);
     cout << "-----------" << endl;

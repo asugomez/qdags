@@ -10,7 +10,7 @@ using namespace std;
 
 
 class rank_bv_64 {
-    uint64_t *seq;
+    uint64_t *seq; // bloques de a 64
     uint32_t *block;
     uint64_t u;  //bit vector length
     uint64_t n; // # ones
@@ -52,6 +52,12 @@ public:
     }
 
     // los 4 bits que definen un nodo
+    /**
+     * Get the 4 bits that define a node
+     * @param start_pos the position in the level
+     * @return the 4 bits from the start position
+     * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 6 (=0110).
+     */
     inline uint8_t get_4_bits(uint64_t start_pos) {
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
     }
@@ -61,6 +67,7 @@ public:
     }
 
     /**
+     * TODO: esto esta en la funcion get_children
      * Count the number of 1s
      * @param start_pos
      * @return
@@ -68,7 +75,7 @@ public:
     inline uint64_t n_ones_4_bits(uint64_t start_pos) {
         // TODO: replace it by
         //uint64_t counter = bits::cnt(start_pos); // contar nro de reusltados
-        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
+        uint8_t x = get_4_bits(start_pos);
         uint64_t counter = 0;
         for (int i = 0; i < 4; i++) {
             if (x & (1 << i)) {
@@ -81,7 +88,7 @@ public:
     inline uint64_t n_ones_2_bits(uint64_t start_pos) {
         // TODO: replace it by
         //uint64_t counter = bits::cnt(start_pos); // contar nro de reusltados
-        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
+        uint8_t x = get_2_bits(start_pos);
         uint64_t counter = 0;
         for (int i = 0; i < 2; i++) {
             if (x & (1 << i)) {
@@ -124,20 +131,24 @@ public:
 
     }
 
+    /**
+     *
+     * @param level of the node
+     * @param node the i-th position of the level.
+     * @return 0 or 1 if the node is empty or not.
+     */
     bool get_ith_bit(uint64_t i, uint64_t k_d){
         uint8_t x;
-        uint64_t segment = i/k_d;
         if(k_d == 4) {
-            x = get_4_bits(segment);
+            x = get_4_bits(i);
         } else {
-            x = get_2_bits(segment);
+            x = get_2_bits(i);
         }
-        i = i% k_d;
-        return (x & (1 << i)) != 0;
+        return x&1;
     }
 
     void print_4_bits(uint64_t start_pos) {
-        uint8_t x = ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
+        uint8_t x = get_4_bits(start_pos);
 
         for (int i = 0; i < 4; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");

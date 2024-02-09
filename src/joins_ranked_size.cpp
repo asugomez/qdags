@@ -78,7 +78,7 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
         qdagWeight tupleQdags = pq.top(); //  level, el nodo (indice por el cual partir el join), su prioridad
         pq.pop();
         uint16_t cur_level = tupleQdags.level;
-        uint16_t cur_node = tupleQdags.level;
+        uint16_t cur_node = tupleQdags.node;
         // if it's a leaf, output the point coordenates
         if(cur_level == max_level){
             uint16_t l = log2(p); // bits number to define the node's children
@@ -86,12 +86,12 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
             // TODO: las coordenadas de un qdag seran las de los otros iguales?
             // TOODO: esta operacion es lenta, podríamos tener una tabla guardada
             //uint64_t* coordinates = getCoordinates(tupleQdags.bv, l);
-            cout << tupleQdags.bv << endl;
+            cout << "point output: " << tupleQdags.bv << endl;
         } else{
             // calcular la prioridad de cada tupla e insertar la struct a la priority queue
             for(uint64_t i = 0; i < p ; i++){
                 bool insert = true;
-                uint64_t n_empty_nodes = 0;
+                //uint64_t n_empty_nodes = 0;
                 uint64_t total_weight = partial_results ? UINT64_MAX : 0;
                 // TODO: maybe before doing this, see if there is an empty node (evittar hacer este calculo)
                 // TODO: hacer esto mas rapido
@@ -99,11 +99,11 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                     // for partial results, compute the num leaves
                     if(partial_results){
                         // TODO: ver si es cur_level o cur_level ++;
-                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level++, cur_node, i);
+                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, cur_node, i);
                         // empty node
                         if(n_leaves_ith_node == 0){
                             insert = false;
-                            n_empty_nodes += 1;
+                            //n_empty_nodes += 1; // debo contar los empty nodes, para luego en la inserción, insertar el node correspondiente al i-th 1 (y no la posición)
                             break;
                         }
                         if (n_leaves_ith_node < total_weight) {
@@ -142,8 +142,17 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                         }
                     }
                     tupleQdags.bv += bv; // add the bits to the bitvector
-
-                    uint64_t node_parent = i - n_empty_nodes; // the i-th non-empty node (1) of that level (the quadrant)
+                    // TODO: check lo que estoy insertando en la cola! sobre todo level y parent
+                    //uint64_t node_parent = i - n_empty_nodes; // the i-th non-empty node (1) of that level (the quadrant)
+                    uint64_t k_d = Q[0]->getKD();
+                    // TODO: copute the start position
+                    // ESTO ESTA MALO/
+                    // El nodo 3 puede corresponder a un nodo en un qdag y a otro en el otro qdag
+                    uint64_t siblings = Q[0]->rank(cur_level, cur_node);
+                    // TODO: compute node parent. Desde el start position * k_D sumar el i y hacer rank.
+                    uint64_t node_parent = Q[0]->rank(next_level,siblings*k_d + i);
+                    // TODO: maybe hacer la inserción  en función del primer qdag?? pero como calculo nro de hojas ah eso sera siempre igual??
+                    //TODO: preguntr esto a Diego
                     qdagWeight this_node = {next_level, node_parent, total_weight, tupleQdags.bv} ;
                     pq.push(this_node); // add the tuple to the queue
                 }

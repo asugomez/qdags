@@ -34,7 +34,7 @@ private:
 
     uint64_t grid_side;
 
-    uint16_t Msize;  // number of children of every qdag node
+    uint16_t Msize;  // number of children of every qdag node, k^d
 
     bool is_extended_qdag;
 
@@ -265,6 +265,10 @@ public:
         return Q->getBv();
     }
 
+    inline uint64_t rank(uint16_t level, uint64_t node){
+        return Q->rank(level,node);
+    }
+
     void get_children(uint16_t level, uint64_t node, uint64_t *children_array, uint64_t &n_children) {
         return Q->get_children(level, node, children_array, n_children);
     }
@@ -367,17 +371,17 @@ public:
 
 
     inline uint32_t materialize_node_3_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_3[Q->get_node_lastlevel(level, node)];
+        return tab_extend_3[Q->get_node_last_level(level, node)];
     }
 
 
     inline uint32_t materialize_node_4_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_4[Q->get_node_lastlevel(level, node)];
+        return tab_extend_4[Q->get_node_last_level(level, node)];
     }
 
 
     inline uint32_t materialize_node_5_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_5[Q->get_node_lastlevel(level, node)];
+        return tab_extend_5[Q->get_node_last_level(level, node)];
     }
 
 
@@ -390,32 +394,47 @@ public:
     }
 
     /**
-     * TODO: how to know which child is it the node (the first, second, ...., the last one)
-     * Get the number of leaves a node has.
-     * @param level of the node
-     * @param node the node
-     * @return number of leaves the node has
+     * @param level of the node. -1 if is the root
+     * @param node the i-th node (0 or 1) of the level
+     * @return number of leaves of the ith-node of the level.
+     * @example:
+     * 0101
+     * 0100 1001
+     * 1111 0001 1000
+     * get_num_leaves(-1,0) --> 6
+     * get_num_leaves(0,0) --> 0
+     * get_num_leaves(0,1) --> 4
+     * get_num_leaves(2,7) --> 1
      */
-    uint64_t get_leaves_ith_node(int16_t level, uint64_t node) {
-        // TODO: compare node with its position in the children[] and if it's a 1, compute get_num_leaves.
-        // Otherwise, do not compute
-        // bv[level][node] == 0
-        return Q->get_leaves_ith_node(level, node);
+    uint64_t get_num_leaves(int16_t level, uint64_t node) {
+        return Q->get_num_leaves(level, node);
     }
 
     /**
-     * TODO: poner ejemplo (diff entre esta y get_num_leaves)
-     * TODO: modigy to parent be as same as the child (the i-th node 1 or 0)
-     * @param level of the child. -1 if is the root
-     * @param parent the parent of the child.
-     * @param child the i-th node (0 or 1) of the level
-     * @return number of leaves of the ith-child of the parent
+     *
+     * @param level of the parent
+     * @param parent
+     * @param child the i-th child of the parent
+     * @return the number of leaves of the i-th child of the parent node.
+     * @example:
+     * 0101
+     * 0100 1001
+     * 1111 0001 1000
+     * get_num_leaves_ith_node(-1,0,0) --> 6
+     * get_num_leaves_ith_node(0,0,0) --> 0
+     * get_num_leaves_ith_node(0,1,0) --> 1
+     * get_num_leaves_ith_node(0,2,0) --> 0 // no existen 3 nodos en el nivel 1
      */
     uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
-        // TODO: compare node with its position in the children[] and if it's a 1, compute get_num_leaves.
-        // Otherwise, do not compute
-        // bv[level][node] == 0
         return Q->get_num_leaves_ith_node(level, parent, child);
+    }
+
+    void test_rank(){
+        return Q->test_rank();
+    }
+
+    void test_get_4_bits(){
+        return Q->test_get_4_bits();
     }
 
 
