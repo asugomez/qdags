@@ -70,7 +70,7 @@ uint64_t computeWeight(uint64_t* qdagsWeights, uint64_t type){
  */
 bool AND_ordered(qdag *Q[], uint16_t nQ,
                  uint64_t max_level, uint64_t nAtt,
-                 bool bounded_result, uint64_t UPPER_BOUND,
+                 bool bounded_result, uint64_t UPPER_BOUND, uint64_t grid_size,
                  priority_queue<qdagWeight>& pq, bool partial_results, uint16_t type_priority_fun, uint16_t type_order_fun) {
     // TODO: see if p is correct or it has to be the k_d
     uint64_t p = Q[0]->nChildren(); // aridad del quadtree
@@ -121,19 +121,22 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
 
             for (i = 0; i < children_to_recurse_size; ++i) {
                 child = children_to_recurse[i];
+
                 uint64_t total_weight = partial_results ? UINT64_MAX : 0;
-                for (uint64_t j = 0; j < nQ; j++) { // en root_temp guardamos el nodo padre que corresponde en cada qdaf
+                for (uint64_t j = 0; j < nQ; j++) {
+                    // we store the parent node that corresponds in the original quadtree of each qdag
+
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     if(partial_results){
-                        // TODO: check the arguments
-                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, root_temp[j], Q[j]->getM(child));
-                        if (n_leaves_ith_node < total_weight) {
+                        uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
+                        if (n_leaves_child_node < total_weight) {
                             if(type_order_fun == 0) // min num leaves estimator among the qdags tuple
-                                total_weight = n_leaves_ith_node;
+                                total_weight = n_leaves_child_node;
                             else if(type_order_fun == 1) // density estimator
-                                total_weight = n_leaves_ith_node / 100; // TODO: replace 100 for the grid size
+                                total_weight = n_leaves_child_node / grid_size;
                         }
-                    } else { // ranked results
+                    }
+                    else { // ranked results
                         // TODO: do the ranked results
                         uint64_t priority_ith_node ; // TODO_ define priority ith node (rMq)
                         if(type_priority_fun == 0) // sum
@@ -146,19 +149,11 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
                     }
                 }
                 // Here do the insertion in the priority queue
-                // TODO: see if this works
-                int8_t size_bits = (uint64_t) log2(p);
-                std::bitset<64> ith_node(children_to_recurse[i]);
-                uint64_t bv = 0;
-                // for example: 01 00 00 00 --> it's 64
-                // TODO: mejorar esto con manejo de bits, shift, suprimir el msb, etc
-                // TODO: lol esto es lo mismo que el mismo numero "i" xd
-                for(uint64_t j = 0; j < size_bits; j++){
-                    if(ith_node[j]){
-                        bv += 2^(j+(max_level-cur_level)*size_bits);
-                    }
-                }
-                tupleQdags.bv += bv; // add the bits to the bitvector
+                // --> add the child to the path
+                uint16_t cur_child_qdag = Q[0]->getM(child);
+                uint16_t diff_level = max_level-cur_level;
+                uint64_t path = cur_child_qdag << (diff_level * (uint64_t) log2(p)); // height * bits to represent the children
+                tupleQdags.bv += path; // add the bits to the bitvector
                 cur_level++;
                 qdagWeight this_node = {cur_level, root_temp, total_weight, tupleQdags.bv} ;
                 pq.push(this_node); // add the tuple to the queue
@@ -179,7 +174,7 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
  * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
  * @return
  */
-qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
+bool multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
                                   bool partial_results, uint16_t type_priority_fun, uint16_t type_order_fun) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -227,14 +222,20 @@ qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t
 
     // ---------------  everything is the same up to here --------------- //
     // arreglo de qdags extendidos, arreglo de roots, también se necesita el nivel, la altura, bv es la respuesta, arreglo de ult. posicion, cantidad de atributos, si debe tener cota, nro de la cota
+    uint64_t roots[Q.size()];
+    for (uint64_t i = 0; i < Q.size(); i++){
+        roots[i] = 0;
+    }
+    uint64_t grid_size = 100;
     uint64_t max_level = Q_star[0]->getHeight() - 1;
     priority_queue<qdagWeight> pq;
-    pq.push({-1, 0, 1, 0}); // insert the root of the qdag
-    AND_ordered(Q_star, Q_roots, Q.size(), max_level, A.size(), bounded_result, UPPER_BOUND,
-                pq, partial_results, type_priority_fun,  type_order_fun);
-    // constuyo el qdag con bv
-    qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
+    pq.push({0, roots, 1, 0}); // insert the root of the qdag
 
-    return qResult;
+    AND_ordered(Q_star, Q.size(),
+                max_level, A.size(),
+                bounded_result, UPPER_BOUND, grid_size,
+                pq, partial_results, type_priority_fun,  type_order_fun);
+
+    return true;
 }
 

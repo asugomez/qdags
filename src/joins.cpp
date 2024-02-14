@@ -154,7 +154,21 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
     }
 }
 
-// recorrer los qdags en paralelo hasta morir en alguno de ellos, y partir por otro lado
+
+/**
+ * Travers recursively the qdags and if the intersection is not empty, write the output (leaf) on bv
+ * @param Q
+ * @param roots
+ * @param nQ
+ * @param cur_level
+ * @param max_level
+ * @param bv int vector to store the position of 1 on each level of the output bitvector.
+ * @param last_pos
+ * @param nAtt
+ * @param bounded_result
+ * @param UPPER_BOUND
+ * @return
+ */
 bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
          uint16_t cur_level, uint16_t max_level,
          vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
@@ -171,12 +185,11 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
     uint64_t i;
     uint64_t children_to_recurse_size = 0;
 
-    uint32_t children = 0xffffffff;
+    uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
 
-    if (cur_level == max_level) // ver si llego al ultimo nivel o no, y finalizo:
-    {
-        for (i = 0; i < nQ && children; ++i) // materializar nodos
-        {
+    // in the last level we materialize the node
+    if (cur_level == max_level){
+        for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
             if (nAtt == 3)
                 children &= Q[i]->materialize_node_3_lastlevel(cur_level, roots[i]);
@@ -186,13 +199,14 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 children &= Q[i]->materialize_node_5_lastlevel(cur_level, roots[i]);
         }
 
-        children_to_recurse_size = bits::cnt((uint64_t) children); // contar nro de reusltados
+        // number of results
+        children_to_recurse_size = bits::cnt((uint64_t) children);
         i = 0;
         uint64_t msb;
 
         while (/*children &&*/ i < children_to_recurse_size) {
             msb = __builtin_clz(children);
-            children_to_recurse[i] = msb;
+            children_to_recurse[i] = msb; // write the position of the 1s
             ++i;
             children &= (((uint32_t) 0xffffffff) >> (msb + 1));
         }
@@ -200,10 +214,9 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         int64_t last_child = -1;
         uint16_t child;
 
-        // aqui NO se hace invocacion recursiva! a diferencia de cuando no se esta en  el ultimo nivel
+        // we do not call recursively the function AND as we do in the other levels
         for (i = 0; i < children_to_recurse_size; ++i){
             child = children_to_recurse[i];
-
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1);
 
@@ -218,80 +231,77 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         if (p - last_child > 1)
             last_pos[cur_level] += (p - last_child - 1);
-    } else{ // nivel q no es el ultimo
+    } else {
         uint64_t root_temp[16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
         uint64_t rank_vector[16][64];
 
         // TODO: pero esto va qdag por qdag, y no atributo x atributo del qdag
-        //mientras hayan qdags, por cada qdag de lquery
-        for (i = 0; i < nQ && children; ++i){ // iterar, nQ tamaño de la query (cantidad de tablas),
-            // k^d del quadtree original
-            k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
+        for (i = 0; i < nQ && children; ++i){
+            k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
-                // le materializo el nodo actual del qdag i.
+                //uint32_t testing_node = Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+                //std::bitset<32> t_node(testing_node); // DEBUG: ver los bits del materialize node
                 // te retorna un entero de 32 bits (materializacion) y se le hace AND con el children --> sobreviven solo los 1s que corresponde al nodo del primer qdag
-                uint32_t testing_node = Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
-                std::bitset<32> t_node(testing_node); // DEBUG: ver los bits del materialize node
                 children &= Q[i]->materialize_node_3(cur_level, roots[i],rank_vector[i]); // entero de 32 bits, y se hace &,
                 // sobreviven solo los 1s
             }else if (nAtt == 4)
                 children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
             else if (nAtt == 5)
                 children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
-            // DEBUG: ver como está children
 
             // despues de hacer eso con todos los qdags, en children quedaran aquellos hijos por los que queremos descender
             // bajar por aquellos hijos q esten presentes en TODOS los qdags!!!!
         }
         // en children estan aquellos 1 por aquellos hijos por donde necesitamos descender --> estamos buscando la interseccion rapida
         // TODO: como se que signfician esos 1s? pues están en distinto orden en cada qdag
-        // DEBUG: ver children y nro bits 1
-        std::bitset<64> ith_node(children); // convert the i-children node to binary
-        children_to_recurse_size = bits::cnt(
-                (uint64_t) children); // pop:count : cantidad de 1s q tiene un arreglo de bits
-        // entonces nos dira el nro de hijos q tendremos q recorrer! children_to_recurse_size
+        //std::bitset<64> ith_node(children); // convert the i-children node to binary
+        // number of 1s in the children
+        children_to_recurse_size = bits::cnt((uint64_t) children);
         i = 0;
         uint64_t msb;
 
-        while (/*children &&*/ i <
-                               children_to_recurse_size) {   /// dame el 1 mas significativo dado un entero --> tiempo constante obtenemos cada uno de los 1s
-            msb = __builtin_clz(children); // el 1 mas significativo
-            children_to_recurse[i] = msb; // aqui lo guardo para decir que tengo q bajar por ese hijo
+        while (/*children &&*/ i < children_to_recurse_size) {
+            msb = __builtin_clz(children); // the most significant bit of children
+            children_to_recurse[i] = msb; // we store the position of the msb in children_to_recurse
             ++i;
-            children &= (((uint32_t) 0xffffffff) >> (msb + 1)); // borro ese 1 mas significativo
+            children &= (((uint32_t) 0xffffffff) >> (msb + 1)); // delete the msb of children
         }
 
         int64_t last_child = -1;
         uint16_t child;
 
         for (i = 0; i < children_to_recurse_size; ++i) {
-
-            child = children_to_recurse[i];
-            // TODO: entender esta parte
-            for (uint64_t j = 0; j < nQ; j++) { // la posicion del hijo del nodo actual (donde esta del quadtree)
-                // DEBUG: ver lo que es t
-                uint16_t mtest = Q[j]->getM(child);
-                uint64_t t = rank_vector[j][Q[j]->getM(child)];
-                k_d[j];
-                root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1); // la raiz de cada uno de los qdags
-                // por donde me tengo q mover en cada uno de los qdags
+            child = children_to_recurse[i]; // the position of the 1s in children
+            uint64_t leaves;
+            for (uint64_t j = 0; j < nQ; j++) {
+                //uint16_t mtest = Q[j]->getM(child);
+                //uint64_t t = rank_vector[j][Q[j]->getM(child)];
+                //k_d[j]; // TODO: pregnta en el num_leaves contamos quadtree original o qdag extendido?
+                leaves = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
+                //DEBUG: check q las leaves nunca sean 0
+                uint16_t cur_node_test = Q[j]->getM(child);
+                std::bitset<64> ith_node(cur_node_test);
+                uint16_t this_level = max_level-cur_level;
+                // DEBUIG: testear cur_node_test >> thislevel o multiplicarlos por 2^thislevel
+                // the node in the j-th quadtree where we are moving
+                // it's like a mapping between the child in the output and which node in the qdag we are moving
+                root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
             }
+            // testing
 
-            // ademas de recorrer el quadtree, estoy generando el resultado en bv (con enteros, y no bits)
+            // we are writing the result in the output bitvector
             if (child - last_child > 1)
-                last_pos[cur_level] += (child - last_child -
-                                        1); // ultima posicion del nivel en el q estoy (para el resultado)
+                last_pos[cur_level] += (child - last_child - 1); // last position we wrote in the current level.
 
             last_child = child;
 
-            if (bounded_result && bv[max_level].size() >=
-                                  UPPER_BOUND) // si ya encontre los resultados que me estaban pidiendo --> termino el computo (mato las ramas)
+            if (bounded_result && bv[max_level].size() >= UPPER_BOUND)
                 return false;
             else if (cur_level == max_level ||
                      AND(Q, root_temp, nQ, cur_level + 1, max_level, bv, last_pos, nAtt, bounded_result,
-                         UPPER_BOUND)) // llamada recursiva
+                         UPPER_BOUND)) // recursive call
             {
-                bv[cur_level].push_back(last_pos[cur_level]++); // colocamos un 1 un hijo en el resultado
+                bv[cur_level].push_back(last_pos[cur_level]++); // we write the current result in the output bitvector
                 just_zeroes = false;
             } else {
                 if (cur_level < max_level)
@@ -567,35 +577,38 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
 }
 */
 
-// multi join: 
-// recibe un vector de qdags
-// si se quiere una cota (las primeras 1000 tuplas por ejemplo) --> true
-// UPPER_BOUND --> 1000
+// TODO: pregunta asumo q todos tienen la misma altura (los qdags), pero no así k^d, cómo es posible?
+/**
+ * Multi join between the qdags in Q.
+ * @param Q a vector of qdags. Every qdag has the same height.
+ * @param bounded_result if the result is bounded.
+ * @param UPPER_BOUND the limit of the result if bounded.
+ * @return a quadtree (qdag not extended) with the result of the multi join.
+ */
 qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     cout << "call to multi join" << endl;
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
-    //iterar por el vector de los qdags
-    // computes the union of the attribute sets
-    // cad auno de los qdags guarda los atributos q le corresponden (con getAttr los retorna, y con nAttr te devuelve el nro de los atributos)
+
     for (uint64_t i = 0; i < Q.size(); i++) {
         uint64_t nAttr = Q[i].nAttr();
         for (uint64_t j = 0; j < nAttr; j++)
             attr_map[Q[i].getAttr(j)] = 1;
     }
 
+    // set of attributs
     for (map<uint64_t, uint8_t>::iterator it = attr_map.begin(); it != attr_map.end(); it++)
-        A.push_back(it->first); // conjunto de atributos A
-    // DEBUG: ver att_set A
-    qdag *Q_star[Q.size()]; // arreglo de qdags Q start
-    uint64_t Q_roots[Q.size()]; // arreglo de enteros: mantiene el nodo actual en el q estas en cada uno de los qdags (el arreglo te dice en donde estas)
+        A.push_back(it->first);
 
-    for (uint64_t i = 0; i < Q.size(); i++) // iteras por los qdags de la query y se eextiende cada uno de los qdags
-    {
-        // preprocesamiento
-        // solo para relaciones binarias
+    qdag *Q_star[Q.size()]; // Q star array
+    uint64_t Q_roots[Q.size()]; // int array that tells you the current node of each qdag we are.
+
+    // extension of the qdags
+    for (uint64_t i = 0; i < Q.size(); i++){
+        // preprocessing of the qdags
+        // only for binary relations
         // TODO: pregunta aqui siempre hago el mismo extend para cada tabla... como funciona? no debiese ser distinto?
-        Q_star[i] = Q[i].extend(A); // extender los qdags en base al conjunto A
+        Q_star[i] = Q[i].extend(A);
         if (A.size() == 3)
             Q_star[i]->createTableExtend3();
         else if (A.size() == 4)
@@ -606,23 +619,23 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
             cout << "Code only works for queries of up to 5 attributes..." << endl;
             exit(1);
         }
-        // esta en 0 en todos lados al inicio
         Q_roots[i] = 0; // root of every qdag
     }
 
-    // IMPORTANT: arreglo de vectors, vector de enteros q nos indican las posiciones con 1s en el bitvector de ese nivel
-    // vector de enteros bv bitvector, que tienee tantas entradas como altura de los qdags: tiene un vector por cada nivel
-    vector<uint64_t> bv[Q_star[0]->getHeight()]; // OJO, asume que todos los qdags son de la misma altura
-    // arreglo de la ultima posicion en donde escribi en cada nivel. Necesario pq uno va llenando los bitvector por cada nivel, 
-    // entonces para ver donde tengo q escribir en cada nivel, el siguiente elemnto
+    // An int vector where we are going to write the output. It has as many entries as the height of the qdags.
+    // On each level, we store the index where we have nonempty nodes.
+    vector<uint64_t> bv[Q_star[0]->getHeight()];
+
+    // array of the last position where we wrote on each level. It is useful to write the output on the bitvector abd knowing where to write.
     uint64_t last_pos[Q_star[0]->getHeight()];
 
     for (uint64_t i = 0; i < Q_star[0]->getHeight(); i++)
-        last_pos[i] = 0; // al inicio todo esta en 0
+        last_pos[i] = 0; // initialize the last position
 
-    // arreglo de qdags extendidos, arreglo de roots, también se necesita el nivel, la altura, bv es la respuesta, arreglo de ult. posicion, cantidad de atributos, si debe tener cota, nro de la cota
+    // array of extended qdags, array of roots, current level, height, the output bitvector bv, arreglo de ult. posicion, number of attributs,
     AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
-    // constuyo el qdag con bv (bv no son BITS!!!!, son enteros que indican las posiciones de los 1s en el bitvector)
+
+    // we create a new qdag with the output store in bv (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
     cout << "positions" << endl;
