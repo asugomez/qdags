@@ -1,0 +1,77 @@
+// TODO: quizas aqui no p, y usar children
+// calcular la prioridad de cada tupla e insertar la struct a la priority queue
+for(uint64_t i = 0; i < p ; i++){
+    bool insert = true;
+    //uint64_t n_empty_nodes = 0;
+    uint64_t total_weight = partial_results ? UINT64_MAX : 0;
+    // TODO: maybe before doing this, see if there is an empty node (evittar hacer este calculo)
+    // TODO: hacer esto mas rapido
+    // TODO: quizas aqui no p, y usar children
+    for(uint16_t j = 0; j < nQ; j++){
+        // for partial results, compute the num leaves
+        if(partial_results){
+            // TODO: ver si es cur_level o cur_level ++;
+            // TODO: problem here: no siempre será el mismo i-th child para cada qdag
+            // TODO: rehacer el debug, y ver como va cambiando root_temp[j]
+            uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, cur_node, i);
+            // empty node
+            // TODO: esto no deberia pasar si lo haxcemos con los children exacto
+            if(n_leaves_ith_node == 0){
+                insert = false;
+                //n_empty_nodes += 1; // debo contar los empty nodes, para luego en la inserción, insertar el node correspondiente al i-th 1 (y no la posición)
+                break;
+            }
+            if (n_leaves_ith_node < total_weight) {
+                // TODO declare const int 0,1,2 for the type fun
+                if(type_order_fun == 0) // min num leaves estimator among the qdags tuple
+                    total_weight = n_leaves_ith_node;
+                else if(type_order_fun == 1) // density estimator
+                    // TODO: replace 100 for the grid size
+                    total_weight = n_leaves_ith_node / 100;
+            }
+        } else{ // ranked results
+            // TODO: do the ranked results
+            uint64_t priority_ith_node ; // TODO_ define priority ith node (rMq)
+            if(type_priority_fun == 0) // sum
+                total_weight += priority_ith_node;
+            else if(type_priority_fun == 1) { // max
+                if (total_weight < priority_ith_node) {
+                    total_weight = priority_ith_node;
+                }
+            } else {
+                // TODO: another monotone function?
+            }
+        }
+    }
+    // insert tre struct in the pri queue
+    if(insert){
+        int16_t next_level = cur_level+1;
+        // insert the i-th node of this level
+        int8_t size_bits = (int8_t) log2(p);
+        std::bitset<64> ith_node(i); // convert the i-th node to binary
+        uint64_t bv = 0;
+        // for example: 01 00 00 00 --> it's 64
+        // TODO: mejorar esto con manejo de bits, shift, suprimir el msb, etc
+        for(uint8_t j = 0; j < size_bits; j++){
+            if(ith_node[j]){ // TODO: lol esto es lo mismo que el mismo numero "i" xd
+                bv += 2^(j+(max_level-cur_level)*size_bits);
+            }
+        }
+        tupleQdags.bv += bv; // add the bits to the bitvector
+        // TODO: check lo que estoy insertando en la cola! sobre todo level y parent
+        //uint64_t node_parent = i - n_empty_nodes; // the i-th non-empty node (1) of that level (the quadrant)
+        uint64_t k_d = Q[0]->getKD();
+        // TODO: copute the start position
+        // ESTO ESTA MALO/
+        // El nodo 3 puede corresponder a un nodo en un qdag y a otro en el otro qdag
+        uint64_t siblings = Q[0]->rank(cur_level, cur_node);
+        // TODO: compute node parent. Desde el start position * k_D sumar el i y hacer rank.
+        uint64_t node_parent = Q[0]->rank(next_level,siblings*k_d + i);
+        // TODO: maybe hacer la inserción  en función del primer qdag?? pero como calculo nro de hojas ah eso sera siempre igual??
+        //TODO: preguntr esto a Diego
+        // TODO: node to insert is not the node_parent, tiene que ser algo como Q[]->getM(node)...
+        qdagWeight this_node = {next_level, node_parent, total_weight, tupleQdags.bv} ;
+        pq.push(this_node); // add the tuple to the queue
+    }
+
+}

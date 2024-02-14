@@ -68,17 +68,21 @@ uint64_t computeWeight(uint64_t* qdagsWeights, uint64_t type){
  * @param type_order_fun 0 num leaves, 1 density
  * @return
  */
-bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
-                 uint64_t max_level,
+bool AND_ordered(qdag *Q[], uint16_t nQ,
+                 uint64_t max_level, uint64_t nAtt,
                  bool bounded_result, uint64_t UPPER_BOUND,
                  priority_queue<qdagWeight>& pq, bool partial_results, uint16_t type_priority_fun, uint16_t type_order_fun) {
     // TODO: see if p is correct or it has to be the k_d
     uint64_t p = Q[0]->nChildren(); // aridad del quadtree
+    uint64_t k_d[nQ];
+    uint16_t children_to_recurse[p];
+    uint64_t children_to_recurse_size = 0;
+    uint32_t children = 0xffffffff;
     while(!pq.empty()){
         qdagWeight tupleQdags = pq.top(); //  level, el nodo (indice por el cual partir el join), su prioridad
         pq.pop();
-        uint16_t cur_level = tupleQdags.level;
-        uint16_t cur_node = tupleQdags.node;
+        int16_t cur_level = tupleQdags.level;
+        uint64_t *roots = tupleQdags.roots; // TODO: see if this works
         // if it's a leaf, output the point coordenates
         if(cur_level == max_level){
             uint16_t l = log2(p); // bits number to define the node's children
@@ -87,34 +91,49 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
             // TOODO: esta operacion es lenta, podríamos tener una tabla guardada
             //uint64_t* coordinates = getCoordinates(tupleQdags.bv, l);
             cout << "point output: " << tupleQdags.bv << endl;
-        } else{
-            // calcular la prioridad de cada tupla e insertar la struct a la priority queue
-            for(uint64_t i = 0; i < p ; i++){
-                bool insert = true;
-                //uint64_t n_empty_nodes = 0;
+        } else {
+            uint64_t root_temp[nQ];
+            uint64_t rank_vector[nQ][64];
+            for (uint64_t i = 0; i < nQ && children; ++i){
+                k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
+                if (nAtt == 3)
+                    children &= Q[i]->materialize_node_3(cur_level, roots[i],rank_vector[i]);
+                else if (nAtt == 4)
+                    children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
+                else if (nAtt == 5)
+                    children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
+            }
+
+            // in children we have the actual non empty nodes
+            // in children_to_recurse we store the index of these non emtpy nodes
+            children_to_recurse_size = bits::cnt((uint64_t) children);
+            uint64_t i = 0;
+            uint64_t msb; // most significant bit
+            while (i < children_to_recurse_size) {
+                msb = __builtin_clz(children);
+                children_to_recurse[i] = msb;
+                ++i;
+                children &= (((uint32_t) 0xffffffff) >> (msb + 1));
+            }
+
+            //int64_t last_child = -1;
+            uint16_t child;
+
+            for (i = 0; i < children_to_recurse_size; ++i) {
+                child = children_to_recurse[i];
                 uint64_t total_weight = partial_results ? UINT64_MAX : 0;
-                // TODO: maybe before doing this, see if there is an empty node (evittar hacer este calculo)
-                // TODO: hacer esto mas rapido
-                for(uint16_t j = 0; j < nQ; j++){
-                    // for partial results, compute the num leaves
+                for (uint64_t j = 0; j < nQ; j++) { // en root_temp guardamos el nodo padre que corresponde en cada qdaf
+                    root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     if(partial_results){
-                        // TODO: ver si es cur_level o cur_level ++;
-                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, cur_node, i);
-                        // empty node
-                        if(n_leaves_ith_node == 0){
-                            insert = false;
-                            //n_empty_nodes += 1; // debo contar los empty nodes, para luego en la inserción, insertar el node correspondiente al i-th 1 (y no la posición)
-                            break;
-                        }
+                        // TODO: check the arguments
+                        uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, root_temp[j], Q[j]->getM(child));
                         if (n_leaves_ith_node < total_weight) {
-                            // TODO declare const int 0,1,2 for the type fun
-                            if(type_order_fun == 0) // min num leaves estimator
+                            if(type_order_fun == 0) // min num leaves estimator among the qdags tuple
                                 total_weight = n_leaves_ith_node;
                             else if(type_order_fun == 1) // density estimator
-                                // TODO: replace 100 for the grid size
-                                total_weight = n_leaves_ith_node / 100;
+                                total_weight = n_leaves_ith_node / 100; // TODO: replace 100 for the grid size
                         }
-                    } else{ // ranked results
+                    } else { // ranked results
                         // TODO: do the ranked results
                         uint64_t priority_ith_node ; // TODO_ define priority ith node (rMq)
                         if(type_priority_fun == 0) // sum
@@ -123,46 +142,29 @@ bool AND_ordered(qdag *Q[], uint64_t *roots, uint16_t nQ,
                             if (total_weight < priority_ith_node) {
                                 total_weight = priority_ith_node;
                             }
-                        } else {
-                            // TODO: another monotone function?
                         }
                     }
                 }
-                // insert tre struct in the pri queue
-                if(insert){
-                    int16_t next_level = cur_level+1;
-                    // insert the i-th node of this level
-                    int8_t size_bits = (int8_t) log2(p);
-                    std::bitset<64> ith_node(i); // convert the i-th node to binary
-                    uint64_t bv = 0;
-                    // for example: 01 00 00 00 --> it's 64
-                    for(uint8_t j = 0; j < size_bits; j++){
-                        if(ith_node[j]){
-                            bv += 2^(j+(max_level-cur_level)*size_bits);
-                        }
+                // Here do the insertion in the priority queue
+                // TODO: see if this works
+                int8_t size_bits = (uint64_t) log2(p);
+                std::bitset<64> ith_node(children_to_recurse[i]);
+                uint64_t bv = 0;
+                // for example: 01 00 00 00 --> it's 64
+                // TODO: mejorar esto con manejo de bits, shift, suprimir el msb, etc
+                // TODO: lol esto es lo mismo que el mismo numero "i" xd
+                for(uint64_t j = 0; j < size_bits; j++){
+                    if(ith_node[j]){
+                        bv += 2^(j+(max_level-cur_level)*size_bits);
                     }
-                    tupleQdags.bv += bv; // add the bits to the bitvector
-                    // TODO: check lo que estoy insertando en la cola! sobre todo level y parent
-                    //uint64_t node_parent = i - n_empty_nodes; // the i-th non-empty node (1) of that level (the quadrant)
-                    uint64_t k_d = Q[0]->getKD();
-                    // TODO: copute the start position
-                    // ESTO ESTA MALO/
-                    // El nodo 3 puede corresponder a un nodo en un qdag y a otro en el otro qdag
-                    uint64_t siblings = Q[0]->rank(cur_level, cur_node);
-                    // TODO: compute node parent. Desde el start position * k_D sumar el i y hacer rank.
-                    uint64_t node_parent = Q[0]->rank(next_level,siblings*k_d + i);
-                    // TODO: maybe hacer la inserción  en función del primer qdag?? pero como calculo nro de hojas ah eso sera siempre igual??
-                    //TODO: preguntr esto a Diego
-                    qdagWeight this_node = {next_level, node_parent, total_weight, tupleQdags.bv} ;
-                    pq.push(this_node); // add the tuple to the queue
                 }
-
+                tupleQdags.bv += bv; // add the bits to the bitvector
+                cur_level++;
+                qdagWeight this_node = {cur_level, root_temp, total_weight, tupleQdags.bv} ;
+                pq.push(this_node); // add the tuple to the queue
             }
         }
-
-
     }
-
     return true;
 }
 
@@ -228,7 +230,7 @@ qdag *multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t
     uint64_t max_level = Q_star[0]->getHeight() - 1;
     priority_queue<qdagWeight> pq;
     pq.push({-1, 0, 1, 0}); // insert the root of the qdag
-    AND_ordered(Q_star, Q_roots, Q.size(), max_level, bounded_result, UPPER_BOUND,
+    AND_ordered(Q_star, Q_roots, Q.size(), max_level, A.size(), bounded_result, UPPER_BOUND,
                 pq, partial_results, type_priority_fun,  type_order_fun);
     // constuyo el qdag con bv
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());

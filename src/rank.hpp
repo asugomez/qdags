@@ -66,6 +66,10 @@ public:
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
     }
 
+    inline uint8_t get_8_bits(uint64_t start_pos) {
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+    }
+
     /**
      * TODO: esto esta en la funcion get_children
      * Count the number of 1s
@@ -87,6 +91,7 @@ public:
 
     inline uint64_t n_ones_2_bits(uint64_t start_pos) {
         // TODO: replace it by
+        //bits::cnt((uint64_t) children);
         //uint64_t counter = bits::cnt(start_pos); // contar nro de reusltados
         uint8_t x = get_2_bits(start_pos);
         uint64_t counter = 0;
@@ -147,6 +152,15 @@ public:
         return x&1;
     }
 
+    void print_8_bits(uint64_t start_pos) {
+        uint8_t x = get_8_bits(start_pos);
+
+        for (int i = 0; i < 8; i++) {
+            cout << ((x & (1 << i)) ? "1" : "0");
+        }
+        cout << " ";
+    }
+
     void print_4_bits(uint64_t start_pos) {
         uint8_t x = get_4_bits(start_pos);
 
@@ -171,9 +185,15 @@ public:
             if(k_d == 4){
                 print_4_bits(i);
                 i = i + 4;
-            } else{
+            } else if(k_d == 2){
                 print_2_bits(i);
                 i = i + 2;
+            } else if(k_d == 8){
+                print_8_bits(i);
+                i = i + 8;
+            } else{
+                cout << "k_d not supported";
+                break;
             }
         }
         cout << endl;

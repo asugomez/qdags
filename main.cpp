@@ -70,35 +70,38 @@ int main(int argc, char **argv) {
     // 3 tablas R, S y T
     qdag::att_set att_R; // R(A,B)
     qdag::att_set att_S; // S(C,B)
-    qdag::att_set att_T; // T(A,C)
+    //qdag::att_set att_T; // T(A,C)
 
     att_R.push_back(AT_Y); att_R.push_back(AT_X);
-    att_S.push_back(AT_Z); att_S.push_back(AT_X);
-    att_T.push_back(AT_Z); att_T.push_back(AT_Y); // TODO: el orden hay q cambiarlo para el join
+    att_S.push_back(AT_Y); att_S.push_back(AT_Z);
+    //att_T.push_back(AT_Z); att_T.push_back(AT_Y); // TODO: el orden hay q cambiarlo para el join
 
-    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
+    std::string strRel_R(argv[1]), strRel_S(argv[2]);//, strRel_T(argv[3]); // nombre de los archivos
 
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
     std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,
                                                               att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
-    std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
+    //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
     uint64_t grid_side = 32; //52000000; // es como +infty para wikidata
+
+    cout << " grid size R : " << att_R.size() << endl;
+    cout << " grid size S : " << att_S.size() << endl;
 
     //cout << "R" << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     //cout << "S" << endl;
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //cout << "T" << endl;
-    qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
+    //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
 
     // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
-    vector<qdag> Q(3);
+    vector<qdag> Q(2);
 
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
-    Q[2] = qdag_rel_T;
+    //Q[2] = qdag_rel_T;
     qdag *Join_Result;
 
     high_resolution_clock::time_point start, stop;
@@ -107,24 +110,34 @@ int main(int argc, char **argv) {
 
 
     start = high_resolution_clock::now();
-
     cout << "-----------" << endl;
     cout << "relacion R" << endl;
     qdag_rel_R.printBv();
-
+    //qdag::att_set att_test;
+    //att_test.push_back(AT_Y);
+    //att_test.push_back(AT_X);
+    //att_test.push_back(AT_Z);
+    //qdag* q_prime = qdag_rel_R.extend(att_test);
+    //cout << "-----after extend------" << endl;
+    //q_prime->printBv();
     cout << "-----------" << endl;
-    //qdag_rel_R.test_get_4_bits();
-    //qdag_rel_R.test_rank();
-
-    /*cout << "relacion S" << endl;
+    cout << "-----------" << endl;
+    cout << "relacion S" << endl;
     qdag_rel_S.printBv();
-    qdag_rel_S.get_num_leaves(0, 0);
+
     cout << "-----------" << endl;
-    cout << "relacion T" << endl;
-    qdag_rel_T.printBv();
-    qdag_rel_T.get_num_leaves(0, 0);*/
-    //qdag_rel_R.get_children(0,0);
+    uint8_t c = 10;
+    std::bitset<8> t_node(c);
+
+    Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
     cout << "-----------" << endl;
+
+    //vector<qdag> Q2(2);
+    //Q2[0] = Join_Result;
+    //Q2[1] = qdag_rel_S;
+    //multiJoin(Q2, true, 1000); // warmup join -> activar el caché
+    Join_Result->printBv();
+
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();

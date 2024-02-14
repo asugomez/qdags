@@ -188,7 +188,7 @@ public:
     {
         uint16_t dim = attribute_set_A.size(); // d
         uint16_t dim_prime = attribute_set.size(); // d'
-        uint64_t p = std::pow(Q->getK(), dim);       // tamaño del mapeo     2^d
+        uint64_t p = std::pow(Q->getK(), dim);       // tamaño del mapeo, número de hijos por nodo en el quadtree original
 
         type_mapping_M *_M = new type_mapping_M[p]; // mapeo
 
@@ -196,7 +196,8 @@ public:
         uint64_t i, i_prime;
 
         for (i = 0; i < p; ++i) {
-            mask = 1 << (dim_prime - 1);
+            // todos los bits están en cero excepto el bit en la posición dim_prime - 1.
+            mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
             i_prime = 0;
 
             for (uint16_t j = 0; j < dim_prime; ++j) {
@@ -346,6 +347,8 @@ public:
         }
     }
 
+    // TODO: problema? siempre materializo,,, cuando uso el mapeo?
+    // TODO: y porqué de 32 bits?
     // materializa el nodo del qdag, uno llega a un nodo en el quadtree que existe, pero conceptualmente
     // corresponde a un qdags q no existe en realidad.
     // esta funcion materializa el nodo en el qdag (donde no existe)
@@ -353,6 +356,7 @@ public:
     // pero trabajo en dimension 5 --> se extiende a 32 hijos
     // a partir de esos 4 bits, te genera el de 32 inmediatamente
     inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
+        // DEBUG: ver roots[i] = node
         uint64_t r = Q->rank(level, node);
         return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
     }

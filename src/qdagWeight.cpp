@@ -10,9 +10,9 @@
  */
 struct qdagWeight {
     int16_t level; // the level of the node
-    uint64_t node; // the i-th non-empty node (1) of that level (the quadrant)
-    uint64_t weight; // priority or number of leaves
-    uint64_t bv;  // the bits that encode the path down the leaf.
+    uint64_t* roots; // the parent of the subtree of each qdag that conform the tuple.
+    uint64_t weight; // priority or number of leaves of the tuple
+    uint64_t bv;  // the bits that encode the path down the leaf in the first qdag.
     bool operator<(const qdagWeight& qd) const {
         return weight < qd.weight;
     }

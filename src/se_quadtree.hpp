@@ -272,13 +272,30 @@ public:
         // cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;
 
         // OJO con lo que sigue, tengo que hacer este constructor de buena manera
-
-        /*for (uint64_t i = 0; i < height; i++) {
+        uint64_t size;
+        // TODO: completar esto para no tener bits de mas
+        // ver con cuantos bloques necesitamos
+        for (uint16_t i = 0; i < height; i++) {
+            size = i==0? 2 : total_ones[i-1];
+            bv[i] = modify_to_bit_vector(_bv[i], i, size);
+        }
+        /*for (uint16_t i = 0; i < height; i++) {
             bv[i] = new sdsl::sd_vector<>(_bv[i].begin(),_bv[i].end());
             bv_rank[i] = sd_vector<>::rank_1_type(bv[i]);
             bv_select[i] = sd_vector<>::select_1_type(bv[i]);
-            total_ones[i] = bv_rank[i].rank(bv[i]->size());
+            total_ones[i] = bv_rank[i].rank(bv[i].size());
         }*/
+
+    }
+
+    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_ones){
+        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+        bit_vector _bv(_bv_int.size()*8);
+        for(uint64_t i : _bv_int){
+            _bv[i] = 1;
+            total_ones[level]++;
+        }
+        return rank_bv_64(_bv);
 
     }
 
