@@ -1,59 +1,44 @@
 #include <algorithm>
-#include <queue>
-#include <cstdint>
-#include <cmath>
 #include "qdags.hpp"
-#include "parallel_for.hpp"
-#include "qdagWeight.cpp"
-#include "utils.cpp"
-
-
-/**
- * Compute the priority
- * @param pri a list of qdags weight of the same node
- * @param type the function type which we are going to compute the priorities.
- * @return the output of f(pri[0], pri[1], ....) and
- */
-uint64_t computeNodeWeight(qdagWeight* qdagsWeights, uint64_t type){
-    uint64_t total_weight = 0;
-    // TODO: change it por alguna funcion de c que lo haga al tiro.
-    for(uint64_t i = 0; i < sizeof(qdagsWeights); i++){
-        if(type == 0){ // sum
-            total_weight += qdagsWeights[i].weight;
-        }
-        if(type == 1){ // max
-            if(qdagsWeights[i].weight > total_weight){
-                total_weight = qdagsWeights[i].weight;
-            }
-        }
-
-    }
-    return total_weight;
-}
-
-uint64_t computeWeight(uint64_t* qdagsWeights, uint64_t type){
-    uint64_t total_weight = 0;
-    // TODO: change it por alguna funcion de c que lo haga al tiro.
-    for(uint64_t i = 0; i < sizeof(qdagsWeights); i++){
-        if(type == 0){ // sum
-            total_weight += qdagsWeights[i];
-        }
-        if(type == 1){ // max
-            if(qdagsWeights[i] > total_weight){
-                total_weight = qdagsWeights[i];
-            }
-        }
-
-    }
-    return total_weight;
-}
-
 
 // antes de llamar a AND_ordered
 // hacer esto: (poner la primera tupla con las raices
 //        qdagWeight tupleQdag = {cur_level, 0, 1};
 //        pq.push(tupleQdag);
 //    }
+
+struct qdagWeight {
+    int16_t level; // the level of the node
+    uint64_t* roots; // the parent of the subtree of each qdag that conform the tuple.
+    uint64_t weight; // priority or number of leaves of the tuple
+    uint64_t path;  // the bits that encode the path down the leaf in the first qdag.
+    bool operator<(const qdagWeight& qd) const {
+        return weight < qd.weight;
+    }
+};
+
+
+void getCoordinates(uint64_t path, uint64_t l, uint64_t height, uint64_t *pointCoord, uint64_t nAttr) {
+
+    uint64_t diff_level;
+    for(uint64_t level=0; level<height; level++) {
+        diff_level = height - level;
+        uint32_t node_cur_level = (uint32_t) path >> (diff_level * l);
+        uint64_t n_ones = bits::cnt((uint64_t) node_cur_level);
+
+        uint64_t msb, num_point;
+        for (uint64_t k = 0; k < n_ones; k++) {
+            msb = __builtin_ctz(node_cur_level);
+            node_cur_level &= ~(1 << msb); // delete the msb of children
+            msb %= l;
+            num_point = (l - 1) - msb; // the index is the inverse
+            pointCoord[num_point] += 1 << diff_level;
+        }
+    }
+
+}
+
+
 
 //TODO: hacerla recursiva o no?
 // TODO declare const int 0,1,2 for the type fun
@@ -86,88 +71,104 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
         uint64_t *roots = tupleQdags.roots; // TODO: see if this works
         uint64_t l = (uint64_t) log2(p); // bits number to define the node's children
         // if it's a leaf, output the point coordenates
-        if(cur_level == max_level){
-            // TODO: output coordinates
-            // TODO: las coordenadas de un qdag seran las de los otros iguales?
-            // DEBUG: see the tupleQdags and path
-            // TOODO: esta operacion es lenta, podríamos tener una tabla guardada
-            uint64_t coordinates[nAtt];
-            for(uint64_t i = 0; i < nAtt; i++){
-                coordinates[i] = 0;
-            }
-            getCoordinates(tupleQdags.path, l, max_level, coordinates, nAtt);
-            cout << "point output: " << tupleQdags.path << endl;
-            // TODO: maybe we have to materialize the last level
-            if(bounded_result && ++results >= UPPER_BOUND)
-                return true;
-        } else {
-            uint64_t root_temp[nQ];
-            uint64_t rank_vector[nQ][64];
-            for (uint64_t i = 0; i < nQ && children; ++i){
-                k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
-                if (nAtt == 3)
-                    children &= Q[i]->materialize_node_3(cur_level, roots[i],rank_vector[i]);
-                else if (nAtt == 4)
+        uint64_t root_temp[nQ];
+        uint64_t rank_vector[nQ][64];
+        for (uint64_t i = 0; i < nQ && children; ++i){
+            k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
+            if (nAtt == 3) {
+                if (cur_level == max_level) {
+                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, roots[i]);
+                } else {
+                    children &= Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+                }
+                children &= Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+            } else if (nAtt == 4) {
+                if(cur_level == max_level){
+                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, roots[i]);
+                }
+                else {
                     children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
-                else if (nAtt == 5)
+                }
+            }
+            else if (nAtt == 5) {
+                if(cur_level == max_level){
+                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, roots[i]);
+                }
+                else {
                     children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
+                }
             }
+        }
 
-            // in children we have the actual non empty nodes
-            // in children_to_recurse we store the index of these non emtpy nodes
-            children_to_recurse_size = bits::cnt((uint64_t) children);
-            uint64_t i = 0;
-            uint64_t msb; // most significant bit
-            while (i < children_to_recurse_size) {
-                msb = __builtin_clz(children);
-                children_to_recurse[i] = msb;
-                ++i;
-                children &= (((uint32_t) 0xffffffff) >> (msb + 1));
-            }
+        // in children we have the actual non empty nodes
+        // in children_to_recurse we store the index of these non emtpy nodes
+        children_to_recurse_size = bits::cnt((uint64_t) children);
+        uint64_t i = 0;
+        uint64_t msb; // most significant bit
+        while (i < children_to_recurse_size) {
+            msb = __builtin_clz(children);
+            children_to_recurse[i] = msb;
+            ++i;
+            children &= (((uint32_t) 0xffffffff) >> (msb + 1));
+        }
 
-            //int64_t last_child = -1;
-            uint16_t child;
+        uint16_t child;
 
-            for (i = 0; i < children_to_recurse_size; ++i) {
-                child = children_to_recurse[i];
+        for (i = 0; i < children_to_recurse_size; ++i) {
+            child = children_to_recurse[i];
 
-                uint64_t total_weight = partial_results ? UINT64_MAX : 0;
+            uint64_t total_weight = partial_results ? UINT64_MAX : 0;
+            if(cur_level != max_level) { // compute the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
 
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    if(partial_results){
-                        uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
+                    if (partial_results) {
+                        uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level, Q[j]->getM(child));
                         if (n_leaves_child_node < total_weight) {
-                            if(type_order_fun == 0) // min num leaves estimator among the qdags tuple
+                            if (type_order_fun == 0) // min num leaves estimator among the qdags tuple
                                 total_weight = n_leaves_child_node;
-                            else if(type_order_fun == 1) // density estimator
+                            else if (type_order_fun == 1) // density estimator
                                 total_weight = n_leaves_child_node / grid_size;
                         }
-                    }
-                    else { // ranked results
+                    } else { // ranked results
                         // TODO: do the ranked results
-                        uint64_t priority_ith_node ; // TODO_ define priority ith node (rMq)
-                        if(type_priority_fun == 0) // sum
+                        uint64_t priority_ith_node; // TODO_ define priority ith node (rMq)
+                        if (type_priority_fun == 0) // sum
                             total_weight += priority_ith_node;
-                        else if(type_priority_fun == 1) { // max
+                        else if (type_priority_fun == 1) { // max
                             if (total_weight < priority_ith_node) {
                                 total_weight = priority_ith_node;
                             }
                         }
                     }
                 }
-                // Here do the insertion in the priority queue
-                // --> add the child to the path
-                uint16_t cur_child_qdag = Q[0]->getM(child);
-                uint16_t diff_level = max_level-cur_level;
-                uint64_t path = cur_child_qdag << (diff_level * (uint64_t) log2(k_d[0])); // height * bits to represent the children
-                tupleQdags.path += path; // add the bits to the bitvector
-                // TODO: maybe here we have to see if is the alst level --> output or insert
-                cur_level++;
-                qdagWeight this_node = {cur_level, root_temp, total_weight, tupleQdags.path} ;
-                pq.push(this_node); // add the tuple to the queue
             }
+            // --> add the child to the path
+            uint16_t cur_child_qdag = Q[0]->getM(child);
+            uint16_t diff_level = max_level-cur_level;
+            uint64_t path = cur_child_qdag << (diff_level * (uint64_t) log2(k_d[0])); // height * bits to represent the children
+            tupleQdags.path += path; // add the bits to the bitvector
+            // compute the coordinates
+            if(cur_level == max_level){
+                // TODO: output coordinates
+                // TODO: las coordenadas de un qdag seran las de los otros iguales?
+                // DEBUG: see the tupleQdags and path
+                // TOODO: esta operacion es lenta, podríamos tener una tabla guardada
+                uint64_t coordinates[nAtt];
+                for(uint64_t i = 0; i < nAtt; i++){
+                    coordinates[i] = 0;
+                }
+                getCoordinates(tupleQdags.path, l, max_level, coordinates, nAtt);
+                cout << "point output: " << tupleQdags.path << endl;
+                // TODO: maybe we have to materialize the last level
+                if(bounded_result && ++results >= UPPER_BOUND)
+                    return true;
+            }
+            // else: insert the tuple
+            cur_level++;
+            qdagWeight this_node = {cur_level, root_temp, total_weight, tupleQdags.path} ;
+            pq.push(this_node); // add the tuple to the queue
         }
     }
     return true;

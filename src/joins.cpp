@@ -254,14 +254,12 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         }
         // en children estan aquellos 1 por aquellos hijos por donde necesitamos descender --> estamos buscando la interseccion rapida
         // TODO: pregunta como se que signfician esos 1s? pues están en distinto orden en cada qdag
-        //std::bitset<64> ith_node(children); // convert the i-children node to binary
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
         i = 0;
         uint64_t msb;
 
         while (/*children &&*/ i < children_to_recurse_size) {
-            // DEBUG: ver cual es el orden del msb
             msb = __builtin_clz(children); // the most significant bit of children
             children_to_recurse[i] = msb; // we store the position of the msb in children_to_recurse
             ++i;
@@ -281,7 +279,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 uint16_t cur_node_test = Q[j]->getM(child);
                 std::bitset<64> ith_node(cur_node_test);
                 uint16_t this_level = max_level-cur_level;
-                // DEBUIG: testear cur_node_test >> thislevel o multiplicarlos por 2^thislevel
                 // the node in the j-th quadtree where we are moving
                 // it's like a mapping between the child in the output and which node in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
@@ -307,7 +304,9 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 coordinates[num_point] += 1 << diff_level;
             }
 
-            //DEBUG: ver como quedo coordinates
+            // final testing
+
+
             // we are writing the result in the output bitvector
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1); // last position we wrote in the current level.

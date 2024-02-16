@@ -1,24 +1,17 @@
-cmake_minimum_required(VERSION 3.1...3.28)
+cmake_minimum_required(VERSION 3.5)
 project(
         rankedQdagsProject
         VERSION 1.0
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(main main.cpp)
 
 # Añade la ruta de búsqueda de encabezados de la librería
-include_directories(/opt/homebrew/include/sdsl)
-include_directories(/opt/homebrew/include/divsufsort)
-include_directories(/opt/homebrew/include/divsufsort64)
+target_link_libraries(main PRIVATE sdsl divsufsort divsufsort64)
+target_include_directories(main PRIVATE /opt/homebrew/include)
+target_link_directories(main PRIVATE /opt/homebrew/lib)
 
-#add_library(sdsl STATIC IMPORTED)
-#add_library(divsufsort STATIC IMPORTED)
-#add_library(divsufsort64 STATIC IMPORTED)
+target_compile_options(main PRIVATE -O3 -O0 -DNDEBUG)
 
-
-#add_library(LibBits simple_lib.cpp simple_lib.hpp)
-add_executable(main main.cpp
-        src/qdagWeight.cpp
-        src/joins_ranked_size.cpp)
-
-add_library(utils src/utils.cpp)

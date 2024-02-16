@@ -1,4 +1,0 @@
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/main.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/utils.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/rebuild_cache.dir

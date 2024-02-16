@@ -30,6 +30,7 @@
 #include <sdsl/int_vector_buffer.hpp>
 #include "rank.hpp"
 
+
 //! A k^2-tree
 /*! A k^2-tree is a compact tree structure to represent a web graph. The
  *  structure takes advantage of large empty areas of the adjacency matrix of

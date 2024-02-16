@@ -9,6 +9,8 @@
 #include<chrono>
 #include<ctime>
 
+using namespace std::chrono;
+
 extern high_resolution_clock::time_point start_rank, stop_rank;
 extern double total_time_rank;
 extern duration<double> time_span_rank;
