@@ -49,15 +49,15 @@ for(uint64_t i = 0; i < p ; i++){
         // insert the i-th node of this level
         int8_t size_bits = (int8_t) log2(p);
         std::bitset<64> ith_node(i); // convert the i-th node to binary
-        uint64_t bv = 0;
+        uint64_t path = 0;
         // for example: 01 00 00 00 --> it's 64
         // TODO: mejorar esto con manejo de bits, shift, suprimir el msb, etc
         for(uint8_t j = 0; j < size_bits; j++){
             if(ith_node[j]){ // TODO: lol esto es lo mismo que el mismo numero "i" xd
-                bv += 2^(j+(max_level-cur_level)*size_bits);
+                path += 2^(j+(max_level-cur_level)*size_bits);
             }
         }
-        tupleQdags.bv += bv; // add the bits to the bitvector
+        tupleQdags.path += path; // add the bits to the bitvector
         // TODO: check lo que estoy insertando en la cola! sobre todo level y parent
         //uint64_t node_parent = i - n_empty_nodes; // the i-th non-empty node (1) of that level (the quadrant)
         uint64_t k_d = Q[0]->getKD();
@@ -70,7 +70,7 @@ for(uint64_t i = 0; i < p ; i++){
         // TODO: maybe hacer la inserción  en función del primer qdag?? pero como calculo nro de hojas ah eso sera siempre igual??
         //TODO: preguntr esto a Diego
         // TODO: node to insert is not the node_parent, tiene que ser algo como Q[]->getM(node)...
-        qdagWeight this_node = {next_level, node_parent, total_weight, tupleQdags.bv} ;
+        qdagWeight this_node = {next_level, node_parent, total_weight, tupleQdags.path} ;
         pq.push(this_node); // add the tuple to the queue
     }
 

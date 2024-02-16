@@ -3,7 +3,7 @@
 
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/int_vector_buffer.hpp>
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace sdsl;
 using namespace std;
@@ -103,7 +103,7 @@ public:
         return counter;
     }
 
-    // number of bits in the bv
+    // number of bits in the path
     inline uint64_t size() {
         return u;
     }

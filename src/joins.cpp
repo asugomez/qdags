@@ -156,7 +156,7 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
 
 
 /**
- * Travers recursively the qdags and if the intersection is not empty, write the output (leaf) on bv
+ * Travers recursively the qdags and if the intersection is not empty, write the output (leaf) on path
  * @param Q
  * @param roots
  * @param nQ
@@ -235,7 +235,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint64_t root_temp[16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
         uint64_t rank_vector[16][64];
 
-        // TODO: pero esto va qdag por qdag, y no atributo x atributo del qdag
+        // TODO: pregunta pero esto va qdag por qdag, y no atributo x atributo del qdag
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
@@ -253,7 +253,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
             // bajar por aquellos hijos q esten presentes en TODOS los qdags!!!!
         }
         // en children estan aquellos 1 por aquellos hijos por donde necesitamos descender --> estamos buscando la interseccion rapida
-        // TODO: como se que signfician esos 1s? pues están en distinto orden en cada qdag
+        // TODO: pregunta como se que signfician esos 1s? pues están en distinto orden en cada qdag
         //std::bitset<64> ith_node(children); // convert the i-children node to binary
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
@@ -261,6 +261,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint64_t msb;
 
         while (/*children &&*/ i < children_to_recurse_size) {
+            // DEBUG: ver cual es el orden del msb
             msb = __builtin_clz(children); // the most significant bit of children
             children_to_recurse[i] = msb; // we store the position of the msb in children_to_recurse
             ++i;
@@ -270,15 +271,13 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         int64_t last_child = -1;
         uint16_t child;
 
+        // TODO: pregunta cómo es tener un hijo en la parte extendida?
+        // TODO: problema con cur_node_test --> siempre corresponde al quadtree original , no del output
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
             uint64_t leaves;
             for (uint64_t j = 0; j < nQ; j++) {
-                //uint16_t mtest = Q[j]->getM(child);
-                //uint64_t t = rank_vector[j][Q[j]->getM(child)];
-                //k_d[j]; // TODO: pregnta en el num_leaves contamos quadtree original o qdag extendido?
                 leaves = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
-                //DEBUG: check q las leaves nunca sean 0
                 uint16_t cur_node_test = Q[j]->getM(child);
                 std::bitset<64> ith_node(cur_node_test);
                 uint16_t this_level = max_level-cur_level;
@@ -288,7 +287,27 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
             }
             // testing
+            // --> add the child to the path
+            uint64_t coordinates[nAtt];
+            for(uint64_t k = 0; k < nAtt; k++){
+                coordinates[k] = 0;
+            }
+            uint16_t diff_level = max_level-cur_level;
+            uint64_t l = (uint64_t) log2(p);
+            uint64_t path = child << (diff_level * l);
+            uint32_t node_cur_level = (uint32_t) path >> (diff_level * l);
+            uint64_t n_ones = bits::cnt((uint64_t) node_cur_level);
 
+            uint64_t msb_2, num_point;
+            for(uint64_t k=0; k< n_ones;k++){
+                msb_2 = __builtin_ctz(node_cur_level);
+                node_cur_level &= ~(1 << msb_2);//(((uint32_t) 0xffffffff) >> (msb_2 + 1)); // delete the msb of children
+                msb_2%=l;
+                num_point = (l-1)-msb_2;
+                coordinates[num_point] += 1 << diff_level;
+            }
+
+            //DEBUG: ver como quedo coordinates
             // we are writing the result in the output bitvector
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1); // last position we wrote in the current level.
@@ -449,8 +468,8 @@ bool parAND(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut, std::
             ancestor[cur_level] = child;
             if (cur_level == max_level ||
                 //  (cur_level > levelOfCut
-                //       ? AND(Q, root_temp, nQ, cur_level + 1, max_level, bv, last_pos, nAtt, bounded_result, UPPER_BOUND)
-                //       : parAND(totalThreads, threadId, levelOfCut, Q, root_temp, nQ, cur_level + 1, max_level, bv, last_pos, nAtt, bounded_result, UPPER_BOUND))
+                //       ? AND(Q, root_temp, nQ, cur_level + 1, max_level, path, last_pos, nAtt, bounded_result, UPPER_BOUND)
+                //       : parAND(totalThreads, threadId, levelOfCut, Q, root_temp, nQ, cur_level + 1, max_level, path, last_pos, nAtt, bounded_result, UPPER_BOUND))
                 parAND(totalThreads, threadId, levelOfCut, sharedMutex, Q, root_temp, nQ, cur_level + 1, max_level, bv,
                        last_pos, ancestor, nAtt, bounded_result, UPPER_BOUND)) {
                 sharedMutex.lock();
@@ -632,10 +651,10 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     for (uint64_t i = 0; i < Q_star[0]->getHeight(); i++)
         last_pos[i] = 0; // initialize the last position
 
-    // array of extended qdags, array of roots, current level, height, the output bitvector bv, arreglo de ult. posicion, number of attributs,
+    // array of extended qdags, array of roots, current level, height, the output bitvector path, arreglo de ult. posicion, number of attributs,
     AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
 
-    // we create a new qdag with the output store in bv (position of 1s on each level)
+    // we create a new qdag with the output store in path (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
     cout << "positions" << endl;
@@ -692,7 +711,7 @@ qdag *parMultiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     }
 
     auto height = Q_star[0]->getHeight();
-    vector<uint64_t> bv[height]; // OJO, asume que todos los qdags son de la misma altura
+    vector<uint64_t> path[height]; // OJO, asume que todos los qdags son de la misma altura
 
     parallel_for(nb_threads, [&](int start, int end) {
         for (int threadId = start; threadId < end; ++threadId) {
@@ -703,12 +722,12 @@ qdag *parMultiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
             for (uint64_t i = 0; i < height; i++)
                 last_pos[i] = 0;
 
-            parAND(nb_threads, threadId, levelOfCut, tuplesMutex, Q_star, Q_roots, Q.size(), 0, height - 1, bv,
+            parAND(nb_threads, threadId, levelOfCut, tuplesMutex, Q_star, Q_roots, Q.size(), 0, height - 1, path,
                    last_pos, ancestor, A.size(), bounded_result, UPPER_BOUND);
         }
     });
 
-    qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
+    qdag *qResult = new qdag(path, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
     return qResult;
 }

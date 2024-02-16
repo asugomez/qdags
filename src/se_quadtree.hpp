@@ -280,10 +280,10 @@ public:
             bv[i] = modify_to_bit_vector(_bv[i], i, size);
         }
         /*for (uint16_t i = 0; i < height; i++) {
-            bv[i] = new sdsl::sd_vector<>(_bv[i].begin(),_bv[i].end());
-            bv_rank[i] = sd_vector<>::rank_1_type(bv[i]);
-            bv_select[i] = sd_vector<>::select_1_type(bv[i]);
-            total_ones[i] = bv_rank[i].rank(bv[i].size());
+            path[i] = new sdsl::sd_vector<>(_bv[i].begin(),_bv[i].end());
+            bv_rank[i] = sd_vector<>::rank_1_type(path[i]);
+            bv_select[i] = sd_vector<>::select_1_type(path[i]);
+            total_ones[i] = bv_rank[i].rank(path[i].size());
         }*/
 
     }
@@ -324,7 +324,7 @@ public:
         return bv;
     }
 
-    inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in bv[level][0,node-1]
+    inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in path[level][0,node-1]
         return bv[level].rank(node);
     }
 
@@ -344,7 +344,7 @@ public:
      * @return
      */
     inline uint8_t get_node(uint16_t level, uint64_t node, uint64_t *rank_array, uint64_t r) {
-        uint8_t nd;// = bv[level].get_4_bits(node);
+        uint8_t nd;// = path[level].get_4_bits(node);
         if (k_d == 4) {
             nd = bv[level].get_4_bits(node);
             switch (nd) {
@@ -671,9 +671,9 @@ public:
 
 
     void printBv() {
-        //cout << "call to se_quadtree --> printBv. Size bv = " << bv->size() << endl;
+        //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
         for (int i = 0; i < getHeight(); i++) {
-            cout << "size bv[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
+            cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
             this->getBv()[i].print(k_d);
             cout << endl;
         }
@@ -684,14 +684,14 @@ public:
               uint64_t i, j, aa_r, zz;
 
               for (i = 0; i < height; i++) {
-                  if (bv[i].size() > 0)
-                      aa_r = bv_rank[i].rank(bv[i].size());
+                  if (path[i].size() > 0)
+                      aa_r = bv_rank[i].rank(path[i].size());
                   else
                       aa_r = 0;
                   ost << aa_r << ": ";
 
                   for (zz = j = 0; zz < aa_r; j++) {
-                      if ((bv[i])[j]) {
+                      if ((path[i])[j]) {
                           ost << '1';
                           zz++;
                       }

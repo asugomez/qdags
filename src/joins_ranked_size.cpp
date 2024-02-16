@@ -73,24 +73,33 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
                  bool bounded_result, uint64_t UPPER_BOUND, uint64_t grid_size,
                  priority_queue<qdagWeight>& pq, bool partial_results, uint16_t type_priority_fun, uint16_t type_order_fun) {
     // TODO: see if p is correct or it has to be the k_d
-    uint64_t p = Q[0]->nChildren(); // aridad del quadtree
+    uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size = 0;
     uint32_t children = 0xffffffff;
+    uint64_t results = 0;
     while(!pq.empty()){
         qdagWeight tupleQdags = pq.top(); //  level, el nodo (indice por el cual partir el join), su prioridad
         pq.pop();
         int16_t cur_level = tupleQdags.level;
         uint64_t *roots = tupleQdags.roots; // TODO: see if this works
+        uint64_t l = (uint64_t) log2(p); // bits number to define the node's children
         // if it's a leaf, output the point coordenates
         if(cur_level == max_level){
-            uint16_t l = log2(p); // bits number to define the node's children
             // TODO: output coordinates
             // TODO: las coordenadas de un qdag seran las de los otros iguales?
+            // DEBUG: see the tupleQdags and path
             // TOODO: esta operacion es lenta, podríamos tener una tabla guardada
-            //uint64_t* coordinates = getCoordinates(tupleQdags.bv, l);
-            cout << "point output: " << tupleQdags.bv << endl;
+            uint64_t coordinates[nAtt];
+            for(uint64_t i = 0; i < nAtt; i++){
+                coordinates[i] = 0;
+            }
+            getCoordinates(tupleQdags.path, l, max_level, coordinates, nAtt);
+            cout << "point output: " << tupleQdags.path << endl;
+            // TODO: maybe we have to materialize the last level
+            if(bounded_result && ++results >= UPPER_BOUND)
+                return true;
         } else {
             uint64_t root_temp[nQ];
             uint64_t rank_vector[nQ][64];
@@ -152,10 +161,11 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
                 // --> add the child to the path
                 uint16_t cur_child_qdag = Q[0]->getM(child);
                 uint16_t diff_level = max_level-cur_level;
-                uint64_t path = cur_child_qdag << (diff_level * (uint64_t) log2(p)); // height * bits to represent the children
-                tupleQdags.bv += path; // add the bits to the bitvector
+                uint64_t path = cur_child_qdag << (diff_level * (uint64_t) log2(k_d[0])); // height * bits to represent the children
+                tupleQdags.path += path; // add the bits to the bitvector
+                // TODO: maybe here we have to see if is the alst level --> output or insert
                 cur_level++;
-                qdagWeight this_node = {cur_level, root_temp, total_weight, tupleQdags.bv} ;
+                qdagWeight this_node = {cur_level, root_temp, total_weight, tupleQdags.path} ;
                 pq.push(this_node); // add the tuple to the queue
             }
         }
@@ -210,7 +220,7 @@ bool multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t 
         Q_roots[i] = 0; // root of every qdag
     }
 
-    // vector de enteros bv bitvector, que tienee tantas entradas como altura de los qdags: tiene un vector por cada nivel
+    // vector de enteros path bitvector, que tienee tantas entradas como altura de los qdags: tiene un vector por cada nivel
     vector<uint64_t> bv[Q_star[0]->getHeight()]; // OJO, asume que todos los qdags son de la misma altura
     // arreglo de la ultima posicion en donde escribi en cada nivel. Necesario pq uno va llenando los bitvector por cada nivel,
     // entonces para ver donde tengo q escribir en cada nivel, el siguiente elemnto
@@ -221,7 +231,7 @@ bool multiJoinPartialResultsSize(vector<qdag> &Q, bool bounded_result, uint64_t 
 
 
     // ---------------  everything is the same up to here --------------- //
-    // arreglo de qdags extendidos, arreglo de roots, también se necesita el nivel, la altura, bv es la respuesta, arreglo de ult. posicion, cantidad de atributos, si debe tener cota, nro de la cota
+    // arreglo de qdags extendidos, arreglo de roots, también se necesita el nivel, la altura, path es la respuesta, arreglo de ult. posicion, cantidad de atributos, si debe tener cota, nro de la cota
     uint64_t roots[Q.size()];
     for (uint64_t i = 0; i < Q.size(); i++){
         roots[i] = 0;
