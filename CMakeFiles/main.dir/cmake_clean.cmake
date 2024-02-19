@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/main.dir/main.cpp.o"
   "CMakeFiles/main.dir/main.cpp.o.d"
+  "CMakeFiles/main.dir/src/joins.cpp.o"
+  "CMakeFiles/main.dir/src/joins.cpp.o.d"
+  "CMakeFiles/main.dir/src/joins_ranked_size.cpp.o"
+  "CMakeFiles/main.dir/src/joins_ranked_size.cpp.o.d"
   "main"
   "main.pdb"
 )

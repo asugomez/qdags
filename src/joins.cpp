@@ -285,7 +285,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
             }
             // testing
             // --> add the child to the path
-            uint64_t coordinates[nAtt];
+            /*uint64_t coordinates[nAtt];
             for(uint64_t k = 0; k < nAtt; k++){
                 coordinates[k] = 0;
             }
@@ -302,7 +302,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 msb_2%=l;
                 num_point = (l-1)-msb_2;
                 coordinates[num_point] += 1 << diff_level;
-            }
+            }*/
 
             // final testing
 

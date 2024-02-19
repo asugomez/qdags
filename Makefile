@@ -153,6 +153,54 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/joins.o: src/joins.cpp.o
+.PHONY : src/joins.o
+
+# target to build an object file
+src/joins.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/joins.cpp.o
+.PHONY : src/joins.cpp.o
+
+src/joins.i: src/joins.cpp.i
+.PHONY : src/joins.i
+
+# target to preprocess a source file
+src/joins.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/joins.cpp.i
+.PHONY : src/joins.cpp.i
+
+src/joins.s: src/joins.cpp.s
+.PHONY : src/joins.s
+
+# target to generate assembly for a file
+src/joins.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/joins.cpp.s
+.PHONY : src/joins.cpp.s
+
+src/joins_ranked_size.o: src/joins_ranked_size.cpp.o
+.PHONY : src/joins_ranked_size.o
+
+# target to build an object file
+src/joins_ranked_size.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/joins_ranked_size.cpp.o
+.PHONY : src/joins_ranked_size.cpp.o
+
+src/joins_ranked_size.i: src/joins_ranked_size.cpp.i
+.PHONY : src/joins_ranked_size.i
+
+# target to preprocess a source file
+src/joins_ranked_size.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/joins_ranked_size.cpp.i
+.PHONY : src/joins_ranked_size.cpp.i
+
+src/joins_ranked_size.s: src/joins_ranked_size.cpp.s
+.PHONY : src/joins_ranked_size.s
+
+# target to generate assembly for a file
+src/joins_ranked_size.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/joins_ranked_size.cpp.s
+.PHONY : src/joins_ranked_size.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +213,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/joins.o"
+	@echo "... src/joins.i"
+	@echo "... src/joins.s"
+	@echo "... src/joins_ranked_size.o"
+	@echo "... src/joins_ranked_size.i"
+	@echo "... src/joins_ranked_size.s"
 .PHONY : help
 
 
