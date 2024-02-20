@@ -8,8 +8,9 @@
 using namespace sdsl;
 using namespace std;
 
-// TODO declare const int 0,1,2 for the type fun
-// TODO: see improvement in root and root_temp
+const uint8_t TYPE_FUN_PRI_SUM = 0;
+const uint8_t TYPE_FUN_PRI_MAX = 1;
+
 /**
  *
  * @param Q set of qdags.
@@ -115,9 +116,9 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                     Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
                     auto min_idx = rMq[j](init, end);
                     uint64_t priority_ith_node = priorities[j][min_idx];
-                    if (type_priority_fun == 0) // sum
+                    if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
-                    else if (type_priority_fun == 1) { // max
+                    else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
                         if (total_weight < priority_ith_node) {
                             total_weight = priority_ith_node;
                         }
@@ -261,9 +262,9 @@ bool AND_ranked_fixed_queue(qdag *Q[], uint16_t nQ,
                     Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
                     auto min_idx = rMq[j](init, end);
                     uint64_t priority_ith_node = priorities[j][min_idx];
-                    if (type_priority_fun == 0) // sum
+                    if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
-                    else if (type_priority_fun == 1) { // max
+                    else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
                         if (total_weight < priority_ith_node) {
                             total_weight = priority_ith_node;
                         }

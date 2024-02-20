@@ -3,9 +3,10 @@
 #include "./MinMaxHeap.hpp"
 #include "utils.hpp"
 
+const uint8_t TYPE_FUN_NUM_LEAVES = 0;
+const uint8_t TYPE_FUN_DENSITY_LEAVES = 1;
 
-// TODO declare const int 0,1,2 for the type fun
-// TODO: see improvement in root and root_temp
+
 /**
  *
  * @param Q set of qdags.
@@ -34,36 +35,36 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
         qdagWeight tupleQdags = pq.top();
         pq.pop();
         cur_level = tupleQdags.level;
-        uint64_t roots[nQ];
+        /*uint64_t roots[nQ];
         // HERE we have a problem
         for(uint64_t i = 0; i < nQ; i++){
             roots[i] = tupleQdags.roots[i];
-        }
+        }*/
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
                 if (cur_level == max_level) {
-                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
                 } else {
-                    children &= Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 4) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 5) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else {
@@ -71,6 +72,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 return false;
             }
         }
+        //delete[] tupleQdags.roots;
 
         // in children we have the actual non empty nodes
         // in children_to_recurse we store the index of these non emtpy nodes
@@ -106,7 +108,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                     }
                 }
             }
-            if(type_order_fun == 1) // density estimator, otherwise it's the number of leaves (min of the tuple)
+            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                     total_weight /= grid_size;
             // --> add the child to the path
             path = child << (diff_level * l); // height * bits to represent the children
@@ -172,35 +174,35 @@ bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
 
         cur_level = tupleQdags.level;
         uint64_t roots[nQ];
-        // HERE we have a problem
+        /*// HERE we have a problem
         for(uint64_t i = 0; i < nQ; i++){
             roots[i] = tupleQdags.roots[i];
-        }
+        }*/
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
                 if (cur_level == max_level) {
-                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
                 } else {
-                    children &= Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 4) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 5) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else {
@@ -229,7 +231,6 @@ bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
         for (i = 0; i < children_to_recurse_size; ++i) {
             uint64_t* root_temp= new uint64_t[nQ];
             child = children_to_recurse[i];
-            path = 0;
 
             // compute the weight of the tuple (ONLY if it's not a leaf)
             double total_weight = DBL_MAX;
@@ -244,7 +245,7 @@ bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
                     }
                 }
             }
-            if(type_order_fun == 1) // density estimator, otherwise it's the number of leaves (min of the tuple)
+            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                 total_weight /= grid_size;
             // --> add the child to the path
             path = child << (diff_level * l); // height * bits to represent the children
