@@ -45,24 +45,24 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
         pq.pop();
         cur_level = tupleQdags.level;
         uint64_t roots[nQ];
-        // HERE we have a problem
+        /*// HERE we have a problem
         for(uint64_t i = 0; i < nQ; i++){
             roots[i] = tupleQdags.roots[i];
-        }
+        }*/
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
                 if (cur_level == max_level) {
-                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
                 } else {
-                    children &= Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 4) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
                     children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
@@ -70,10 +70,10 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
             }
             else if (nAtt == 5) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else {
@@ -193,35 +193,35 @@ bool AND_ranked_fixed_queue(qdag *Q[], uint16_t nQ,
 
         cur_level = tupleQdags.level;
         uint64_t roots[nQ];
-        // HERE we have a problem
+        /*// HERE we have a problem
         for(uint64_t i = 0; i < nQ; i++){
             roots[i] = tupleQdags.roots[i];
-        }
+        }*/
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
                 if (cur_level == max_level) {
-                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
                 } else {
-                    children &= Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 4) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 5) {
                 if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, roots[i]);
+                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else {
