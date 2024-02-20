@@ -11,10 +11,11 @@ add_executable(main main.cpp)
 # Lista de archivos fuente dentro de la carpeta src
 set(SOURCE_FILES
         src/joins.cpp
-        src/joins_ranked_size.cpp
+        src/join_partial_results.cpp
         src/qdags.hpp
         src/rank.hpp
         src/se_quadtree.hpp
+        src/MinMaxHeap.hpp
 )
 
 # Agrega los archivos fuente al ejecutable principal

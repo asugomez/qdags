@@ -495,6 +495,7 @@ CMakeFiles/main.dir/main.cpp.o
  /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stddef.h
  /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdint.h
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/joins.cpp
+ /Users/asugomez/Desktop/Magister/Tesis/qdags/src/joins_ranked_size.cpp
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/qdags.hpp
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/rank.hpp
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/se_quadtree.hpp
@@ -1551,11 +1552,9 @@ CMakeFiles/main.dir/src/joins_ranked_size.cpp.o
  /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdarg.h
  /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stddef.h
  /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdint.h
- /Users/asugomez/Desktop/Magister/Tesis/qdags/src/qdagWeight.hpp
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/qdags.hpp
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/rank.hpp
  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/se_quadtree.hpp
- /Users/asugomez/Desktop/Magister/Tesis/qdags/src/utils.hpp
  /opt/homebrew/include/sdsl/bit_vector_il.hpp
  /opt/homebrew/include/sdsl/bit_vectors.hpp
  /opt/homebrew/include/sdsl/bits.hpp

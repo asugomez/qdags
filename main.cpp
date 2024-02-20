@@ -14,7 +14,7 @@ using namespace std::chrono;
 #include <algorithm>
 #include "src/qdags.hpp"
 #include "src/joins.cpp"
-#include "src/joins_ranked_size.cpp"
+#include "src/join_partial_results.cpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -135,7 +135,8 @@ int main(int argc, char **argv) {
     cout << "------ PARTIAL JOIN -----" << endl;
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
-    bool join = multiJoinPartialResultsSize(Q, true, 1000, true, 1,1,grid_side); // warmup join -> activar el caché
+    //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
+    bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 3); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
