@@ -12,10 +12,12 @@ add_executable(main main.cpp)
 set(SOURCE_FILES
         src/joins.cpp
         src/join_partial_results.cpp
+        src/join_ranked_results.cpp
         src/qdags.hpp
         src/rank.hpp
         src/se_quadtree.hpp
         src/MinMaxHeap.hpp
+        src/utils.hpp
 )
 
 # Agrega los archivos fuente al ejecutable principal

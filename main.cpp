@@ -15,6 +15,7 @@ using namespace std::chrono;
 #include "src/qdags.hpp"
 #include "src/joins.cpp"
 #include "src/join_partial_results.cpp"
+#include "src/join_ranked_results.cpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -136,7 +137,13 @@ int main(int argc, char **argv) {
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
     //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
-    bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 3); // warmup join -> activar el caché
+    //bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 3); // warmup join -> activar el caché
+    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
+    vector<int_vector<>> p;
+    p.push_back(prioritiesR);
+    p.push_back(prioritiesS);
+    bool join = multiJoinRankedResults(Q, true, 1000, 1, -1, p); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

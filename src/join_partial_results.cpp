@@ -109,10 +109,8 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             if(type_order_fun == 1) // density estimator, otherwise it's the number of leaves (min of the tuple)
                     total_weight /= grid_size;
             // --> add the child to the path
-            //uint16_t cur_child_qdag = Q[0]->getM(child);
             path = child << (diff_level * l); // height * bits to represent the children
             path += tupleQdags.path; // add the bits to the bitvector
-            //tupleQdags.path += path; // add the bits to the bitvector
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 uint32_t coordinates[nAtt];
@@ -253,7 +251,6 @@ bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
             path += tupleQdags.path; // add the bits to the bitvector
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
-                // DEBUG: see the tupleQdags and path
                 uint32_t coordinates[nAtt];
                 for(uint32_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
