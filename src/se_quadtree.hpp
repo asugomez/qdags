@@ -289,17 +289,6 @@ public:
 
     }
 
-    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_ones){
-        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
-        bit_vector _bv(_bv_int.size()*8);
-        for(uint64_t i : _bv_int){
-            _bv[i] = 1;
-            total_ones[level]++;
-        }
-        return rank_bv_64(_bv);
-
-    }
-
 
     ~se_quadtree() {
         ref_count--;
@@ -334,6 +323,25 @@ public:
             return bv[level].get_4_bits(node);
         else
             return bv[level].get_2_bits(node);
+    }
+
+    /**
+     * TODO: mejorarla pues entrega mas 0s de los que debería
+     * given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+     * @param _bv_int
+     * @param level
+     * @param n_ones
+     * @return
+     */
+    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_ones){
+        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+        bit_vector _bv(_bv_int.size()*8);
+        for(uint64_t i : _bv_int){
+            _bv[i] = 1;
+            total_ones[level]++;
+        }
+        return rank_bv_64(_bv);
+
     }
 
     /**
@@ -678,6 +686,46 @@ public:
             this->getBv()[i].print(k_d);
             cout << endl;
         }
+    }
+
+
+    /**
+     * TODO: finish this
+     * Return a quadtree of the i-th child of the root.
+     * @param child
+     * @return
+     */
+    se_quadtree* get_sub_quadtree(uint64_t i){
+        se_quadtree *quadtree = new se_quadtree();
+        if(get_ith_bit(0,i)){
+            quadtree->height = height - 1;
+            quadtree->k = k;
+            quadtree->d = d;
+            quadtree->k_d = k_d;
+
+
+            for(uint16_t j = 0; j < height - 1; j++){
+                uint64_t children_array[k_d];
+                uint64_t n_children = 1; // el primer hijo es recorrer la raiz del nuevo quadtree
+                //void get_children(uint16_t level, uint64_t node, uint64_t *children_array, uint64_t &n_children)
+                bit_vector bv_new_quadtree = bit_vector(k_d*n_children);
+                for(uint64_t child = 0 ; child < n_children; child++){
+                    uint64_t n_children_ith_child = 0;
+                    get_children(j+1,i+ child,children_array,n_children_ith_child);
+                    // escribir en el bv[j] los bits correspondientes
+                    for(uint64_t ith_bit = 0; ith_bit < n_children_ith_child; ith_bit++){
+                        bv_new_quadtree[children_array[ith_bit+(k_d*child)]] = 1;
+                    }
+
+                }
+                //bit_vector bv_new_quadtree = this->bv[j+1].get_sub_bv(j+1,i);
+
+                quadtree->bv[j] = rank_bv_64(bv_new_quadtree);
+                quadtree->total_ones[j] = //__builtin_popcount(bv_new_quadtree);
+            }
+        }
+        return quadtree;
+
     }
 
 

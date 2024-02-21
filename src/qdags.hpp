@@ -249,6 +249,10 @@ public:
         return Q->getK();
     }
 
+    uint8_t getD() {
+        return Q->getD();
+    }
+
 
     uint16_t nChildren() {
         return Msize;
@@ -441,6 +445,41 @@ public:
 
     void test_get_4_bits(){
         return Q->test_get_4_bits();
+    }
+
+    /**
+     *
+     * @return 1 if the grid is a single point, 0 if the grid is empty, 0.5 otherwise
+     */
+    double value() {
+        switch (this->Q->total_ones_level(this->getHeight() - 1)){
+            case 0: // leaf
+                return 0;
+            case 1:
+                return 1;
+            default:
+                return 0.5;
+        }
+    }
+
+    /**
+     * Algorithm 2 Child(Q,i)
+     * Return a qdag corresponding to the i-th child of Q
+     * @param Q a qdag Q = (Q', M)
+     * @param i
+     * @return
+     */
+    qdag* child(uint16_t i){
+        qdag *q = new qdag();
+        q->Q = this->Q->get_sub_quadtree(i);
+        q->Q = this->Q;
+        q->M = this->M;
+        q->attribute_set = this->attribute_set;
+        q->grid_side = this->grid_side;
+        q->is_extended_qdag = this->is_extended_qdag;
+        q->Msize = this->Msize;
+        return q;
+
     }
 
 
