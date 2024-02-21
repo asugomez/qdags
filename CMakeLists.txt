@@ -15,6 +15,7 @@ set(SOURCE_FILES
         src/qdags.hpp
         src/rank.hpp
         src/se_quadtree.hpp
+        src/lqdags.cpp
 )
 
 # Agrega los archivos fuente al ejecutable principal
