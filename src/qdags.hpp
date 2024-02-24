@@ -424,8 +424,8 @@ public:
      *
      * @param level of the parent
      * @param parent
-     * @param child the i-th child of the parent
-     * @return the number of leaves of the i-th child of the parent node.
+     * @param child the i-th get_child_se_quadtree of the parent
+     * @return the number of leaves of the i-th get_child_se_quadtree of the parent node.
      * @example:
      * 0101
      * 0100 1001
@@ -464,24 +464,28 @@ public:
 
     /**
      * Algorithm 2 Child(Q,i)
-     * Return a qdag corresponding to the i-th child of Q
+     * Return a qdag corresponding to the i-th get_child_se_quadtree of Q
      * @param Q a qdag Q = (Q', M)
      * @param i
      * @return
      */
-    qdag* child(uint16_t i){
-        qdag *q = new qdag();
-        q->Q = this->Q->get_sub_quadtree(i);
-        q->Q = this->Q;
+    void get_child_qdag(uint64_t level,uint16_t i){
+        /*qdag *q = new qdag();
+        q->Q = this->Q->get_child_se_quadtree(level,i);
         q->M = this->M;
         q->attribute_set = this->attribute_set;
         q->grid_side = this->grid_side;
         q->is_extended_qdag = this->is_extended_qdag;
         q->Msize = this->Msize;
-        return q;
+        return q;*/
+        //TODO: su esta extendido, hay que hacer get(M[i]) (el mapeo)
+        uint64_t* test = this->Q->get_child_se_quadtree(level,i);
+        cout << "get_child_qdag" << endl;
+        for(uint16_t j=0;j< getHeight()-1;j++){
+            cout << test[j] << " ";
+        }
 
     }
-
 
 };
 

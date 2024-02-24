@@ -96,11 +96,12 @@ public:
     }
 
     // algorithm 8 child(L,i)
+    // TODO: pregunta get_child_qdag obtengo toooodo el qdag? o el primer nivel?
     lqdag* get_sub_lqdag(uint16_t i){
         if(this->functor == FUNCTOR_QTREE || this->functor == FUNCTOR_NOT){
             lqdag *l = new lqdag();
             l->functor = this->functor;
-            l->Q = this->Q->child(i);
+            l->Q = this->Q->get_child_qdag(i);
             return l;
         }
         else if(this->functor == FUNCTOR_AND){

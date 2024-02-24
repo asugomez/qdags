@@ -108,8 +108,16 @@ public:
         return u;
     }
 
+    inline void set_size(uint64_t new_u) {
+        this->u = new_u;
+    }
+
     inline uint64_t n_ones() {
         return n;
+    }
+
+    inline void set_n_ones(uint64_t new_n) {
+        this->n = new_n;
     }
 
     inline uint64_t size_in_bytes() {
@@ -118,12 +126,52 @@ public:
                + 2 * sizeof(uint64_t);
     }
 
+    uint64_t get_seq() {
+        return *this->seq;
+    }
+
+    void set_seq(uint64_t *new_seq) {
+        this->seq = new_seq;
+    }
+
+    void apply_mask_seq(uint64_t mask) {
+        uint64_t new_seq = get_seq() & mask;
+        this->seq = &new_seq;
+    }
+
+    void set_block(uint32_t *new_block) {
+        this->block = new_block;
+    }
+
+    uint32_t* get_block() {
+        return this->block;
+    }
+
+
+    /**
+     *
+     * @return
+     * @example 00000000 00000000 00000000 00010000 will be 27
+     */
+    uint64_t first_one(){
+        return __builtin_clz(get_seq());
+    }
+
+    /**
+     *
+     * @return
+     * @example 00000000 00000000 00000000 00010000 will be 4
+     */
+    uint64_t last_one(){
+        return __builtin_ctz(get_seq());
+    }
+
     /**
      *
      * @param parent
-     * @param child the i-th child
+     * @param child the i-th get_child_se_quadtree
      * @param k_d
-     * @return the bit of the ith-child of the parent
+     * @return the bit of the ith-get_child_se_quadtree of the parent
      */
     bool get_bit(uint64_t parent, uint64_t child, uint64_t k_d){
         uint8_t x;

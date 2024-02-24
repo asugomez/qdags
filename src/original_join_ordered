@@ -11,7 +11,7 @@ for(uint64_t i = 0; i < p ; i++){
         // for partial results, compute the num leaves
         if(partial_results){
             // TODO: ver si es cur_level o cur_level ++;
-            // TODO: problem here: no siempre será el mismo i-th child para cada qdag
+            // TODO: problem here: no siempre será el mismo i-th get_child_se_quadtree para cada qdag
             // TODO: rehacer el debug, y ver como va cambiando root_temp[j]
             uint64_t n_leaves_ith_node = Q[j]->get_num_leaves_ith_node(cur_level, cur_node, i);
             // empty node

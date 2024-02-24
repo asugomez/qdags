@@ -23,7 +23,7 @@ struct qdagWeight {
  * Get the coordinates of a point in the grid given the path from the root to the leaf in the quadtree.
  * This function is O(m), with m the number of 1s in the path.
  * @param path see the paper for the definition (page 5).
- * @param l number of bits to define a child on each level
+ * @param l number of bits to define a get_child_se_quadtree on each level
  * @param height height of the quadtree
  * @param pointCoord the coordinates of the point in the grid. We are going to write on this array.
  */
@@ -168,8 +168,8 @@ bool AND_ordered(qdag *Q[], uint16_t nQ,
             }
             if(partial_results && type_order_fun == 1) // density estimator, otherwise it's the number of leaves (min of the tuple)
                     total_weight /= grid_size;
-            // --> add the child to the path
-            //uint16_t cur_child_qdag = Q[0]->getM(child);
+            // --> add the get_child_se_quadtree to the path
+            //uint16_t cur_child_qdag = Q[0]->getM(get_child_se_quadtree);
             path = child << (diff_level * l); // height * bits to represent the children
             path += tupleQdags.path; // add the bits to the bitvector
             //tupleQdags.path += path; // add the bits to the bitvector

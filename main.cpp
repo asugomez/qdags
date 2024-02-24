@@ -113,8 +113,11 @@ int main(int argc, char **argv) {
     start = high_resolution_clock::now();
     cout << "-----------" << endl;
     cout << "relacion R" << endl;
-    //qdag_rel_R.printBv();
+    qdag_rel_R.printBv();
     cout << "-----------" << endl;
+    qdag_rel_R.get_child_qdag(0,0);
+    //qdag_rel_R.printBv();
+
     cout << "relacion S" << endl;
     //qdag_rel_S.printBv();
     stop = high_resolution_clock::now();

@@ -130,7 +130,7 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
 
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i];
-            // cout << child << ' ';
+            // cout << get_child_se_quadtree << ' ';
 
             if (cur_level == levelOfCut) {
                 // CHECK WHETHER TO SKIP THIS NODE
@@ -280,18 +280,18 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 std::bitset<64> ith_node(cur_node_test);
                 uint16_t this_level = max_level-cur_level;
                 // the node in the j-th quadtree where we are moving
-                // it's like a mapping between the child in the output and which node in the qdag we are moving
+                // it's like a mapping between the get_child_se_quadtree in the output and which node in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
             }
             // testing
-            // --> add the child to the path
+            // --> add the get_child_se_quadtree to the path
             /*uint64_t coordinates[nAtt];
             for(uint64_t k = 0; k < nAtt; k++){
                 coordinates[k] = 0;
             }
             uint16_t diff_level = max_level-cur_level;
             uint64_t l = (uint64_t) log2(p);
-            uint64_t path = child << (diff_level * l);
+            uint64_t path = get_child_se_quadtree << (diff_level * l);
             uint32_t node_cur_level = (uint32_t) path >> (diff_level * l);
             uint64_t n_ones = bits::cnt((uint64_t) node_cur_level);
 
