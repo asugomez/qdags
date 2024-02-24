@@ -690,7 +690,22 @@ public:
 
 
     /**
-     * crear arreglo de bit_vectors
+     * Create an array of uint64_t that represents a bitvector for each level.
+     * @param level
+     * @param node
+     * @return
+     * @example get_child_se_quadtree(0,0)
+     * 1010
+     * 0010 0110
+     * 0111 0110 0001
+     * 0010 0100 0010 0110 1111 0010
+     * 0110 1010 0001 0100 1111 1100 1111 1011 1111 0011
+     * will return
+     * [4,14,1060,2134] that is in bit:
+     * 0100
+     * 1111
+     * 0010 0100 0010
+     * 0110 1010 0001
      */
     uint64_t* get_child_se_quadtree(uint64_t level, uint64_t node) {
         if (get_ith_bit(0, node)) {
@@ -700,14 +715,13 @@ public:
             uint64_t children_array[k_d];
             get_children(level+1,siblings*k_d, children_array,n_children);
 
-            //bit_vector* bv_new_quadtree = new bit_vector[height-(level+1)];
             uint64_t* bv_new_quadtree = new uint64_t[height-(level+1)];
             for(uint16_t j = level; j < height-1; j++){
-                //bv_new_quadtree[j] = bit_vector(k_d*parent);
                 bv_new_quadtree[j] = 0;
-                bv_new_quadtree[j] = my_mask(j+1, n_children, siblings, parent);
+                bv_new_quadtree[j] = mask_sub_se_quadtree(j + 1, n_children, siblings, parent);
                 // PARA CAMBiar el bitvector original
-                bv[j+1].set_seq(&bv_new_quadtree[j]);
+                // TODO: number of blocks with 1s is wrong here
+                //bv[j+1].set_seq(&bv_new_quadtree[j]);
             }
             return bv_new_quadtree;
         }
@@ -715,10 +729,10 @@ public:
     }
 
 
-    uint64_t my_mask(int16_t level, uint64_t& children, uint64_t& siblings, uint64_t& parent){
+    uint64_t mask_sub_se_quadtree(int16_t level, uint64_t& children, uint64_t& siblings, uint64_t& parent){
         uint64_t n_ones_right = total_ones_level(level-1) - siblings - parent;
         uint64_t end = n_ones_right*k_d;
-        uint64_t bv_level = test_get_important_bits(level, siblings*k_d, end);
+        uint64_t bv_level = get_important_bits(level, siblings * k_d, end);
         uint64_t this_children = children;
         parent = this_children;
         siblings = rank(level,siblings*k_d);
@@ -728,262 +742,13 @@ public:
 
     }
 
-    // 0001001001000000 --> 1001001
-    void get_important_bits(uint16_t level, uint64_t start, uint64_t end, rank_bv_64& new_bv){
+    uint64_t get_important_bits(uint16_t level, uint64_t start, uint64_t end){
         uint64_t new_seq = bv[level].get_seq() >> start;
         new_seq = new_seq << start;
         new_seq = new_seq << (64 - bv[level].size() + end);
         new_seq = new_seq >> (64 - bv[level].size() + end);
-        new_bv.set_seq(&new_seq);
-        new_bv.set_size(this->bv[level].size() - start - end); // TODO: check the index
-        new_bv.set_n_ones(__builtin_popcount(new_seq));
-        // TODO: number of blocks with 1s is wrong here
-        new_bv.set_block(this->bv[level].get_block());
-   }
-
-    uint64_t test_get_important_bits(uint16_t level, uint64_t start, uint64_t end){
-        //uint64_t first_zeros = bv[level].first_one();
-        //uint64_t last_zeros = bv[level].last_one();
-        // TODO: see how it wokrs for end, it should be working
-        uint64_t new_seq = bv[level].get_seq() >> start;
-        new_seq = new_seq << start;
-        new_seq = new_seq << (64 - bv[level].size() + end);
-        new_seq = new_seq >> (64 - bv[level].size() + end);
-        //rank_bv_64 new_bv = rank_bv_64();
-        //bv[level].set_seq(&new_seq);
         return new_seq;
-        //new_bv.set_seq(&new_seq);
-        //new_bv.set_size(this->bv[level].size() - start - end); // TODO: check the index
-        //new_bv.set_n_ones(__builtin_popcount(new_seq));
-        // TODO: number of blocks with 1s is wrong here
-        //new_bv.set_block(this->bv[level].get_block());
     }
-
-    // TODO: do it with a mask of bits
-    rank_bv_64* mask_sub_quadtree(int16_t level, uint64_t node){
-        if(level == -1){
-            return this->bv; // nothing to do
-        }
-        if(get_ith_bit(level, node) == 0){
-            // TODO: return empty
-        }
-        if(level == getHeight()-1){ // leaf
-            // TODO 1 bit only
-        }
-        uint64_t siblings = rank(level,node);
-        uint64_t n_children;
-        //uint64_t n_parents;
-        uint64_t children_array[k_d];
-        //get_children(level,node, children_array,n_children);
-        get_children(level+1,siblings*k_d, children_array,n_children);
-        //bit_vector bv_level = bit_vector(k_d);
-        rank_bv_64* new_bv = new rank_bv_64[height-(level+1)];
-        //vector<rank_bv_64> new_bv(height-(level+1));
-        /*for(uint16_t i = 0; i < (height-(level+1)); i++){
-            new_bv[i] = rank_bv_64();
-        }*/
-
-        if(level == getHeight()-2){
-            uint64_t end = bv[level+1].size() - (total_ones_level(level) - siblings -1)* k_d;
-            get_important_bits(level, siblings*k_d, end, new_bv[0]);
-            return &new_bv[0];
-        }
-
-        mask_sub_quadtree_aux(++level, n_children, siblings, 1, new_bv);
-        return new_bv;
-    }
-
-    void mask_sub_quadtree_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t parent, rank_bv_64* new_bv){
-        uint64_t n_ones_right = total_ones_level(level-1) - siblings - parent;//rank(level, bv[level].size()) - rank(level,(siblings+parent)*k_d);
-        //uint64_t children_array[k_d];
-        //get_children(level-1,siblings*k_d, children_array,n_ones_parent);
-        uint64_t end = n_ones_right*k_d;//(total_ones_level(level-1) - siblings - n_ones_parent) > 0 ? ((total_ones_level(level-1) - siblings - n_ones_parent)* k_d) : 0;
-        // DEBUG: ver como es bv[level]
-        get_important_bits(level, siblings*k_d, end, new_bv[level-1]);
-        if(level == getHeight()-1){
-            return;
-        }
-
-        parent = children;
-        siblings = rank(level,siblings*k_d);
-        level++;
-        children = rank(level,(children + siblings)*k_d) - rank(level,siblings*k_d);
-
-        return mask_sub_quadtree_aux(level, children, siblings, parent, new_bv);
-    }
-
-
-
-
-            //rank_bv_64 *bv_new_quadtree = new rank_bv_64[height-1];
-
-            /*bit_vector k_t_ = bit_vector(k_d, 0);
-            idx_type t = 0;
-            uint16_t level = 0;
-            uint64_t siblings = rank(level,i);
-            uint64_t n_children=1;
-            bit_vector bv_level = bit_vector(k_d * n_children);
-            uint64_t children_array[k_d];
-            get_children(level,i, children_array,n_children);
-            while(level < height - 1){
-                for(uint64_t ith_child = 0; ith_child < n_children; ith_child++){
-                    bv_level[children_array[ith_child]+] = 1; // TODO: le falta el start pos
-                }
-                bv_new_quadtree[level-1] = rank_bv_64(bv_level);
-                bv_level = bit_vector(k_d * n_children);
-                level++;
-                get_children(level,i, children_array,n_children);
-
-
-            }
-
-
-            for(uint16_t level = 0; level < height - 1; level++){
-                uint64_t top = n_children;
-                // DEBUG: see size of bv_level
-                bit_vector bv_level = bit_vector(k_d * n_children);
-                cout << "n_children for the level " << n_children << endl;
-                for(uint64_t child = 0 ; child < top; child++){
-                    //uint64_t n_children_ith_child = 0;
-                    uint64_t children_array[k_d];
-                    // TODO: aqui no es child necesariamente, sino que es el i-th hijo
-                    get_children(level+1,((siblings*k_d) + child,children_array,n_children);
-                    // escribir en el bv[j] los bits correspondientes
-                    for(uint64_t ith_bit = 0; ith_bit < n_children; ith_bit++){
-                        bv_level[children_array[ith_bit] + (child * k_d)] = 1;
-                    }
-                }
-                siblings = rank(level+1, siblings*k_d);
-
-                bv_new_quadtree[level] =  rank_bv_64(bv_level);
-                quadtree->total_ones[level] = bv_new_quadtree[level].n_ones();//__builtin_popcount(bv_new_quadtree);
-                //bit_vector bv_new_quadtree = this->bv[j+1].get_sub_bv(j+1,i);
-
-            }
-            quadtree->bv = bv_new_quadtree;
-        }
-        return quadtree;
-
-    }*/
-
-
-    rank_bv_64 * first_write(uint64_t node){
-        uint64_t siblings = rank(0,node);
-        uint64_t n_children=1;
-        rank_bv_64 new_bv[height-1];
-        bit_vector bv_level = bit_vector(k_d * n_children);
-        uint64_t children_array[k_d];
-        get_children(0,node, children_array,n_children); // 0010
-        for(uint64_t i = 0; i < n_children;i++){
-            bv_level[children_array[i]] = 1;
-        }
-        // debug q sea 0010
-        new_bv[0] = rank_bv_64(bv_level);
-
-        write_bv(new_bv, 1, siblings, children_array, n_children);
-        return new_bv;
-    }
-
-    void write_bv(rank_bv_64 *new_bv, int16_t level, uint64_t siblings, uint64_t *children_array, uint64_t &n_children){
-        // DEBUG: ver si se escribio el primer nivel
-        // escribr aqui lo que le paso
-        if(level == height-2){
-            return;
-        }
-        bit_vector bv_level = bit_vector(k_d * n_children);
-
-        /*for (uint64_t i = 0; i < n_children; i++) { // aqui escribo a lo mas k_d hijos
-            // DEBUG: ver si corresponde siblings * k_d + children_array[i]
-            bv_level[siblings * k_d + children_array[i]] = 1;
-        }*/
-
-        // DEBUG: ver si se escribio el otro nivel
-        uint64_t new_siblings = rank(level,siblings*k_d);
-        // DEBG new siblings
-        for(uint64_t i = 0; i < n_children;i++){
-            bv_level[siblings * k_d + children_array[i]] = 1;
-            uint64_t this_children_array[k_d];
-            uint64_t this_children;
-            // DEBUG: ver si corresponde siblings * k_d + children_array[i]
-            get_children(level, new_siblings*k_d + children_array[i], this_children_array, this_children);
-            uint64_t this_siblings = rank(level+1, new_siblings*k_d + children_array[i]);
-
-            write_bv(new_bv, level+1, this_siblings, this_children_array, this_children);
-        }
-
-        new_bv[level] = rank_bv_64(bv_level);
-
-        //siblings = rank(level,siblings*k_d);
-        //children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
-        //get_children(level,node, children_array,n_children);
-
-
-    }
-
-    // use this for the constructor from bv[int[ to bit_vector
-    rank_bv_64* test(int16_t level, uint64_t node){
-        if(get_ith_bit(level, node) == 0 || level>getHeight()-2){ // empty
-            //bit_vector bv_level = bit_vector(0);
-            rank_bv_64 new_bv[0];// = rank_bv_64(bv_level);
-            return new_bv;
-        }
-        uint64_t children_array[k_d];
-        uint64_t n_children;
-        bit_vector bv_level = bit_vector(k_d);
-        if(level == getHeight()-2){ // leaf --> the 4 bits
-            rank_bv_64 new_bv[1];
-            get_children(level,node, children_array,n_children); // 0010
-            for(uint64_t i = 0; i < n_children;i++){
-                bv_level[children_array[i]] = 1;
-            }
-            new_bv[0] = rank_bv_64(bv_level);
-            return new_bv;
-        }
-        rank_bv_64 new_bv[height-(level+1)]; // aqui escribire cada bitvector de cada nivel
-        get_children(level,node, children_array,n_children);
-        for(uint64_t i = 0; i < n_children;i++){
-            bv_level[children_array[i]] = 1;
-        }
-        new_bv[0] = rank_bv_64(bv_level);
-        uint64_t siblings = 0;
-        test_aux(level++,children_array, n_children,siblings, new_bv);
-        return new_bv;
-
-        /*uint64_t siblings = rank(level,node);
-        level++;
-        if(level == getHeight()-1){
-            return n_children;
-        }
-        return get_num_leaves_aux(level, n_children, siblings); // siblings*k_d es mi start position en el siguiente nivel*/
-    }
-
-    // lo recorre recursivamente en DFS
-    void test_aux(uint16_t level, uint64_t *children_array, uint64_t &n_children, uint64_t siblings, rank_bv_64* bv_output){
-
-        if(level == getHeight()){ // leaf --> the 4 bits
-            return;
-        }
-        bit_vector bv_level = bit_vector(k_d*n_children);
-        for(uint64_t child; child < n_children; child++){
-            uint64_t new_children_array[k_d];
-            uint64_t new_n_children;
-            get_children(level, siblings*k_d + children_array[child], new_children_array, new_n_children);
-            // escribir
-            for(uint64_t i = 0; i < new_n_children;i++){
-                bv_level[child*k_d + new_children_array[i]] = 1;
-            }
-            test_aux(level++, new_children_array,new_n_children,child,bv_output);
-        }
-    }
-
-
-    /*void write(uint64_t *children_array, uint64_t &n_children, bit_vector* bv_level){
-        bit_vector bv_level = bit_vector(k_d*n_children);
-        for(uint64_t i = 0; i < n_children;i++){
-            bv_level[children_array[i]] = 1;
-        }
-
-    }*/
 
     /*       void print(std::ofstream &ost) {
               uint64_t i, j, aa_r, zz;
