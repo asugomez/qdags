@@ -657,7 +657,7 @@ public:
         return get_num_leaves_aux(level+1, children, siblings);
     }
 
-    /**
+    /** TODO: no la estoy usando esta para nada
      *
      * @param level of the parent. -2 if it is the grandparent of the root. -1 if it is the parent of the root.
      * @param parent the i-th 1 of the level.
@@ -676,6 +676,58 @@ public:
         if(total_ones_level(level) <= parent)
             return 0;
         return get_num_leaves(level+1,parent*k_d+child);
+    }
+
+    /**
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Useful for the range Maximum query
+     * @param level
+     * @param node
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param end will be modified if the node is not the root. -1 if the node is empty.
+     */
+    void get_range_leaves(int16_t level, uint64_t node, int64_t& init, int64_t& end){
+        if(level == -1){
+            return;
+        }
+        if(level == getHeight()-1){ // leaf
+            if(get_ith_bit(level, node)){
+                init = rank(level,node);
+                end = init;
+            }
+            else{
+                init = -1;
+                end = -1;
+            }
+            return;
+        }
+        if(get_ith_bit(level, node) == 0){
+            init = -1;
+            end = -1;
+            return;
+        }
+        uint64_t siblings = rank(level,node); // start position in the next level
+        uint64_t n_children;
+        uint64_t children_array[k_d];
+        level++;
+        get_children(level,siblings*k_d, children_array,n_children);
+        if(level == getHeight()-1){
+            init = siblings;
+            end = init + n_children - 1;
+            return;
+        }
+        return get_range_leaves_aux(level, n_children, siblings, init, end);
+    }
+
+    void get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, int64_t& init, int64_t& end){
+        siblings = rank(level,siblings*k_d);
+        children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
+        if(level == getHeight()-2){
+            init = siblings;
+            end = init + children - 1;
+            return;
+        }
+        return get_range_leaves_aux(level+1, children, siblings, init, end);
     }
 
 

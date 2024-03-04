@@ -525,4 +525,5 @@ CMakeFiles/main.dir/main.cpp.o: \
   /Users/asugomez/Desktop/Magister/Tesis/qdags/src/se_quadtree.hpp \
   /opt/homebrew/include/sdsl/k2_tree_helper.hpp \
   /Users/asugomez/Desktop/Magister/Tesis/qdags/src/rank.hpp \
-  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/joins.cpp
+  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/joins.cpp \
+  /Users/asugomez/Desktop/Magister/Tesis/qdags/src/joins_ranked_size.cpp

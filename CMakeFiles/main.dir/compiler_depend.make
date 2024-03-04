@@ -494,6 +494,7 @@ CMakeFiles/main.dir/main.cpp.o: main.cpp \
   /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdint.h \
   src/joins.cpp \
+  src/joins_ranked_size.cpp \
   src/qdags.hpp \
   src/rank.hpp \
   src/se_quadtree.hpp \
@@ -1548,11 +1549,9 @@ CMakeFiles/main.dir/src/joins_ranked_size.cpp.o: src/joins_ranked_size.cpp \
   /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdint.h \
-  src/qdagWeight.hpp \
   src/qdags.hpp \
   src/rank.hpp \
   src/se_quadtree.hpp \
-  src/utils.hpp \
   /opt/homebrew/include/sdsl/bit_vector_il.hpp \
   /opt/homebrew/include/sdsl/bit_vectors.hpp \
   /opt/homebrew/include/sdsl/bits.hpp \
@@ -1585,12 +1584,6 @@ CMakeFiles/main.dir/src/joins_ranked_size.cpp.o: src/joins_ranked_size.cpp \
   /opt/homebrew/include/sdsl/uintx_t.hpp \
   /opt/homebrew/include/sdsl/util.hpp
 
-
-src/utils.hpp:
-
-src/qdagWeight.hpp:
-
-src/joins_ranked_size.cpp:
 
 /opt/homebrew/include/sdsl/util.hpp:
 
@@ -1633,6 +1626,8 @@ src/joins_ranked_size.cpp:
 src/rank.hpp:
 
 src/qdags.hpp:
+
+src/joins_ranked_size.cpp:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/stdint.h:
 
