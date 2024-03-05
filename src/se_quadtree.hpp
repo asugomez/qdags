@@ -723,6 +723,61 @@ public:
     }
 
 
+
+    void call_dfuds(){
+        vector<uint8_t> dfuds;
+        uint64_t last_pos[getHeight()];
+        uint64_t last_children[getHeight()];
+        for (uint64_t i = 0; i < getHeight(); i++) {
+            last_pos[i] = 0; // initialize the last position
+            last_children[i] = 0; // initialize the last number of children
+        }
+        uint16_t level = 0;
+        uint8_t n_bits = bv[level].get_kd_bits(last_pos[level]*k_d, k_d);
+        last_children[level] += bits::cnt(n_bits);
+
+        dfuds.push_back(n_bits);
+        last_pos[level]++;
+        level++;
+
+        create_dfuds(level,last_pos, last_children, dfuds);
+    }
+
+    void create_dfuds(uint16_t level, uint64_t last_pos[], uint64_t last_children[], vector<uint8_t> &dfuds){
+        if(level == 0){
+            return;
+        }
+
+        if(last_pos[level] >= last_children[level-1]){
+            return create_dfuds(--level, last_pos, last_children, dfuds);
+        }
+        uint64_t n_siblings = rank(level,last_pos[level]*k_d);
+        uint64_t children_array[k_d];
+        uint64_t n_children;
+        get_children(level,last_pos[level]*k_d, children_array, n_children);
+
+        last_children[level] += n_children;
+
+        //get_children(level, pointer_node, children_array, n_children);
+        if(level== getHeight()-2){
+
+            dfuds.push_back(bv[level].get_kd_bits(last_pos[level]*k_d, k_d));
+            last_pos[level]++;
+            for(uint64_t i = 0; i < n_children ; i++){
+                dfuds.push_back(bv[level+1].get_kd_bits(k_d*(n_siblings + i), k_d) );
+                //last_pos[level+1]++;
+            }
+            last_pos[level+1]+= n_children;
+            return create_dfuds(level, last_pos, last_children, dfuds);
+        }
+        else {
+            dfuds.push_back(bv[level].get_kd_bits(last_pos[level]*k_d, k_d));
+            last_pos[level]++;
+            level++;
+            return create_dfuds(level, last_pos, last_children, dfuds);
+        }
+    }
+
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
         for (int i = 0; i < getHeight(); i++) {
