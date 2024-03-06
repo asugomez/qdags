@@ -143,7 +143,8 @@ int main(int argc, char **argv) {
     vector<int_vector<>> p;
     p.push_back(prioritiesR);
     p.push_back(prioritiesS);*/
-    qdag_rel_S.call_dfuds();
+    qdag_rel_R.create_dfuds();
+    qdag_rel_R.printBv();
 
     //bool join = multiJoinRankedResults(Q, true, 1000, 1, 10, p); // warmup join -> activar el caché
 

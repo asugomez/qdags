@@ -455,8 +455,8 @@ public:
         return Q->test_get_4_bits();
     }
 
-    void call_dfuds(){
-        return Q->call_dfuds();
+    void create_dfuds(){
+        return Q->create_dfuds();
     }
 
 

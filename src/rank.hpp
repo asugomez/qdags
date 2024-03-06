@@ -178,7 +178,9 @@ public:
     void print_4_bits(uint64_t start_pos) {
         uint8_t x = get_4_bits(start_pos);
 
-        for (int i = 0; i < 4; i++) {
+        // bit most significant first
+        // otherwise do: i=0; i<4; i++
+        for (int i = 3; i > -1; i--) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";

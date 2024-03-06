@@ -29,6 +29,8 @@
 #include <sdsl/k2_tree_helper.hpp>
 #include <sdsl/int_vector_buffer.hpp>
 #include "rank.hpp"
+#include <sdsl/bp_support_g.hpp>
+#include <sdsl/bp_support_gg.hpp>
 
 
 //! A k^2-tree
@@ -724,7 +726,7 @@ public:
 
 
 
-    void call_dfuds(){
+    void create_dfuds(){
         vector<uint8_t> dfuds;
         uint64_t last_pos[getHeight()];
         uint64_t last_children[getHeight()];
@@ -740,16 +742,18 @@ public:
         last_pos[level]++;
         level++;
 
-        create_dfuds(level,last_pos, last_children, dfuds);
+        create_dfuds_aux(level, last_pos, last_children, dfuds);
+
+        vector_to_bit_vector(dfuds);
     }
 
-    void create_dfuds(uint16_t level, uint64_t last_pos[], uint64_t last_children[], vector<uint8_t> &dfuds){
+    void create_dfuds_aux(uint16_t level, uint64_t last_pos[], uint64_t last_children[], vector<uint8_t> &dfuds){
         if(level == 0){
             return;
         }
 
         if(last_pos[level] >= last_children[level-1]){
-            return create_dfuds(--level, last_pos, last_children, dfuds);
+            return create_dfuds_aux(--level, last_pos, last_children, dfuds);
         }
         uint64_t n_siblings = rank(level,last_pos[level]*k_d);
         uint64_t children_array[k_d];
@@ -758,7 +762,6 @@ public:
 
         last_children[level] += n_children;
 
-        //get_children(level, pointer_node, children_array, n_children);
         if(level== getHeight()-2){
 
             dfuds.push_back(bv[level].get_kd_bits(last_pos[level]*k_d, k_d));
@@ -768,15 +771,57 @@ public:
                 //last_pos[level+1]++;
             }
             last_pos[level+1]+= n_children;
-            return create_dfuds(level, last_pos, last_children, dfuds);
+            return create_dfuds_aux(level, last_pos, last_children, dfuds);
         }
         else {
             dfuds.push_back(bv[level].get_kd_bits(last_pos[level]*k_d, k_d));
             last_pos[level]++;
             level++;
-            return create_dfuds(level, last_pos, last_children, dfuds);
+            return create_dfuds_aux(level, last_pos, last_children, dfuds);
         }
     }
+
+    // generar bit_vector
+    /**
+     *
+     * @param dfuds
+     * @return
+     * @example (the bits are from the most significant bit to the least) 3,2,1..
+     * 0101
+     * 0100 0110
+     * 1110 0110 1000
+     * 0100 0010 0100 0110 1111 0100
+     * 0110 0101 1000 0010 1111 0011 1111 1101 1111 1100
+     *
+     * bitvector will be :
+     * bv[0] = 0011 1111 1111 0010 0110 0110 0110 1000 0100 0101 0010 0110 0100 1110 0100 0101
+     * bv[1] = 1100 0100 1000 1111 1101 1111
+     */
+    bit_vector* vector_to_bit_vector(vector<uint8_t> &dfuds){
+        // number of bit_vectors we need
+        uint64_t n = ceil(dfuds.size()*k_d / 64.0);
+        uint64_t number_per_bv = 64/k_d;
+        bit_vector bv_dfuds[n];//bit_vector(dfuds.size()*k_d, 0);
+        for(uint64_t i = 0; i < n; i++){
+            if(i != n-1)
+                bv_dfuds[i] = bit_vector(64, 0);
+            else
+                bv_dfuds[i] = bit_vector(dfuds.size()*k_d - i*64, 0);
+        }
+        for(uint64_t i = 0; i < dfuds.size(); i++){
+            // va rellenando desde el menoss signiicativo hacia el mas
+            bv_dfuds[i/number_per_bv].set_int((i%number_per_bv)*k_d, dfuds[i], k_d);
+        }
+        /*for(uint64_t i = dfuds.size()-1; i > 0; i--){
+            // va rellenando desde el menoss signiicativo hacia el mas
+            bv_dfuds.set_int(i*k_d, dfuds[i], k_d);
+        }*/
+        return bv_dfuds;
+    }
+
+
+    // luego, a partir del bit:vector, podemos hacer un  BP: bp_support_g
+
 
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
