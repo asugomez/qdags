@@ -69,7 +69,8 @@ int main(int argc, char** argv)
     att_S.push_back(AT_X2); att_S.push_back(AT_X3); 
     att_T.push_back(AT_X3); att_T.push_back(AT_X4); 
     
-    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); 
+    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]);
+    int64_t size_queue = argv[4] ? atoi(argv[4]) : 100;
     
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
@@ -137,11 +138,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    Join_Result = parMultiJoin(Q, true, 1000);  // cache warmup
+    multiJoinPartialResults(Q, true, 1000, 0, 0, size_queue);
     
-    start = high_resolution_clock::now();    
-    
-    Join_Result = parMultiJoin(Q, true, 1000); 
+    start = high_resolution_clock::now();
+
+    multiJoinPartialResults(Q, true, 1000, 0, 0, size_queue);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

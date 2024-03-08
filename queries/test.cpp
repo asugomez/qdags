@@ -1,3 +1,6 @@
+//
+// Created by Asunción Gómez on 08-03-24.
+//
 // cada una de las query tiene su codigo
 // j --> una forma q sale en el paper
 // p --> caminos
@@ -8,14 +11,10 @@
 #include<ratio>
 #include<chrono>
 #include<ctime>
+#include "../src/qdagsInclude.hpp"
 
 using namespace std::chrono;
 
-#include <algorithm>
-#include "src/qdags.hpp"
-#include "src/joins.cpp"
-#include "src/join_partial_results.cpp"
-#include "src/join_ranked_results.cpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -111,43 +110,11 @@ int main(int argc, char **argv) {
     duration<double> time_span;
 
 
-    start = high_resolution_clock::now();
     multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
-    cout << "-----------" << endl;
-    cout << "relacion R" << endl;
-    //qdag_rel_R.printBv();
-    //qdag::att_set att_test;
-    //att_test.push_back(AT_Y);
-    //att_test.push_back(AT_X);
-    //att_test.push_back(AT_Z);
-    //qdag* q_prime = qdag_rel_R.extend(att_test);
-    //cout << "-----after extend------" << endl;
-    //q_prime->printBv();
-    cout << "-----------" << endl;
-    cout << "-----------" << endl;
-    cout << "relacion S" << endl;
-    //qdag_rel_S.printBv();
 
-    cout << "-----------" << endl;
+    start = high_resolution_clock::now();
 
-    //Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
-    cout << "-----------" << endl;
-
-    // PARTIAL JOIN
-    cout << "------ PARTIAL JOIN -----" << endl;
-    // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
-    //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
-    //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
-    //bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 6); // warmup join -> activar el caché
-    /*int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
-    vector<int_vector<>> p;
-    p.push_back(prioritiesR);
-    p.push_back(prioritiesS);*/
-    //qdag_rel_R.create_dfuds();
-    //qdag_rel_R.printBv();
-
-    //bool join = multiJoinRankedResults(Q, true, 1000, 1, 10, p); // warmup join -> activar el caché
+    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
@@ -162,3 +129,4 @@ int main(int argc, char **argv) {
     // en runquery le paso cada una de las 3 tablas
     // no entiendo los valores de las tablas, aah si son el mismo numero entonces se comparte, pero como
 }
+
