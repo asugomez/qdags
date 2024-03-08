@@ -17,7 +17,7 @@ const uint8_t TYPE_FUN_DENSITY_LEAVES = 1;
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
  * @param pq the priority queue to store the tuples.
  * @param type_order_fun 0 num leaves, 1 density. Only taking into account if partial_results is false.
- * @param grid_size the size of the grid.
+ * @param grid_size the size of the grid. Needed when type_order_fun is 1.
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
 bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool bounded_result, uint64_t UPPER_BOUND,
@@ -147,7 +147,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
  * @param pq the priority queue to store the tuples.
  * @param size_queue the size of the priority queue.
  * @param type_order_fun 0 num leaves, 1 density. Only taking into account if partial_results is false.
- * @param grid_size the size of the grid.
+ * @param grid_size the size of the grid. Needed when type_order_fun is 1.
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
 bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
@@ -297,7 +297,7 @@ bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
  * @param bounded_result if we have to stop computing the results after a certain number of tuples.
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
  * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
- * @param grid_size the size of the grid.
+ * @param grid_size the size of the grid. Needed when type_order_fun is 1.
  * @param size_queue the size of the priority queue. -1 if we don't want to limit the size of the queue.
  * @return
  */
