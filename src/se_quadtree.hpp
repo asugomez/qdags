@@ -328,7 +328,9 @@ public:
     }
 
     inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in path[level][0,node-1]
-        return bv[level].rank(node);
+        if(bv[level].size() == node)
+            return bv[level].n_ones();
+        return bv[level].rank(node); //bv[level].u
     }
 
     inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
@@ -677,28 +679,26 @@ public:
      * Useful for the range Maximum query
      * @param level
      * @param node
-     * @param init will be modified if the node is not the root. -1 if the node is empty.
-     * @param end will be modified if the node is not the root. -1 if the node is empty.
+     * @param init will be modified if the node is not the root.
+     * @param end will be modified if the node is not the root.
+     * @return false if the node is empty or if the node is not the root and it has no children.
      */
-    void get_range_leaves(int16_t level, uint64_t node, int64_t& init, int64_t& end){
+    bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         if(level == -1){
-            return;
+            return true; // dejar init y end como estaban (rango completo!)
         }
         if(level == getHeight()-1){ // leaf
             if(get_ith_bit(level, node)){
                 init = rank(level,node);
                 end = init;
+                return true;
             }
             else{
-                init = -1;
-                end = -1;
+                return false;
             }
-            return;
         }
         if(get_ith_bit(level, node) == 0){
-            init = -1;
-            end = -1;
-            return;
+            return false;
         }
         uint64_t siblings = rank(level,node); // start position in the next level
         uint64_t n_children;
@@ -708,20 +708,21 @@ public:
         if(level == getHeight()-1){
             init = siblings;
             end = init + n_children - 1;
-            return;
+            return true;
         }
         return get_range_leaves_aux(level, n_children, siblings, init, end);
     }
 
-    void get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, int64_t& init, int64_t& end){
+    bool get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t& init, uint64_t& end){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
             init = siblings;
             end = init + children - 1;
-            return;
+            return true;
         }
-        return get_range_leaves_aux(level+1, children, siblings, init, end);
+        level++;
+        return get_range_leaves_aux(level, children, siblings, init, end);
     }
 
 

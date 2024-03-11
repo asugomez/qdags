@@ -28,7 +28,7 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                 uint64_t max_level, uint64_t nAtt, bool bounded_result, uint64_t UPPER_BOUND,
                 priority_queue<qdagWeight> &pq, uint8_t type_priority_fun, vector<int_vector<>> &priorities ) {
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
-    vector<rmq_succinct_sct<false>> rMq;
+    vector<rmq_succinct_sct<false>> rMq; // vector of rMq for each qdag
     for(uint64_t i = 0; i < nQ; i++){
         rMq.push_back(rmq_succinct_sct<false>(&priorities[i]));
     }
@@ -65,7 +65,7 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                     children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
                 }
                 else {
-                    children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
+                    children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
                 }
             }
             else if (nAtt == 5) {
@@ -100,9 +100,8 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
         uint64_t path;
 
         for (i = 0; i < children_to_recurse_size; ++i) {
-            uint64_t* root_temp= new uint64_t[nQ]; // TODO: when to liberar la memoria
+            uint64_t* root_temp= new uint64_t[nQ];
             child = children_to_recurse[i];
-            path = 0;
 
             // compute the weight of the tuple (ONLY if it's not a leaf)
             double total_weight = 0;
@@ -111,11 +110,17 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    int64_t init = 0;
-                    int64_t end = priorities[j].size()-1;
-                    Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
-                    auto min_idx = rMq[j](init, end);
-                    uint64_t priority_ith_node = priorities[j][min_idx];
+                    uint64_t init = 0;
+                    uint64_t end = priorities[j].size()-1;
+                    // TODO: see this: what to do when i-th bit is 0?
+                    uint64_t priority_ith_node = 0;
+                    bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+                    if(success){
+                        bit_vector::size_type min_idx = rMq[j](init, end);
+                        priority_ith_node = priorities[j][min_idx];
+                    } else {
+                        //cout << "error in get range leaves" << endl;
+                    }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
                     else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
@@ -131,6 +136,7 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 uint32_t coordinates[nAtt];
+                delete[] root_temp;
                 for(uint32_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
                 }
@@ -144,11 +150,11 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                     return true;
             }
             else{ // insert the tuple
-                // TODO_ pq no se pide memoria?
                 qdagWeight this_node = {next_level, root_temp, total_weight, path} ;
                 pq.push(this_node); // add the tuple to the queue
             }
         }
+
     }
     return true;
 }
@@ -257,11 +263,17 @@ bool AND_ranked_fixed_queue(qdag *Q[], uint16_t nQ,
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    int64_t init = 0;
-                    int64_t end = priorities[j].size()-1;
-                    Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
-                    auto min_idx = rMq[j](init, end);
-                    uint64_t priority_ith_node = priorities[j][min_idx];
+                    uint64_t init = 0;
+                    uint64_t end = priorities[j].size()-1;
+                    // TODO: see this: what to do when i-th bit is 0?
+                    uint64_t priority_ith_node = 0;
+                    bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+                    if(success){
+                        bit_vector::size_type min_idx = rMq[j](init, end);
+                        priority_ith_node = priorities[j][min_idx];
+                    } else {
+                        //cout << "error in get range leaves" << endl;
+                    }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
                     else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
@@ -278,6 +290,7 @@ bool AND_ranked_fixed_queue(qdag *Q[], uint16_t nQ,
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 uint32_t coordinates[nAtt];
+                delete[] root_temp;
                 for(uint32_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
                 }
@@ -383,6 +396,10 @@ bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER
                                 max_level, A.size(),
                                 pq, size_queue, type_priority_fun, priorities);
     }
+
+    for (uint64_t i = 0; i < Q.size(); i++)
+        delete Q_star[i];
+
     return true;
 }
 

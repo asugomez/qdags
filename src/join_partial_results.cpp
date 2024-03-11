@@ -72,7 +72,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 return false;
             }
         }
-        //delete[] tupleQdags.roots;
+
 
         // in children we have the actual non empty nodes
         // in children_to_recurse we store the index of these non emtpy nodes
@@ -116,6 +116,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 uint32_t coordinates[nAtt];
+                delete[] root_temp;
                 for(uint32_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
                 }
@@ -129,7 +130,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                     return true;
             }
             else{ // insert the tuple
-                // TODO_ pq no se pide memoria?
                 qdagWeight this_node = {next_level, root_temp, total_weight, path} ;
                 pq.push(this_node); // add the tuple to the queue
             }
@@ -253,6 +253,7 @@ bool AND_partial_fixed_queue(qdag *Q[], uint16_t nQ,
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 uint32_t coordinates[nAtt];
+                delete[] root_temp;
                 for(uint32_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
                 }
@@ -359,6 +360,10 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
                                 pq, size_queue, type_order_fun,
                                 grid_size);
     }
+
+    for (uint64_t i = 0; i < Q.size(); i++)
+        delete Q_star[i];
+
     return true;
 }
 

@@ -1,0 +1,9207 @@
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 
+level = 2
+0 
+level = 3
+4 15 
+level = 4
+11 16 
+level = 5
+11 16 
+level = 6
+11 16 
+level = 7
+10 16 
+level = 8
+11 27 31 
+level = 9
+15 22 38 
+level = 10
+1 27 47 
+level = 11
+1 29 41 
+level = 12
+5 22 38 
+level = 13
+14 20 32 
+level = 14
+1 18 38 
+level = 15
+15 16 32 
+level = 16
+11 22 38 
+level = 17
+15 31 47 
+level = 18
+6 31 47 
+level = 19
+8 29 41 
+level = 20
+8 31 47 
+level = 21
+8 29 41 
+level = 22
+14 31 47 
+level = 23
+10 22 34 
+level = 24
+6 28 44 
+level = 25
+5 17 37 
+
+results nro ° 0
+point output: 39474218
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 18446744072810010598
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 2124596451
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 0
+point output: 39474218
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 18446744072810010598
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 2124596451
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+1.09219
+call to multi join
+positions
+level = 0
+0 4 
+level = 1
+3112478346316069744 3472313941128158917 16 
+level = 2
+0 2 4 6 20 22 32 34 
+level = 3
+2 16 34 48 66 80 102 116 
+level = 4
+2 6 18 22 34 50 70 86 98 102 114 118 
+level = 5
+2 6 18 32 36 48 70 84 102 116 134 146 164 176 
+level = 6
+1 5 17 33 51 55 67 83 101 119 129 147 165 177 199 211 
+level = 7
+0 16 32 36 48 64 80 96 100 112 132 148 164 180 196 208 228 240 
+level = 8
+10 26 46 58 74 88 104 124 136 152 170 184 206 220 238 254 268 284 
+level = 9
+2 18 38 50 70 82 98 118 130 150 162 178 194 210 230 246 262 278 
+level = 10
+15 31 47 59 75 79 95 111 127 139 155 159 171 187 203 219 235 251 267 283 
+level = 11
+11 15 31 47 63 75 91 107 111 127 143 159 171 187 203 219 235 251 271 283 303 315 
+level = 12
+4 16 32 48 64 84 100 118 130 146 162 178 198 214 228 246 260 278 292 304 326 338 
+level = 13
+8 24 40 56 72 92 108 120 136 152 168 184 204 220 236 252 264 280 300 312 332 344 
+level = 14
+13 29 45 61 73 89 109 127 143 159 175 187 203 223 233 237 251 255 269 287 297 317 331 351 
+level = 15
+4 16 32 52 64 84 100 116 128 144 164 176 196 212 228 240 260 272 292 308 320 340 352 372 
+level = 16
+3 23 39 51 71 87 99 113 133 149 161 181 197 209 231 243 261 273 295 309 327 343 357 373 
+level = 17
+11 27 47 63 79 95 107 121 137 157 173 189 205 217 235 251 265 281 299 313 335 351 365 381 
+level = 18
+13 29 45 57 73 93 109 125 141 157 169 185 205 221 233 253 265 285 301 317 329 349 361 381 
+level = 19
+10 26 42 62 78 90 110 120 136 152 172 188 200 220 234 250 264 280 298 312 330 350 360 380 
+level = 20
+9 11 29 31 41 43 57 59 73 75 93 95 109 111 123 143 155 171 187 207 223 233 235 253 255 267 287 301 303 319 329 331 349 351 363 383 
+level = 21
+14 28 46 60 78 92 110 124 142 156 170 184 202 206 216 220 236 238 252 254 268 270 284 286 300 302 312 314 328 330 332 334 346 360 378 392 408 410 424 426 446 460 476 478 490 504 522 536 552 554 568 570 
+level = 22
+4 22 32 50 68 86 100 118 132 150 164 182 196 208 230 242 262 276 290 304 326 340 358 372 390 404 422 436 454 468 482 496 516 534 548 566 582 596 614 628 640 658 674 688 704 722 736 754 770 784 802 816 
+level = 23
+4 20 36 52 68 84 96 112 132 148 164 180 196 208 228 240 262 276 294 308 326 340 354 368 390 404 422 436 454 468 482 496 512 528 544 560 578 592 610 624 644 660 678 692 704 720 740 756 770 784 806 820 
+level = 24
+12 28 40 56 72 88 104 120 140 156 172 188 204 216 236 248 268 284 296 312 328 344 360 376 396 412 428 444 460 476 488 504 524 540 552 568 588 604 616 632 652 668 684 700 712 728 748 764 776 792 812 828 
+level = 25
+
+
+results nro ° 0
+point output: 18446744073041037726
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 1
+point output: 18446744073579996510
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 2
+point output: 18446744073579874142
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 3
+point output: 18446744072447535530
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 4
+point output: 18446744073106154910
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 5
+point output: 18446744073108129182
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 6
+point output: 18446744071495568294
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 7
+point output: 18446744071021849062
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 18446744071967558110
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 9
+point output: 18446744072447413162
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 10
+point output: 18446744073039063454
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 11
+point output: 18446744071495690662
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 12
+point output: 18446744072097580454
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 13
+point output: 18446744072095606182
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 14
+point output: 18446744072577296938
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 15
+point output: 18446744073521540578
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 16
+point output: 18446744073517376802
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 17
+point output: 18446744072439425438
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 18
+point output: 18446744073517254434
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 19
+point output: 18446744072439303070
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 20
+point output: 18446744071965583838
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 21
+point output: 18446744072103455338
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 22
+point output: 18446744071499884006
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 23
+point output: 18446744071975668202
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 24
+point output: 18446744071973693930
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 25
+point output: 18446744073575834978
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 26
+point output: 18446744073575712610
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 27
+point output: 18446744073101993378
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 28
+point output: 18446744071028016678
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 29
+point output: 18446744073049673250
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 30
+point output: 18446744073521418210
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 31
+point output: 18446744073103967650
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 32
+point output: 18446744071499761638
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 33
+point output: 18446744072577174570
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 34
+point output: 18446744071023823334
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 35
+point output: 18446744073116535202
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 36
+point output: 18446744073116779878
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 37
+point output: 18446744073114560930
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 38
+point output: 18446744073114805606
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 39
+point output: 18446744073512905054
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 40
+point output: 18446744073047698978
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 41
+point output: 18446744071026042406
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 42
+point output: 18446744073512782686
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 43
+point output: 18446744073588402530
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 44
+point output: 18446744073588280162
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 45
+point output: 18446744073588524838
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 46
+point output: 18446744073043535202
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 47
+point output: 18446744072105429610
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 48
+point output: 18446744073588647206
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 49
+point output: 18446744072569447782
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 50
+point output: 18446744072569325414
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 51
+point output: 18446744073045509474
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 18446744073041037726
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 1
+point output: 18446744073579996510
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 2
+point output: 18446744073579874142
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 3
+point output: 18446744072447535530
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 4
+point output: 18446744073106154910
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 5
+point output: 18446744073108129182
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 6
+point output: 18446744071495568294
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 7
+point output: 18446744071021849062
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 18446744071967558110
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 9
+point output: 18446744072447413162
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 10
+point output: 18446744073039063454
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 11
+point output: 18446744071495690662
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 12
+point output: 18446744072097580454
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 13
+point output: 18446744072095606182
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 14
+point output: 18446744072577296938
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 15
+point output: 18446744073521540578
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 16
+point output: 18446744073517376802
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 17
+point output: 18446744072439425438
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 18
+point output: 18446744073517254434
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 19
+point output: 18446744072439303070
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 20
+point output: 18446744071965583838
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 21
+point output: 18446744072103455338
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 22
+point output: 18446744071499884006
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 23
+point output: 18446744071975668202
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 24
+point output: 18446744071973693930
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 25
+point output: 18446744073575834978
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 26
+point output: 18446744073575712610
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 27
+point output: 18446744073101993378
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 28
+point output: 18446744071028016678
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 29
+point output: 18446744073049673250
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 30
+point output: 18446744073521418210
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 31
+point output: 18446744073103967650
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 32
+point output: 18446744071499761638
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 33
+point output: 18446744072577174570
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 34
+point output: 18446744071023823334
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 35
+point output: 18446744073116535202
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 36
+point output: 18446744073116779878
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 37
+point output: 18446744073114560930
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 38
+point output: 18446744073114805606
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 39
+point output: 18446744073512905054
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 40
+point output: 18446744073047698978
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 41
+point output: 18446744071026042406
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 42
+point output: 18446744073512782686
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 43
+point output: 18446744073588402530
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 44
+point output: 18446744073588280162
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 45
+point output: 18446744073588524838
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 46
+point output: 18446744073043535202
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 47
+point output: 18446744072105429610
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 48
+point output: 18446744073588647206
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 49
+point output: 18446744072569447782
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 50
+point output: 18446744072569325414
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 51
+point output: 18446744073045509474
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+67.685
+call to multi join
+call to multi join
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 
+level = 2
+0 
+level = 3
+0 
+level = 4
+0 
+level = 5
+0 
+level = 6
+2 6 
+level = 7
+0 20 
+level = 8
+11 27 
+level = 9
+15 27 
+level = 10
+9 29 
+level = 11
+11 31 
+level = 12
+11 31 
+level = 13
+2 18 
+level = 14
+13 25 
+level = 15
+2 18 
+level = 16
+2 22 
+level = 17
+9 25 
+level = 18
+0 16 
+level = 19
+6 18 
+level = 20
+2 18 
+level = 21
+2 22 
+level = 22
+6 18 
+level = 23
+6 22 
+level = 24
+11 27 
+level = 25
+4 16 
+
+results nro ° 0
+point output: 18446744072129698204
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 1
+point output: 18446744073207881172
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 0
+point output: 18446744072129698204
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 1
+point output: 18446744073207881172
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 33554432
+0.371303
+call to multi join
+positions
+level = 0
+0 
+level = 1
+4 
+level = 2
+11 
+level = 3
+4 
+level = 4
+11 
+level = 5
+0 
+level = 6
+4 
+level = 7
+4 
+level = 8
+15 
+level = 9
+4 
+level = 10
+15 
+level = 11
+0 
+level = 12
+4 
+level = 13
+15 
+level = 14
+15 
+level = 15
+15 
+level = 16
+11 
+level = 17
+4 
+level = 18
+0 
+level = 19
+3 
+level = 20
+13 
+level = 21
+12 
+level = 22
+0 
+level = 23
+9 
+level = 24
+14 
+level = 25
+2 
+
+results nro ° 0
+point output: 18446744072247594638
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 0
+point output: 18446744072247594638
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+0.47915
+call to multi join
+positions
+level = 0
+0 4 
+level = 1
+0 4 16 
+level = 2
+0 20 32 36 
+level = 3
+4 20 32 52 
+level = 4
+0 20 32 48 
+level = 5
+2 18 38 50 
+level = 6
+0 16 36 48 
+level = 7
+2 22 38 50 
+level = 8
+2 22 34 50 
+level = 9
+2 18 34 50 
+level = 10
+4 16 20 32 48 
+level = 11
+3 19 39 55 67 
+level = 12
+4 20 32 48 64 
+level = 13
+7 23 39 55 71 
+level = 14
+6 22 34 50 66 
+level = 15
+10 30 46 58 78 
+level = 16
+15 31 43 63 79 
+level = 17
+11 31 47 63 79 
+level = 18
+8 24 28 40 56 76 
+level = 19
+1 21 33 49 65 81 
+level = 20
+13 25 29 41 61 73 93 
+level = 21
+3 23 35 55 67 87 103 
+level = 22
+1 17 37 53 65 81 97 
+level = 23
+2 22 34 50 66 82 98 
+level = 24
+0 20 32 52 68 84 100 
+level = 25
+15 31 43 63 79 95 107 
+
+results nro ° 0
+point output: 18446744071707067312
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 1
+point output: 153143220
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 2
+point output: 18446744072859993968
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 3
+point output: 18446744072856046516
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 4
+point output: 18446744072788672300
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 5
+point output: 148915116
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 6
+point output: 219957108
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 0
+point output: 18446744071707067312
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 1
+point output: 153143220
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 2
+point output: 18446744072859993968
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 3
+point output: 18446744072856046516
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 4
+point output: 18446744072788672300
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 5
+point output: 148915116
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 6
+point output: 219957108
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 33554432
+4.07524
+call to multi join
+call to multi join
+positions
+level = 0
+2 4 6 
+level = 1
+0 22 32 
+level = 2
+2 18 34 
+level = 3
+0 4 18 32 
+level = 4
+2 18 34 54 
+level = 5
+2 18 34 50 
+level = 6
+2 22 32 50 
+level = 7
+1 5 21 34 49 
+level = 8
+2 18 34 49 70 
+level = 9
+15 27 43 48 75 
+level = 10
+9 25 41 56 77 
+level = 11
+15 31 43 50 79 
+level = 12
+0 16 36 48 64 
+level = 13
+9 29 45 53 73 
+level = 14
+4 16 36 48 68 
+level = 15
+0 16 32 58 64 
+level = 16
+13 25 45 51 77 
+level = 17
+9 25 41 57 73 
+level = 18
+1 21 33 56 69 
+level = 19
+12 24 40 56 76 
+level = 20
+7 19 39 60 71 
+level = 21
+4 20 32 52 68 
+level = 22
+9 25 45 54 77 
+level = 23
+15 31 43 53 75 
+level = 24
+8 24 40 54 76 
+level = 25
+2 22 38 56 70 
+
+results nro ° 0
+point output: 18446744073036399018
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 392414570
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 1541422698
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 3
+point output: 18446744073099280810
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 4
+point output: 18446744070168211959
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 0
+point output: 18446744073036399018
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 392414570
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 1541422698
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 3
+point output: 18446744073099280810
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 4
+point output: 18446744070168211959
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 50331648
+5.78039
+call to multi join
+call to multi join
+call to multi join
+call to multi join
+positions
+level = 0
+0 2 
+level = 1
+0 2 16 
+level = 2
+0 2 16 18 32 
+level = 3
+0 2 16 18 34 50 66 
+level = 4
+0 2 16 18 32 34 50 66 80 82 98 
+level = 5
+0 2 16 18 32 34 50 64 66 80 82 96 114 130 146 160 
+level = 6
+0 2 16 18 32 34 50 64 66 80 98 112 128 146 160 178 192 208 210 226 240 
+level = 7
+0 2 16 32 48 50 66 80 82 98 114 128 130 144 160 178 192 208 210 224 242 258 274 288 304 322 
+level = 8
+5 23 37 55 69 85 101 117 119 135 149 165 167 183 197 215 229 247 263 279 293 309 325 341 357 375 391 405 
+level = 9
+0 18 32 48 66 82 96 114 130 144 160 178 192 210 224 240 258 272 288 304 306 322 338 352 368 386 400 402 418 432 
+level = 10
+13 15 31 45 47 61 63 77 95 109 125 143 159 173 189 205 223 239 253 271 287 303 319 335 351 367 381 399 413 429 431 445 461 477 
+level = 11
+0 16 32 34 48 66 80 96 98 112 128 146 162 178 192 208 224 240 242 258 272 288 306 322 338 354 368 386 400 418 432 450 466 480 496 512 528 
+level = 12
+8 26 40 58 72 90 104 122 136 138 154 168 186 200 216 234 250 264 280 296 314 328 344 362 376 394 410 426 440 456 472 488 504 520 522 536 552 570 586 
+level = 13
+7 23 39 55 71 85 101 119 133 149 165 181 199 215 229 245 261 279 295 309 327 343 359 375 389 405 421 439 453 471 487 501 519 535 549 551 565 567 581 597 613 
+level = 14
+5 23 37 55 69 87 103 119 133 149 165 183 199 215 229 247 261 279 293 309 327 341 357 373 389 405 423 437 455 469 485 501 517 535 549 565 583 597 613 631 645 
+level = 15
+0 16 34 50 64 66 82 96 114 130 146 162 176 192 210 226 242 256 274 290 304 320 336 354 368 386 402 416 434 450 466 482 496 512 530 544 546 560 576 594 608 626 640 
+level = 16
+0 18 34 50 64 80 96 112 130 144 162 176 192 208 226 240 256 272 290 304 320 336 352 370 384 402 416 432 448 466 482 496 512 528 546 560 576 578 592 608 624 640 658 672 
+level = 17
+13 29 45 63 79 95 111 127 143 157 173 191 207 221 237 255 271 287 301 317 333 351 367 381 397 413 429 447 461 479 493 509 525 543 557 575 591 605 623 639 653 669 685 701 
+level = 18
+13 29 45 63 79 95 111 127 141 157 159 173 191 207 221 239 255 271 285 301 319 335 349 365 381 397 413 431 447 463 477 493 509 525 543 559 573 591 605 607 623 639 653 669 687 701 
+level = 19
+7 23 39 53 69 85 101 117 135 149 165 183 199 213 229 245 263 279 295 309 327 341 359 373 389 405 423 437 455 469 487 501 519 533 551 565 583 597 613 629 645 663 677 693 711 727 
+level = 20
+5 23 37 53 69 85 101 119 135 149 167 181 199 215 231 245 263 277 293 311 327 341 357 373 389 407 421 439 455 471 485 501 517 535 549 565 581 597 615 629 647 663 677 695 711 725 
+level = 21
+0 18 32 50 66 80 96 114 128 146 160 176 192 208 224 242 256 274 288 306 320 338 352 370 384 402 416 434 448 464 480 498 512 528 546 560 576 594 608 626 642 658 674 688 706 722 
+level = 22
+13 29 45 61 77 93 109 127 141 159 173 189 205 223 237 253 271 287 301 319 333 349 365 381 399 413 429 445 461 479 493 511 527 541 559 575 591 607 621 637 653 669 687 703 717 733 
+level = 23
+9 27 41 59 75 91 107 121 137 155 171 187 203 219 233 251 267 281 299 313 329 345 363 377 395 411 425 441 459 473 491 505 523 537 553 571 585 603 617 633 649 665 683 697 715 731 
+level = 24
+11 15 25 29 43 47 57 61 75 79 89 93 105 109 121 125 137 141 153 157 169 173 187 191 201 205 219 223 233 237 249 253 265 269 283 287 297 301 315 319 331 335 345 349 363 367 377 381 395 399 409 413 427 431 441 445 459 463 475 479 489 493 505 509 521 525 537 541 555 559 569 573 585 589 601 605 619 623 633 637 649 653 665 669 683 687 697 701 715 719 731 735 
+level = 25
+2 6 18 32 36 48 66 70 82 96 100 112 128 132 144 160 162 164 166 176 178 192 196 208 226 230 242 258 262 274 290 294 306 320 324 336 354 358 370 384 388 400 416 420 432 448 452 464 480 484 496 512 516 528 544 548 560 576 580 592 608 612 624 642 646 658 672 676 688 704 708 720 736 740 752 770 774 786 800 804 816 832 836 848 866 870 882 896 900 912 930 934 946 962 966 978 994 998 1010 1026 1030 1042 1058 1062 1074 1090 1094 1106 1122 1126 1138 1154 1158 1170 1186 1190 1202 1218 1222 1234 1248 1252 1264 1282 1286 1298 1314 1318 1330 1346 1350 1362 1376 1380 1392 1410 1414 1426 1440 1444 1456 
+
+call to multi join
+positions
+level = 0
+0 4 
+level = 1
+0 4 16 
+level = 2
+4 20 32 
+level = 3
+2 22 34 
+level = 4
+5 21 37 
+level = 5
+12 28 40 
+level = 6
+9 29 41 
+level = 7
+14 26 42 
+level = 8
+13 15 29 31 41 43 
+level = 9
+14 28 46 60 74 88 
+level = 10
+3 17 39 53 67 81 
+level = 11
+4 22 32 50 68 86 
+level = 12
+5 23 33 51 69 87 
+level = 13
+6 20 38 52 70 84 
+level = 14
+15 29 47 61 75 89 
+level = 15
+5 21 37 53 65 81 
+level = 16
+7 21 39 53 67 81 
+level = 17
+7 23 39 55 67 83 
+level = 18
+3 19 35 51 67 83 
+level = 19
+4 20 32 48 68 84 
+level = 20
+4 20 36 52 64 80 
+level = 21
+7 23 39 55 67 83 
+level = 22
+3 17 35 49 67 81 
+level = 23
+6 20 34 48 70 84 
+level = 24
+0 18 36 54 68 86 
+level = 25
+2 16 34 48 66 80 
+
+results nro ° 0
+point output: 2868562519
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 1
+point output: 2367195251
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 2
+point output: 1790083663
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 3
+point output: 1288716395
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 4
+point output: 3369648311
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 5
+point output: 3871015579
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 0
+point output: 2868562519
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 1
+point output: 2367195251
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 2
+point output: 1790083663
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 3
+point output: 1288716395
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 4
+point output: 3369648311
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 5
+point output: 3871015579
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+0.221166
+call to multi join
+positions
+level = 0
+4 6 
+level = 1
+0 16 
+level = 2
+4 20 
+level = 3
+0 16 
+level = 4
+6 20 22 
+level = 5
+4 22 36 
+level = 6
+6 22 36 
+level = 7
+6 22 36 
+level = 8
+4 20 38 
+level = 9
+2 16 32 
+level = 10
+0 18 32 
+level = 11
+1 19 33 
+level = 12
+2 16 34 
+level = 13
+1 17 19 33 
+level = 14
+0 16 34 48 
+level = 15
+13 29 45 63 
+level = 16
+12 30 44 60 
+level = 17
+12 28 46 62 
+level = 18
+10 26 40 58 
+level = 19
+9 25 43 59 
+level = 20
+10 24 40 56 
+level = 21
+3 17 33 49 
+level = 22
+11 27 41 43 57 
+level = 23
+9 25 43 57 75 
+level = 24
+15 29 45 61 79 
+level = 25
+15 29 45 61 77 
+
+results nro ° 0
+point output: 18446744073359928909
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744073391239307
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744073420885579
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 3
+point output: 18446744073420877899
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 4
+point output: 214511209
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 0
+point output: 18446744073359928909
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744073391239307
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744073420885579
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 3
+point output: 18446744073420877899
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 4
+point output: 214511209
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+1.60802
+call to multi join
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 4 
+level = 2
+4 20 
+level = 3
+4 20 
+level = 4
+4 20 
+level = 5
+4 20 
+level = 6
+1 17 
+level = 7
+0 20 
+level = 8
+12 24 
+level = 9
+0 4 16 
+level = 10
+14 26 42 46 
+level = 11
+0 16 20 32 52 
+level = 12
+14 26 42 62 78 
+level = 13
+1 21 33 49 69 
+level = 14
+5 21 33 49 69 
+level = 15
+5 17 37 49 69 
+level = 16
+7 23 39 51 67 
+level = 17
+11 27 47 63 75 
+level = 18
+10 30 46 62 78 
+level = 19
+0 16 32 52 68 
+level = 20
+8 28 40 56 76 
+level = 21
+0 20 32 52 68 
+level = 22
+1 17 33 53 65 
+level = 23
+15 31 43 59 79 
+level = 24
+9 13 25 45 57 73 
+level = 25
+4 20 32 48 68 84 
+
+results nro ° 0
+point output: 18446744072731066831
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744072730543567
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744072793440787
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 3
+point output: 233670995
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 4
+point output: 18446744072730543631
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 5
+point output: 18446744072797913431
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 0
+point output: 18446744072731066831
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744072730543567
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744072793440787
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 3
+point output: 233670995
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 4
+point output: 18446744072730543631
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 5
+point output: 18446744072797913431
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+1.67443
+call to multi join
+call to multi join
+positions
+level = 0
+0 2 4 
+level = 1
+5330846594207800219 2142478371997613487 5231710224794763707 142608544 
+level = 2
+0 2 4 6 20 22 32 50 
+level = 3
+0 4 18 36 50 54 68 82 96 114 
+level = 4
+0 11 16 25 32 36 52 68 84 96 105 116 134 144 148 
+level = 5
+0 20 34 55 65 69 81 85 98 107 117 133 144 163 181 193 209 229 
+level = 6
+4 19 32 54 75 79 91 95 107 123 127 128 147 171 187 192 210 235 239 248 267 283 
+level = 7
+4 16 38 56 76 88 108 120 140 152 168 182 199 220 232 240 264 284 300 307 328 332 348 
+level = 8
+0 23 38 62 75 95 111 127 143 155 175 178 207 223 239 244 270 287 303 310 331 335 347 367 
+level = 9
+4 23 32 60 69 85 97 113 133 149 161 176 195 209 225 244 268 273 293 312 321 325 337 353 373 
+level = 10
+0 3 23 39 55 72 88 108 124 136 152 168 183 196 216 236 244 263 280 300 307 328 344 364 376 380 392 
+level = 11
+3 17 47 48 65 84 96 112 128 148 160 176 192 215 224 244 256 273 288 308 330 336 356 368 388 400 420 
+level = 12
+0 18 47 54 73 87 99 119 131 151 163 179 198 219 227 247 260 281 295 307 331 343 359 375 387 403 419 
+level = 13
+4 29 40 55 73 85 97 113 133 145 165 181 195 215 225 241 263 281 289 309 335 337 353 373 389 401 417 
+level = 14
+0 25 40 57 75 90 110 126 142 158 170 186 205 211 238 250 256 287 302 318 323 346 350 362 378 398 410 426 
+level = 15
+11 16 40 57 66 83 99 119 135 147 167 179 205 223 231 247 259 278 295 311 320 343 355 371 391 407 423 435 
+level = 16
+0 19 39 56 68 83 103 115 135 147 163 179 200 219 227 247 264 272 295 307 330 339 359 371 391 407 419 435 
+level = 17
+15 22 35 56 67 81 101 117 133 145 161 181 204 223 229 245 259 275 289 309 321 337 357 369 385 405 417 433 
+level = 18
+7 20 43 50 64 80 100 112 128 144 160 176 194 216 224 244 256 276 288 308 335 340 356 372 388 400 420 436 
+level = 19
+11 19 36 59 66 90 110 122 138 154 174 190 203 212 238 250 265 278 302 318 333 346 362 378 398 410 430 446 
+level = 20
+0 25 35 52 71 84 96 112 116 132 148 160 176 196 211 224 240 270 279 292 308 334 336 356 372 384 400 416 436 
+level = 21
+10 18 47 53 71 81 97 117 133 145 165 177 197 213 227 241 257 272 291 305 325 342 353 373 385 401 421 433 453 
+level = 22
+9 25 38 51 68 83 99 119 131 147 167 183 199 211 231 243 263 282 292 307 327 348 355 359 371 391 407 423 439 455 
+level = 23
+0 18 45 49 77 91 107 127 143 159 171 191 207 209 237 251 267 285 301 315 335 343 363 379 399 411 431 443 459 475 
+level = 24
+7 28 36 60 75 83 99 115 131 151 163 183 195 216 228 247 263 273 303 307 327 338 355 375 391 407 423 435 455 471 
+level = 25
+15 20 37 62 79 87 103 119 131 151 163 179 195 218 231 243 259 284 299 307 327 336 359 371 391 403 419 435 455 471 
+
+results nro ° 0
+point output: 18446744072379472669
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 1
+point output: 3756725558
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 2
+point output: 18446744072375835481
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 3
+point output: 808771481
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 4
+point output: 18446744073520602077
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 5
+point output: 18446744073444595617
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 6
+point output: 1958831013
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 7
+point output: 271971577
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 8
+point output: 2679034294
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 9
+point output: 18446744073449037721
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 10
+point output: 18446744072371380121
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 11
+point output: 18446744072383699801
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 12
+point output: 18446744073452967833
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 13
+point output: 813228053
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 14
+point output: 1958271961
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 15
+point output: 18446744072375557977
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 16
+point output: 18446744073457426329
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 17
+point output: 18446744073381649241
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 18
+point output: 4238372078
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 19
+point output: 1958766334
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 20
+point output: 18446744073381665685
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 21
+point output: 2384965863
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 22
+point output: 18446744073386386265
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 23
+point output: 887891503
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 24
+point output: 18446744073382207453
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 25
+point output: 18446744073386122205
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 26
+point output: 956791625
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 27
+point output: 18446744073382208349
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 28
+point output: 2114903954
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 29
+point output: 2024302830
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 18446744072379472669
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 1
+point output: 3756725558
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 2
+point output: 18446744072375835481
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 3
+point output: 808771481
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 4
+point output: 18446744073520602077
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 5
+point output: 18446744073444595617
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 6
+point output: 1958831013
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 7
+point output: 271971577
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 8
+point output: 2679034294
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 9
+point output: 18446744073449037721
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 10
+point output: 18446744072371380121
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 11
+point output: 18446744072383699801
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 12
+point output: 18446744073452967833
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 13
+point output: 813228053
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 14
+point output: 1958271961
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 15
+point output: 18446744072375557977
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 16
+point output: 18446744073457426329
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 17
+point output: 18446744073381649241
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 18
+point output: 4238372078
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 19
+point output: 1958766334
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 20
+point output: 18446744073381665685
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 21
+point output: 2384965863
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 22
+point output: 18446744073386386265
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 23
+point output: 887891503
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 24
+point output: 18446744073382207453
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 25
+point output: 18446744073386122205
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 26
+point output: 956791625
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 27
+point output: 18446744073382208349
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 28
+point output: 2114903954
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 29
+point output: 2024302830
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+0.956923
+call to multi join
+positions
+level = 0
+2 
+level = 1
+0 
+level = 2
+0 
+level = 3
+2 
+level = 4
+2 
+level = 5
+2 
+level = 6
+3 
+level = 7
+13 
+level = 8
+0 
+level = 9
+0 
+level = 10
+0 
+level = 11
+15 
+level = 12
+14 
+level = 13
+15 
+level = 14
+3 
+level = 15
+0 
+level = 16
+13 
+level = 17
+5 
+level = 18
+11 
+level = 19
+9 
+level = 20
+5 
+level = 21
+10 
+level = 22
+0 
+level = 23
+10 
+level = 24
+14 15 
+level = 25
+5 20 21 
+
+results nro ° 0
+point output: 18446744072827402473
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744072827402474
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 18446744072827402458
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 0
+point output: 18446744072827402473
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744072827402474
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 18446744072827402458
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+0.298081
+call to multi join
+positions
+level = 0
+0 
+level = 1
+2 
+level = 2
+2 
+level = 3
+2 
+level = 4
+0 
+level = 5
+0 
+level = 6
+0 
+level = 7
+2 
+level = 8
+1 
+level = 9
+2 
+level = 10
+9 
+level = 11
+3 
+level = 12
+10 
+level = 13
+5 
+level = 14
+11 
+level = 15
+8 
+level = 16
+3 
+level = 17
+15 
+level = 18
+5 
+level = 19
+4 
+level = 20
+1 
+level = 21
+0 
+level = 22
+0 
+level = 23
+11 
+level = 24
+10 
+level = 25
+3 
+
+results nro ° 0
+point output: 162907638
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 0
+point output: 162907638
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 33554432
+0.05252
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 2 
+level = 2
+2 18 
+level = 3
+0 2 15 16 
+level = 4
+1 3 19 32 51 
+level = 5
+8 26 40 48 74 
+level = 6
+12 14 30 46 48 76 
+level = 7
+5 21 23 37 53 77 85 
+level = 8
+0 16 32 48 64 80 96 
+level = 9
+9 27 41 59 75 81 105 
+level = 10
+5 21 39 55 71 90 103 
+level = 11
+1 19 33 51 67 82 99 
+level = 12
+7 23 39 53 71 94 101 
+level = 13
+13 29 45 61 79 89 109 
+level = 14
+13 31 47 63 77 85 111 
+level = 15
+12 30 44 62 76 82 110 
+level = 16
+4 20 38 52 68 80 100 
+level = 17
+15 29 47 61 79 83 109 
+level = 18
+8 26 40 56 74 92 104 
+level = 19
+13 31 47 61 77 84 109 
+level = 20
+5 23 39 53 71 88 101 
+level = 21
+6 22 38 52 70 94 102 
+level = 22
+1 19 33 49 65 93 97 
+level = 23
+2 16 34 48 64 82 96 
+level = 24
+1 17 33 51 67 93 99 
+level = 25
+1 17 35 51 67 92 97 
+
+results nro ° 0
+point output: 18446744073691509609
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 1
+point output: 552399755
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 2
+point output: 552522633
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 3
+point output: 588059497
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 4
+point output: 18446744071939043808
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 5
+point output: 554497419
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 6
+point output: 1127141773
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 0
+point output: 18446744073691509609
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 1
+point output: 552399755
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 2
+point output: 552522633
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 3
+point output: 588059497
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 4
+point output: 18446744071939043808
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 5
+point output: 554497419
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 6
+point output: 1127141773
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 16777216
+2.83645
+call to multi join
+positions
+level = 0
+4 
+level = 1
+0 
+level = 2
+4 
+level = 3
+0 
+level = 4
+13 
+level = 5
+7 
+level = 6
+2 
+level = 7
+8 
+level = 8
+14 
+level = 9
+9 
+level = 10
+2 
+level = 11
+10 
+level = 12
+15 
+level = 13
+2 
+level = 14
+0 
+level = 15
+8 
+level = 16
+9 
+level = 17
+7 
+level = 18
+14 
+level = 19
+11 
+level = 20
+11 
+level = 21
+11 
+level = 22
+0 
+level = 23
+14 
+level = 24
+1 
+level = 25
+5 
+
+results nro ° 0
+point output: 1468284885
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 0
+point output: 1468284885
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+5.12381
+call to multi join
+positions
+level = 0
+0 
+level = 1
+4 
+level = 2
+4 
+level = 3
+0 
+level = 4
+12 
+level = 5
+6 
+level = 6
+0 
+level = 7
+6 
+level = 8
+12 
+level = 9
+10 
+level = 10
+2 
+level = 11
+7 
+level = 12
+14 
+level = 13
+0 
+level = 14
+11 
+level = 15
+9 
+level = 16
+15 
+level = 17
+5 
+level = 18
+10 
+level = 19
+4 
+level = 20
+3 
+level = 21
+12 
+level = 22
+12 
+level = 23
+15 
+level = 24
+2 
+level = 25
+11 
+
+results nro ° 0
+point output: 216240110
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 216240110
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+5.40385
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 
+level = 2
+0 
+level = 3
+0 
+level = 4
+0 
+level = 5
+4 
+level = 6
+2 
+level = 7
+0 
+level = 8
+13 
+level = 9
+4 
+level = 10
+9 
+level = 11
+11 
+level = 12
+2 
+level = 13
+2 
+level = 14
+2 
+level = 15
+9 
+level = 16
+15 
+level = 17
+13 
+level = 18
+0 
+level = 19
+9 
+level = 20
+14 
+level = 21
+1 
+level = 22
+15 
+level = 23
+9 
+level = 24
+9 
+level = 25
+9 
+
+results nro ° 0
+point output: 18446744072183366762
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 18446744072183366762
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+0.26206
+call to multi join
+call to multi join
+positions
+level = 0
+0 
+level = 1
+2 
+level = 2
+2 
+level = 3
+0 
+level = 4
+2 
+level = 5
+2 6 
+level = 6
+3 7 19 
+level = 7
+4 20 32 
+level = 8
+8 28 44 
+level = 9
+4 16 36 
+level = 10
+10 26 42 
+level = 11
+4 16 32 
+level = 12
+11 31 43 
+level = 13
+0 20 32 
+level = 14
+0 20 32 
+level = 15
+2 22 38 
+level = 16
+13 29 41 
+level = 17
+9 25 41 
+level = 18
+3 19 35 
+level = 19
+11 27 43 
+level = 20
+15 27 47 
+level = 21
+4 20 32 
+level = 22
+11 27 47 
+level = 23
+2 18 38 
+level = 24
+6 18 34 
+level = 25
+14 26 42 
+
+results nro ° 0
+point output: 13035981
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744073655496073
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744073655774661
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 0
+point output: 13035981
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744073655496073
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744073655774661
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 16777216
+1.07932
+call to multi join
+positions
+level = 0
+0 4 
+level = 1
+0 4 16 
+level = 2
+0 4 20 32 
+level = 3
+0 4 20 32 36 48 
+level = 4
+4 16 20 31 32 52 64 80 
+level = 5
+4 17 32 48 65 84 100 112 113 
+level = 6
+3 4 25 32 51 77 80 84 96 116 141 
+level = 7
+12 19 42 51 55 79 90 99 103 119 135 147 170 
+level = 8
+5 20 36 48 64 87 100 116 128 148 160 180 196 
+level = 9
+3 25 38 57 73 95 98 121 141 157 169 189 198 
+level = 10
+5 29 34 57 73 87 102 121 125 137 157 173 189 198 
+level = 11
+4 24 36 56 76 92 100 124 136 152 168 188 204 212 
+level = 12
+6 17 38 49 65 87 102 113 133 145 165 177 197 214 
+level = 13
+7 17 36 53 69 80 100 113 129 145 165 177 193 208 
+level = 14
+5 25 37 61 77 87 101 121 141 157 169 189 205 213 
+level = 15
+4 23 42 51 71 84 106 119 131 147 163 183 199 222 
+level = 16
+7 16 42 52 64 95 110 112 128 144 160 180 196 222 
+level = 17
+4 23 33 55 67 95 101 119 131 151 167 179 195 209 
+level = 18
+13 26 40 62 78 91 95 104 122 138 158 170 190 202 216 
+level = 19
+8 18 33 50 66 87 99 113 134 150 166 182 198 214 229 
+level = 20
+13 20 45 52 68 92 104 125 132 144 160 180 196 208 233 
+level = 21
+15 27 45 59 75 92 108 125 139 143 155 175 187 207 223 237 
+level = 22
+9 27 42 63 79 87 99 126 139 155 175 187 207 223 239 254 
+level = 23
+5 28 38 60 72 85 101 114 136 152 168 184 188 200 216 232 246 
+level = 24
+2 29 42 57 73 81 101 126 141 157 173 189 201 221 233 253 266 
+level = 25
+7 18 39 54 66 89 105 119 134 150 166 182 194 214 230 246 263 
+
+results nro ° 0
+point output: 18446744072608913066
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 18446744072608912110
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 18446744072617317166
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 3
+point output: 18446744072612859686
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 4
+point output: 18446744071606457130
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 5
+point output: 18446744071606194986
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 6
+point output: 709105678
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 7
+point output: 18446744071471994658
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 18446744072271141774
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 9
+point output: 764093934
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 10
+point output: 18446744071606228638
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 11
+point output: 18446744073340461070
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 12
+point output: 18446744071602049958
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 13
+point output: 107337446
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 14
+point output: 1961683415
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 15
+point output: 18446744071539118822
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 16
+point output: 959261079
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 0
+point output: 18446744072608913066
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 18446744072608912110
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 2
+point output: 18446744072617317166
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 3
+point output: 18446744072612859686
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 4
+point output: 18446744071606457130
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 5
+point output: 18446744071606194986
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 6
+point output: 709105678
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 7
+point output: 18446744071471994658
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 18446744072271141774
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 9
+point output: 764093934
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 10
+point output: 18446744071606228638
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 11
+point output: 18446744073340461070
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 12
+point output: 18446744071602049958
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 13
+point output: 107337446
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 14
+point output: 1961683415
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 15
+point output: 18446744071539118822
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 16
+point output: 959261079
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+0.270537
+call to multi join
+call to multi join
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 
+level = 2
+0 
+level = 3
+0 4 
+level = 4
+4 16 
+level = 5
+1 17 
+level = 6
+0 16 
+level = 7
+8 24 
+level = 8
+15 27 
+level = 9
+8 24 
+level = 10
+8 28 
+level = 11
+6 22 
+level = 12
+11 31 
+level = 13
+15 31 
+level = 14
+4 20 
+level = 15
+1 21 
+level = 16
+3 19 
+level = 17
+5 17 
+level = 18
+1 21 
+level = 19
+10 26 
+level = 20
+4 16 
+level = 21
+0 20 
+level = 22
+11 27 
+level = 23
+0 16 
+level = 24
+13 29 
+level = 25
+11 31 
+
+results nro ° 0
+point output: 18446744072119974664
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 1
+point output: 621084360
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 0
+point output: 18446744072119974664
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 1
+point output: 621084360
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+0.085064
+call to multi join
+call to multi join
+call to multi join
+positions
+level = 0
+0 4 
+level = 1
+0 4 16 
+level = 2
+0 20 32 36 
+level = 3
+15 31 47 59 63 
+level = 4
+0 20 32 48 64 
+level = 5
+0 20 32 48 64 
+level = 6
+0 20 32 48 64 
+level = 7
+3 19 45 55 61 63 71 77 79 
+level = 8
+12 24 38 56 66 80 104 114 128 
+level = 9
+8 28 34 60 70 84 108 118 132 133 141 
+level = 10
+12 24 35 60 71 85 108 119 133 156 166 
+level = 11
+0 16 43 52 68 86 100 116 127 134 148 165 
+level = 12
+3 23 45 55 77 95 99 121 137 155 171 187 
+level = 13
+7 23 46 51 73 91 103 125 142 159 174 183 
+level = 14
+8 24 37 60 71 85 104 115 129 145 168 178 
+level = 15
+7 19 37 51 55 72 88 92 99 103 120 124 129 152 166 181 
+level = 16
+0 20 42 48 64 81 99 115 132 144 165 177 206 215 233 250 
+level = 17
+0 16 34 52 68 85 101 113 132 148 165 177 198 213 233 250 
+level = 18
+3 23 34 55 67 92 108 124 135 151 172 184 198 220 226 240 
+level = 19
+11 27 41 59 75 90 106 126 143 155 170 174 186 205 222 226 240 
+level = 20
+7 19 36 55 67 93 109 125 135 147 173 189 201 212 237 251 267 
+level = 21
+4 20 47 52 64 84 102 118 132 144 160 180 192 219 226 230 240 257 261 
+level = 22
+8 24 38 60 72 87 100 116 136 140 152 167 183 195 214 228 240 260 277 293 
+level = 23
+13 29 38 61 77 90 101 117 141 153 169 190 206 218 230 245 257 261 283 287 302 314 318 
+level = 24
+14 30 47 62 78 82 111 123 142 154 158 174 178 194 198 210 214 235 239 255 267 271 283 287 296 300 312 327 339 343 355 
+level = 25
+15 31 36 63 79 86 108 124 143 155 171 191 194 210 226 230 246 258 262 276 288 316 328 332 348 364 376 393 397 413 429 439 451 455 467 483 487 
+
+call to multi join
+positions
+level = 0
+0 2 
+level = 1
+0 2 16 
+level = 2
+0 2 18 32 
+level = 3
+0 16 18 34 48 50 
+level = 4
+0 16 18 32 34 50 64 66 79 80 
+level = 5
+13 31 45 61 64 77 95 109 125 127 128 149 157 
+level = 6
+5 21 39 55 64 85 101 103 117 119 133 149 151 165 176 178 199 
+level = 7
+7 23 39 53 64 87 103 117 133 135 151 165 183 197 199 213 232 248 261 263 
+level = 8
+2 16 32 50 66 80 82 96 114 130 146 160 178 192 208 210 224 253 271 285 288 290 304 
+level = 9
+5 21 37 55 66 85 87 103 117 119 133 149 167 181 199 215 231 245 263 282 296 314 327 341 343 357 359 
+level = 10
+0 16 34 48 69 82 98 114 130 144 160 178 192 210 226 242 258 274 288 290 314 330 346 354 368 370 384 386 400 402 416 
+level = 11
+15 29 45 61 64 95 109 125 141 157 175 191 207 223 237 253 269 285 301 303 319 327 343 359 381 383 397 399 413 415 429 431 447 461 479 495 
+level = 12
+7 23 37 55 69 85 103 117 133 151 165 181 183 199 213 231 245 261 279 295 311 327 344 360 378 389 391 407 421 439 453 455 469 471 485 487 503 519 533 549 567 
+level = 13
+7 21 39 55 79 85 103 119 135 151 167 181 199 213 231 247 261 277 293 311 327 341 359 378 392 407 421 423 437 439 453 471 487 501 519 533 549 565 583 597 613 629 645 
+level = 14
+15 31 45 63 71 95 109 125 143 159 173 191 205 221 239 255 269 287 303 317 335 351 354 383 397 413 415 429 447 461 477 479 493 511 527 543 557 559 573 589 607 623 637 653 669 687 
+level = 15
+10 24 42 58 79 90 104 120 138 152 170 184 200 216 234 250 264 280 296 314 330 346 357 383 399 410 424 426 440 442 456 474 488 490 504 520 536 552 570 584 602 616 632 648 664 682 696 698 712 730 
+level = 16
+10 26 40 56 77 90 106 122 138 152 168 186 202 218 232 248 266 280 296 312 330 344 362 373 391 410 424 426 440 442 456 458 472 474 490 506 522 536 538 554 568 584 602 618 634 650 664 682 698 712 730 744 760 776 794 
+level = 17
+7 23 39 55 66 85 103 117 135 151 165 183 199 213 215 231 247 261 277 293 309 327 343 352 381 399 405 407 421 423 437 439 453 455 469 471 485 487 503 517 533 549 567 581 583 597 615 631 647 663 677 693 709 725 727 741 743 757 773 791 805 821 839 853 869 
+level = 18
+4 20 36 54 69 86 100 118 134 148 150 166 182 196 212 228 244 262 278 292 310 326 342 356 383 389 405 422 436 438 452 468 470 484 486 500 502 516 518 532 534 548 550 564 580 582 596 614 628 646 660 676 692 694 708 724 740 756 772 774 790 804 820 838 852 868 884 886 902 918 934 948 964 980 998 1014 1030 
+level = 19
+11 25 41 59 74 89 107 123 139 153 169 185 201 219 233 251 265 283 299 315 329 345 361 379 399 402 416 441 443 457 459 473 475 489 491 505 521 523 537 539 555 569 571 587 603 617 619 633 635 649 651 665 667 681 683 697 699 713 731 745 747 763 779 795 811 825 841 843 857 859 873 875 889 907 923 939 953 955 971 987 1001 1017 1033 1049 1065 1067 1083 1099 1113 1129 1131 1145 1161 1177 1195 1209 1225 
+level = 20
+3 17 33 51 68 83 97 113 129 145 161 179 195 209 227 243 259 275 289 305 323 337 353 371 399 404 420 435 449 451 465 467 481 483 497 499 513 515 529 545 561 577 579 593 595 609 611 625 643 657 675 691 705 707 721 723 739 755 769 785 787 803 817 819 835 849 865 867 881 883 899 913 915 929 947 961 963 979 995 1009 1025 1043 1059 1075 1089 1105 1107 1121 1123 1137 1153 1169 1185 1203 1219 1233 1249 1265 1281 1299 1315 1331 1347 1361 1363 1379 1395 1411 1427 1441 1457 1473 1489 1505 1523 1537 1539 
+level = 21
+5 23 37 55 64 85 103 119 135 151 165 181 199 213 229 247 261 277 295 309 327 341 357 373 390 407 423 437 453 455 469 471 485 487 501 503 517 519 533 535 549 567 581 597 599 613 615 631 647 663 679 693 695 709 727 741 743 759 773 775 789 791 805 821 837 855 869 887 901 919 935 949 951 967 981 983 997 999 1013 1029 1045 1047 1061 1063 1079 1095 1109 1125 1127 1143 1157 1173 1191 1205 1221 1223 1239 1255 1271 1285 1303 1319 1333 1335 1351 1367 1383 1399 1415 1429 1431 1445 1461 1479 1493 1511 1525 1541 1557 1575 1589 1607 1623 1639 1653 1655 1671 1687 1701 1719 1733 1749 1765 1783 1799 1815 1829 1845 1847 1861 1863 
+level = 22
+15 31 45 61 74 78 93 109 127 141 157 175 189 205 223 239 255 269 287 301 319 335 349 365 381 397 415 431 445 461 463 477 493 495 511 525 527 541 543 557 559 573 575 589 591 605 607 621 623 637 639 653 655 671 687 703 719 735 749 767 781 799 813 829 831 845 847 861 877 895 909 925 941 957 959 973 989 1005 1023 1039 1055 1069 1071 1087 1101 1103 1117 1135 1149 1151 1165 1183 1197 1199 1213 1215 1229 1231 1245 1247 1261 1279 1293 1309 1327 1343 1357 1375 1391 1407 1421 1437 1439 1453 1469 1487 1501 1517 1519 1535 1549 1551 1567 1581 1599 1615 1631 1647 1661 1663 1677 1679 1695 1709 1727 1741 1743 1757 1773 1789 1807 1823 1839 1855 1869 1887 1901 1917 1935 1949 1967 1981 1983 1997 2013 2031 2045 2061 2077 2095 2109 2127 2141 2157 2173 2189 2207 2223 2237 2239 2253 2255 
+level = 23
+10 24 42 56 76 88 92 106 122 136 152 168 184 202 216 232 250 266 282 298 312 328 344 360 376 394 400 426 442 458 472 474 488 490 504 506 520 522 538 552 568 584 600 602 616 634 648 664 666 680 696 698 712 714 728 730 744 746 760 762 778 792 808 826 840 856 872 888 904 906 920 938 954 970 984 1002 1018 1034 1048 1066 1080 1098 1112 1114 1128 1130 1144 1160 1178 1192 1208 1224 1242 1256 1274 1290 1306 1320 1336 1352 1354 1368 1386 1402 1416 1432 1434 1448 1466 1480 1498 1512 1514 1528 1530 1544 1560 1578 1594 1608 1610 1624 1642 1658 1672 1688 1706 1720 1736 1738 1752 1770 1784 1786 1802 1816 1832 1850 1864 1880 1896 1912 1928 1944 1962 1976 1994 2010 2024 2026 2042 2056 2074 2090 2104 2120 2138 2154 2170 2186 2200 2218 2232 2248 2250 2264 2282 2296 2312 2330 2346 2360 2376 2394 2410 2426 2440 2456 2458 2472 2488 2504 2522 2536 2554 2570 2586 2602 2616 2632 2648 2666 2682 2696 2698 2712 2714 2728 2730 2744 2746 
+level = 24
+4 22 38 54 76 88 92 104 108 116 132 148 166 180 196 212 230 246 260 276 294 308 324 342 356 372 388 404 430 446 462 470 484 500 502 516 518 532 534 548 550 566 580 598 612 628 630 644 662 678 692 708 724 726 740 742 758 772 774 790 804 806 822 838 854 868 870 884 886 902 918 932 948 966 980 998 1014 1028 1044 1062 1078 1092 1110 1124 1140 1158 1172 1190 1204 1220 1238 1254 1270 1284 1300 1302 1318 1334 1350 1364 1366 1380 1396 1412 1414 1430 1446 1462 1476 1494 1508 1524 1542 1558 1574 1588 1606 1620 1636 1652 1668 1684 1700 1718 1734 1750 1764 1766 1780 1782 1796 1814 1830 1844 1846 1860 1862 1878 1894 1908 1924 1926 1940 1956 1972 1990 2006 2020 2036 2054 2068 2086 2100 2118 2132 2150 2164 2166 2180 2196 2198 2212 2228 2230 2246 2260 2278 2294 2310 2326 2340 2356 2374 2388 2404 2406 2422 2438 2454 2468 2470 2484 2500 2516 2534 2548 2564 2582 2596 2614 2628 2644 2662 2678 2694 2710 2726 2740 2742 2758 2774 2790 2804 2806 2820 2822 2836 2838 2852 2854 2868 2886 2900 2918 2932 2950 2964 2982 2998 3014 3030 3044 3060 3078 3092 3094 3108 3110 3124 3126 3140 3142 3156 3158 3172 3174 3188 3190 3204 
+level = 25
+2 16 34 50 68 80 84 96 100 112 116 128 132 146 162 176 194 208 224 240 258 274 288 304 322 338 354 368 384 402 418 432 459 472 476 490 494 498 512 528 544 560 576 592 608 624 640 656 672 688 704 720 736 754 770 786 802 818 832 848 864 880 896 912 928 944 960 976 992 1008 1024 1040 1056 1072 1088 1104 1120 1136 1152 1168 1184 1200 1218 1234 1248 1266 1282 1298 1312 1328 1344 1360 1376 1394 1410 1426 1442 1458 1474 1490 1506 1522 1536 1554 1570 1586 1602 1618 1632 1648 1664 1682 1698 1714 1730 1746 1760 1778 1794 1810 1826 1842 1856 1872 1888 1904 1922 1938 1954 1970 1984 2000 2016 2032 2048 2064 2080 2096 2112 2128 2144 2160 2176 2192 2208 2224 2240 2256 2272 2288 2304 2322 2338 2354 2368 2384 2400 2416 2434 2450 2466 2482 2498 2514 2528 2546 2562 2578 2594 2610 2626 2642 2656 2672 2690 2706 2722 2736 2752 2768 2784 2800 2816 2832 2850 2866 2882 2898 2914 2930 2946 2962 2978 2994 3010 3026 3042 3058 3074 3088 3104 3122 3138 3152 3168 3186 3200 3216 3234 3250 3266 3282 3298 3314 3330 3346 3362 3376 3392 3410 3424 3442 3458 3472 3488 3506 3522 3536 3552 3570 3586 3602 3618 3634 3650 3666 3682 3698 3714 3730 3746 3762 3778 3794 3810 
+
+results nro ° 0
+point output: 2025793488
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 1
+point output: 2562541520
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 2
+point output: 3130993168
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 3
+point output: 3132697580
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 4
+point output: 2564508176
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 5
+point output: 18446744072240385157
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 6
+point output: 2092647978
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 7
+point output: 2059093548
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 8
+point output: 2059085868
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 9
+point output: 2059085836
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 10
+point output: 2059093516
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 11
+point output: 2629380142
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 12
+point output: 2629510666
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 13
+point output: 2090412076
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 14
+point output: 2090411564
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 15
+point output: 2090411532
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 16
+point output: 2090412044
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 17
+point output: 2057128522
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 18
+point output: 2054892046
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 19
+point output: 2090542604
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 20
+point output: 2090559534
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 21
+point output: 1519994926
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 22
+point output: 2054759980
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 23
+point output: 2023441964
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 24
+point output: 1488529964
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 25
+point output: 1522224142
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 26
+point output: 1990019084
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 27
+point output: 2596080112
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 28
+point output: 2531091978
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 29
+point output: 2059103246
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 30
+point output: 2057006126
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 31
+point output: 2057128464
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 32
+point output: 2055039470
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 33
+point output: 2057127982
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 34
+point output: 2023573550
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 35
+point output: 2023565870
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 36
+point output: 2057119758
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 37
+point output: 2023442478
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 38
+point output: 2023434798
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 39
+point output: 2056997422
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 40
+point output: 2057005070
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 41
+point output: 2023434766
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 42
+point output: 2593999406
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 43
+point output: 2023442446
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 44
+point output: 2023565838
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 45
+point output: 2090551824
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 46
+point output: 2090551344
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 47
+point output: 2593859630
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 48
+point output: 2593998864
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 49
+point output: 2595964462
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 50
+point output: 2023565358
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 51
+point output: 2595956270
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 52
+point output: 2059102766
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 53
+point output: 2059102734
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 54
+point output: 2056989198
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 55
+point output: 2056988686
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 56
+point output: 2593867824
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 57
+point output: 2057005102
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 58
+point output: 2059095086
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 59
+point output: 2059094574
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 60
+point output: 2591770672
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 61
+point output: 2059094542
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 62
+point output: 2059095054
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 63
+point output: 2021476368
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 64
+point output: 2021468688
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 65
+point output: 2021468208
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 66
+point output: 2055031342
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 67
+point output: 2054900270
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 68
+point output: 2021345328
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 69
+point output: 2054899758
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 70
+point output: 2055030830
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 71
+point output: 2560444430
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 72
+point output: 2558216208
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 73
+point output: 2558208560
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 74
+point output: 2054892078
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 75
+point output: 2054891566
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 76
+point output: 2054891534
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 77
+point output: 2023573998
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 78
+point output: 2055023150
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 79
+point output: 2055023118
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 80
+point output: 2055022638
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 81
+point output: 2056875020
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 82
+point output: 2058971694
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 83
+point output: 2058964014
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 84
+point output: 2058963502
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 85
+point output: 2058963470
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 86
+point output: 2023451150
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 87
+point output: 2021484558
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 88
+point output: 2058963982
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 89
+point output: 2058971662
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 90
+point output: 2058972174
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 91
+point output: 2055022606
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 92
+point output: 2056988654
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 93
+point output: 2058962448
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 94
+point output: 2025539600
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 95
+point output: 2058954256
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 96
+point output: 2056857072
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 97
+point output: 2058954224
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 98
+point output: 2025539568
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 99
+point output: 2059094542
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 100
+point output: 2021476332
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 101
+point output: 2055030286
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 102
+point output: 2057136622
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 103
+point output: 2021476398
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 104
+point output: 2021352940
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 105
+point output: 2054908396
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 106
+point output: 2594006574
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 107
+point output: 2021476366
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 108
+point output: 2593875948
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 109
+point output: 2560452622
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 110
+point output: 2090674224
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 111
+point output: 2059225104
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 112
+point output: 2092779564
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 113
+point output: 2092770860
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 114
+point output: 2059216944
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 115
+point output: 2594007566
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 116
+point output: 2593999342
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 117
+point output: 2629642254
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 118
+point output: 2593868300
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 119
+point output: 2593867758
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 120
+point output: 2593998862
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 121
+point output: 2593998830
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 122
+point output: 2593876494
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 123
+point output: 2593876462
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 124
+point output: 2594007054
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 125
+point output: 2092648492
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 126
+point output: 2593867790
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 127
+point output: 2090542608
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 128
+point output: 2092648460
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 129
+point output: 2593998892
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 130
+point output: 2627552782
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 131
+point output: 2593998860
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 132
+point output: 2057127952
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 133
+point output: 2593867276
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 134
+point output: 2593998382
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 135
+point output: 2593998350
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 136
+point output: 2558224398
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 137
+point output: 2558216718
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 138
+point output: 2593990702
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 139
+point output: 2560453134
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 140
+point output: 2059225100
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 141
+point output: 2558347280
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 142
+point output: 2558224880
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 143
+point output: 2558224368
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 144
+point output: 2023433772
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 145
+point output: 2056865838
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 146
+point output: 2558216176
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 147
+point output: 2059094542
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 148
+point output: 2023573550
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 149
+point output: 2023450670
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 150
+point output: 2023450156
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 151
+point output: 2023573038
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 152
+point output: 2023573518
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 153
+point output: 2057136716
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 154
+point output: 1484466188
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 155
+point output: 1992108526
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 156
+point output: 1522215470
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 157
+point output: 2593728490
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 158
+point output: 2526751726
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 159
+point output: 18446744073639822173
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 160
+point output: 18446744073639822177
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 161
+point output: 2596088300
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 162
+point output: 2596096016
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 163
+point output: 2023450124
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 164
+point output: 2021337104
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 165
+point output: 2021475888
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 166
+point output: 2021344816
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 167
+point output: 2023450670
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 168
+point output: 2593875504
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 169
+point output: 2090690064
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 170
+point output: 2025399822
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 171
+point output: 2025399790
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 172
+point output: 2023442446
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 173
+point output: 2023434222
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 174
+point output: 2023433742
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 175
+point output: 2593727980
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 176
+point output: 2059224620
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 177
+point output: 2056989260
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 178
+point output: 2061192174
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 179
+point output: 2023442506
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 180
+point output: 2023442474
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 181
+point output: 2056988238
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 182
+point output: 2593867340
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 183
+point output: 2560428046
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 184
+point output: 2056996880
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 185
+point output: 2021476334
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 186
+point output: 2593867248
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 187
+point output: 2560444400
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 188
+point output: 2558354960
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 189
+point output: 2591909904
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 190
+point output: 2591901200
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 191
+point output: 2591778832
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 192
+point output: 2591770608
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 193
+point output: 2059093488
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 194
+point output: 2058972206
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 195
+point output: 2057005068
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 196
+point output: 2023442988
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 197
+point output: 2023442444
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 198
+point output: 2023442956
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 199
+point output: 2593999374
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 200
+point output: 2591909934
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 201
+point output: 2591778862
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 202
+point output: 2021353516
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 203
+point output: 2021353484
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 204
+point output: 2021476908
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 205
+point output: 2025416782
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 206
+point output: 2021485100
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 207
+point output: 2023443470
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 208
+point output: 18446744073608233827
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 209
+point output: 18446744073608233831
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 210
+point output: 2593998892
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 211
+point output: 2593868300
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 212
+point output: 2593998860
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 213
+point output: 2593860140
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 214
+point output: 2593859596
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 215
+point output: 2021345324
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 216
+point output: 2558347788
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 217
+point output: 2021345292
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 218
+point output: 2558216716
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 219
+point output: 2025671184
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 220
+point output: 3130861580
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 221
+point output: 2055038988
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 222
+point output: 2560304718
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 223
+point output: 3435162804
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 224
+point output: 3435162808
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 225
+point output: 3435146424
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 226
+point output: 3435161780
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 227
+point output: 3435161784
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 228
+point output: 3435161716
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 229
+point output: 3435161720
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 230
+point output: 3435162740
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 231
+point output: 3435162744
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 232
+point output: 2591894060
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 233
+point output: 2591771180
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 234
+point output: 2591762988
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 235
+point output: 2591762444
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 236
+point output: 2591770668
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 237
+point output: 2591893548
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 238
+point output: 2591893516
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 239
+point output: 2591770636
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 240
+point output: 2591762956
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 241
+point output: 2591771148
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 242
+point output: 2054899788
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 243
+point output: 1520134190
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 244
+point output: 2560305710
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 2025793488
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 1
+point output: 2562541520
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 2
+point output: 3130993168
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 3
+point output: 3132697580
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 4
+point output: 2564508176
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 5
+point output: 18446744072240385157
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 6
+point output: 2092647978
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 7
+point output: 2059093548
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 8
+point output: 2059085868
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 9
+point output: 2059085836
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 10
+point output: 2059093516
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 11
+point output: 2629380142
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 12
+point output: 2629510666
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 13
+point output: 2090412076
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 14
+point output: 2090411564
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 15
+point output: 2090411532
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 16
+point output: 2090412044
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 17
+point output: 2057128522
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 18
+point output: 2054892046
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 19
+point output: 2090542604
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 20
+point output: 2090559534
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 21
+point output: 1519994926
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 22
+point output: 2054759980
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 23
+point output: 2023441964
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 24
+point output: 1488529964
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 25
+point output: 1522224142
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 26
+point output: 1990019084
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 27
+point output: 2596080112
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 28
+point output: 2531091978
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 29
+point output: 2059103246
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 30
+point output: 2057006126
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 31
+point output: 2057128464
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 32
+point output: 2055039470
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 33
+point output: 2057127982
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 34
+point output: 2023573550
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 35
+point output: 2023565870
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 36
+point output: 2057119758
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 37
+point output: 2023442478
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 38
+point output: 2023434798
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 39
+point output: 2056997422
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 40
+point output: 2057005070
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 41
+point output: 2023434766
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 42
+point output: 2593999406
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 43
+point output: 2023442446
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 44
+point output: 2023565838
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 45
+point output: 2090551824
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 46
+point output: 2090551344
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 47
+point output: 2593859630
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 48
+point output: 2593998864
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 49
+point output: 2595964462
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 50
+point output: 2023565358
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 51
+point output: 2595956270
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 52
+point output: 2059102766
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 53
+point output: 2059102734
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 54
+point output: 2056989198
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 55
+point output: 2056988686
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 56
+point output: 2593867824
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 57
+point output: 2057005102
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 58
+point output: 2059095086
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 59
+point output: 2059094574
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 60
+point output: 2591770672
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 61
+point output: 2059094542
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 62
+point output: 2059095054
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 63
+point output: 2021476368
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 64
+point output: 2021468688
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 65
+point output: 2021468208
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 66
+point output: 2055031342
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 67
+point output: 2054900270
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 68
+point output: 2021345328
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 69
+point output: 2054899758
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 70
+point output: 2055030830
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 71
+point output: 2560444430
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 72
+point output: 2558216208
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 73
+point output: 2558208560
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 74
+point output: 2054892078
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 75
+point output: 2054891566
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 76
+point output: 2054891534
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 77
+point output: 2023573998
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 78
+point output: 2055023150
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 79
+point output: 2055023118
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 80
+point output: 2055022638
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 81
+point output: 2056875020
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 82
+point output: 2058971694
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 83
+point output: 2058964014
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 84
+point output: 2058963502
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 85
+point output: 2058963470
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 86
+point output: 2023451150
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 87
+point output: 2021484558
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 88
+point output: 2058963982
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 89
+point output: 2058971662
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 90
+point output: 2058972174
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 91
+point output: 2055022606
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 92
+point output: 2056988654
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 93
+point output: 2058962448
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 94
+point output: 2025539600
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 95
+point output: 2058954256
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 96
+point output: 2056857072
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 97
+point output: 2058954224
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 98
+point output: 2025539568
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 99
+point output: 2059094542
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 100
+point output: 2021476332
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 101
+point output: 2055030286
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 102
+point output: 2057136622
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 103
+point output: 2021476398
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 104
+point output: 2021352940
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 105
+point output: 2054908396
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 106
+point output: 2594006574
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 107
+point output: 2021476366
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 108
+point output: 2593875948
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 109
+point output: 2560452622
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 110
+point output: 2090674224
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 111
+point output: 2059225104
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 112
+point output: 2092779564
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 113
+point output: 2092770860
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 114
+point output: 2059216944
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 115
+point output: 2594007566
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 116
+point output: 2593999342
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 117
+point output: 2629642254
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 118
+point output: 2593868300
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 119
+point output: 2593867758
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 120
+point output: 2593998862
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 121
+point output: 2593998830
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 122
+point output: 2593876494
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 123
+point output: 2593876462
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 124
+point output: 2594007054
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 125
+point output: 2092648492
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 126
+point output: 2593867790
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 127
+point output: 2090542608
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 128
+point output: 2092648460
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 129
+point output: 2593998892
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 130
+point output: 2627552782
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 131
+point output: 2593998860
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 132
+point output: 2057127952
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 133
+point output: 2593867276
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 134
+point output: 2593998382
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 135
+point output: 2593998350
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 136
+point output: 2558224398
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 137
+point output: 2558216718
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 138
+point output: 2593990702
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 139
+point output: 2560453134
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 140
+point output: 2059225100
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 141
+point output: 2558347280
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 142
+point output: 2558224880
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 143
+point output: 2558224368
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 144
+point output: 2023433772
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 145
+point output: 2056865838
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 146
+point output: 2558216176
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 147
+point output: 2059094542
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 148
+point output: 2023573550
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 149
+point output: 2023450670
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 150
+point output: 2023450156
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 151
+point output: 2023573038
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 152
+point output: 2023573518
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 153
+point output: 2057136716
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 154
+point output: 1484466188
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 155
+point output: 1992108526
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 156
+point output: 1522215470
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 157
+point output: 2593728490
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 158
+point output: 2526751726
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 159
+point output: 18446744073639822173
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 160
+point output: 18446744073639822177
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 161
+point output: 2596088300
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 162
+point output: 2596096016
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 163
+point output: 2023450124
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 164
+point output: 2021337104
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 165
+point output: 2021475888
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 166
+point output: 2021344816
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 167
+point output: 2023450670
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 168
+point output: 2593875504
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 169
+point output: 2090690064
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 170
+point output: 2025399822
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 171
+point output: 2025399790
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 172
+point output: 2023442446
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 173
+point output: 2023434222
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 174
+point output: 2023433742
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 175
+point output: 2593727980
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 176
+point output: 2059224620
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 177
+point output: 2056989260
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 178
+point output: 2061192174
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 179
+point output: 2023442506
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 180
+point output: 2023442474
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 181
+point output: 2056988238
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 182
+point output: 2593867340
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 183
+point output: 2560428046
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 184
+point output: 2056996880
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 185
+point output: 2021476334
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 186
+point output: 2593867248
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 187
+point output: 2560444400
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 188
+point output: 2558354960
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 189
+point output: 2591909904
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 190
+point output: 2591901200
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 191
+point output: 2591778832
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 192
+point output: 2591770608
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 193
+point output: 2059093488
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 194
+point output: 2058972206
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 195
+point output: 2057005068
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 196
+point output: 2023442988
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 197
+point output: 2023442444
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 198
+point output: 2023442956
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 199
+point output: 2593999374
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 200
+point output: 2591909934
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 201
+point output: 2591778862
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 202
+point output: 2021353516
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 203
+point output: 2021353484
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 204
+point output: 2021476908
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 205
+point output: 2025416782
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 206
+point output: 2021485100
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 207
+point output: 2023443470
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 208
+point output: 18446744073608233827
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 209
+point output: 18446744073608233831
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 210
+point output: 2593998892
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 211
+point output: 2593868300
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 212
+point output: 2593998860
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 213
+point output: 2593860140
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 214
+point output: 2593859596
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 215
+point output: 2021345324
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 216
+point output: 2558347788
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 217
+point output: 2021345292
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 218
+point output: 2558216716
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 219
+point output: 2025671184
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 220
+point output: 3130861580
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 221
+point output: 2055038988
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 222
+point output: 2560304718
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 223
+point output: 3435162804
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 224
+point output: 3435162808
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 225
+point output: 3435146424
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 226
+point output: 3435161780
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 227
+point output: 3435161784
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 228
+point output: 3435161716
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 229
+point output: 3435161720
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 230
+point output: 3435162740
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 231
+point output: 3435162744
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 232
+point output: 2591894060
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 233
+point output: 2591771180
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 234
+point output: 2591762988
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 235
+point output: 2591762444
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 236
+point output: 2591770668
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 237
+point output: 2591893548
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 238
+point output: 2591893516
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 239
+point output: 2591770636
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 240
+point output: 2591762956
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 241
+point output: 2591771148
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 242
+point output: 2054899788
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 243
+point output: 1520134190
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 244
+point output: 2560305710
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+0.349782
+call to multi join
+positions
+level = 0
+0 4 
+level = 1
+0 4 16 
+level = 2
+0 20 32 
+level = 3
+0 20 32 
+level = 4
+0 16 36 
+level = 5
+0 20 32 
+level = 6
+0 16 36 
+level = 7
+4 20 36 
+level = 8
+0 16 32 
+level = 9
+4 20 36 
+level = 10
+4 16 36 
+level = 11
+0 20 36 
+level = 12
+4 20 32 
+level = 13
+1 21 37 
+level = 14
+4 16 32 
+level = 15
+4 16 36 
+level = 16
+9 11 29 31 45 47 
+level = 17
+4 20 32 48 64 80 
+level = 18
+4 20 36 52 64 80 
+level = 19
+5 21 33 49 69 85 
+level = 20
+11 27 47 63 79 95 
+level = 21
+6 20 38 52 70 84 
+level = 22
+11 25 43 57 75 89 
+level = 23
+6 20 34 48 66 70 80 84 
+level = 24
+11 25 47 61 79 91 109 121 
+level = 25
+8 26 44 62 72 92 106 126 
+
+results nro ° 0
+point output: 1245445132
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 1
+point output: 1245306322
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 2
+point output: 1245305358
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 3
+point output: 1245446096
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 4
+point output: 2247482706
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 5
+point output: 2247622480
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 6
+point output: 2319291862
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 7
+point output: 2319431636
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 0
+point output: 1245445132
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 1
+point output: 1245306322
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 2
+point output: 1245305358
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 3
+point output: 1245446096
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 4
+point output: 2247482706
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 5
+point output: 2247622480
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 6
+point output: 2319291862
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 7
+point output: 2319431636
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 33554432
+0.088261
+call to multi join
+positions
+level = 0
+15 
+level = 1
+0 
+level = 2
+0 
+level = 3
+0 
+level = 4
+0 
+level = 5
+0 
+level = 6
+0 
+level = 7
+0 
+level = 8
+0 
+level = 9
+0 
+level = 10
+0 
+level = 11
+15 
+level = 12
+15 
+level = 13
+0 
+level = 14
+15 
+level = 15
+15 
+level = 16
+15 
+level = 17
+15 
+level = 18
+0 
+level = 19
+0 
+level = 20
+15 
+level = 21
+15 
+level = 22
+15 
+level = 23
+15 
+level = 24
+7 
+level = 25
+12 
+
+results nro ° 0
+point output: 284229739
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 0
+point output: 284229739
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+0.285823
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 
+level = 2
+0 
+level = 3
+4 
+level = 4
+14 
+level = 5
+0 
+level = 6
+6 
+level = 7
+6 
+level = 8
+11 
+level = 9
+12 
+level = 10
+4 
+level = 11
+13 
+level = 12
+2 
+level = 13
+13 
+level = 14
+4 
+level = 15
+5 
+level = 16
+1 
+level = 17
+15 
+level = 18
+12 
+level = 19
+15 
+level = 20
+4 
+level = 21
+15 
+level = 22
+11 
+level = 23
+3 
+level = 24
+13 
+level = 25
+2 
+
+results nro ° 0
+point output: 559767469
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 0
+point output: 559767469
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 16777216
+2.348
+call to multi join
+positions
+level = 0
+4 
+level = 1
+0 
+level = 2
+0 
+level = 3
+0 
+level = 4
+9 
+level = 5
+2 
+level = 6
+3 
+level = 7
+13 
+level = 8
+5 
+level = 9
+13 
+level = 10
+1 
+level = 11
+0 
+level = 12
+8 
+level = 13
+11 
+level = 14
+7 
+level = 15
+4 
+level = 16
+9 
+level = 17
+3 
+level = 18
+11 
+level = 19
+12 
+level = 20
+11 
+level = 21
+9 
+level = 22
+11 
+level = 23
+3 
+level = 24
+3 
+level = 25
+13 
+
+results nro ° 0
+point output: 18446744072868029805
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 0
+point output: 18446744072868029805
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+17.3847
+call to multi join
+positions
+level = 0
+0 2 
+level = 1
+0 15 16 
+level = 2
+0 16 32 
+level = 3
+0 16 34 
+level = 4
+0 7 16 34 
+level = 5
+0 24 47 50 
+level = 6
+7 31 47 55 
+level = 7
+8 24 47 58 
+level = 8
+7 16 47 53 
+level = 9
+7 16 47 53 
+level = 10
+7 31 47 53 
+level = 11
+7 31 47 55 
+level = 12
+15 16 47 61 
+level = 13
+8 31 32 56 
+level = 14
+7 16 32 55 
+level = 15
+15 31 32 61 
+level = 16
+0 23 32 48 
+level = 17
+8 16 47 58 
+level = 18
+0 31 47 50 
+level = 19
+10 28 32 56 
+level = 20
+1 26 47 49 
+level = 21
+0 2 20 32 50 
+level = 22
+1 3 17 37 55 67 
+level = 23
+3 17 19 33 35 53 74 81 
+level = 24
+12 14 28 44 46 60 62 76 80 107 124 
+level = 25
+15 29 31 45 61 63 77 79 93 95 109 111 125 129 131 133 135 156 175 
+
+results nro ° 0
+point output: 2181900622
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 1
+point output: 18446744073645350001
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 2
+point output: 18446744073645350003
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 3
+point output: 18446744073645350005
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 4
+point output: 18446744073645350007
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 5
+point output: 2181761868
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 6
+point output: 2181639020
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 7
+point output: 2181639022
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 2181630828
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 9
+point output: 2181630830
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 10
+point output: 2181630798
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 11
+point output: 2181638988
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 12
+point output: 2181638990
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 13
+point output: 2181638476
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 14
+point output: 2181761388
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 15
+point output: 2181761390
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 16
+point output: 2181761356
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 17
+point output: 2181761358
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 18
+point output: 18446744073456876249
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 0
+point output: 2181900622
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 1
+point output: 18446744073645350001
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 2
+point output: 18446744073645350003
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 3
+point output: 18446744073645350005
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 4
+point output: 18446744073645350007
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 5
+point output: 2181761868
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 6
+point output: 2181639020
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 7
+point output: 2181639022
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 2181630828
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 9
+point output: 2181630830
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 10
+point output: 2181630798
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 11
+point output: 2181638988
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 12
+point output: 2181638990
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 13
+point output: 2181638476
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 14
+point output: 2181761388
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 15
+point output: 2181761390
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 16
+point output: 2181761356
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 17
+point output: 2181761358
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 18
+point output: 18446744073456876249
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+0.01145
+call to multi join
+positions
+level = 0
+0 2 
+level = 1
+2 16 
+level = 2
+0 16 
+level = 3
+2 18 
+level = 4
+13 29 
+level = 5
+15 29 
+level = 6
+13 29 
+level = 7
+9 25 
+level = 8
+3 17 
+level = 9
+3 19 
+level = 10
+11 27 
+level = 11
+0 18 
+level = 12
+0 18 
+level = 13
+10 26 
+level = 14
+14 28 
+level = 15
+1 19 
+level = 16
+11 27 
+level = 17
+3 19 
+level = 18
+9 25 
+level = 19
+6 22 
+level = 20
+2 18 
+level = 21
+5 23 
+level = 22
+11 27 
+level = 23
+13 15 29 
+level = 24
+3 17 33 
+level = 25
+15 31 45 
+
+results nro ° 0
+point output: 18446744070640400903
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744070640400423
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744070676044291
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 0
+point output: 18446744070640400903
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 16777216
+results nro ° 1
+point output: 18446744070640400423
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744070676044291
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 16777216
+1.10964
+call to multi join
+call to multi join
+positions
+level = 0
+2 
+level = 1
+0 
+level = 2
+2 
+level = 3
+2 
+level = 4
+0 
+level = 5
+2 
+level = 6
+2 
+level = 7
+0 
+level = 8
+2 
+level = 9
+0 
+level = 10
+1 
+level = 11
+3 
+level = 12
+3 
+level = 13
+11 
+level = 14
+8 
+level = 15
+10 
+level = 16
+7 
+level = 17
+13 
+level = 18
+2 
+level = 19
+6 
+level = 20
+5 
+level = 21
+5 
+level = 22
+13 
+level = 23
+6 
+level = 24
+2 
+level = 25
+3 
+
+results nro ° 0
+point output: 1536393440
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 0
+point output: 1536393440
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 0
+2.50175
+call to multi join
+call to multi join
+call to multi join
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 2 
+level = 2
+0 18 
+level = 3
+9 11 27 
+level = 4
+6 20 38 
+level = 5
+6 20 38 
+level = 6
+6 20 38 
+level = 7
+6 20 38 
+level = 8
+0 16 34 
+level = 9
+7 23 39 
+level = 10
+1 19 35 
+level = 11
+7 23 39 
+level = 12
+0 16 32 
+level = 13
+6 20 36 
+level = 14
+5 23 37 
+level = 15
+3 19 33 
+level = 16
+3 19 33 
+level = 17
+8 26 42 
+level = 18
+11 27 41 
+level = 19
+9 25 41 
+level = 20
+0 16 34 
+level = 21
+8 26 42 
+level = 22
+15 31 45 
+level = 23
+13 31 47 
+level = 24
+8 24 42 
+level = 25
+7 21 39 
+
+results nro ° 0
+point output: 18446744073631151814
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 1
+point output: 18446744073062954694
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 2
+point output: 18446744073635469034
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 18446744073631151814
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 1
+point output: 18446744073062954694
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 2
+point output: 18446744073635469034
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+0.029622
+call to multi join
+positions
+level = 0
+0 2 4 6 
+level = 1
+0 2 4 16 20 32 34 48 
+level = 2
+0 2 18 36 48 50 52 68 70 80 91 107 112 114 
+level = 3
+0 18 34 48 50 64 80 100 112 114 128 130 144 146 160 178 192 194 208 210 
+level = 4
+0 2 5 13 18 32 52 54 68 70 82 100 116 132 134 150 166 182 192 194 196 198 208 210 212 214 228 244 256 258 260 262 274 278 290 294 306 310 
+level = 5
+4 20 42 50 68 82 100 118 134 150 160 177 194 214 228 244 262 278 288 290 292 310 320 338 358 374 386 402 427 443 454 468 482 496 516 528 546 550 562 578 582 594 
+level = 6
+0 16 44 53 64 85 96 114 128 144 165 188 192 210 224 240 256 272 292 308 324 342 356 374 388 404 420 436 452 468 486 500 518 532 548 564 582 596 612 628 644 660 
+level = 7
+0 16 35 59 66 82 100 118 132 148 162 177 198 214 230 244 260 278 295 311 324 342 352 370 388 404 416 432 448 466 486 502 514 530 548 560 581 596 608 629 646 658 
+level = 8
+1 17 47 55 65 67 88 100 116 132 148 170 191 199 212 230 244 260 276 299 315 320 336 352 368 384 400 416 432 448 464 480 498 512 530 544 560 587 592 608 635 640 656 
+level = 9
+1 19 38 54 67 81 98 112 128 146 162 176 205 210 224 240 258 274 288 308 326 336 352 372 388 402 418 438 454 479 495 496 512 532 548 562 582 596 610 630 644 656 676 
+level = 10
+13 31 37 53 79 95 106 112 128 146 160 184 198 223 224 240 256 274 290 307 321 336 352 368 384 402 416 434 448 464 480 496 512 528 544 560 576 593 610 626 643 658 674 
+level = 11
+12 28 37 61 76 94 98 119 135 149 167 178 206 209 229 247 261 279 295 311 325 339 355 371 387 401 419 433 451 479 493 497 515 529 547 561 577 597 611 627 645 659 675 
+level = 12
+13 29 43 50 79 95 111 112 130 144 160 191 194 221 226 242 258 272 290 316 334 340 358 372 390 404 420 436 452 475 489 502 518 534 550 566 582 606 612 628 654 662 678 
+level = 13
+15 29 47 63 77 93 101 119 133 151 167 181 205 219 229 245 261 277 293 295 304 322 339 353 371 385 403 419 435 451 479 495 497 513 529 545 561 577 592 609 625 642 657 659 673 675 
+level = 14
+2 16 46 55 64 80 98 123 137 153 171 176 197 212 235 249 265 267 283 297 315 331 347 363 377 395 409 425 443 457 475 480 496 523 537 555 569 585 587 601 603 617 635 651 667 681 699 713 731 
+level = 15
+3 19 33 48 67 81 106 116 134 148 166 186 202 214 228 246 262 278 292 310 326 343 357 372 390 400 418 436 454 464 482 496 514 532 550 560 578 598 614 626 642 661 676 688 709 726 742 754 770 
+level = 16
+8 26 33 49 74 90 104 115 131 145 163 184 195 213 227 241 259 273 289 305 321 340 356 371 387 407 423 433 451 469 487 500 516 518 531 545 567 581 595 609 631 645 662 673 693 710 721 737 757 773 
+level = 17
+5 23 41 49 71 87 109 124 142 156 172 191 194 215 236 254 268 286 302 318 334 336 352 380 398 408 426 444 460 472 488 496 512 530 556 574 584 602 620 638 648 666 674 702 714 720 750 766 778 794 
+level = 18
+2 16 35 59 66 82 103 112 114 128 144 160 181 200 223 226 240 256 272 288 306 320 340 358 368 370 384 404 406 420 432 448 468 484 507 523 537 546 560 582 596 608 624 644 660 678 688 708 726 738 752 774 788 
+level = 19
+14 28 37 52 78 92 100 114 128 146 160 178 198 215 227 240 258 272 290 306 322 338 360 376 390 404 422 438 452 470 484 502 516 534 546 560 578 596 614 628 646 660 678 692 710 728 742 758 778 790 806 822 838 
+level = 20
+10 26 35 50 72 90 109 115 129 131 145 161 179 205 216 228 243 257 275 291 305 321 339 366 382 387 401 403 417 439 453 455 469 481 499 517 535 557 575 591 595 609 631 645 659 675 695 711 732 737 757 782 785 803 821 839 
+level = 21
+14 28 47 62 78 92 105 126 140 156 174 190 204 217 238 245 270 284 302 318 334 348 364 368 386 410 424 440 458 474 478 488 492 504 508 522 526 538 552 570 574 584 588 601 617 633 650 664 682 686 696 700 714 730 746 750 762 766 770 794 810 814 818 840 856 872 876 888 892 
+level = 22
+1 17 34 58 65 83 108 125 127 141 159 175 189 205 220 234 242 269 285 301 319 335 351 367 381 399 413 415 429 447 463 477 479 489 491 509 521 543 555 575 587 605 621 637 649 669 681 703 717 733 749 765 781 793 813 825 845 863 877 889 911 923 943 959 975 987 1005 1023 1039 1055 1067 1087 1099 
+level = 23
+2 18 46 55 66 80 108 123 137 153 169 185 201 217 236 253 260 283 297 315 331 345 347 363 377 389 407 431 445 461 477 493 511 525 539 553 573 585 605 617 637 649 669 685 701 713 733 745 765 781 797 815 829 847 859 877 889 911 927 943 955 975 987 997 1021 1023 1037 1039 1049 1051 1063 1087 1101 1119 1131 1149 1161 
+level = 24
+0 16 38 63 64 82 110 126 140 156 174 188 204 222 238 245 268 286 302 318 334 348 364 380 398 413 431 446 460 476 494 508 526 540 554 568 588 600 622 634 652 664 684 702 716 728 750 762 771 787 801 830 846 862 874 894 906 926 942 958 970 990 1002 1023 1036 1052 1068 1084 1096 1112 1133 1148 1166 1180 1192 1214 1226 
+level = 25
+2 18 46 62 64 82 100 122 136 152 170 184 202 218 230 254 264 282 298 312 330 344 360 378 392 400 418 446 460 476 494 508 526 540 554 568 588 600 622 634 652 664 686 702 718 730 750 762 783 797 815 830 846 862 874 894 906 924 942 956 968 990 1002 1008 1036 1052 1068 1084 1096 1112 1120 1150 1164 1182 1194 1212 1224 
+
+results nro ° 0
+point output: 970017269
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 1
+point output: 1303320506
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 2
+point output: 2307568204
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 3
+point output: 2307568716
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 4
+point output: 162338236
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 5
+point output: 1235646092
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 6
+point output: 1705686666
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 7
+point output: 2345317994
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 1237890670
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 9
+point output: 1204319882
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 10
+point output: 2879952972
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 11
+point output: 18446744070805266898
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 12
+point output: 18446744071308583374
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 13
+point output: 2337919869
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 14
+point output: 195221612
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 15
+point output: 161675850
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 16
+point output: 662763114
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 17
+point output: 18446744071342144974
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 18
+point output: 660657736
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 19
+point output: 18446744073070914101
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 20
+point output: 694317489
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 21
+point output: 1277332584
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 22
+point output: 1277087916
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 23
+point output: 1241688644
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 24
+point output: 1241443976
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 25
+point output: 1744874086
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 26
+point output: 1742768708
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 27
+point output: 1742524040
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 28
+point output: 1241680998
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 29
+point output: 1744629418
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 30
+point output: 1243786822
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 31
+point output: 1243542154
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 32
+point output: 2127033640
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 33
+point output: 1805704268
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 34
+point output: 1271069290
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 35
+point output: 163641966
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 36
+point output: 161397388
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 37
+point output: 660911660
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 38
+point output: 3269972804
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 39
+point output: 2887815240
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 40
+point output: 2887570572
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 41
+point output: 2353180262
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 42
+point output: 2352935594
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 43
+point output: 2315186316
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 44
+point output: 2315185804
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 45
+point output: 2315430984
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 46
+point output: 2315430472
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 47
+point output: 1245752938
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 48
+point output: 2158089476
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 49
+point output: 1211937482
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 50
+point output: 1713304266
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 51
+point output: 1243508360
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 52
+point output: 1243263692
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 53
+point output: 1245508270
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 54
+point output: 1241436330
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 55
+point output: 1305293818
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 56
+point output: 305165189
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 57
+point output: 1737011818
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 58
+point output: 1233826376
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 59
+point output: 1734906440
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 60
+point output: 1233818730
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 61
+point output: 1269470316
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 62
+point output: 1235924554
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 63
+point output: 1735160364
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 64
+point output: 194065816
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 65
+point output: 159570026
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 66
+point output: 159577672
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 67
+point output: 631437962
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 68
+point output: 1743022632
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 69
+point output: 1742777964
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 70
+point output: 2663772518
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 71
+point output: 368953773
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 72
+point output: 1713548934
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 73
+point output: 1212182150
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 74
+point output: 1233320012
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 75
+point output: 1233319500
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 76
+point output: 130071178
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 0
+point output: 970017269
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 1
+point output: 1303320506
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 2
+point output: 2307568204
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 3
+point output: 2307568716
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 4
+point output: 162338236
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 33554432
+results nro ° 5
+point output: 1235646092
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 6
+point output: 1705686666
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 7
+point output: 2345317994
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 8
+point output: 1237890670
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 9
+point output: 1204319882
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 10
+point output: 2879952972
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 11
+point output: 18446744070805266898
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 33554432
+results nro ° 12
+point output: 18446744071308583374
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 13
+point output: 2337919869
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 14
+point output: 195221612
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 15
+point output: 161675850
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 16
+point output: 662763114
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 17
+point output: 18446744071342144974
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 18
+point output: 660657736
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 19
+point output: 18446744073070914101
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 20
+point output: 694317489
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 50331648
+results nro ° 21
+point output: 1277332584
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 22
+point output: 1277087916
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 23
+point output: 1241688644
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 24
+point output: 1241443976
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 25
+point output: 1744874086
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 26
+point output: 1742768708
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 27
+point output: 1742524040
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 28
+point output: 1241680998
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 29
+point output: 1744629418
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 30
+point output: 1243786822
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 31
+point output: 1243542154
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 32
+point output: 2127033640
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 33
+point output: 1805704268
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 34
+point output: 1271069290
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 35
+point output: 163641966
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 36
+point output: 161397388
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 37
+point output: 660911660
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 38
+point output: 3269972804
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 39
+point output: 2887815240
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 40
+point output: 2887570572
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 41
+point output: 2353180262
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 42
+point output: 2352935594
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 43
+point output: 2315186316
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 44
+point output: 2315185804
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 45
+point output: 2315430984
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 46
+point output: 2315430472
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 47
+point output: 1245752938
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 48
+point output: 2158089476
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 49
+point output: 1211937482
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 50
+point output: 1713304266
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 51
+point output: 1243508360
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 52
+point output: 1243263692
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 53
+point output: 1245508270
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 54
+point output: 1241436330
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 55
+point output: 1305293818
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 33554432
+results nro ° 56
+point output: 305165189
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 0
+ coord 3 = 16777216
+results nro ° 57
+point output: 1737011818
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 58
+point output: 1233826376
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 59
+point output: 1734906440
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 60
+point output: 1233818730
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 61
+point output: 1269470316
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 62
+point output: 1235924554
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 63
+point output: 1735160364
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 64
+point output: 194065816
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 33554432
+results nro ° 65
+point output: 159570026
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 66
+point output: 159577672
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 67
+point output: 631437962
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 68
+point output: 1743022632
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 69
+point output: 1742777964
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 0
+results nro ° 70
+point output: 2663772518
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 71
+point output: 368953773
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 72
+point output: 1713548934
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 73
+point output: 1212182150
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 0
+results nro ° 74
+point output: 1233320012
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 75
+point output: 1233319500
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 76
+point output: 130071178
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 0
+0.269893
+call to multi join
+positions
+level = 0
+0 
+level = 1
+2 6 
+level = 2
+2 6 22 
+level = 3
+2 6 18 22 34 38 
+level = 4
+2 6 18 22 34 38 50 54 70 82 86 
+level = 5
+3 7 19 23 35 39 51 67 71 83 87 99 103 115 135 151 167 
+level = 6
+2 18 22 34 50 54 66 82 86 98 114 130 134 150 162 166 182 198 214 226 246 262 
+level = 7
+12 28 44 56 60 76 88 92 104 120 140 152 156 168 172 184 204 220 236 248 268 280 300 312 316 328 344 348 
+level = 8
+12 24 40 56 72 88 108 120 136 152 156 172 184 200 220 236 248 264 280 296 300 316 328 344 364 376 380 392 412 428 444 
+level = 9
+2 18 38 50 70 82 102 118 130 134 146 162 178 182 198 214 230 242 258 262 278 294 306 326 342 354 374 390 406 418 434 454 466 470 486 
+level = 10
+13 25 45 57 77 93 109 125 137 153 173 185 189 205 221 237 249 265 281 301 317 329 349 361 377 397 413 429 441 457 473 477 493 509 521 537 557 
+level = 11
+0 16 36 52 64 80 100 116 132 144 160 180 192 208 224 240 260 272 288 304 324 336 352 372 388 400 404 420 436 448 468 484 500 512 528 544 564 580 
+level = 12
+15 31 43 63 79 91 107 127 139 159 171 187 207 219 235 255 267 287 299 315 331 347 363 379 395 415 427 447 463 479 495 507 523 539 555 571 587 607 
+level = 13
+14 26 46 58 74 90 110 126 142 154 170 190 206 222 238 254 266 286 298 314 330 346 366 382 394 410 426 442 462 474 494 506 526 542 558 574 586 606 
+level = 14
+12 28 40 60 76 88 104 120 140 156 172 184 204 220 232 248 268 284 296 316 332 348 360 380 392 408 424 444 456 476 492 508 524 536 552 568 584 588 600 
+level = 15
+13 29 45 61 77 93 109 121 137 153 173 189 201 221 233 253 269 285 297 317 333 345 361 377 393 413 425 445 457 473 493 509 525 541 553 569 589 605 621 
+level = 16
+14 30 46 62 78 90 106 122 138 158 170 186 202 222 238 254 266 282 298 314 330 346 362 378 398 414 430 446 462 474 494 510 522 538 558 570 590 602 606 622 
+level = 17
+14 26 42 58 74 90 110 122 138 154 170 186 202 218 238 250 270 286 298 318 330 346 366 382 394 410 430 442 458 474 494 506 526 542 558 570 586 606 618 638 
+level = 18
+3 19 35 51 71 87 99 119 131 135 151 163 183 199 215 231 247 263 279 291 311 327 343 355 371 391 407 423 435 451 467 487 499 519 531 547 567 579 583 599 611 615 631 
+level = 19
+2 18 34 50 66 82 102 114 118 130 146 166 182 194 214 230 242 258 278 294 310 322 338 354 374 390 406 422 434 454 466 482 502 514 534 546 566 578 598 610 630 642 646 658 662 674 
+level = 20
+4 16 32 48 64 80 100 116 128 132 144 148 160 180 192 212 224 240 256 272 292 304 320 340 352 372 388 404 416 432 448 464 484 496 516 528 548 560 580 596 608 612 624 640 656 672 676 692 708 724 
+level = 21
+9 25 41 61 73 89 93 105 121 137 157 173 185 189 205 217 233 249 269 281 297 313 329 349 365 377 397 409 429 445 461 477 489 509 521 541 553 573 585 601 621 637 649 665 669 681 697 713 717 729 733 745 765 777 793 797 
+level = 22
+9 29 41 57 73 93 105 109 121 125 137 157 173 189 201 217 221 233 249 269 285 297 313 333 349 365 381 393 413 429 445 457 477 489 509 521 541 553 573 585 589 605 621 633 649 665 685 701 717 733 745 761 781 793 809 829 845 857 861 877 889 
+level = 23
+8 24 40 60 72 92 104 108 120 124 140 152 168 172 188 204 216 220 232 248 264 268 284 296 316 328 344 360 376 392 408 424 444 456 476 492 508 524 540 552 572 588 600 620 632 652 668 680 700 716 728 748 764 780 792 808 828 840 856 860 872 888 908 920 936 956 968 972 
+level = 24
+2 22 38 50 70 82 86 98 102 114 118 130 134 146 150 166 178 182 194 214 226 242 246 258 278 294 306 326 338 342 354 370 390 406 422 434 454 470 482 502 518 534 550 566 582 594 614 626 646 658 678 690 706 710 722 742 754 774 786 802 818 834 850 854 866 870 886 898 918 934 946 966 982 998 1014 1026 1046 1058 1062 1074 1078 
+level = 25
+13 25 45 57 73 93 105 109 121 137 141 153 157 169 173 185 201 205 217 221 237 253 265 285 297 317 329 349 361 381 393 413 429 441 457 461 477 489 493 505 521 541 557 569 589 601 617 633 649 665 681 701 713 733 749 761 781 797 809 825 841 845 857 861 877 893 905 925 937 957 969 985 1005 1021 1037 1053 1069 1081 1101 1117 1133 1145 1165 1181 1197 1209 1229 1241 1245 1257 1261 1277 1293 
+
+results nro ° 0
+point output: 1902907103
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 1
+point output: 1836061475
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 2
+point output: 1831587619
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 3
+point output: 1831587555
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 4
+point output: 829165347
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 5
+point output: 758124323
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 6
+point output: 825216799
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 7
+point output: 824955619
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 8
+point output: 1769179807
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 9
+point output: 824954659
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 10
+point output: 829412131
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 11
+point output: 829412067
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 12
+point output: 829149919
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 13
+point output: 824955615
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 14
+point output: 2913982247
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 15
+point output: 2914226979
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 16
+point output: 2914226983
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 17
+point output: 2914226915
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 18
+point output: 2914226919
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 19
+point output: 1836026587
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 20
+point output: 18446744073259438807
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 21
+point output: 1697355415
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 22
+point output: 1697355419
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 23
+point output: 1697355355
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 24
+point output: 762302179
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 25
+point output: 762286819
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 26
+point output: 1827656407
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 27
+point output: 1760546595
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 28
+point output: 1701286619
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 29
+point output: 757846751
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 30
+point output: 1840239271
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 31
+point output: 1840221923
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 32
+point output: 1840221927
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 33
+point output: 1840221859
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 34
+point output: 1840221863
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 35
+point output: 2914228007
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 36
+point output: 2914227943
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 37
+point output: 1768656603
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 38
+point output: 762302111
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 39
+point output: 18446744073393917595
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 40
+point output: 18446744073393638043
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 41
+point output: 18446744073393900123
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 42
+point output: 18446744073393916567
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 43
+point output: 18446744073393917527
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 44
+point output: 18446744073393917531
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 45
+point output: 1832095459
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 46
+point output: 2909785759
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 47
+point output: 691000095
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 48
+point output: 18446744073330725527
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 49
+point output: 758091483
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 50
+point output: 1697617563
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 51
+point output: 1697617495
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 52
+point output: 1697617499
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 53
+point output: 1697616535
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 54
+point output: 1697616539
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 55
+point output: 1697616471
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 56
+point output: 627806943
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 57
+point output: 1768919711
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 58
+point output: 761760411
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 59
+point output: 18446744073389723287
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 60
+point output: 18446744073389722203
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 61
+point output: 1697601187
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 62
+point output: 1764740831
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 63
+point output: 753652375
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 64
+point output: 1697601175
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 65
+point output: 1697601179
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 66
+point output: 1697600151
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 67
+point output: 1697600155
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 68
+point output: 1697600087
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 69
+point output: 1697601111
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 70
+point output: 1697601115
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 71
+point output: 1773114015
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 72
+point output: 1773112923
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 73
+point output: 686510807
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 74
+point output: 753897047
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 75
+point output: 753897051
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 76
+point output: 1902890787
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 77
+point output: 694948507
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 78
+point output: 1832094427
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 79
+point output: 1697387167
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 80
+point output: 1836044891
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 81
+point output: 1840501403
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 82
+point output: 1840501343
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 83
+point output: 1831818015
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 84
+point output: 828887647
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 85
+point output: 2834289307
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 86
+point output: 2771111579
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 87
+point output: 762565215
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 88
+point output: 1898696423
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 89
+point output: 2838204195
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 90
+point output: 1898714779
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 91
+point output: 686789343
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 92
+point output: 2842676955
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 0
+point output: 1902907103
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 1
+point output: 1836061475
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 2
+point output: 1831587619
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 3
+point output: 1831587555
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 4
+point output: 829165347
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 5
+point output: 758124323
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 6
+point output: 825216799
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 7
+point output: 824955619
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 8
+point output: 1769179807
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 9
+point output: 824954659
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 10
+point output: 829412131
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 11
+point output: 829412067
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 12
+point output: 829149919
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 13
+point output: 824955615
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 14
+point output: 2913982247
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 15
+point output: 2914226979
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 16
+point output: 2914226983
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 17
+point output: 2914226915
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 18
+point output: 2914226919
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 19
+point output: 1836026587
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 20
+point output: 18446744073259438807
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 21
+point output: 1697355415
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 22
+point output: 1697355419
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 23
+point output: 1697355355
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 24
+point output: 762302179
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 25
+point output: 762286819
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 26
+point output: 1827656407
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 27
+point output: 1760546595
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 28
+point output: 1701286619
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 29
+point output: 757846751
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 30
+point output: 1840239271
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 31
+point output: 1840221923
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 32
+point output: 1840221927
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 33
+point output: 1840221859
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 34
+point output: 1840221863
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 35
+point output: 2914228007
+ coord 0 = 0
+ coord 1 = 16777216
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 36
+point output: 2914227943
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 37
+point output: 1768656603
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 38
+point output: 762302111
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 39
+point output: 18446744073393917595
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 40
+point output: 18446744073393638043
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 41
+point output: 18446744073393900123
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 42
+point output: 18446744073393916567
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 43
+point output: 18446744073393917527
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 44
+point output: 18446744073393917531
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 45
+point output: 1832095459
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 46
+point output: 2909785759
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 47
+point output: 691000095
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 48
+point output: 18446744073330725527
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 49
+point output: 758091483
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 50
+point output: 1697617563
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 51
+point output: 1697617495
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 52
+point output: 1697617499
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 53
+point output: 1697616535
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 54
+point output: 1697616539
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 55
+point output: 1697616471
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 56
+point output: 627806943
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 57
+point output: 1768919711
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 58
+point output: 761760411
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 59
+point output: 18446744073389723287
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 60
+point output: 18446744073389722203
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 61
+point output: 1697601187
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 62
+point output: 1764740831
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 63
+point output: 753652375
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 64
+point output: 1697601175
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 65
+point output: 1697601179
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 66
+point output: 1697600151
+ coord 0 = 33554432
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 67
+point output: 1697600155
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 68
+point output: 1697600087
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 69
+point output: 1697601111
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 70
+point output: 1697601115
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 71
+point output: 1773114015
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 72
+point output: 1773112923
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 73
+point output: 686510807
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 74
+point output: 753897047
+ coord 0 = 0
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 75
+point output: 753897051
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 76
+point output: 1902890787
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 77
+point output: 694948507
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 78
+point output: 1832094427
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 79
+point output: 1697387167
+ coord 0 = 50331648
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 80
+point output: 1836044891
+ coord 0 = 16777216
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 81
+point output: 1840501403
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 82
+point output: 1840501343
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 83
+point output: 1831818015
+ coord 0 = 16777216
+ coord 1 = 16777216
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 84
+point output: 828887647
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 85
+point output: 2834289307
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 86
+point output: 2771111579
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 87
+point output: 762565215
+ coord 0 = 16777216
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 88
+point output: 1898696423
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 89
+point output: 2838204195
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 90
+point output: 1898714779
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 91
+point output: 686789343
+ coord 0 = 50331648
+ coord 1 = 50331648
+ coord 2 = 16777216
+ coord 3 = 50331648
+results nro ° 92
+point output: 2842676955
+ coord 0 = 50331648
+ coord 1 = 33554432
+ coord 2 = 16777216
+ coord 3 = 50331648
+4.92393
+call to multi join
+positions
+level = 0
+0 
+level = 1
+0 
+level = 2
+0 
+level = 3
+0 
+level = 4
+0 
+level = 5
+0 
+level = 6
+0 
+level = 7
+0 
+level = 8
+0 
+level = 9
+2 
+level = 10
+0 
+level = 11
+1 
+level = 12
+1 
+level = 13
+3 
+level = 14
+10 
+level = 15
+2 
+level = 16
+3 7 
+level = 17
+14 30 
+level = 18
+0 20 
+level = 19
+9 25 
+level = 20
+15 27 31 
+level = 21
+3 19 23 35 39 
+level = 22
+7 19 23 35 39 51 67 
+level = 23
+4 20 36 48 64 84 96 
+level = 24
+6 22 38 54 70 82 102 
+level = 25
+1 17 37 53 65 81 101 
+
+results nro ° 0
+point output: 1254822625
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 1
+point output: 1254561509
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 2
+point output: 1258739361
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 3
+point output: 1259000549
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 4
+point output: 1254806245
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 5
+point output: 1254545121
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 6
+point output: 185013921
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 0
+point output: 1254822625
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 1
+point output: 1254561509
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 2
+point output: 1258739361
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 3
+point output: 1259000549
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 4
+point output: 1254806245
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 5
+point output: 1254545121
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 33554432
+ coord 3 = 16777216
+results nro ° 6
+point output: 185013921
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 33554432
+ coord 3 = 16777216
+1.24865

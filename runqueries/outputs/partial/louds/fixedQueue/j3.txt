@@ -1,0 +1,99 @@
+0.005521
+0.014741
+results nro ° 0
+point output: 1261943761
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 1
+point output: 1261936115
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 2
+point output: 18446744072760832913
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 3
+point output: 18446744072760825267
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 0
+point output: 1261943761
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 1
+point output: 1261936115
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 50331648
+results nro ° 2
+point output: 18446744072760832913
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 50331648
+results nro ° 3
+point output: 18446744072760825267
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 50331648
+0.007111
+0.005497
+0.005599
+0.006807
+0.005842
+0.001744
+0.009706
+0.004985
+0.007056
+0.006081
+0.006898
+0.005191
+0.003737
+0.005474
+0.008191
+0.011349
+0.000984
+0.004104
+0.008864
+0.01257
+0.006638
+0.004048
+0.009016
+0.002204
+0.004615
+0.003903
+0.006548
+0.005398
+0.008381
+0.005781
+0.006503
+results nro ° 0
+point output: 18446744073005002888
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+results nro ° 0
+point output: 18446744073005002888
+ coord 0 = 50331648
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+0.00695
+0.007833
+0.003265
+0.003732
+0.001637
+0.003626

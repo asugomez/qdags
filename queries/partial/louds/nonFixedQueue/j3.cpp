@@ -1,4 +1,5 @@
 #include "../../../../src/join_partial_results.cpp"
+#include "../../../../src/joins.cpp"
 // cada una de las query tiene su codigo
 // j --> una forma q sale en el paper
 // p --> caminos
@@ -100,6 +101,8 @@ int main(int argc, char** argv)
     Q[2] = qdag_rel_T;
    
     qdag *Join_Result;
+
+    Join_Result = multiJoin(Q, true, 1000);
     
  
     high_resolution_clock::time_point start, stop;
