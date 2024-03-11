@@ -112,29 +112,11 @@ int main(int argc, char **argv) {
 
 
     start = high_resolution_clock::now();
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
-    cout << "-----------" << endl;
-    cout << "relacion R" << endl;
-    //qdag_rel_R.printBv();
-    //qdag::att_set att_test;
-    //att_test.push_back(AT_Y);
-    //att_test.push_back(AT_X);
-    //att_test.push_back(AT_Z);
-    //qdag* q_prime = qdag_rel_R.extend(att_test);
-    //cout << "-----after extend------" << endl;
-    //q_prime->printBv();
-    cout << "-----------" << endl;
-    cout << "-----------" << endl;
-    cout << "relacion S" << endl;
-    //qdag_rel_S.printBv();
-
-    cout << "-----------" << endl;
-
-    //Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
+    Join_Result = multiJoin(Q, true, 1000);
+    //multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
     cout << "-----------" << endl;
 
     // PARTIAL JOIN
-    cout << "------ PARTIAL JOIN -----" << endl;
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
     //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché

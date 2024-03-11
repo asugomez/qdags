@@ -323,7 +323,7 @@ bool AND_ranked_fixed_queue(qdag *Q[], uint16_t nQ,
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
  * @param type_priority_fun 0 sum , 1 maximum. (p1+p2+...+pn) or max(p1,p2,...,pn)
  * @param size_queue the size of the priority queue. -1 if we don't want to limit the size of the queue.
- * @param priorities the priorities of the points.
+ * @param priorities the priorities of the points. We have a vector of priorities for each qdag.
  * @return
  */
 bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
