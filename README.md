@@ -110,3 +110,11 @@ The script files to run the tests are in the runqueries folder. On each subfolde
 - Compile script: it compiles all the queries.
 - Run script: it runs all the queries and put the outputs in the respective output folder.
 - All the run queries to be tested with different data. The files are named as runqueries-[type of query]-bfs-sorted.sh
+
+## To run the tests
+1. First go to the runqueries folder and choose the subfolder you want to test. For example
+` cd runqueries/partial/dfuds/fixedQueue`
+2. Run the compile script
+`./compilePartialDfudsFixedQueue.sh`
+3. Run the run script
+`./runPartialDfudsFixed.sh`
