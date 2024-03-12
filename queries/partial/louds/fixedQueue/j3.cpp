@@ -75,6 +75,7 @@ int main(int argc, char** argv)
     att_T.push_back(AT_X); att_T.push_back(AT_V);
 
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
+
     int64_t size_queue = argv[4] ? atoi(argv[4]) : 100;
 
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R

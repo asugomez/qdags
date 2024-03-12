@@ -101,6 +101,54 @@ int main(int argc, char** argv)
     Q[2] = qdag_rel_T;
    
     qdag *Join_Result;
+
+    // read priorities from file
+    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
+    if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
+        return 1;
+    }
+
+    // get number of priorities of each file
+    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    std::string line;
+    while(std::getline(data_file_R, line))
+        ++number_of_lines_R;
+    while(std::getline(data_file_S, line))
+        ++number_of_lines_S;
+    while(std::getline(data_file_T, line))
+        ++number_of_lines_T;
+    int_vector<> priorities_R(number_of_lines_R,0);
+    int_vector<> priorities_S(number_of_lines_S,0);
+    int_vector<> priorities_T(number_of_lines_T,0);
+
+    // put the priorities in the int_vector
+    int value;
+    int i=0;
+    while(data_file_R >> value){
+        priorities_R[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_S >> value){
+        priorities_S[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_T >> value){
+        priorities_T[i]=value;
+        i++;
+    }
+
+    vector<int_vector<>> p;
+    p.push_back(priorities_R);
+    p.push_back(priorities_S);
+    p.push_back(priorities_T);
+
+    // size queue
+    int64_t size_queue = argv[7] ? atoi(argv[7]) : 100;
     
  
     high_resolution_clock::time_point start, stop;
@@ -108,11 +156,11 @@ int main(int argc, char** argv)
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinRankedResults(Q, true, 1000, 1, 10, p);  // warmup join -> activar el caché
+    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);  // warmup join -> activar el caché
  
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, 10, p);
+    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

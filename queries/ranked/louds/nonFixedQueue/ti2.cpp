@@ -1,7 +1,6 @@
 #include "../../../../src/join_ranked_results.cpp"
 
 
-
 #include <fstream>
 #include<bits/stdc++.h>
 #include<ratio>
@@ -92,16 +91,52 @@ int main(int argc, char** argv)
     Q[1] = qdag_rel_S;
     
     qdag *Join_Result;
+
+    // read priorities from file
+    std::ifstream data_file_R(argv[3]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[4]); // Abrir el archivo de datos
+    if (!data_file_R.is_open() || !data_file_S.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
+        return 1;
+    }
+
+    // get number of priorities of each file
+    int number_of_lines_R = 0, number_of_lines_S = 0;
+    std::string line;
+    while(std::getline(data_file_R, line))
+        ++number_of_lines_R;
+    while(std::getline(data_file_S, line))
+        ++number_of_lines_S;
+    int_vector<> priorities_R(number_of_lines_R,0);
+    int_vector<> priorities_S(number_of_lines_S,0);
+
+    // put the priorities in the int_vector
+    int value;
+    int i=0;
+    while(data_file_R >> value){
+        priorities_R[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_S >> value){
+        priorities_S[i]=value;
+        i++;
+    }
+
+    vector<int_vector<>> p;
+    p.push_back(priorities_R);
+    p.push_back(priorities_S);
+
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
-   
-    Join_Result = parMultiJoin(Q, true, 1000); // cache warmup
+
+    multiJoinRankedResults(Q, true, 1000, 1, -1, p);
  
-    start = high_resolution_clock::now();    
-    
-    Join_Result = parMultiJoin(Q, true, 1000); 
+    start = high_resolution_clock::now();
+
+    multiJoinRankedResults(Q, true, 1000, 1, -1, p);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

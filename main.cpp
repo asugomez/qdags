@@ -86,8 +86,7 @@ int main(int argc, char **argv) {
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
 
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
-    std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,
-                                                              att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
+    std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
@@ -111,7 +110,7 @@ int main(int argc, char **argv) {
     double total_time = 0.0;
     duration<double> time_span;
 
-    // read priorities
+    // read priorities from file
     std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
     std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
     std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
@@ -120,11 +119,20 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    int_vector<> priorities_R(200000,0);
-    int_vector<> priorities_S(200000,0);
-    int_vector<> priorities_T(200000,0);
+    // get number of priorities of each file
+    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    std::string line;
+    while(std::getline(data_file_R, line))
+        ++number_of_lines_R;
+    while(std::getline(data_file_S, line))
+        ++number_of_lines_S;
+    while(std::getline(data_file_T, line))
+        ++number_of_lines_T;
+    int_vector<> priorities_R(number_of_lines_R,0);
+    int_vector<> priorities_S(number_of_lines_S,0);
+    int_vector<> priorities_T(number_of_lines_T,0);
 
-
+    // put the priorities in the int_vector
     int value;
     int i=0;
     while(data_file_R >> value){
