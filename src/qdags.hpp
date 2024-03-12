@@ -258,6 +258,9 @@ public:
         return Msize;
     }
 
+    uint64_t total_ones_level(uint16_t level) {
+        return Q->total_ones_level(level);
+    }
 
     uint64_t getKD() {
         return Q->getKD();
@@ -270,6 +273,16 @@ public:
 
     rank_bv_64 *getBv() {
         return Q->getBv();
+    }
+
+    /**
+     *
+     * @param level of the node
+     * @param node the i-th position of the level.
+     * @return 0 or 1 if the node is empty or not.
+     */
+    inline bool get_ith_bit(uint16_t level, uint64_t node){
+        return Q->getBv()[level].get_ith_bit(node, getKD());
     }
 
     inline uint64_t rank(uint16_t level, uint64_t node){
@@ -473,33 +486,7 @@ public:
                 return 0.5;
         }
     }
-    
-    
 
-    /**
-     * Algorithm 2 Child(Q,i)
-     * Return a qdag corresponding to the i-th get_child_se_quadtree of Q
-     * @param Q a qdag Q = (Q', M)
-     * @param i
-     * @return
-     */
-    void get_child_qdag(uint64_t level,uint16_t i){
-        /*qdag *q = new qdag();
-        q->Q = this->Q->get_child_se_quadtree(level,i);
-        q->M = this->M;
-        q->attribute_set = this->attribute_set;
-        q->grid_side = this->grid_side;
-        q->is_extended_qdag = this->is_extended_qdag;
-        q->Msize = this->Msize;
-        return q;*/
-        //TODO: su esta extendido, hay que hacer get(M[i]) (el mapeo)
-        uint64_t* test = this->Q->get_child_se_quadtree(level,i);
-        cout << "get_child_qdag" << endl;
-        for(uint16_t j=0;j< getHeight()-1;j++){
-            cout << test[j] << " ";
-        }
-
-    }
 
     void create_dfuds(){
         return Q->create_dfuds();
