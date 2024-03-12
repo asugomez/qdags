@@ -70,76 +70,119 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char **argv) {
     // 3 tablas R, S y T
-    qdag::att_set att_R; // R(A,B)
-    qdag::att_set att_S; // S(C,B)
-    //qdag::att_set att_T; // T(A,C)
+    qdag::att_set att_R; // R(Y,X)
+    qdag::att_set att_S; // S(Z,X)
+    qdag::att_set att_T; // T(X,V)
+
+    // only for testing
+    //att_R.push_back(AT_Y); att_R.push_back(AT_X);
+    //att_S.push_back(AT_Y); att_S.push_back(AT_Z);// TODO: el orden hay q cambiarlo para el join
+
 
     att_R.push_back(AT_Y); att_R.push_back(AT_X);
-    att_S.push_back(AT_Y); att_S.push_back(AT_Z);
-    //att_T.push_back(AT_Z); att_T.push_back(AT_Y); // TODO: el orden hay q cambiarlo para el join
+    att_S.push_back(AT_Z); att_S.push_back(AT_X);
+    att_T.push_back(AT_X); att_T.push_back(AT_V);
 
-    std::string strRel_R(argv[1]), strRel_S(argv[2]);//, strRel_T(argv[3]); // nombre de los archivos
+    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
 
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
-    std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,
-                                                              att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
+    std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
-    //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
+    std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 32; //52000000; // es como +infty para wikidata
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
 
-    cout << " grid size R : " << att_R.size() << endl;
-    cout << " grid size S : " << att_S.size() << endl;
-
-    //cout << "R" << endl;
+    //cout << " grid size R : " << att_R.size() << endl;
+    //cout << " grid size S : " << att_S.size() << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
-    //cout << "S" << endl;
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
-    //cout << "T" << endl;
-    //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
+    qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
 
     // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
-    vector<qdag> Q(2);
+    vector<qdag> Q(3);
 
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
-    //Q[2] = qdag_rel_T;
+    Q[2] = qdag_rel_T;
     qdag *Join_Result;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;
     duration<double> time_span;
 
+    // read priorities from file
+    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
+    if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
+        return 1;
+    }
+
+    // get number of priorities of each file
+    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    std::string line;
+    while(std::getline(data_file_R, line))
+        ++number_of_lines_R;
+    while(std::getline(data_file_S, line))
+        ++number_of_lines_S;
+    while(std::getline(data_file_T, line))
+        ++number_of_lines_T;
+    int_vector<> priorities_R(number_of_lines_R,0);
+    int_vector<> priorities_S(number_of_lines_S,0);
+    int_vector<> priorities_T(number_of_lines_T,0);
+
+    // put the priorities in the int_vector
+    int value;
+    int i=0;
+    while(data_file_R >> value){
+        priorities_R[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_S >> value){
+        priorities_S[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_T >> value){
+        priorities_T[i]=value;
+        i++;
+    }
+
+    vector<int_vector<>> p;
+    p.push_back(priorities_R);
+    p.push_back(priorities_S);
+    p.push_back(priorities_T);
+
+    /*int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
+    vector<int_vector<>> p2;
+    p2.push_back(prioritiesR);
+    p2.push_back(prioritiesS);*/
+
 
     start = high_resolution_clock::now();
-    cout << "-----------" << endl;
-    cout << "relacion R" << endl;
-    qdag_rel_R.printBv();
-    cout << "-----------" << endl;
-    qdag_rel_R.get_child_qdag(0,0);
-    //qdag_rel_R.printBv();
-
-    cout << "relacion S" << endl;
-    //qdag_rel_S.printBv();
-
-    cout << "-----------" << endl;
-
-    //Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
-    cout << "-----------" << endl;
+    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+    //Join_Result = multiJoin(Q, true, 1000);
+    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
 
     // PARTIAL JOIN
-    cout << "------ PARTIAL JOIN -----" << endl;
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
     //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
     //bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 6); // warmup join -> activar el caché
-    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    /*int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
     vector<int_vector<>> p;
     p.push_back(prioritiesR);
-    p.push_back(prioritiesS);
+    p.push_back(prioritiesS);*/
+    //qdag_rel_R.create_dfuds();
+    //qdag_rel_R.printBv();
 
-    //bool join = multiJoinRankedResults(Q, true, 1000, 1, 10, p); // warmup join -> activar el caché
+    cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
+    bool join = multiJoinRankedResults(Q, true, 1000, 1, -1, p); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

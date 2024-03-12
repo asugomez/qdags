@@ -29,6 +29,8 @@
 #include <sdsl/k2_tree_helper.hpp>
 #include <sdsl/int_vector_buffer.hpp>
 #include "rank.hpp"
+#include <sdsl/bp_support_g.hpp>
+#include <sdsl/bp_support_gg.hpp>
 
 
 //! A k^2-tree
@@ -315,7 +317,9 @@ public:
     }
 
     inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in path[level][0,node-1]
-        return bv[level].rank(node);
+        if(bv[level].size() == node)
+            return bv[level].n_ones();
+        return bv[level].rank(node); //bv[level].u
     }
 
     inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
@@ -683,28 +687,26 @@ public:
      * Useful for the range Maximum query
      * @param level
      * @param node
-     * @param init will be modified if the node is not the root. -1 if the node is empty.
-     * @param end will be modified if the node is not the root. -1 if the node is empty.
+     * @param init will be modified if the node is not the root.
+     * @param end will be modified if the node is not the root.
+     * @return false if the node is empty or if the node is not the root and it has no children.
      */
-    void get_range_leaves(int16_t level, uint64_t node, int64_t& init, int64_t& end){
+    bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         if(level == -1){
-            return;
+            return true; // dejar init y end como estaban (rango completo!)
         }
         if(level == getHeight()-1){ // leaf
             if(get_ith_bit(level, node)){
                 init = rank(level,node);
                 end = init;
+                return true;
             }
             else{
-                init = -1;
-                end = -1;
+                return false;
             }
-            return;
         }
         if(get_ith_bit(level, node) == 0){
-            init = -1;
-            end = -1;
-            return;
+            return false;
         }
         uint64_t siblings = rank(level,node); // start position in the next level
         uint64_t n_children;
@@ -714,21 +716,120 @@ public:
         if(level == getHeight()-1){
             init = siblings;
             end = init + n_children - 1;
-            return;
+            return true;
         }
         return get_range_leaves_aux(level, n_children, siblings, init, end);
     }
 
-    void get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, int64_t& init, int64_t& end){
+    bool get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t& init, uint64_t& end){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
             init = siblings;
             end = init + children - 1;
+            return true;
+        }
+        level++;
+        return get_range_leaves_aux(level, children, siblings, init, end);
+    }
+
+
+
+    void create_dfuds(){
+        vector<uint8_t> dfuds;
+        uint64_t last_pos[getHeight()];
+        uint64_t last_children[getHeight()];
+        for (uint64_t i = 0; i < getHeight(); i++) {
+            last_pos[i] = 0; // initialize the last position
+            last_children[i] = 0; // initialize the last number of children
+        }
+        uint16_t level = 0;
+        uint8_t n_bits = bv[level].get_kd_bits(last_pos[level]*k_d, k_d);
+        last_children[level] += bits::cnt(n_bits);
+
+        dfuds.push_back(n_bits);
+        last_pos[level]++;
+        level++;
+
+        create_dfuds_aux(level, last_pos, last_children, dfuds);
+
+        vector_to_bit_vector(dfuds);
+    }
+
+    void create_dfuds_aux(uint16_t level, uint64_t last_pos[], uint64_t last_children[], vector<uint8_t> &dfuds){
+        if(level == 0){
             return;
         }
-        return get_range_leaves_aux(level+1, children, siblings, init, end);
+
+        if(last_pos[level] >= last_children[level-1]){
+            return create_dfuds_aux(--level, last_pos, last_children, dfuds);
+        }
+        uint64_t n_siblings = rank(level,last_pos[level]*k_d);
+        uint64_t children_array[k_d];
+        uint64_t n_children;
+        get_children(level,last_pos[level]*k_d, children_array, n_children);
+
+        last_children[level] += n_children;
+
+        if(level== getHeight()-2){
+
+            dfuds.push_back(bv[level].get_kd_bits(last_pos[level]*k_d, k_d));
+            last_pos[level]++;
+            for(uint64_t i = 0; i < n_children ; i++){
+                dfuds.push_back(bv[level+1].get_kd_bits(k_d*(n_siblings + i), k_d) );
+                //last_pos[level+1]++;
+            }
+            last_pos[level+1]+= n_children;
+            return create_dfuds_aux(level, last_pos, last_children, dfuds);
+        }
+        else {
+            dfuds.push_back(bv[level].get_kd_bits(last_pos[level]*k_d, k_d));
+            last_pos[level]++;
+            level++;
+            return create_dfuds_aux(level, last_pos, last_children, dfuds);
+        }
     }
+
+    // generar bit_vector
+    /**
+     *
+     * @param dfuds
+     * @return
+     * @example (the bits are from the most significant bit to the least) 3,2,1..
+     * 0101
+     * 0100 0110
+     * 1110 0110 1000
+     * 0100 0010 0100 0110 1111 0100
+     * 0110 0101 1000 0010 1111 0011 1111 1101 1111 1100
+     *
+     * bitvector will be :
+     * bv[0] = 0011 1111 1111 0010 0110 0110 0110 1000 0100 0101 0010 0110 0100 1110 0100 0101
+     * bv[1] = 1100 0100 1000 1111 1101 1111
+     */
+    bit_vector* vector_to_bit_vector(vector<uint8_t> &dfuds){
+        // number of bit_vectors we need
+        uint64_t n = ceil(dfuds.size()*k_d / 64.0);
+        uint64_t number_per_bv = 64/k_d;
+        bit_vector bv_dfuds[n];//bit_vector(dfuds.size()*k_d, 0);
+        for(uint64_t i = 0; i < n; i++){
+            if(i != n-1)
+                bv_dfuds[i] = bit_vector(64, 0);
+            else
+                bv_dfuds[i] = bit_vector(dfuds.size()*k_d - i*64, 0);
+        }
+        for(uint64_t i = 0; i < dfuds.size(); i++){
+            // va rellenando desde el menoss signiicativo hacia el mas
+            bv_dfuds[i/number_per_bv].set_int((i%number_per_bv)*k_d, dfuds[i], k_d);
+        }
+        /*for(uint64_t i = dfuds.size()-1; i > 0; i--){
+            // va rellenando desde el menoss signiicativo hacia el mas
+            bv_dfuds.set_int(i*k_d, dfuds[i], k_d);
+        }*/
+        return bv_dfuds;
+    }
+
+
+    // luego, a partir del bit:vector, podemos hacer un  BP: bp_support_g
 
 
     void printBv() {

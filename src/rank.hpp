@@ -70,6 +70,20 @@ public:
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
     }
 
+    inline uint8_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
+        switch(k_d){
+            case 2:
+                return get_2_bits(start_pos);
+            case 4:
+                return get_4_bits(start_pos);
+            case 8:
+                return get_8_bits(start_pos);
+            default:
+                cout << "error k_d > 8" << endl;
+                return 0;
+        }
+    }
+
     /**
      * TODO: esto esta en la funcion get_children
      * Count the number of 1s
@@ -212,7 +226,9 @@ public:
     void print_4_bits(uint64_t start_pos) {
         uint8_t x = get_4_bits(start_pos);
 
-        for (int i = 0; i < 4; i++) {
+        // bit most significant first
+        // otherwise do: i=0; i<4; i++
+        for (int i = 3; i > -1; i--) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";

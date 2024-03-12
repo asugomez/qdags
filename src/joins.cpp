@@ -657,12 +657,8 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
     cout << "positions" << endl;
-    for (uint64_t i = 0; i < Q_star[0]->getHeight(); i++) {
-        cout << "level = "<< i << endl;
-        for (uint64_t j = 0; j < bv[i].size(); j++) {
-            cout << bv[i][j] << " ";
-        }
-        cout << endl;
+    for (uint64_t j = 0; j < bv[Q_star[0]->getHeight()-1].size(); j++) {
+        cout << bv[Q_star[0]->getHeight()-1][j] << " ";
     }
     cout << endl;
 

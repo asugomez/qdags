@@ -428,7 +428,7 @@ public:
      * @param init will be modified if the node is not the root. -1 if the node is empty.
      * @param fin will be modified if the node is not the root. -1 if the node is empty.
      */
-    void get_range_leaves(int16_t level, uint64_t node, int64_t& init, int64_t& end){
+    bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         return Q->get_range_leaves(level, node, init, end);
     }
 
@@ -473,6 +473,8 @@ public:
                 return 0.5;
         }
     }
+    
+    
 
     /**
      * Algorithm 2 Child(Q,i)
@@ -499,6 +501,9 @@ public:
 
     }
 
+    void create_dfuds(){
+        return Q->create_dfuds();
+    }
 };
 
 #endif

@@ -1,0 +1,43 @@
+call to multi join
+positions
+5 17 37 
+results nro ° 0
+point output: 39474218
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 2124596451
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744072810010598
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 0
+point output: 39474218
+ coord 0 = 16777216
+ coord 1 = 0
+ coord 2 = 50331648
+ coord 3 = 0
+results nro ° 1
+point output: 2124596451
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 50331648
+ coord 3 = 16777216
+results nro ° 2
+point output: 18446744072810010598
+ coord 0 = 33554432
+ coord 1 = 50331648
+ coord 2 = 50331648
+ coord 3 = 0
+1.23852
+call to multi join
+positions
+1 17 33 49 65 81 97 113 133 149 165 181 193 213 225 245 259 275 291 307 323 339 355 371 391 407 423 439 451 467 487 503 513 529 549 565 579 595 615 631 641 657 675 691 705 721 741 757 771 787 807 823 
