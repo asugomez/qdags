@@ -162,10 +162,13 @@ int main(int argc, char **argv) {
     p2.push_back(prioritiesR);
     p2.push_back(prioritiesS);*/
 
+    qdag_rel_R.printBv();
+    qdag_rel_S.printBv();
+
 
     start = high_resolution_clock::now();
     cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-    //Join_Result = multiJoin(Q, true, 1000);
+    Join_Result = multiJoin(Q, true, 1000);
     cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
     //multiJoinPartialResults(Q, true, 1000, 0, 0);
     cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;

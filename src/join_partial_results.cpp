@@ -227,7 +227,6 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
          uint16_t cur_level, uint16_t max_level, uint64_t outputPath,
          uint64_t nAtt, uint8_t type_order_fun, uint64_t grid_size,
          priority_queue<uint64_t>& top_results, uint64_t size_queue) {
-
     if(top_results.size() >= size_queue){
         return true;
     }
@@ -235,7 +234,6 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool result = false;
-    //uint64_t root_temp[nQ];
     bool just_zeroes = true;
     uint64_t k_d[nQ];
     uint16_t children_to_recurse[p];
@@ -272,36 +270,19 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t child;
         uint16_t diff_level = max_level-cur_level;
         // we do not call recursively the function AND as we do in the other levels
+        // add output to the priority queue of results
         for (i = 0; i < children_to_recurse_size; ++i){
             uint64_t path = 0;
             child = children_to_recurse[i];
-            /*//if (child - last_child > 1)
-                //last_pos[cur_level] += (child - last_child - 1);
-
-            //last_child = child;
-
-            // if (bounded_result && bv[max_level].size() >= UPPER_BOUND)
-            if (bounded_result && bv[max_level].size() >= UPPER_BOUND)
-                return false;
-            else {
-                //bv[cur_level].push_back(last_pos[cur_level]++);
-                just_zeroes = false;
-            }*/
             path = child << (diff_level * l);
             path += outputPath;
             top_results.push(path);
             just_zeroes = false;
             // queue full
             if(top_results.size() >= size_queue){
-                cout << "queue ful l" << i <<"/" << children_to_recurse_size << endl;
-                // TODO: debug output
                 break;
             }
-
         }
-
-        //if (p - last_child > 1)
-        //    last_pos[cur_level] += (p - last_child - 1);
     }
     // call recursively in DFS order
     else {
@@ -328,7 +309,6 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
             children &= (((uint32_t) 0xffffffff) >> (msb + 1)); // delete the msb of children
         }
 
-        int64_t last_child = -1;
         uint16_t child;
 
         uint16_t diff_level = max_level-cur_level;
@@ -338,7 +318,7 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         // veo cada hijo en común que tiene el nodo actual
         uint64_t root_temp[children_to_recurse_size][nQ];
         for (i = 0; i < children_to_recurse_size; ++i) {
-            //uint64_t* root_temp= new uint64_t[nQ];
+            //uint64_t* root_test= new uint64_t[nQ];
             //uint64_t root_test[nQ];
             child = children_to_recurse[i]; // the position of the 1s in children
 
@@ -355,52 +335,40 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
             if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                 total_weight /= grid_size;
-            // TODO: debug compare root_test and root_temp[i]
-            // --> add the child to the path
-            cout << "child: " << child << endl;
-            cout << "outputpath: " << outputPath << endl;
 
-            path = child << (diff_level * l); // height * bits to represent the children
-            cout << "path (sin outputpath): " << path << endl;
+            path = child << (diff_level * l); // nro child shifted by (height * bits) to represent the children
             path += outputPath; // add the bits to the bitvector
-            cout << "path (con outputpath): " << path << endl;
+
 
             orderJoinQdag this_node = {i, path, total_weight} ;
             order_to_traverse.push(this_node); // add the tuple to the queue
 
         }
-        // TODO: debug compare root_test and root_temp[i]
         // recursive call in order according to the n_leaves
         //while(!order_to_traverse.empty()){
-
         for (i = 0; i < children_to_recurse_size; ++i) {
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
-            //TODO: debug ver si la cola de resultados se va updateando
-            cout << "........." << endl;
-            cout << i << "° (level, path, size output) " << cur_level << " , " << outputPath << " , " << top_results.size() << endl;
-            //cout << "outputpath: " << outputPath << endl;
             AND_partial_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, order.path,
                                      nAtt, type_order_fun, grid_size, top_results, size_queue);
         }
-        cout << "termine " << cur_level << endl;
-        /*if(cur_level== 0){ // finish the recursion
+
+        if(cur_level== 0){ // finish the recursion
             uint32_t coordinates[nAtt];
             for(uint32_t k = 0; k < nAtt; k++){
                 coordinates[k] = 0;
             }
+            cout << "number of results: " << top_results.size() << endl;
             for(uint64_t index = 0; index < top_results.size(); index++){
                 getCoordinates(top_results.top(), l, max_level, coordinates);
-                cout << endl << "nro result: " << index << endl;
-                cout << "top: " << top_results.top() << endl;
+                /*cout << "top: " << top_results.top() << endl;
                 cout << "coord: ";
                 for(uint32_t k = 0; k < nAtt; k++){
                     cout << coordinates[k] << " , ";
-                }
-                cout << endl;
-                top_results.pop();
+                }*/
+                //cout << endl;
             }
-        }*/
+        }
 
     }
 
