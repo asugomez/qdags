@@ -15,8 +15,23 @@ struct qdagWeight {
     uint64_t* roots; // the parent of the subtree of each qdag that conform the tuple.
     double weight; // priority or number of leaves of the tuple
     uint64_t path;  // the bits that encode the path down the leaf in the first qdag.
-    bool operator<(const qdagWeight& qd) const {
-        return weight < qd.weight;
+    bool operator<(const qdagWeight &qdag) const {
+        return weight < qdag.weight;
+    }
+};
+
+
+struct qdagResults{
+    uint64_t path;
+};
+
+struct orderJoinQdag{
+    uint64_t index;
+    uint64_t path;
+    //uint64_t* roots;
+    double weight;
+    bool operator<(const orderJoinQdag &ojq) const {
+        return weight < ojq.weight;
     }
 };
 
