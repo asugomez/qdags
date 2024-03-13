@@ -23,6 +23,10 @@ struct qdagWeight {
 
 struct qdagResults{
     uint64_t path;
+    double weight; // priority or number of leaves of the tuple
+    bool operator<(const qdagResults &qdag) const {
+        return weight > qdag.weight;
+    }
 };
 
 struct orderJoinQdag{

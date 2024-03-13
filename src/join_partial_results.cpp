@@ -224,9 +224,9 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
  * @return
  */
 bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
-         uint16_t cur_level, uint16_t max_level, uint64_t outputPath,
-         uint64_t nAtt, uint8_t type_order_fun, uint64_t grid_size,
-         priority_queue<uint64_t>& top_results, uint64_t size_queue) {
+         uint16_t cur_level, uint16_t max_level, uint64_t nAtt,
+         uint64_t outputPath, uint8_t type_order_fun, uint64_t grid_size,
+         priority_queue<uint64_t, std::vector<uint64_t>, std::greater<uint64_t>>& top_results, uint64_t size_queue) {
     if(top_results.size() >= size_queue){
         return true;
     }
@@ -318,15 +318,12 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         // veo cada hijo en común que tiene el nodo actual
         uint64_t root_temp[children_to_recurse_size][nQ];
         for (i = 0; i < children_to_recurse_size; ++i) {
-            //uint64_t* root_test= new uint64_t[nQ];
-            //uint64_t root_test[nQ];
             child = children_to_recurse[i]; // the position of the 1s in children
 
             // compute the weight of the tuple
             double total_weight = DBL_MAX;
             for (uint64_t j = 0; j < nQ; j++) {
                 root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                //root_test[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                 uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
                 if (n_leaves_child_node < total_weight) {
                     total_weight = n_leaves_child_node;
@@ -349,8 +346,8 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         for (i = 0; i < children_to_recurse_size; ++i) {
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
-            AND_partial_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, order.path,
-                                     nAtt, type_order_fun, grid_size, top_results, size_queue);
+            AND_partial_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, nAtt,
+                                     order.path, type_order_fun, grid_size, top_results, size_queue);
         }
 
         if(cur_level== 0){ // finish the recursion
@@ -417,10 +414,10 @@ bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
 
-    priority_queue<uint64_t> output; // minHeap
+    priority_queue<uint64_t, std::vector<uint64_t>, std::greater<uint64_t>> output; // minHeap
     uint64_t path = 0;
-    AND_partial_backtracking(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1,
-                             path, A.size(), type_order_fun, grid_size,
+    AND_partial_backtracking(Q_star, Q_roots, Q.size(), 0, max_level, A.size(),
+                             path, type_order_fun, grid_size,
                              output, size_queue);
 
 
