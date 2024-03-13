@@ -156,11 +156,11 @@ int main(int argc, char **argv) {
     p.push_back(priorities_S);
     p.push_back(priorities_T);*/
 
-    /*int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
+    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     vector<int_vector<>> p2;
     p2.push_back(prioritiesR);
-    p2.push_back(prioritiesS);*/
+    p2.push_back(prioritiesS);
 
     qdag_rel_R.printBv();
     qdag_rel_S.printBv();
@@ -172,7 +172,7 @@ int main(int argc, char **argv) {
     cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
     //multiJoinPartialResults(Q, true, 1000, 0, 0);
     cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
-    multiJoinPartialResultsBacktracking(Q, 0,50, 100);
+    multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
 
     // PARTIAL JOIN
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
@@ -189,6 +189,8 @@ int main(int argc, char **argv) {
 
     cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
     //bool join = multiJoinRankedResults(Q, true, 1000, 1, -1, p); // warmup join -> activar el caché
+    cout << "----- MULTI JOIN RANKED RESULTS BACKTRACLOMG------" << endl;
+    bool join = multiJoinRankedResultsBacktracking(Q, 1, 100, p2); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

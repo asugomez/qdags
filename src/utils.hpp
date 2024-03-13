@@ -32,7 +32,6 @@ struct qdagResults{
 struct orderJoinQdag{
     uint64_t index;
     uint64_t path;
-    //uint64_t* roots;
     double weight;
     bool operator<(const orderJoinQdag &ojq) const {
         return weight < ojq.weight;
