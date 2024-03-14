@@ -656,17 +656,17 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     // we create a new qdag with the output store in path (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
-    cout << "positions" << endl;
+    /*cout << "positions" << endl;
     for (uint64_t i = 0; i < Q_star[0]->getHeight(); i++) {
         for (uint64_t j = 0; j < bv[i].size(); j++) {
             cout << bv[i][j] << " ";
         }
         cout << endl;
-    }
+    }*/
 
     cout << "number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
 
-    cout << endl;
+    //cout << endl;
 
     return qResult;
 }

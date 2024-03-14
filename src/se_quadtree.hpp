@@ -29,8 +29,6 @@
 #include <sdsl/k2_tree_helper.hpp>
 #include <sdsl/int_vector_buffer.hpp>
 #include "rank.hpp"
-#include <sdsl/bp_support_g.hpp>
-#include <sdsl/bp_support_gg.hpp>
 
 
 //! A k^2-tree
@@ -835,9 +833,9 @@ public:
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
         for (int i = 0; i < getHeight(); i++) {
-            cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
+            //cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
             this->getBv()[i].print(k_d);
-            cout << endl;
+            //cout << endl;
         }
     }
 
