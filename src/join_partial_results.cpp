@@ -210,6 +210,7 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
 /**
  * AND algorithm that will return the top k results
  *  TODO: pregunta? que pasa si el join era vacío? como me devuelvo?
+ *  TODO: tiene sentido backtracking aquí? no hay nmayor prioridad
  * @param Q
  * @param roots
  * @param nQ
@@ -233,7 +234,6 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
-    bool result = false;
     bool just_zeroes = true;
     uint64_t k_d[nQ];
     uint16_t children_to_recurse[p];
@@ -271,8 +271,8 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t diff_level = max_level-cur_level;
         // we do not call recursively the function AND as we do in the other levels
         // add output to the priority queue of results
+        uint64_t path;
         for (i = 0; i < children_to_recurse_size; ++i){
-            uint64_t path = 0;
             child = children_to_recurse[i];
             path = child << (diff_level * l);
             path += outputPath;

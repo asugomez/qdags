@@ -241,13 +241,8 @@ bool AND_ranked_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
                               uint16_t cur_level, uint16_t max_level, uint64_t nAtt,
                               uint64_t outputPath, uint8_t type_priority_fun,
                               priority_queue<qdagResults>& top_results, uint64_t size_queue,
-                              vector<int_vector<>> &priorities) {
+                              vector<int_vector<>> &priorities, vector<rmq_succinct_sct<false>> &rMq) {
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag (extended)
-    vector<rmq_succinct_sct<false>> rMq;
-    for(uint64_t i = 0; i < nQ; i++){ // TODO: esto hacerlo aqui o antes?
-        rMq.push_back(rmq_succinct_sct<false>(&priorities[i]));
-    }
-    bool result = false;
     bool just_zeroes = true;
     uint64_t k_d[nQ];
     uint16_t children_to_recurse[p];
@@ -285,43 +280,41 @@ bool AND_ranked_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t diff_level = max_level-cur_level;
         // we do not call recursively the function AND as we do in the other levels
         // add output to the priority queue of results
+        uint64_t path;
         for (i = 0; i < children_to_recurse_size; ++i){
-            just_zeroes = false;
-            uint64_t path = 0;
             child = children_to_recurse[i];
+            // priority
+            double this_weight;
+            uint64_t priority_ith_node;
+            for (uint64_t j = 0; j < nQ; j++) {
+                bit_vector::size_type min_idx = rMq[j](child, child); // TODO: check que el child corresponda efectivamente al rango
+                priority_ith_node = priorities[j][min_idx];
+
+                if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
+                    this_weight += priority_ith_node;
+                else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
+                    if (this_weight < priority_ith_node) {
+                        this_weight = priority_ith_node;
+                    }
+                }
+            }
+            // path
             path = child << (diff_level * l);
             path += outputPath;
             // queue full --> compare priorities
             if(top_results.size() >= size_queue ){
                 qdagResults minResult = top_results.top();
-                double this_weight = 0; // TODO: completar con rmq
-                for (uint64_t j = 0; j < nQ; j++) {
-                    uint64_t init = 0;
-                    uint64_t end = priorities[j].size()-1;
-                    // TODO: see this: what to do when i-th bit is 0?
-                    // TODO: debug ver que init = end!!
-                    uint64_t priority_ith_node = 0;
-                    bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
-                    if(success){
-                        bit_vector::size_type min_idx = rMq[j](init, end);
-                        priority_ith_node = priorities[j][min_idx];
-                    } else {
-                        //cout << "error in get range leaves" << endl;
-                    }
-                    if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
-                        this_weight += priority_ith_node;
-                    else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
-                        if (this_weight < priority_ith_node) {
-                            this_weight = priority_ith_node;
-                        }
-                    }
-                }
-
+                //cout << "fullqueue (this weight and min weight) " << this_weight << " " << minResult.weight << endl;
                 // add result if the priority is higher than the minimum priority in the queue
                 if(this_weight > minResult.weight){
                     top_results.pop();
                     top_results.push({path, this_weight});
                 }
+            }
+            else{
+                //cout << "push" << endl;
+                top_results.push({path, this_weight});
+                just_zeroes = false;
             }
         }
     }
@@ -400,7 +393,7 @@ bool AND_ranked_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
             order_to_traverse.pop();
             AND_ranked_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, nAtt,
                                     order.path, type_priority_fun, top_results, size_queue,
-                                     priorities);
+                                     priorities, rMq);
         }
 
         if(cur_level== 0){ // finish the recursion
@@ -465,13 +458,17 @@ bool multiJoinRankedResultsBacktracking(vector<qdag> &Q, uint8_t type_priority_f
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++){ // TODO: esto hacerlo aqui o antes?
+        rMq.push_back(rmq_succinct_sct<false>(&priorities[i]));
+    }
+
     priority_queue<qdagResults> output; // minHeap
     uint64_t path = 0;
-    output.push({0,1});
     AND_ranked_backtracking(Q_star, Q_roots, Q.size(),
                             0, max_level, A.size(),
                             path, type_priority_fun,
-                            output, size_queue, priorities);
+                            output, size_queue, priorities, rMq);
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
