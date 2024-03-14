@@ -201,7 +201,68 @@ public:
 
     se_quadtree_dfuds() = default;
 
-    uint64_t
+    uint64_t size() {
+        // TODO: not implemented
+        uint64_t i, s = 0;
+        /*for (i = 0; i < X; i++){
+            s += bp_s[i].size();
+        for (i = 0; i < X; i++){
+            s += bp_b[i].size();*/
+
+        return s;
+    }
+
+    //! Constructor
+    /*! This constructor takes a vector of edges describing the graph
+     *  and the graph size. It takes linear time over the amount of
+     *  edges to build the k_d representation.
+     *  \param edges A vector with all the edges of the graph, it can
+     *               not be empty.
+     *  \param size grid side, all the point coordinates in edges
+                    vector must be within 0 and size ([0, size[).
+     */
+
+    se_quadtree_dfuds(std::vector<std::vector<idx_type>> &edges,
+                        const size_type grid_side, uint8_t __k, uint8_t __d) {
+        assert(grid_side > 0);
+        assert(edges.size() > 0);
+
+        build_from_edges(edges, grid_side, __k, __d);
+        ref_count = 1;
+    }
+
+    ~se_quadtree_dfuds() {
+        ref_count--;
+        if (ref_count == 0){
+            delete[] bp_s;
+            delete[] bp_b;
+        }
+    }
+
+    void inc_ref_count() {
+        ref_count++;
+    }
+
+    uint8_t getK() {
+        return k;
+    }
+
+    uint8_t getD() {
+        return d;
+    }
+
+    uint64_t getKD() {
+        return k_d;
+    }
+
+
+    uint16_t getHeight() {
+        return height;
+    }
+
+
+    // TODO: get_node!
+
 };
 
 #endif //QDAGS_SE_QUADTREE_DFUDS_HPP

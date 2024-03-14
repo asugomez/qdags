@@ -310,6 +310,14 @@ public:
         return d;
     }
 
+    uint64_t getKD() {
+        return k_d;
+    }
+
+    uint16_t getHeight() {
+        return height;
+    }
+
     rank_bv_64 *getBv() {
         return bv;
     }
@@ -565,16 +573,6 @@ public:
 
     uint64_t total_ones_level(uint16_t level) {
         return total_ones[level];
-    }
-
-
-    uint64_t getKD() {
-        return k_d;
-    }
-
-
-    uint16_t getHeight() {
-        return height;
     }
 
     /**
