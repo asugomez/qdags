@@ -19,6 +19,7 @@ class se_quadtree_dfuds {
 public:
     typedef k2_tree_ns::idx_type idx_type;
     typedef k2_tree_ns::size_type size_type;
+    typedef bit_vector::size_type size_type_bp;
 
 private:
     // TODO: comoo funcionará close, etc (operaciones BV) si están separados?
@@ -262,6 +263,88 @@ public:
 
 
     // TODO: get_node!
+
+
+    /////////// BP operations /////////////
+
+    /**
+     * @param i
+     * @return the number of opening parentheses up to and including index i of the bp S.
+     */
+    size_type_bp rank_bp_s(size_type_bp i)const {
+        return bp_s->rank(i);
+    }
+
+    /**
+     * @param i
+     * @return the number of opening parentheses up to and including index i of the bp B.
+     */
+    size_type_bp rank_bp_b(size_type_bp i)const {
+        return bp_b->rank(i);
+    }
+
+    /**
+     *
+     * @param i
+     * @return the index of the i-th opening parenthesis of S.
+     */
+    size_type select_s(size_type i)const {
+        return bp_s->select(i);
+    }
+
+    /**
+     *
+     * @param i
+     * @return the index of the i-th opening parenthesis of B.
+     */
+    size_type select_b(size_type i)const {
+        return bp_b->select(i);
+    }
+
+    /**
+     * Calculate the index of the matching closing parenthesis to the parenthesis at index i.
+     * @param i Index of an parenthesis. 0 <= i < size().
+     * @return  i, if the parenthesis at index i is closing,
+     *          * the position j of the matching closing parenthesis, if a matching parenthesis exists,
+     *          * size() if no matching closing parenthesis exists.
+     */
+    size_type find_close_s(size_type i)const {
+        return bp_s->find_close(i);
+    }
+
+    /**
+     * Calculate the index of the matching closing parenthesis to the parenthesis at index i.
+     * @param i Index of an parenthesis. 0 <= i < size().
+     * @return  i, if the parenthesis at index i is closing,
+     *          * the position j of the matching closing parenthesis, if a matching parenthesis exists,
+     *          * size() if no matching closing parenthesis exists.
+     */
+    size_type find_close_b(size_type i)const {
+        return bp_b->find_close(i);
+    }
+
+    size_type find_open_s(size_type i)const{
+        return bp_s->enclose(i);
+    }
+
+    size_type find_open_b(size_type i)const{
+        return bp_b->enclose(i);
+    }
+
+    size_type enclose_s(size_type i)const{
+        return bp_s->enclose(i);
+    }
+
+    size_type enclose_b(size_type i)const{
+        return bp_b->enclose(i);
+    }
+
+    //TODO: rank_100, select_100
+    // TODO: leafnum, parent, t_child, children...
+
+
+
+
 
 };
 
