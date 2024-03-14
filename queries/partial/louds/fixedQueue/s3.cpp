@@ -102,7 +102,7 @@ int main(int argc, char** argv)
     
     qdag *Join_Result;
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, size_queue);
+    multiJoinPartialResultsBacktracking(Q, 0, grid_side, size_queue);
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -110,7 +110,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, size_queue);
+    multiJoinPartialResultsBacktracking(Q, 0, grid_side, size_queue);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

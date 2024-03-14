@@ -138,11 +138,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, size_queue);
+    multiJoinPartialResultsBacktracking(Q, 0, grid_side, size_queue);
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, size_queue);
+    multiJoinPartialResultsBacktracking(Q, 0, grid_side, size_queue);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

@@ -168,11 +168,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, 1, size_queue, p);
     
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, 1, size_queue, p);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

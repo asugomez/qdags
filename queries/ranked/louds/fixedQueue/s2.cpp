@@ -162,7 +162,7 @@ int main(int argc, char** argv)
     int64_t size_queue = argv[8] ? atoi(argv[8]) : 100;
 
 
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, 1, size_queue, p);
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -170,7 +170,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, 1, size_queue, p);
 
     //uint64_t ntuples = multiJoinCount(Q);
 

@@ -156,11 +156,11 @@ int main(int argc, char** argv)
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);  // warmup join -> activar el caché
+    multiJoinRankedResultsBacktracking(Q, 0, size_queue, p);
  
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, 0, size_queue, p);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
