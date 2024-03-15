@@ -407,6 +407,10 @@ public:
         return tab_extend_5[Q->get_node_last_level(level, node)];
     }
 
+    inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
+        return Q->get_node_last_level(level, node);
+    }
+
 
     //void print(std::ofstream &ofs)
     //{

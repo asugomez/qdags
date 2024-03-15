@@ -11,7 +11,7 @@
 #include<ratio>
 #include<chrono>
 #include<ctime>
-#include "../src/qdagsInclude.hpp"
+#include "../../src/qdagsInclude.hpp"
 
 using namespace std::chrono;
 

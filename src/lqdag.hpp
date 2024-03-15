@@ -4,12 +4,12 @@
 #include<bits/stdc++.h>
 #include "./qdags.hpp"
 
-const uint8_t FUNCTOR_QTREE = 0;
-const uint8_t FUNCTOR_NOT = 1;
-const uint8_t FUNCTOR_AND = 2;
-const uint8_t FUNCTOR_OR = 3;
-const uint8_t FUNCTOR_EXTEND = 4;
-const double VALUE_NEED_CHILDREN = 2;
+const uint8_t FUNCTOR_QTREE = 0; // leaf
+const uint8_t FUNCTOR_NOT = 1; // leaf
+const uint8_t FUNCTOR_AND = 2; // internal node
+const uint8_t FUNCTOR_OR = 3; // internal node
+const uint8_t FUNCTOR_EXTEND = 4; // internal node
+const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the values of its children
 
 
 // represents a subtree of the quadtree
@@ -88,22 +88,24 @@ public:
     }
 
     /**
-     * Algorithm 1 Value(Q)
+     * Algorithm 1 Value(Q), adapted for lqdag
      * Value of a qdag
-     * @return 1 if the grid is a single point, 0 if it is empty, 1/2 otherwise.
+     * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s.
+     * Now leaves can be in the last lever or higher.
+     * @return 1 if the qdag represents a full single cell, 0 if it is empty, 1/2 if is an internal node.
      */
     double value_quadtree(){
         if(this->functor == FUNCTOR_QTREE) {
-            uint16_t height = this->subQuadtree->Qdag->getHeight();
-            uint16_t curr_level = this->subQuadtree->level;
-            uint64_t curr_node = this->subQuadtree->node;
-            // TODO: pregunta difference between l= 1 and a leaf
-            // grid side = 1
-            if(this->get_grid_side() == 1) // TODO: esta bien cambiar asi la grid side?
-                return this->subQuadtree->Qdag->get_ith_bit(curr_level, curr_node); // TODO: see if problems bcause get_ith_bit returns bool.
-            // leaf
-            if(curr_level == height-1)
-                return 0;
+            uint16_t max_level = this->subQuadtree->Qdag->getHeight() -1;
+            uint16_t cur_level = this->subQuadtree->level;
+            uint64_t cur_node = this->subQuadtree->node;
+            // grid side is 1 or leaf at last level
+            if(this->get_grid_side() == 1 || cur_level == max_level) // TODO: esta bien cambiar asi la grid side?, no es lo mismo ambas condiciones?
+                return this->subQuadtree->Qdag->get_ith_bit(cur_level, cur_node); // TODO: see if problems bcause get_ith_bit returns bool.
+            // leaf higher level (subgrid full of 1s or 0s)
+            uint8_t is_leaf = this->subQuadtree->Qdag->get_node_last_level(cur_level, cur_node);
+            if(is_leaf == 0 || (is_leaf & 255) == 1)
+                return is_leaf;
             else
                 return 0.5;
         } else{
@@ -136,6 +138,7 @@ public:
 
     /**
      * algorithm 7 value(L)
+     * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s
      * @return the value of the root of the lqdag.
      */
     double value_lqdag(){
@@ -225,5 +228,29 @@ public:
         throw "error: value_lqdag non valid functor";
     }
 
+    // ---------- QUERIES ---------- //
+    // join = (and(and(extend(Q_TREE, (A,B,C)), (extend(Q_TREE, (A,B,C)))), extend(Q_TREE, (A,B,C)))
+    //
 
+    void completition(){
+
+    }
+
+    void pred(){
+
+    }
+
+    void selection(){
+
+    }
+
+    //(JOIN, L1(A1), L2(A2)) = (AND, (EXTEND, L1, A1 ∪ A2), (EXTEND, L2, A1 ∪ A2))
+    void join(){
+
+    }
+
+    // (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
+    void diff(){
+
+    }
 };
