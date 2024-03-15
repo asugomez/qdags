@@ -72,8 +72,8 @@ protected:
      *  \param size side of the grid containing the points, all the point
                     coordinates in vector edges must be within [0, size[
      */
-    void build_from_edges(std::vector<std::vector<idx_type>> &edges,
-                          const size_type size, uint8_t __k, uint8_t __d) {
+    void build_from_edges_dfs(std::vector<std::vector<idx_type>> &edges,
+                              const size_type size, uint8_t __k, uint8_t __d) {
 
         typedef std::tuple<idx_type, idx_type, size_type, idx_type *> t_part_tuple;
 
@@ -87,265 +87,19 @@ protected:
 
         k_d = std::pow(k, d);
 
-        bit_vector k_t_ = bit_vector(k_d, 0);  // OJO, cuidado con esto
+        //bit_vector k_t_ = bit_vector(k_d, 0);  //
+        //bit_vector k_t_b = bit_vector(k_d, 0);  // 1^c 0
+        bit_vector k_t_s = bit_vector(edges.size()* k_d, 0);
 
-        std::queue<t_part_tuple> q;
-        idx_type t = 0, last_level = 0;
-        idx_type i, j, r_0, c_0, it, c, r, z;
-        size_type l = std::pow(k, height - 1);
+        k_t_s[0] = 1;
+        k_t_s[1] = 1;
+        k_t_s[2] = 0;
 
-        std::vector<idx_type> pos_by_chunk(k_d + 1, 0);
+        //last_pos !! PROBLEME de tamaño
 
-        idx_type *top_left_point = new idx_type[d]();
-        idx_type *top_left_point_aux;
-
-        q.push(t_part_tuple(0, edges.size(), l, top_left_point));
-
-        size_type cur_l = l, cur_level = 0, n_ones = 0;
-
-        while (!q.empty()) {
-
-            std::vector<idx_type> amount_by_chunk(k_d, 0);
-            std::tie(i, j, l, top_left_point) = q.front();
-            q.pop();
-
-            if (l != cur_l) {
-                cur_l = l;
-                k_t_.resize(t);
-                //bv[cur_level] = rank_bv_64(k_t_);
-                //total_ones[cur_level] = bv[cur_level].n_ones();
-                cur_level++;
-                t = 0;
-                k_t_.resize(0);
-                k_t_ = bit_vector(k_d * n_ones, 0);
-                n_ones = 0;
-            }
-
-            // Get size for each chunk
-            for (it = i; it < j; it++)
-                amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
-
-            if (l == 1) {
-                for (it = 0; it < k_d; it++, t++)
-                    if (amount_by_chunk[it] != 0)
-                        k_t_[t] = 1;
-                    else
-                        k_t_[t] = 0;
-                // At l == 1 no new elements are enqueued
-                continue;
-            }
-
-            // Set starting position in the vector for each chunk
-            pos_by_chunk[0] = i;
-
-            for (it = 1; it < k_d; it++)
-                pos_by_chunk[it] = pos_by_chunk[it - 1] + amount_by_chunk[it - 1];
-            // To handle the last case when it = k_d - 1
-            pos_by_chunk[k_d] = j;
-
-            // Push to the queue every non zero elements chunk
-            for (it = 0; it < k_d; it++, t++)
-                // If not empty chunk, set bit to 1
-                if (amount_by_chunk[it] != 0) {
-                    uint16_t p = std::pow(k, d - 1);
-                    idx_type it_aux = it;
-                    c = it % k;
-                    k_t_[t] = 1;
-                    n_ones++;
-
-                    top_left_point_aux = new idx_type[d]();
-
-                    for (z = 0; z < d - 1; ++z) {
-                        r = it_aux / p;
-                        it_aux -= r * p;
-                        p /= k;
-                        top_left_point_aux[z] = top_left_point[z] + r * l;
-                    }
-
-                    top_left_point_aux[d - 1] = top_left_point[d - 1] + c * l;
-
-                    q.push(t_part_tuple(pos_by_chunk[it],
-                                        pos_by_chunk[it + 1],
-                                        l / k,
-                                        top_left_point_aux));
-                } else
-                    k_t_[t] = 0;
-
-            idx_type chunk;
-
-            // Sort edges' vector
-            for (unsigned ch = 0; ch < k_d; ch++) {
-                idx_type be = ch == 0 ? i : pos_by_chunk[ch - 1];
-                for (it = pos_by_chunk[ch]; it < be + amount_by_chunk[ch];) {
-                    chunk = get_chunk_idx(edges[it], top_left_point, l, k);
-
-                    if (pos_by_chunk[chunk] != it)
-                        std::iter_swap(edges.begin() + it,
-                                       edges.begin() + pos_by_chunk[chunk]);
-                    else
-                        it++;
-                    pos_by_chunk[chunk]++;
-                }
-            }
-            delete[] top_left_point;
-
-        }
-
-        k_t_.resize(t);
-        bv[height - 1] = rank_bv_64(k_t_);
-
-        //total_ones[height - 1] = bv[height - 1].n_ones();
 
     }
-
-public:
-
-    se_quadtree_dfuds() = default;
-
-    uint64_t size() {
-        // TODO: not implemented
-        uint64_t i, s = 0;
-        /*for (i = 0; i < X; i++){
-            s += bp_s[i].size();
-        for (i = 0; i < X; i++){
-            s += bp_b[i].size();*/
-
-        return s;
-    }
-
-    //! Constructor
-    /*! This constructor takes a vector of edges describing the graph
-     *  and the graph size. It takes linear time over the amount of
-     *  edges to build the k_d representation.
-     *  \param edges A vector with all the edges of the graph, it can
-     *               not be empty.
-     *  \param size grid side, all the point coordinates in edges
-                    vector must be within 0 and size ([0, size[).
-     */
-
-    se_quadtree_dfuds(std::vector<std::vector<idx_type>> &edges,
-                        const size_type grid_side, uint8_t __k, uint8_t __d) {
-        assert(grid_side > 0);
-        assert(edges.size() > 0);
-
-        build_from_edges(edges, grid_side, __k, __d);
-        ref_count = 1;
-    }
-
-    ~se_quadtree_dfuds() {
-        ref_count--;
-        if (ref_count == 0){
-            delete[] bp_s;
-            delete[] bp_b;
-        }
-    }
-
-    void inc_ref_count() {
-        ref_count++;
-    }
-
-    uint8_t getK() {
-        return k;
-    }
-
-    uint8_t getD() {
-        return d;
-    }
-
-    uint64_t getKD() {
-        return k_d;
-    }
-
-
-    uint16_t getHeight() {
-        return height;
-    }
-
-
-    // TODO: get_node!
-
-
-    /////////// BP operations /////////////
-
-    /**
-     * @param i
-     * @return the number of opening parentheses up to and including index i of the bp S.
-     */
-    size_type_bp rank_bp_s(size_type_bp i)const {
-        return bp_s->rank(i);
-    }
-
-    /**
-     * @param i
-     * @return the number of opening parentheses up to and including index i of the bp B.
-     */
-    size_type_bp rank_bp_b(size_type_bp i)const {
-        return bp_b->rank(i);
-    }
-
-    /**
-     *
-     * @param i
-     * @return the index of the i-th opening parenthesis of S.
-     */
-    size_type select_s(size_type i)const {
-        return bp_s->select(i);
-    }
-
-    /**
-     *
-     * @param i
-     * @return the index of the i-th opening parenthesis of B.
-     */
-    size_type select_b(size_type i)const {
-        return bp_b->select(i);
-    }
-
-    /**
-     * Calculate the index of the matching closing parenthesis to the parenthesis at index i.
-     * @param i Index of an parenthesis. 0 <= i < size().
-     * @return  i, if the parenthesis at index i is closing,
-     *          * the position j of the matching closing parenthesis, if a matching parenthesis exists,
-     *          * size() if no matching closing parenthesis exists.
-     */
-    size_type find_close_s(size_type i)const {
-        return bp_s->find_close(i);
-    }
-
-    /**
-     * Calculate the index of the matching closing parenthesis to the parenthesis at index i.
-     * @param i Index of an parenthesis. 0 <= i < size().
-     * @return  i, if the parenthesis at index i is closing,
-     *          * the position j of the matching closing parenthesis, if a matching parenthesis exists,
-     *          * size() if no matching closing parenthesis exists.
-     */
-    size_type find_close_b(size_type i)const {
-        return bp_b->find_close(i);
-    }
-
-    size_type find_open_s(size_type i)const{
-        return bp_s->enclose(i);
-    }
-
-    size_type find_open_b(size_type i)const{
-        return bp_b->enclose(i);
-    }
-
-    size_type enclose_s(size_type i)const{
-        return bp_s->enclose(i);
-    }
-
-    size_type enclose_b(size_type i)const{
-        return bp_b->enclose(i);
-    }
-
-    //TODO: rank_100, select_100
-    // TODO: leafnum, parent, t_child, children...
-
-
-
 
 
 };
-
 #endif //QDAGS_SE_QUADTREE_DFUDS_HPP

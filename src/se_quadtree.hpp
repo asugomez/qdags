@@ -66,6 +66,9 @@ private:
 
 protected:
 
+    // TODO: no entiendo el offset
+
+
     /*! Get the chunk index ([0, k^d[) of a submatrix point.
     **** TODO: PREGUNTA: como están indexados? cual es el orden
     *
@@ -82,6 +85,8 @@ protected:
                            size_type l, uint8_t _k) {
         uint16_t i, _d = point.size();
         uint16_t total_sum = 0, _k_aux = 1;
+        // TODO: debug: see offset
+
 
         for (i = _d - 1; i > 0; --i) {
             total_sum += ((point[i] - offset[i]) / l) * _k_aux;
@@ -105,6 +110,7 @@ protected:
 
         typedef std::tuple<idx_type, idx_type, size_type, idx_type *> t_part_tuple;
 
+        // TODO: DEBUG ENTENDER SOLO EL GET_CHUNK Y OFFSET!!!
         k = __k;
         d = __d;
         height = std::ceil(std::log(size) / std::log(k));
@@ -122,20 +128,32 @@ protected:
         idx_type i, j, r_0, c_0, it, c, r, z;
         size_type l = std::pow(k, height - 1);
 
+
         std::vector<idx_type> pos_by_chunk(k_d + 1, 0);
 
         idx_type *top_left_point = new idx_type[d]();
         idx_type *top_left_point_aux;
 
+        // TODO: debug que le pushea
         q.push(t_part_tuple(0, edges.size(), l, top_left_point));
 
         size_type cur_l = l, cur_level = 0, n_ones = 0;
 
         while (!q.empty()) {
 
+            // TODO: debug revisar esto
+            // TODO: debug see q!
             std::vector<idx_type> amount_by_chunk(k_d, 0);
             std::tie(i, j, l, top_left_point) = q.front();
             q.pop();
+
+            for(int ii = 0; ii < edges.size(); ii++){
+                cout << "chunk for ";
+                for(int jj = 0; jj < edges[ii].size(); jj++){
+                    cout << edges[ii][jj] << " ";
+                }
+                cout << " is : " << get_chunk_idx(edges[ii], top_left_point, l, k) << endl;
+            }
 
             if (l != cur_l) {
                 cur_l = l;
@@ -150,6 +168,7 @@ protected:
             }
 
             // Get size for each chunk
+            // TODO: debug revisar amount_by_chunk and cur_level
             for (it = i; it < j; it++)
                 amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
 

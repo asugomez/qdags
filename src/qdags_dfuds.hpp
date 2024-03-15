@@ -135,6 +135,7 @@ public:
         uint64_t mask;
         uint64_t i, i_prime;
 
+        // TODO: see if we have to change something (order DFS, idk)
         for (i = 0; i < p; ++i) {
             // todos los bits están en cero excepto el bit en la posición dim_prime - 1.
             mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
