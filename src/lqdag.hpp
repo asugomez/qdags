@@ -11,6 +11,14 @@ const uint8_t FUNCTOR_OR = 3; // internal node
 const uint8_t FUNCTOR_EXTEND = 4; // internal node
 const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the values of its children
 
+struct node {
+    double val_leaf; // 0, 1, 1/2
+    vector<node*> children;
+    //att_set attribute_set;
+    uint16_t height;
+    uint8_t k;
+    uint8_t d;
+};
 
 // represents a subtree of the quadtree
 struct subQuadtreeChild {
@@ -109,8 +117,8 @@ public:
             else
                 return 0.5;
         } else{
-            cout << "error: value_quadtree called on non-quadtree" << endl;
-            return 2;
+            //cout << "error: value_quadtree called on non-quadtree" << endl;
+            throw "error: value_quadtree called on non-quadtree";
         }
     }
 
@@ -178,7 +186,7 @@ public:
      * @param i
      * @return
      */
-    lqdag* get_sub_lqdag(uint64_t i){
+    lqdag* get_child_lqdag(uint64_t i){
         // case base
         if(this->functor == FUNCTOR_QTREE || this->functor == FUNCTOR_NOT){
             subQuadtreeChild* subQuadtree = new subQuadtreeChild();
@@ -188,18 +196,18 @@ public:
         }
         else if(this->functor == FUNCTOR_AND){
             if(this->lqdag1->value_lqdag() == 1)
-                return lqdag2->get_sub_lqdag(i);
+                return lqdag2->get_child_lqdag(i);
             if(this->lqdag2->value_lqdag() == 1)
-                return lqdag1->get_sub_lqdag(i);
-            lqdag *l = new lqdag(FUNCTOR_AND, this->lqdag1->get_sub_lqdag(i), this->lqdag2->get_sub_lqdag(i));
+                return lqdag1->get_child_lqdag(i);
+            lqdag *l = new lqdag(FUNCTOR_AND, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
             return l;
         }
         else if(this->functor == FUNCTOR_OR){
             if(this->lqdag1->value_lqdag() == 0)
-                return lqdag2->get_sub_lqdag(i);
+                return lqdag2->get_child_lqdag(i);
             if(this->lqdag2->value_lqdag() == 0)
-                return lqdag1->get_sub_lqdag(i);
-            lqdag *l = new lqdag(FUNCTOR_OR, this->lqdag1->get_sub_lqdag(i), this->lqdag2->get_sub_lqdag(i));
+                return lqdag1->get_child_lqdag(i);
+            lqdag *l = new lqdag(FUNCTOR_OR, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
             return l;
         }
         else if(this->functor == FUNCTOR_EXTEND){ // Extend quadtree to attributes att_set
@@ -221,23 +229,74 @@ public:
                     i_prime |= mask;
                 mask >>= 1;
             }
-            lqdag *l = new lqdag(FUNCTOR_EXTEND, this->lqdag1->get_sub_lqdag(i_prime), this->attribute_set_A);
+            lqdag *l = new lqdag(FUNCTOR_EXTEND, this->lqdag1->get_child_lqdag(i_prime), this->attribute_set_A);
             return l;
         }
 
         throw "error: value_lqdag non valid functor";
     }
 
-    // ---------- QUERIES ---------- //
+
+    /**
+     * Algorithm 9 of paper.
+     * The completion Q_f is the quadtree representing the output of the formula F, represented as an lqdag
+     *
+     */
+    node* completion(){
+        if(this->value_lqdag() == 0 || this->value_lqdag() == 1){
+            node* newNode = new node();
+            newNode->val_leaf = this->value_lqdag();
+            newNode->children = {};
+            newNode->height = 1;
+            newNode->k = 0;
+            newNode->d = 0;
+            return newNode;
+            /* if we return a qdag* :
+            vector<uint64_t> bv[1];
+            //bv.push_back(this->value_lqdag());
+            if(this->value_lqdag()) // if it's 1, put a 1 as a leaf
+                bv[0] = vector<uint64_t>(0);
+            // TODO: see que pasa cuando value = 0, bv empty... memory leakS?
+            qdag* Q_f = new qdag(bv, this->attribute_set_A, 1, this->subQuadtree->Qdag->getK(), this->subQuadtree->Qdag->getD());
+            return Q_f;*/
+        }
+        double max_value = 0;
+        double min_value = 255;
+        vector<node*> Q_f_children;
+        // if all quadtres are empty, return a 0 leaf.
+        // TODO: this is wrong the D dimension
+        for(uint64_t i = 0; i < this->subQuadtree->Qdag->getD(); i++){
+            node* newNode = this->get_child_lqdag(i)->completion();
+            Q_f_children.push_back(newNode);
+            max_value = max(max_value, newNode->val_leaf);
+            min_value = min(min_value, newNode->val_leaf);
+        }
+        if(max_value == 0 || min_value == 1){
+            Q_f_children.clear(); // memory
+            node* newNode = new node();
+            newNode->val_leaf = max_value == 0 ? 0 : 1;
+            newNode->children = {};
+            newNode->height = 1;
+            newNode->k = 0;
+            newNode->d = 0;
+            return newNode;
+        }
+
+        node* quadtree = new node();
+        quadtree->val_leaf = 1/2;
+        quadtree->children = Q_f_children;
+        quadtree->height = 2;
+        quadtree->k = this->subQuadtree->Qdag->getK();
+        return quadtree;
+    }
+
+
+    // ---------- FULL RELATIONAL ALGEBRA ---------- //
     // join = (and(and(extend(Q_TREE, (A,B,C)), (extend(Q_TREE, (A,B,C)))), extend(Q_TREE, (A,B,C)))
     //
 
-    void completition(){
-
-    }
-
     void pred(){
-
+        // TODO: no tengo idea como hacerla
     }
 
     void selection(){
