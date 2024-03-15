@@ -38,6 +38,9 @@ public:
     lqdag(subQuadtreeChild* subQuadtree) {
         this->functor = FUNCTOR_QTREE;
         this->subQuadtree = subQuadtree;
+        this->lqdag1 = nullptr;
+        this->lqdag2 = nullptr;
+        this->attribute_set_A = {};
     }
 
     // L = (QTREE, Q_r) o L = (NOT, Q_r)
@@ -45,6 +48,9 @@ public:
         // TODO: assert functor is QTREE, NOT,
         this->functor = functor;
         this->subQuadtree = subQuadtree;
+        this->lqdag1 = nullptr;
+        this->lqdag2 = nullptr;
+        this->attribute_set_A = {};
     }
 
     // L = (AND, L1, L2) o L = (OR, L1, L2)
@@ -53,6 +59,8 @@ public:
         this->functor = functor;
         this->lqdag1 = l1;
         this->lqdag2 = l2;
+        this->subQuadtree = nullptr;
+        this->attribute_set_A = {};
     }
 
     // L = (EXTEND, L1, A)
@@ -61,6 +69,22 @@ public:
         this->functor = functor;
         this->lqdag1 = l;
         this->attribute_set_A = attribute_set_A;
+
+        this->subQuadtree = nullptr;
+        this->lqdag2 = nullptr;
+    }
+
+
+    uint64_t get_grid_side(){
+        if(this->functor == FUNCTOR_QTREE) {
+            uint16_t curr_level = this->subQuadtree->level;
+            uint64_t k= this->subQuadtree->Qdag->getK();
+            // TODO: debug see if ceil is working!
+            return ceil(this->subQuadtree->Qdag->getGridSide()/(pow(k, curr_level)));
+        } else{
+            cout << "error: get_grid_side called on non-quadtree" << endl;
+            return 0;
+        }
     }
 
     /**
@@ -70,18 +94,16 @@ public:
      */
     double value_quadtree(){
         if(this->functor == FUNCTOR_QTREE) {
-            // see the level and the node
             uint16_t height = this->subQuadtree->Qdag->getHeight();
             uint16_t curr_level = this->subQuadtree->level;
             uint64_t curr_node = this->subQuadtree->node;
-            // if the node is a leaf (grid side = 1)
             // TODO: pregunta difference between l= 1 and a leaf
             // grid side = 1
-            if(curr_level == height - 1)
-                return 0;
-            // leaf
-            if(curr_level == height) // TODO: MALO ESTO!!
+            if(this->get_grid_side() == 1) // TODO: esta bien cambiar asi la grid side?
                 return this->subQuadtree->Qdag->get_ith_bit(curr_level, curr_node); // TODO: see if problems bcause get_ith_bit returns bool.
+            // leaf
+            if(curr_level == height-1)
+                return 0;
             else
                 return 0.5;
         } else{
@@ -126,18 +148,18 @@ public:
         else if(this->functor == FUNCTOR_AND){
             if(this->lqdag1->value_lqdag() == 0 || this->lqdag2->value_lqdag() == 0)
                 return 0;
-            else if(this->lqdag1->value_lqdag() == 1)
+            if(this->lqdag1->value_lqdag() == 1)
                 return this->lqdag2->value_lqdag();
-            else if(this->lqdag2->value_lqdag() == 1)
+            if(this->lqdag2->value_lqdag() == 1)
                 return this->lqdag1->value_lqdag();
             return VALUE_NEED_CHILDREN;
         }
         else if(this->functor == FUNCTOR_OR){
             if(this->lqdag1->value_lqdag() == 1 || this->lqdag2->value_lqdag() == 1)
                 return 1;
-            else if(this->lqdag1->value_lqdag() == 0)
+            if(this->lqdag1->value_lqdag() == 0)
                 return this->lqdag2->value_lqdag();
-            else if(this->lqdag2->value_lqdag() == 0)
+            if(this->lqdag2->value_lqdag() == 0)
                 return this->lqdag1->value_lqdag();
             return VALUE_NEED_CHILDREN;
         }
@@ -148,19 +170,25 @@ public:
     }
 
     // algorithm 8 child(L,i)
+    /**
+     * Can only be invoked when value is 1/2 or 2.
+     * @param i
+     * @return
+     */
     lqdag* get_sub_lqdag(uint64_t i){
+        // case base
         if(this->functor == FUNCTOR_QTREE || this->functor == FUNCTOR_NOT){
             lqdag *l = new lqdag();
             l->functor = this->functor;
             subQuadtreeChild* subQuadtree = new subQuadtreeChild();
-            this->get_child_quadtree(i, subQuadtree);
+            this->get_child_quadtree(i, subQuadtree); // TODO: check if it's necessary to create another subquadtreechild
             l->subQuadtree = subQuadtree;
             return l; // TODO: see memory leaks
         }
         else if(this->functor == FUNCTOR_AND){
             if(this->lqdag1->value_lqdag() == 1)
                 return lqdag2->get_sub_lqdag(i);
-            else if(this->lqdag2->value_lqdag() == 1)
+            if(this->lqdag2->value_lqdag() == 1)
                 return lqdag1->get_sub_lqdag(i);
             lqdag *l = new lqdag();
             l->functor = FUNCTOR_AND;
@@ -179,7 +207,7 @@ public:
             l->lqdag2 = this->lqdag2->get_sub_lqdag(i);
             return l;
         }
-        else if(this->functor == FUNCTOR_EXTEND){
+        else if(this->functor == FUNCTOR_EXTEND){ // Extend quadtree to attributes att_set
             // TODO: completar esto con el paper
             // TODO: pregunta no entiendo lo del paper
             uint8_t d = this->attribute_set_A.size();
