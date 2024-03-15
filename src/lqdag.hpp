@@ -178,11 +178,9 @@ public:
     lqdag* get_sub_lqdag(uint64_t i){
         // case base
         if(this->functor == FUNCTOR_QTREE || this->functor == FUNCTOR_NOT){
-            lqdag *l = new lqdag();
-            l->functor = this->functor;
             subQuadtreeChild* subQuadtree = new subQuadtreeChild();
             this->get_child_quadtree(i, subQuadtree); // TODO: check if it's necessary to create another subquadtreechild
-            l->subQuadtree = subQuadtree;
+            lqdag *l = new lqdag(this->functor, subQuadtree);
             return l; // TODO: see memory leaks
         }
         else if(this->functor == FUNCTOR_AND){
@@ -190,37 +188,37 @@ public:
                 return lqdag2->get_sub_lqdag(i);
             if(this->lqdag2->value_lqdag() == 1)
                 return lqdag1->get_sub_lqdag(i);
-            lqdag *l = new lqdag();
-            l->functor = FUNCTOR_AND;
-            l->lqdag1 = this->lqdag1->get_sub_lqdag(i);
-            l->lqdag2 = this->lqdag2->get_sub_lqdag(i);
+            lqdag *l = new lqdag(FUNCTOR_AND, this->lqdag1->get_sub_lqdag(i), this->lqdag2->get_sub_lqdag(i));
             return l;
         }
         else if(this->functor == FUNCTOR_OR){
             if(this->lqdag1->value_lqdag() == 0)
                 return lqdag2->get_sub_lqdag(i);
-            else if(this->lqdag2->value_lqdag() == 0)
+            if(this->lqdag2->value_lqdag() == 0)
                 return lqdag1->get_sub_lqdag(i);
-            lqdag *l = new lqdag();
-            l->functor = FUNCTOR_OR;
-            l->lqdag1 = this->lqdag1->get_sub_lqdag(i);
-            l->lqdag2 = this->lqdag2->get_sub_lqdag(i);
+            lqdag *l = new lqdag(FUNCTOR_OR, this->lqdag1->get_sub_lqdag(i), this->lqdag2->get_sub_lqdag(i));
             return l;
         }
         else if(this->functor == FUNCTOR_EXTEND){ // Extend quadtree to attributes att_set
             // TODO: completar esto con el paper
             // TODO: pregunta no entiendo lo del paper
-            uint8_t d = this->attribute_set_A.size();
-            uint8_t d_prime = this->lqdag1->attribute_set_A.size();
-            // first d bits of i
-            uint64_t m_d = i >> (64-d); // TODO: ver si esto esta bien
-            // the projection of m_d to the positions in which the attributes of A′ appear in A
-            uint64_t m_d_prime = d_prime & m_d; // TODO: aqui puse cualqueir cosa
-            uint16_t i_prime = 0; // TODO: esto no esta bien
-            lqdag *l = new lqdag();
-            l->functor = FUNCTOR_EXTEND;
-            l->lqdag1 = this->lqdag1->get_sub_lqdag(i_prime);
-            l->attribute_set_A = this->attribute_set_A;
+            uint16_t dim = this->attribute_set_A.size();
+            uint16_t dim_prime = this->lqdag1->attribute_set_A.size();
+
+            type_mapping_M M = 0;
+
+            uint64_t mask;
+            uint64_t i_prime;
+
+            mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
+            i_prime = 0;
+
+            for (uint16_t j = 0; j < dim_prime; ++j) {
+                if (i & (1 << (dim - this->subQuadtree->Qdag->getAttr(j) - 1)))
+                    i_prime |= mask;
+                mask >>= 1;
+            }
+            lqdag *l = new lqdag(FUNCTOR_EXTEND, this->lqdag1->get_sub_lqdag(i_prime), this->attribute_set_A);
             return l;
         }
 
