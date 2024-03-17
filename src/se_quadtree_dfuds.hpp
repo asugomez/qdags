@@ -87,7 +87,7 @@ protected:
 
         bit_vector k_t_ = bit_vector(k_d, 0);  //
         vector<bit_vector> vector_bv;
-        bit_vector k_t_b = bit_vector(3, 0);  // 1^c 0 // TODO: resize after
+        bit_vector k_t_b = bit_vector(3, 0);  // 1^c 0
         bit_vector k_t_s = bit_vector(k_d, 0); // init 110
 
         k_t_b[0] = 1;
@@ -159,7 +159,8 @@ protected:
             for (it = i; it < j; it++)
                 amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
             // l = k^h = 1
-            if (l == 1) { // aqui se esta escrbiendo el bit vectpr: 1 si hay puntos en la subgrilla, 0 si no
+
+            if (l == 1) {
                 for (it = 0; it < k_d; it++, t++)
                     if (amount_by_chunk[it] != 0)
                         k_t_[t] = 1;
@@ -169,7 +170,6 @@ protected:
                 is_leaves = true;
                 continue;
             }
-
             // Set starting position in the vector for each chunk
             pos_by_chunk[0] = i;
 
