@@ -13,6 +13,7 @@ using namespace std::chrono;
 
 #include <algorithm>
 #include "src/qdags.hpp"
+#include "src/qdags_dfuds.hpp"
 #include "src/joins.cpp"
 #include "src/join_partial_results.cpp"
 #include "src/join_ranked_results.cpp"
@@ -92,16 +93,18 @@ int main(int argc, char **argv) {
 
     uint64_t grid_side =32;// 52000000; // es como +infty para wikidata
 
+    qdag_dfuds qdag_rel_R_dfuds(*rel_R, att_R, grid_side, 2, att_R.size());
     //cout << " grid size R : " << att_R.size() << endl;
     //cout << " grid size S : " << att_S.size() << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
+
     cout << endl << "rel R" << endl;
     qdag_rel_R.printBv();
     cout << endl << "rel S" << endl;
-    qdag_rel_S.printBv();
+    //qdag_rel_S.printBv();
 
     // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
     //vector<qdag> Q(3);

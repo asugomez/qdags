@@ -21,7 +21,7 @@ extern duration<double> time_span_rank;
 
 typedef uint8_t type_mapping_M;
 
-bool compare_pairs(const pair<uint64_t, uint64_t> &i, const pair<uint64_t, uint64_t> &j) {
+bool compare_pairs_dfuds(const pair<uint64_t, uint64_t> &i, const pair<uint64_t, uint64_t> &j) {
     return i.second < j.second;
 }
 
@@ -98,7 +98,7 @@ public:
         for (i = 0; i < d; i++)
             map_sort_att[i] = make_pair(i, attribute_set[i]);
 
-        std::sort(map_sort_att.begin(), map_sort_att.end(), compare_pairs);
+        std::sort(map_sort_att.begin(), map_sort_att.end(), compare_pairs_dfuds);
 
         for (i = 0; i < points.size(); i++) {
             //if (i%1000000==0) cout << i << endl;
@@ -179,7 +179,9 @@ public:
 
 
     uint64_t getHeight() {
-        return Q->getHeight();
+        // TODO
+        return 0;
+        //return Q->getHeight();
     }
 
 
@@ -278,7 +280,7 @@ public:
         }
     }
 
-    inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
+    /*inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
         // DEBUG: ver roots[i] = node
         uint64_t r = Q->rank(level, node);
         return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
@@ -309,10 +311,10 @@ public:
 
     inline uint32_t materialize_node_5_lastlevel(uint64_t level, uint64_t node) {
         return tab_extend_5[Q->get_node_last_level(level, node)];
-    }
+    }*/
 
     void printBv() {
-        Q->printBv();
+        //Q->printBv();
     }
 
 };
