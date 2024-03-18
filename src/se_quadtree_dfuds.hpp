@@ -85,7 +85,8 @@ protected:
 
         k_d = std::pow(k, d);
 
-        bit_vector k_t_ = bit_vector(k_d, 0);  //
+        bit_vector k_t_ = bit_vector(k_d, 0);
+
         vector<bit_vector> vector_bv;
         bit_vector k_t_b = bit_vector(3, 0);  // 1^c 0
         bit_vector k_t_s = bit_vector(k_d, 0); // init 110
@@ -123,6 +124,7 @@ protected:
                 cur_l = l;
                 k_t_.resize(t);
                 vector_bv.push_back(k_t_);
+                cout << k_t_<<endl;
 
                 k_t_s.resize(size_bv_s+t);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
@@ -158,8 +160,8 @@ protected:
             // Get size for each chunk
             for (it = i; it < j; it++)
                 amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
+            // TODO: debug see amout by chunk
             // l = k^h = 1
-
             if (l == 1) {
                 for (it = 0; it < k_d; it++, t++)
                     if (amount_by_chunk[it] != 0)
@@ -226,6 +228,7 @@ protected:
 
         }
 
+        cout << k_t_<<endl;
         k_t_.resize(t);
         vector_bv.push_back(k_t_);
         k_t_s.resize(size_bv_s+t);
@@ -237,8 +240,9 @@ protected:
             k_t_b[index] = 0;
         }
 
-    }
+        // TODO: construct balance parentheses
 
+    }
 public:
 
     se_quadtree_dfuds() = default;

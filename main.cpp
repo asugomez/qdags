@@ -88,30 +88,32 @@ int main(int argc, char **argv) {
 
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
     std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
+    std::vector<std::vector<uint64_t>> *rel_R_2 = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
     uint64_t grid_side =32;// 52000000; // es como +infty para wikidata
 
-    qdag_dfuds qdag_rel_R_dfuds(*rel_R, att_R, grid_side, 2, att_R.size());
     //cout << " grid size R : " << att_R.size() << endl;
     //cout << " grid size S : " << att_S.size() << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
-    qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
+    //qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
 
     cout << endl << "rel R" << endl;
     qdag_rel_R.printBv();
-    cout << endl << "rel S" << endl;
+    //cout << endl << "rel S" << endl;
     //qdag_rel_S.printBv();
+    //qdag_dfuds qdag_rel_S_dfuds(*rel_S, att_S, grid_side, 2, att_S.size());
 
     // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
 
     Q[0] = qdag_rel_R;
-    Q[1] = qdag_rel_S;
+    //Q[1] = qdag_rel_S;
     //Q[2] = qdag_rel_T;
     qdag *Join_Result;
 
@@ -175,11 +177,11 @@ int main(int argc, char **argv) {
 
 
     start = high_resolution_clock::now();
-    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+    //cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
     //Join_Result = multiJoin(Q, true, 1000);
-    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    //cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
     //multiJoinPartialResults(Q, true, 1000, 0, 0);
-    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
+    //cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
     //multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
 
     // PARTIAL JOIN
@@ -195,9 +197,9 @@ int main(int argc, char **argv) {
     //qdag_rel_R.create_dfuds();
     //qdag_rel_R.printBv();
 
-    cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
+    //cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
     //bool join = multiJoinRankedResults(Q, true, 1000, 1, -1, p); // warmup join -> activar el caché
-    cout << "----- MULTI JOIN RANKED RESULTS BACKTRACLOMG------" << endl;
+    //cout << "----- MULTI JOIN RANKED RESULTS BACKTRACLOMG------" << endl;
     //multiJoinRankedResultsBacktracking(Q, 1, 10, p2); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();

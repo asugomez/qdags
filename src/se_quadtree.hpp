@@ -84,8 +84,6 @@ protected:
                            size_type l, uint8_t _k) {
         uint16_t i, _d = point.size();
         uint16_t total_sum = 0, _k_aux = 1;
-        // TODO: debug: see offset
-
 
         for (i = _d - 1; i > 0; --i) {
             total_sum += ((point[i] - offset[i]) / l) * _k_aux;
@@ -124,7 +122,6 @@ protected:
         idx_type t = 0, last_level = 0;
         idx_type i, j, r_0, c_0, it, c, r, z;
         size_type l = std::pow(k, height - 1);
-
 
         std::vector<idx_type> pos_by_chunk(k_d + 1, 0);
 
