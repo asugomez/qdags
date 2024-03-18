@@ -99,6 +99,7 @@ protected:
 
         std::stack<t_part_tuple> s;
         idx_type t = 0;
+        idx_type t_aux = 0;
         idx_type i, j, it, c, r, z;
         size_type l = std::pow(k, height - 1);
 
@@ -181,13 +182,15 @@ protected:
             pos_by_chunk[k_d] = j;
 
             // Push to the queue every non zero elements chunk
-            for (it = 0; it < k_d; it++, t++)
+            t_aux = t+k_d-1;
+            //for (it = 0; it < k_d; it++, t++)
+            for (it = k_d; it --> 0; t++, t_aux--)
                 // If not empty chunk, set bit to 1
                 if (amount_by_chunk[it] != 0) {
                     uint16_t p = std::pow(k, d - 1);
                     idx_type it_aux = it;
                     c = it % k;
-                    k_t_[t] = 1;
+                    k_t_[t_aux] = 1;
                     n_ones++;
 
                     top_left_point_aux = new idx_type[d]();
@@ -206,7 +209,7 @@ protected:
                                         l / k,
                                         top_left_point_aux));
                 } else
-                    k_t_[t] = 0;
+                    k_t_[t_aux] = 0;
 
             idx_type chunk;
 
