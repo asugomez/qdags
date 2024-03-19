@@ -7,9 +7,10 @@
 
 #include <tuple>
 #include <fstream>
+//#include "include/bp_support_sada_v2.hpp"
+#include <sdsl/bp_support.hpp>
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/k2_tree_helper.hpp>
-#include <sdsl/bp_support.hpp>
 //#include "rank.hpp"
 
 using namespace std;
@@ -18,20 +19,23 @@ using namespace sdsl;
 class se_quadtree_dfuds {
 public:
     typedef k2_tree_ns::idx_type idx_type;
-    typedef k2_tree_ns::size_type size_type;
+    typedef k2_tree_ns::size_type size_type_k2;
     typedef bit_vector::size_type size_type_bp;
     typedef int_vector_size_type size_type_bv;
+    typedef bit_vector::difference_type difference_type;
 
 private:
-    // TODO: comoo funcionará close, etc (operaciones BV) si están separados?
-    bp_support_g<> *bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
-    bp_support_g<> *bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
+    rank_bv_64 bv_s;
+    //bit_vector bv_b;
+    //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
+    bp_support_g<>* bp_bb;
+    bp_support_sada<> *bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
     uint8_t k; // k_d--tree
     uint8_t d; // number of attributs
-    size_type k_d; // k^d
+    size_type_k2 k_d; // k^d
     //vector<uint64_t> total_ones;
     uint64_t ref_count;
 
@@ -50,7 +54,7 @@ protected:
    * \returns the index of the chunk containing the point at the submatrix.
    */
     uint16_t get_chunk_idx(vector<idx_type> &point, idx_type *offset,
-                           size_type l, uint8_t _k) {
+                           size_type_k2 l, uint8_t _k) {
         uint16_t i, _d = point.size();
         uint16_t total_sum = 0, _k_aux = 1;
 
@@ -64,7 +68,8 @@ protected:
     }
 
 
-    // TODO: do it xd
+    // TODO: check the 110 in bv_b is in the right position!
+    // TODO: 0 is the most or leas significant bit?
     //! Build a space efficient quadtree from a set of d-dimensional points
     /*! This method takes a vector of d-dimensional points
      *  and the grid-side size. It takes linear time over the amount of
@@ -74,9 +79,9 @@ protected:
                     coordinates in vector edges must be within [0, size[
      */
     void build_from_edges_dfs(std::vector<std::vector<idx_type>> &edges,
-                              const size_type size, uint8_t __k, uint8_t __d) {
+                              const size_type_k2 size, uint8_t __k, uint8_t __d) {
 
-        typedef std::tuple<idx_type, idx_type, size_type, idx_type *> t_part_tuple;
+        typedef std::tuple<idx_type, idx_type, size_type_k2, idx_type *> t_part_tuple;
 
         k = __k;
         d = __d;
@@ -85,9 +90,11 @@ protected:
 
         k_d = std::pow(k, d);
 
+        bp_b = new bp_support_sada<>();
+        //bp_s = *new bp_support_sada<>();
+
         bit_vector k_t_ = bit_vector(k_d, 0);
 
-        vector<bit_vector> vector_bv;
         bit_vector k_t_b = bit_vector(3, 0);  // 1^c 0
         bit_vector k_t_s = bit_vector(k_d, 0); // init 110
 
@@ -101,7 +108,7 @@ protected:
         idx_type t = 0;
         idx_type t_aux = 0;
         idx_type i, j, it, c, r, z;
-        size_type l = std::pow(k, height - 1);
+        size_type_k2 l = std::pow(k, height - 1);
 
         std::vector<idx_type> pos_by_chunk(k_d + 1, 0);
 
@@ -110,7 +117,7 @@ protected:
 
         s.push(t_part_tuple(0, edges.size(), l, top_left_point));
 
-        size_type cur_l = l, cur_level = 0, n_ones = 0;
+        size_type_k2 cur_l = l, cur_level = 0, n_ones = 0;
 
         uint64_t n_children = 0;
         uint64_t index = 0;
@@ -124,11 +131,11 @@ protected:
             if (l != cur_l) {
                 cur_l = l;
                 k_t_.resize(t);
-                vector_bv.push_back(k_t_);
-                cout << k_t_<<endl;
-
                 k_t_s.resize(size_bv_s+t);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
+
+                cout << k_t_ << endl;
+
                 size_bv_s += t;
 
                 // write 1^c 0
@@ -161,7 +168,6 @@ protected:
             // Get size for each chunk
             for (it = i; it < j; it++)
                 amount_by_chunk[get_chunk_idx(edges[it], top_left_point, l, k)] += 1;
-            // TODO: debug see amout by chunk
             // l = k^h = 1
             if (l == 1) {
                 for (it = 0; it < k_d; it++, t++)
@@ -231,11 +237,10 @@ protected:
 
         }
 
-        cout << k_t_<<endl;
         k_t_.resize(t);
-        vector_bv.push_back(k_t_);
         k_t_s.resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
+        cout << k_t_ << endl;
         // write 1^c 0
         n_children = t/k_d;//
         k_t_b.resize(size_bv_b + n_children );
@@ -243,7 +248,19 @@ protected:
             k_t_b[index] = 0;
         }
 
-        // TODO: construct balance parentheses
+        // construct bp
+        bv_s = rank_bv_64(k_t_s);
+        //bv_s = k_t_s;
+        //bv_b= k_t_b;
+        //bp_support_sada<> bp_ss(&k_t_s);
+        //bp_s = *new bp_support_sada<>(&k_t_s);
+        // rank_support_v<> rb(&b);
+        //bp_bb = bp_support_g<> bp_test(&k_t_b);
+        bp_b = new bp_support_sada<>(&k_t_b);
+        //bp_b2 = new bp_support_g<>(&k_t_b);
+
+        cout << "hello" << endl;
+        //bp_support_sada<> bp_bb(&k_t_b);
 
     }
 public:
@@ -252,11 +269,12 @@ public:
 
     uint64_t size() {
         //TODO
+        bp_b->size();// + bp_s->size();
         return 0;
     }
 
     se_quadtree_dfuds(std::vector<std::vector<idx_type>> &edges,
-                      const size_type grid_side, uint8_t __k, uint8_t __d){
+                      const size_type_k2 grid_side, uint8_t __k, uint8_t __d){
         assert(grid_side > 0);
         assert(edges.size() > 0);
 
@@ -266,6 +284,8 @@ public:
 
     ~se_quadtree_dfuds() {
         ref_count--;
+        delete bp_b;
+        //delete bp_s;
         // TODO: complete it delete
     }
 
@@ -285,6 +305,65 @@ public:
     uint64_t getKD() {
         return k_d;
     }
+
+    inline uint8_t get_node_bits(uint64_t start_pos) {
+        bv_s.get_kd_bits(start_pos, k_d);
+    }
+
+
+    /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
+
+    void hello(){
+        cout << "hello" << endl;
+    }
+
+    bool isLeaf(size_type_bv node_v){
+        return true;// bv_b[node_v] == 0;
+    }
+
+    void first_child(size_type_bv node_v){
+        assert(bv_b[node_v] == 1);
+        // TODO
+        //return succ(node_v);
+    }
+    // TODO see calculate matches bp_algorithm
+    // esta en bp_sada
+
+    size_type_bv pred_zero(size_type_bv node_v){
+        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
+
+    }
+
+    size_type_bv fwd_search(size_type_bv start_pos, difference_type diff_excess){
+        return 10;//this->bp_b->fwd_excess(start_pos, diff_excess);
+    }
+
+    size_type_bv bwd_search(size_type_bv start_pos, difference_type diff_excess){
+        return 10; //this->bp_b->bwd_excess(start_pos, diff_excess);
+    }
+
+    size_type_bv next_sibling(size_type_bv node_v){
+        // B[open(B,v-1) - 1] == 1
+        //assert(bv_b[bp_b->find_open(node_v-1)-1] == 1);
+        size_type_bv  t = this->bp_b->find_open(node_v-1);
+        return fwd_search(node_v-1,-1)+1;
+    }
+
+    size_type_bv previous_sibling(size_type_bv node_v){
+        // B[v-2, v-1] != 10
+        assert(bv_b.get_int(node_v-2,2) != 10); // TODO: check what returns get_int (cual es el bit mas significativo??)
+        return bp_b->find_close(bp_b->find_open(node_v-1)+1)+1;
+    }
+
+    size_type_bv root(){
+        return 3;
+    }
+    size_type_bv parent(size_type_bv node_v){
+        assert(node_v != 3);
+        return 10;
+    }
+
+
 
 
 

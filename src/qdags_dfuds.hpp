@@ -317,6 +317,11 @@ public:
         //Q->printBv();
     }
 
+    // TODO: only for testing
+    se_quadtree_dfuds *getQ() {
+        return Q;
+    }
+
 };
 
 

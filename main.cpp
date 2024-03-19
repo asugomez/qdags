@@ -96,14 +96,23 @@ int main(int argc, char **argv) {
 
     //cout << " grid size R : " << att_R.size() << endl;
     //cout << " grid size S : " << att_S.size() << endl;
-    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
+    //qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
     //qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
+    cout << "parent"<< endl;
+    qdag_rel_R_dfuds.getQ()->hello();
+    cout << qdag_rel_R_dfuds.getQ()->next_sibling(7)<< endl;
+    cout << qdag_rel_R_dfuds.getQ()->parent(10) << endl;
+    cout << "leaf 3"<< qdag_rel_R_dfuds.getQ()->isLeaf(3)<< endl;
+    cout << "leaf 16"<< qdag_rel_R_dfuds.getQ()->isLeaf(16)<< endl;
+    cout << "leaf 62"<< qdag_rel_R_dfuds.getQ()->isLeaf(62)<< endl;
+    cout << "leaf 63"<< qdag_rel_R_dfuds.getQ()->isLeaf(63)<< endl;
+
 
     cout << endl << "rel R" << endl;
-    qdag_rel_R.printBv();
+    //qdag_rel_R.printBv();
     //cout << endl << "rel S" << endl;
     //qdag_rel_S.printBv();
     //qdag_dfuds qdag_rel_S_dfuds(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -112,7 +121,7 @@ int main(int argc, char **argv) {
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
 
-    Q[0] = qdag_rel_R;
+    //Q[0] = qdag_rel_R;
     //Q[1] = qdag_rel_S;
     //Q[2] = qdag_rel_T;
     qdag *Join_Result;
