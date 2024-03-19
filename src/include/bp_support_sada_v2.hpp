@@ -38,6 +38,7 @@
 #endif
 #include <iostream>
 
+using namespace sdsl;
 namespace asu
 {
 
@@ -944,6 +945,35 @@ namespace asu
 
             m_sml_block_min_max.load(in);
             m_med_block_min_max.load(in);
+        }
+
+        size_type rank_zero(size_type i)const
+        {
+            assert(i < m_size);
+            if (!i) return 0;
+            size_type ones = m_bp_rank(i);
+            if (ones) { // ones > 0
+                assert(m_bp_select(ones) < i);
+                return i - ones;
+            } else { // si no hay unos, entonces es la posición
+                return i;
+            }
+        }
+
+        size_type pred_zero(size_type i) {
+            assert(i < m_size);
+            //bit_vector m_bp_aux = bit_vector(&m_bp);
+            //m_bp_aux.flip();
+            //size_type n = __builtin_clz(*m_bp_aux.data() >> i);
+            return 10;//n;
+        }
+
+        size_type succ_zero(size_type i) {
+            assert(i < m_size);
+            bit_vector m_bp_aux = bit_vector(&m_bp);
+            m_bp_aux.flip();
+            size_type n = __builtin_ctz(*m_bp_aux.data() >> i);
+            return n;
         }
     };
 

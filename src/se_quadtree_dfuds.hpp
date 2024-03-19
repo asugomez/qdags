@@ -7,8 +7,8 @@
 
 #include <tuple>
 #include <fstream>
-//#include "include/bp_support_sada_v2.hpp"
-#include <sdsl/bp_support.hpp>
+#include "include/bp_support_sada_v2.hpp"
+//#include <sdsl/bp_support.hpp>
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/k2_tree_helper.hpp>
 //#include "rank.hpp"
@@ -25,10 +25,11 @@ public:
     typedef bit_vector::difference_type difference_type;
 
 private:
+    // TODO: save
     rank_bv_64 bv_s;
-    rank_bv_64 bv_b;
+    //rank_bv_64 bv_b;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
-    bp_support_sada<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
+    asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
@@ -65,6 +66,7 @@ protected:
         return total_sum;
     }
 
+    // TODO: see if it's necessary to add 110!!
 
     //! Build a space efficient quadtree from a set of d-dimensional points
     /*! This method takes a vector of d-dimensional points
@@ -246,12 +248,22 @@ protected:
 
         // bitvectors
         bv_s = rank_bv_64(k_t_s);
-        bv_b = rank_bv_64(k_t_b);
+        //bv_b = rank_bv_64(k_t_b);
 
+
+        cout << "here" << endl;
+        cout << k_t_b << endl;
         // construct bp
-        bp_b = bp_support_sada<>(&k_t_b);
+        bp_b = asu::bp_support_sada_v2<>(&k_t_b);
+        cout << bp_b.preceding_closing_parentheses(10) << endl;
+        bp_b.pred_zero(10);
+        //cout << bp_b.pred_zero(10) << endl;
 
+        // support for rank_0 and select_0
+        k_t_b.flip();
+        cout << k_t_b << endl;
     }
+
 public:
 
     se_quadtree_dfuds() = default;
@@ -302,12 +314,85 @@ public:
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
+    // TODO : todo lo q tenga q ver con bp_support no funciona!
+
+    // TODO: check if we need bit_vector S
+
+    /**
+     * Operations:
+     * - root()
+     * - fchild(v)
+     * - lchild(v)
+     * - nsibling(v)
+     * - psibling(v)
+     * - parent(v)
+     * - isleaf(v)
+     * - subtree(v)
+     * - children(v)
+     * - child(v,t)
+     * - childran(v)
+     * - leafrank(v)
+     * - leafnum(v)
+     * - leafselect(i)
+     *
+     *
+     * We have:
+     * rank_bv_64 bv_s;
+    rank_bv_64 bv_b;
+    rank_bv_64 bv_b_zero;
+    bp_support_sada<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
+    bp_support_sada<> bp_b_support_zero;
+     */
+
     void hello(){
         cout << "hello" << endl;
     }
 
-    bool isLeaf(size_type_bv node_v){
-        return true;// bv_b[node_v] == 0;
+    // pred_0(B,v)
+    size_type_bv pred_zero(size_type_bv node_v){
+        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
+    }
+
+    // suc_0(B,v)
+    size_type_bv succ_zero(size_type_bv node_v){
+        //__builtin_ctz(B >> node_v);
+        // use operator = defined in BP
+        return bp_b.succ_zero(node_v);
+
+    }
+
+    // rank_0(B,v) (de B[0,v-1])
+    size_type_bv rank_zero(size_type_bv node_v){
+        return node_v - bp_b.rank(node_v);
+    }
+
+    // rank_00(B,v)
+    size_type_bv rank_zero_zero(size_type_bv node_v){
+
+    }
+
+    /* no need of these operations
+    // select_0(B,v)
+    size_type_bv select_zero(size_type_bv node_v){
+
+    }
+
+    // select_00(B,v)
+    size_type_bv select_zero_zero(size_type_bv node_v){
+
+    }
+     */
+
+    size_type_bv fwd_search(size_type_bv start_pos, difference_type diff_excess){
+        return 10;//this->bp_b->fwd_excess(start_pos, diff_excess);
+    }
+
+    size_type_bv bwd_search(size_type_bv start_pos, difference_type diff_excess){
+        return 10; //this->bp_b->bwd_excess(start_pos, diff_excess);
+    }
+
+    size_type_bv root(){
+        return 3;
     }
 
     void first_child(size_type_bv node_v){
@@ -318,18 +403,6 @@ public:
     // TODO see calculate matches bp_algorithm
     // esta en bp_sada
 
-    size_type_bv pred_zero(size_type_bv node_v){
-        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
-
-    }
-
-    size_type_bv fwd_search(size_type_bv start_pos, difference_type diff_excess){
-        return 10;//this->bp_b->fwd_excess(start_pos, diff_excess);
-    }
-
-    size_type_bv bwd_search(size_type_bv start_pos, difference_type diff_excess){
-        return 10; //this->bp_b->bwd_excess(start_pos, diff_excess);
-    }
 
     size_type_bv next_sibling(size_type_bv node_v){
         // B[open(B,v-1) - 1] == 1
@@ -344,12 +417,14 @@ public:
         return 10;// bp_b->find_close(bp_b->find_open(node_v-1)+1)+1;
     }
 
-    size_type_bv root(){
-        return 3;
-    }
     size_type_bv parent(size_type_bv node_v){
         assert(node_v != 3);
         return 10;
+    }
+
+    bool isLeaf(size_type_bv node_v){
+
+        return true;// bv_b[node_v] == 0;
     }
 
 
