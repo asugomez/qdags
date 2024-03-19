@@ -26,10 +26,9 @@ public:
 
 private:
     rank_bv_64 bv_s;
-    //bit_vector bv_b;
+    rank_bv_64 bv_b;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
-    bp_support_g<>* bp_bb;
-    bp_support_sada<> *bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
+    bp_support_sada<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
@@ -42,7 +41,6 @@ private:
 protected:
 
     /*! Get the chunk index ([0, k^d[) of a submatrix point.
-   **** TODO: PREGUNTA: como están indexados? cual es el orden
    *
    * Gets a point in the global matrix and returns its corresponding chunk
    * in the submatrix specified.
@@ -68,8 +66,6 @@ protected:
     }
 
 
-    // TODO: check the 110 in bv_b is in the right position!
-    // TODO: 0 is the most or leas significant bit?
     //! Build a space efficient quadtree from a set of d-dimensional points
     /*! This method takes a vector of d-dimensional points
      *  and the grid-side size. It takes linear time over the amount of
@@ -90,7 +86,7 @@ protected:
 
         k_d = std::pow(k, d);
 
-        bp_b = new bp_support_sada<>();
+        //bp_b = new bp_support_sada<>();
         //bp_s = *new bp_support_sada<>();
 
         bit_vector k_t_ = bit_vector(k_d, 0);
@@ -248,19 +244,12 @@ protected:
             k_t_b[index] = 0;
         }
 
-        // construct bp
+        // bitvectors
         bv_s = rank_bv_64(k_t_s);
-        //bv_s = k_t_s;
-        //bv_b= k_t_b;
-        //bp_support_sada<> bp_ss(&k_t_s);
-        //bp_s = *new bp_support_sada<>(&k_t_s);
-        // rank_support_v<> rb(&b);
-        //bp_bb = bp_support_g<> bp_test(&k_t_b);
-        bp_b = new bp_support_sada<>(&k_t_b);
-        //bp_b2 = new bp_support_g<>(&k_t_b);
+        bv_b = rank_bv_64(k_t_b);
 
-        cout << "hello" << endl;
-        //bp_support_sada<> bp_bb(&k_t_b);
+        // construct bp
+        bp_b = bp_support_sada<>(&k_t_b);
 
     }
 public:
@@ -269,7 +258,7 @@ public:
 
     uint64_t size() {
         //TODO
-        bp_b->size();// + bp_s->size();
+        //bp_b->size();// + bp_s->size();
         return 0;
     }
 
@@ -284,7 +273,7 @@ public:
 
     ~se_quadtree_dfuds() {
         ref_count--;
-        delete bp_b;
+        //delete bp_b;
         //delete bp_s;
         // TODO: complete it delete
     }
@@ -345,14 +334,14 @@ public:
     size_type_bv next_sibling(size_type_bv node_v){
         // B[open(B,v-1) - 1] == 1
         //assert(bv_b[bp_b->find_open(node_v-1)-1] == 1);
-        size_type_bv  t = this->bp_b->find_open(node_v-1);
+        //size_type_bv  t = this->bp_b->find_open(node_v-1);
         return fwd_search(node_v-1,-1)+1;
     }
 
     size_type_bv previous_sibling(size_type_bv node_v){
         // B[v-2, v-1] != 10
         assert(bv_b.get_int(node_v-2,2) != 10); // TODO: check what returns get_int (cual es el bit mas significativo??)
-        return bp_b->find_close(bp_b->find_open(node_v-1)+1)+1;
+        return 10;// bp_b->find_close(bp_b->find_open(node_v-1)+1)+1;
     }
 
     size_type_bv root(){
