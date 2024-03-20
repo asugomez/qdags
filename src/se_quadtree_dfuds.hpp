@@ -25,8 +25,7 @@ public:
     typedef bit_vector::difference_type difference_type;
 
 private:
-    // TODO: save
-    rank_bv_64 bv_s;
+    rank_bv_64 bv_s; // TODO: maybe we can delete this!
     //rank_bv_64 bv_b;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
     asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
@@ -52,7 +51,7 @@ protected:
    * \param k the k parameter from the k^2 tree.
    * \returns the index of the chunk containing the point at the submatrix.
    */
-    uint16_t get_chunk_idx(vector<idx_type> &point, idx_type *offset,
+    uint16_t get_chunk_idx(vector<idx_type> &point, const idx_type *offset,
                            size_type_k2 l, uint8_t _k) {
         uint16_t i, _d = point.size();
         uint16_t total_sum = 0, _k_aux = 1;
@@ -104,7 +103,7 @@ protected:
 
         std::stack<t_part_tuple> s;
         idx_type t = 0;
-        idx_type t_aux = 0;
+        idx_type t_aux;
         idx_type i, j, it, c, r, z;
         size_type_k2 l = std::pow(k, height - 1);
 
@@ -113,12 +112,12 @@ protected:
         idx_type *top_left_point = new idx_type[d]();
         idx_type *top_left_point_aux;
 
-        s.push(t_part_tuple(0, edges.size(), l, top_left_point));
+        s.emplace(0, edges.size(), l, top_left_point);
 
         size_type_k2 cur_l = l, cur_level = 0, n_ones = 0;
 
-        uint64_t n_children = 0;
-        uint64_t index = 0;
+        uint64_t n_children;
+        uint64_t index;
         bool is_leaves = false;
 
         while (!s.empty()) {
@@ -208,10 +207,10 @@ protected:
 
                     top_left_point_aux[d - 1] = top_left_point[d - 1] + c * l;
 
-                    s.push(t_part_tuple(pos_by_chunk[it],
+                    s.emplace(pos_by_chunk[it],
                                         pos_by_chunk[it + 1],
                                         l / k,
-                                        top_left_point_aux));
+                                        top_left_point_aux);
                 } else
                     k_t_[t_aux] = 0;
 
@@ -294,16 +293,16 @@ public:
         ref_count++;
     }
 
-    uint8_t getK() {
+    uint8_t getK() const{
         return k;
     }
 
 
-    uint8_t getD() {
+    uint8_t getD() const{
         return d;
     }
 
-    uint64_t getKD() {
+    uint64_t getKD() const{
         return k_d;
     }
 
@@ -336,12 +335,6 @@ public:
      * - leafselect(i)
      *
      *
-     * We have:
-     * rank_bv_64 bv_s;
-    rank_bv_64 bv_b;
-    rank_bv_64 bv_b_zero;
-    bp_support_sada<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
-    bp_support_sada<> bp_b_support_zero;
      */
 
     void hello(){
@@ -349,85 +342,107 @@ public:
     }
 
     // pred_0(B,v)
-    size_type_bv pred_zero(size_type_bv node_v){
+    size_type_bp pred_zero(size_type_bp node_v) const{
         // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
+        return bp_b.pred_zero(node_v);
     }
 
     // suc_0(B,v)
-    size_type_bv succ_zero(size_type_bv node_v){
-        //__builtin_ctz(B >> node_v);
-        // use operator = defined in BP
+    size_type_bp succ_zero(size_type_bp node_v) const{
         return bp_b.succ_zero(node_v);
-
     }
 
     // rank_0(B,v) (de B[0,v-1])
-    size_type_bv rank_zero(size_type_bv node_v){
+    size_type_bp rank_zero(size_type_bp node_v) const{
         return node_v - bp_b.rank(node_v);
     }
 
     // rank_00(B,v)
-    size_type_bv rank_zero_zero(size_type_bv node_v){
-
+    size_type_bp rank_zero_zero(size_type_bp node_v) const{
+        return bp_b.rank_zero_zero(node_v);
     }
 
     /* no need of these operations
     // select_0(B,v)
-    size_type_bv select_zero(size_type_bv node_v){
+    size_type_bp select_zero(size_type_bp node_v){
 
     }
 
     // select_00(B,v)
-    size_type_bv select_zero_zero(size_type_bv node_v){
+    size_type_bp select_zero_zero(size_type_bp node_v){
 
     }
      */
 
-    size_type_bv fwd_search(size_type_bv start_pos, difference_type diff_excess){
-        return 10;//this->bp_b->fwd_excess(start_pos, diff_excess);
+    size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+        return this->bp_b.fwd_search(start_pos, diff_excess);
     }
 
-    size_type_bv bwd_search(size_type_bv start_pos, difference_type diff_excess){
-        return 10; //this->bp_b->bwd_excess(start_pos, diff_excess);
+    size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+        return this->bp_b.bwd_search(start_pos, diff_excess);
     }
 
-    size_type_bv root(){
+    size_type_bp root()const{
         return 3;
     }
 
-    void first_child(size_type_bv node_v){
-        assert(bv_b[node_v] == 1);
-        // TODO
-        //return succ(node_v);
+    size_type_bp first_child(size_type_bp node_v)const{
+        assert(bp_b.is_open(node_v));
+        return succ_zero(node_v) + 1;
     }
-    // TODO see calculate matches bp_algorithm
-    // esta en bp_sada
 
+    size_type_bp last_child(size_type_bp node_v)const{
+        assert(bp_b.is_open(node_v));
+        return bp_b.find_close(node_v) + 1;
+    }
 
-    size_type_bv next_sibling(size_type_bv node_v){
+    size_type_bp next_sibling(size_type_bp node_v)const{
         // B[open(B,v-1) - 1] == 1
-        //assert(bv_b[bp_b->find_open(node_v-1)-1] == 1);
-        //size_type_bv  t = this->bp_b->find_open(node_v-1);
-        return fwd_search(node_v-1,-1)+1;
+        assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
+        return fwd_search(node_v-1,-1) + 1;
     }
 
-    size_type_bv previous_sibling(size_type_bv node_v){
-        // B[v-2, v-1] != 10
-        assert(bv_b.get_int(node_v-2,2) != 10); // TODO: check what returns get_int (cual es el bit mas significativo??)
-        return 10;// bp_b->find_close(bp_b->find_open(node_v-1)+1)+1;
+    size_type_bp preceding_sibling(size_type_bp node_v)const{
+        // B[v-2, v-1] != [1,0]
+        assert(bp_b.is_open(node_v - 2)); // 1
+        assert(! bp_b.is_open(node_v - 1)); // 0
+        return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
     }
 
-    size_type_bv parent(size_type_bv node_v){
+    size_type_bp parent(size_type_bp node_v)const{
         assert(node_v != 3);
-        return 10;
+        return pred_zero(node_v - 1) + 1;
     }
 
-    bool isLeaf(size_type_bv node_v){
-
+    bool isLeaf(size_type_bp node_v)const{
         return true;// bv_b[node_v] == 0;
     }
 
+    size_type_bv subtree(size_type_bp node_v)const{
+        // (fwdsearch(B, v-1, -1) - v)/2 + 1
+        return (fwd_search(node_v -1, -1) - node_v)/2 + 1;
+    }
 
+    size_type_bv children(size_type_bp node_v) const{
+        return succ_zero(node_v) - node_v;
+    }
+
+    size_type_bv child(size_type_bp node_v, size_type_bp t) const{
+        return bp_b.find_close(succ_zero(node_v));// - t) + 1;
+    }
+
+    size_type_bv childrank(size_type_bp node_v) const{
+        size_type_bv p = bp_b.find_open(node_v - 1);
+        return succ_zero(p) - p;
+    }
+
+    size_type_bv leaf_rank(size_type_bp node_v) const{
+        return rank_zero_zero(node_v - 1) + 1;
+    }
+
+    size_type_bv leaf_num(size_type_bp node_v) const{
+        return leaf_rank(fwd_search(node_v - 1, -1) + 1) - leaf_rank(node_v);
+    }
 
 
 

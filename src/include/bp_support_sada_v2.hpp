@@ -214,6 +214,107 @@ namespace asu
             std::cout<< std::endl;
         }
 
+        //! Calculate the min parenthesis \f$j>i\f$ with \f$excess(j)=excess(i)+rel\f$
+        /*! \param i   The index of a parenthesis in the supported sequence.
+         *  \param rel The excess difference to the excess value of parentheses \f$i\f$.
+         *  \return    If there exists a parenthesis \f$ j>i\f$ with
+         *            \f$ excess(j) = excess(i)+rel \f$, \f$j\f$ is returned
+         *                otherwise size().
+         */
+        size_type fwd_excess(size_type i, difference_type rel)const
+        {
+            size_type j;
+            // (1) search the small block for the answer
+            if ((j = near_fwd_excess(*m_bp, i+1, rel, t_sml_blk)) > i) {
+                return j;
+            }
+            difference_type desired_excess = excess(i)+rel;
+            // (2) scan the small blocks of the current median block for an answer
+            if ((j = fwd_excess_in_med_block(sml_block_idx(i)+1, desired_excess)) != size()) {
+                return j;
+            }
+            // (3) search the min-max tree of the medium blocks for the right med block
+            if (med_block_idx(i) == m_med_blocks)  // if we are already in the last medium block => we are done
+                return size();
+            size_type v    = m_med_inner_blocks + med_block_idx(i);
+            // (3 a) go up the tree
+            while (!is_root(v)) {
+                if (is_left_child(v)) { // if the node is a left child
+                    v = right_sibling(v); // choose right sibling
+                    if (min_value(v) <= desired_excess and desired_excess <= max_value(v))  // found solution
+                        break;
+                }
+                v = parent(v); // choose parent
+            }
+            // (3 b) go down the tree
+            if (!is_root(v)) { // found solution for the query
+                while (!is_leaf(v)) {
+                    v = left_child(v); // choose left child
+                    if (!(min_value(v) <= desired_excess and desired_excess <= max_value(v))) {
+                        v = right_sibling(v); // choose right child == right sibling of the left child
+                        assert((min_value(v) <= desired_excess and desired_excess <= max_value(v)));
+                    }
+                }
+                return fwd_excess_in_med_block((v-m_med_inner_blocks)*t_med_deg, desired_excess);
+            }
+            // no solution found
+            return size();
+        }
+
+        //! Calculate the maximal parenthesis \f$ j<i \f$ with \f$ excess(j) = excess(i)+rel \f$
+        /*! \param i     The index of a parenthesis in the supported sequence.
+         *  \param rel  The excess difference to the excess value of parenthesis \f$i\f$.
+         *  \return     If there exists a parenthesis \f$i<j\f$ with \f$ excess(j) = excess(i)+rel\f$, \f$j\f$ is returned
+         *                otherwise size().
+         */
+        size_type bwd_excess(size_type i, difference_type rel)const
+        {
+            size_type j;
+            if (i == 0) {
+                return rel == 0 ? -1 : size();
+            }
+            // (1) search the small block for the answer
+            if ((j = near_bwd_excess(*m_bp, i-1, rel, t_sml_blk)) < i or j == (size_type)-1) {
+                return j;
+            }
+            difference_type desired_excess = excess(i)+rel;
+            // (2) scan the small blocks of the current median block for an answer
+            if ((j = bwd_excess_in_med_block(sml_block_idx(i)-1, desired_excess)) != size()) {
+                return j;
+            }
+            // (3) search the min-max tree of the medium blocks for the right med block
+            if (med_block_idx(i) == 0) { // if we are already in the first medium block => we are done
+                if (desired_excess == 0)
+                    return -1;
+                return size();
+            }
+            size_type v    = m_med_inner_blocks + med_block_idx(i);
+            // (3 a) go up the tree
+            while (!is_root(v)) {
+                if (is_right_child(v)) { // if the node is a right child
+                    v = left_sibling(v); // choose left sibling
+                    if (min_value(v) <= desired_excess and desired_excess <= max_value(v))  // found solution
+                        break;
+                }
+                v = parent(v); // choose parent
+            }
+            // (3 b) go down the tree
+            if (!is_root(v)) { // found solution for the query
+                while (!is_leaf(v)) {
+                    v = right_child(v); // choose  child
+                    if (!(min_value(v) <= desired_excess and desired_excess <= max_value(v))) {
+                        v = left_sibling(v); // choose left child == left sibling of the right child
+                        assert((min_value(v) <= desired_excess and desired_excess <= max_value(v)));
+                    }
+                }
+                return bwd_excess_in_med_block((v-m_med_inner_blocks)*t_med_deg+(t_med_deg-1), desired_excess);
+            } else if (desired_excess == 0) {
+                return -1;
+            }
+            // no solution found
+            return size();
+        }
+
         //! Calculate the maximal parentheses \f$ j \leq sml_block_idx\cdot t_sml_blk+(t_sml_blk-1) \f$ with \f$ excess(j)=desired\_excess \f$
         size_type bwd_excess_in_med_block(size_type sml_block_idx, difference_type desired_excess)const
         {
@@ -401,107 +502,6 @@ namespace asu
             m_bp = bp;
             m_bp_rank.set_vector(bp);
             m_bp_select.set_vector(bp);
-        }
-
-        //! Calculate the min parenthesis \f$j>i\f$ with \f$excess(j)=excess(i)+rel\f$
-        /*! \param i   The index of a parenthesis in the supported sequence.
-         *  \param rel The excess difference to the excess value of parentheses \f$i\f$.
-         *  \return    If there exists a parenthesis \f$ j>i\f$ with
-         *            \f$ excess(j) = excess(i)+rel \f$, \f$j\f$ is returned
-         *                otherwise size().
-         */
-        size_type fwd_excess(size_type i, difference_type rel)const
-        {
-            size_type j;
-            // (1) search the small block for the answer
-            if ((j = near_fwd_excess(*m_bp, i+1, rel, t_sml_blk)) > i) {
-                return j;
-            }
-            difference_type desired_excess = excess(i)+rel;
-            // (2) scan the small blocks of the current median block for an answer
-            if ((j = fwd_excess_in_med_block(sml_block_idx(i)+1, desired_excess)) != size()) {
-                return j;
-            }
-            // (3) search the min-max tree of the medium blocks for the right med block
-            if (med_block_idx(i) == m_med_blocks)  // if we are already in the last medium block => we are done
-                return size();
-            size_type v    = m_med_inner_blocks + med_block_idx(i);
-            // (3 a) go up the tree
-            while (!is_root(v)) {
-                if (is_left_child(v)) { // if the node is a left child
-                    v = right_sibling(v); // choose right sibling
-                    if (min_value(v) <= desired_excess and desired_excess <= max_value(v))  // found solution
-                        break;
-                }
-                v = parent(v); // choose parent
-            }
-            // (3 b) go down the tree
-            if (!is_root(v)) { // found solution for the query
-                while (!is_leaf(v)) {
-                    v = left_child(v); // choose left child
-                    if (!(min_value(v) <= desired_excess and desired_excess <= max_value(v))) {
-                        v = right_sibling(v); // choose right child == right sibling of the left child
-                        assert((min_value(v) <= desired_excess and desired_excess <= max_value(v)));
-                    }
-                }
-                return fwd_excess_in_med_block((v-m_med_inner_blocks)*t_med_deg, desired_excess);
-            }
-            // no solution found
-            return size();
-        }
-
-        //! Calculate the maximal parenthesis \f$ j<i \f$ with \f$ excess(j) = excess(i)+rel \f$
-        /*! \param i     The index of a parenthesis in the supported sequence.
-         *  \param rel  The excess difference to the excess value of parenthesis \f$i\f$.
-         *  \return     If there exists a parenthesis \f$i<j\f$ with \f$ excess(j) = excess(i)+rel\f$, \f$j\f$ is returned
-         *                otherwise size().
-         */
-        size_type bwd_excess(size_type i, difference_type rel)const
-        {
-            size_type j;
-            if (i == 0) {
-                return rel == 0 ? -1 : size();
-            }
-            // (1) search the small block for the answer
-            if ((j = near_bwd_excess(*m_bp, i-1, rel, t_sml_blk)) < i or j == (size_type)-1) {
-                return j;
-            }
-            difference_type desired_excess = excess(i)+rel;
-            // (2) scan the small blocks of the current median block for an answer
-            if ((j = bwd_excess_in_med_block(sml_block_idx(i)-1, desired_excess)) != size()) {
-                return j;
-            }
-            // (3) search the min-max tree of the medium blocks for the right med block
-            if (med_block_idx(i) == 0) { // if we are already in the first medium block => we are done
-                if (desired_excess == 0)
-                    return -1;
-                return size();
-            }
-            size_type v    = m_med_inner_blocks + med_block_idx(i);
-            // (3 a) go up the tree
-            while (!is_root(v)) {
-                if (is_right_child(v)) { // if the node is a right child
-                    v = left_sibling(v); // choose left sibling
-                    if (min_value(v) <= desired_excess and desired_excess <= max_value(v))  // found solution
-                        break;
-                }
-                v = parent(v); // choose parent
-            }
-            // (3 b) go down the tree
-            if (!is_root(v)) { // found solution for the query
-                while (!is_leaf(v)) {
-                    v = right_child(v); // choose  child
-                    if (!(min_value(v) <= desired_excess and desired_excess <= max_value(v))) {
-                        v = left_sibling(v); // choose left child == left sibling of the right child
-                        assert((min_value(v) <= desired_excess and desired_excess <= max_value(v)));
-                    }
-                }
-                return bwd_excess_in_med_block((v-m_med_inner_blocks)*t_med_deg+(t_med_deg-1), desired_excess);
-            } else if (desired_excess == 0) {
-                return -1;
-            }
-            // no solution found
-            return size();
         }
 
         /*! Calculates the excess value at index i.
@@ -960,21 +960,42 @@ namespace asu
             }
         }
 
-        size_type pred_zero(size_type i) {
+        /// --------  new operations --------- ///
+
+        size_type rank_zero_zero(size_type i)const // TODO: debo contar los 00 del final?
+        {
             assert(i < m_size);
-            //bit_vector m_bp_aux = bit_vector(&m_bp);
-            //m_bp_aux.flip();
-            //size_type n = __builtin_clz(*m_bp_aux.data() >> i);
-            return 10;//n;
+            if (!i) return 0;
+            uint64_t m_bp_aux = *m_bp->data() << 1;
+            m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
+            return __builtin_popcount(m_bp_aux << i); // TODO: check if shift is correct
+
         }
 
-        size_type succ_zero(size_type i) {
+        size_type pred_zero(size_type i)const {
             assert(i < m_size);
-            bit_vector m_bp_aux = bit_vector(&m_bp);
-            m_bp_aux.flip();
-            size_type n = __builtin_ctz(*m_bp_aux.data() >> i);
-            return n;
+            size_type n = __builtin_clz((~(*m_bp->data())) << (m_bp->size()-i));
+            return n - (m_bp->size()-i);
         }
+
+        size_type succ_zero(size_type i)const { // TODO: si bv[i] = 0? (sino, hay q hacer shift >> (i+1)
+            assert(i < m_size);
+            size_type n = __builtin_ctz((~(*m_bp->data())) >> i);
+            return n + i;
+        }
+
+        size_type fwd_search(size_type i, difference_type rel)const {
+            return fwd_excess(i, rel);
+        }
+
+        size_type bwd_search(size_type i, difference_type rel)const {
+            return bwd_excess(i, rel);
+        }
+
+        bool is_open(size_type i)const {
+            return (*m_bp)[i];
+        }
+
     };
 
 }// end namespace
