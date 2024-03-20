@@ -280,38 +280,39 @@ public:
         }
     }
 
-    /*inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        // DEBUG: ver roots[i] = node
-        uint64_t r = Q->rank(level, node);
-        return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
+
+    // TODO: see how the extend works in DFS!
+    inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
+        uint64_t r = Q->rank_one(node);
+        return tab_extend_3[Q->get_node(node, rank_vector, r)];
     }
 
 
-    inline uint32_t materialize_node_4(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank(level, node);
-        return tab_extend_4[Q->get_node(level, node, rank_vector, r)];
+    inline uint32_t materialize_node_4(uint64_t node, uint64_t *rank_vector) {
+        uint64_t r = Q->rank_one( node);
+        return tab_extend_4[Q->get_node(node, rank_vector, r)];
     }
 
 
-    inline uint32_t materialize_node_5(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank(level, node);
-        return tab_extend_5[Q->get_node(level, node, rank_vector, r)];
+    inline uint32_t materialize_node_5(uint64_t node, uint64_t *rank_vector) {
+        uint64_t r = Q->rank_one( node);
+        return tab_extend_5[Q->get_node(node, rank_vector, r)];
     }
 
 
-    inline uint32_t materialize_node_3_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_3[Q->get_node_last_level(level, node)];
+    inline uint32_t materialize_node_3_lastlevel(uint64_t node) {
+        return tab_extend_3[Q->get_node_last_level(node)];
     }
 
 
-    inline uint32_t materialize_node_4_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_4[Q->get_node_last_level(level, node)];
+    inline uint32_t materialize_node_4_lastlevel(uint64_t node) {
+        return tab_extend_4[Q->get_node_last_level(node)];
     }
 
 
-    inline uint32_t materialize_node_5_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_5[Q->get_node_last_level(level, node)];
-    }*/
+    inline uint32_t materialize_node_5_lastlevel(uint64_t node) {
+        return tab_extend_5[Q->get_node_last_level(node)];
+    }
 
     void printBv() {
         //Q->printBv();

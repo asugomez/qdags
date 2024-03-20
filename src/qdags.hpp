@@ -376,7 +376,6 @@ public:
     // pero trabajo en dimension 5 --> se extiende a 32 hijos
     // a partir de esos 4 bits, te genera el de 32 inmediatamente
     inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        // DEBUG: ver roots[i] = node
         uint64_t r = Q->rank(level, node);
         return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
     }
