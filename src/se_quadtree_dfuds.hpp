@@ -302,6 +302,11 @@ public:
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
+
+    uint64_t rank_one(size_type_bv node_v){
+        return bv_s.rank(node_v);
+    }
+
     // pred_0(B,v)
     size_type_bp pred_zero(size_type_bp node_v) const{
         // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
@@ -402,6 +407,108 @@ public:
 
     size_type_bv leaf_num(size_type_bp node_v) const{
         return leaf_rank(fwd_search(node_v - 1, -1) + 1) - leaf_rank(node_v);
+    }
+
+
+    // ---- other operations for join ---- //
+    // TODO: see how it works without level
+    inline uint8_t get_node(uint64_t node, uint64_t *rank_array, uint64_t r) {
+        uint8_t nd;
+        if(k_d == 4){
+            nd = bv_s.get_4_bits(node);
+            switch (nd) {
+                case 0:
+                    break;
+                case 1:
+                    rank_array[0] = r + 1;
+                    break;
+                case 2:
+                    rank_array[1] = r + 1;
+                    break;
+                case 3:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    break;
+                case 4:
+                    rank_array[2] = r + 1;
+                    break;
+                case 5:
+                    rank_array[0] = r + 1;
+                    rank_array[2] = r + 2;
+                    break;
+                case 6:
+                    rank_array[1] = r + 1;
+                    rank_array[2] = r + 2;
+                    break;
+                case 7:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    rank_array[2] = r + 3;
+                    break;
+                case 8:
+                    rank_array[3] = r + 1;
+                    break;
+                case 9:
+                    rank_array[0] = r + 1;
+                    rank_array[3] = r + 2;
+                    break;
+                case 10:
+                    rank_array[1] = r + 1;
+                    rank_array[3] = r + 2;
+                    break;
+                case 11:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    rank_array[3] = r + 3;
+                    break;
+                case 12:
+                    rank_array[2] = r + 1;
+                    rank_array[3] = r + 2;
+                    break;
+                case 13:
+                    rank_array[0] = r + 1;
+                    rank_array[2] = r + 2;
+                    rank_array[3] = r + 3;
+                    break;
+                case 14:
+                    rank_array[1] = r + 1;
+                    rank_array[2] = r + 2;
+                    rank_array[3] = r + 3;
+                    break;
+                case 15:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    rank_array[2] = r + 3;
+                    rank_array[3] = r + 4;
+                    break;
+            }
+        } else {
+            nd = bv_s.get_2_bits(node);
+            switch (nd) {
+                case 0:
+                    break;
+                case 1:
+                    rank_array[0] = r + 1;
+                    break;
+                case 2:
+                    rank_array[1] = r + 1;
+                    break;
+                case 3:
+                    rank_array[0] = r + 1;
+                    rank_array[1] = r + 2;
+                    break;
+            }
+        }
+
+        return nd;
+    }
+
+    inline uint8_t get_node_last_level(uint64_t node) {
+        if(k_d == 4){
+            return bv_s.get_4_bits(node);
+        } else {
+            return bv_s.get_2_bits(node);
+        }
     }
 
 
