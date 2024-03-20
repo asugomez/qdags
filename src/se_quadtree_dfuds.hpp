@@ -26,8 +26,8 @@ public:
 
 private:
     rank_bv_64 bv_s; // TODO: maybe we can delete this!
-    //rank_bv_64 bv_b;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
+    const bit_vector* bit_vector_b;
     asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
@@ -86,9 +86,6 @@ protected:
         height = height > 1 ? height : 1; // If size == 0
 
         k_d = std::pow(k, d);
-
-        //bp_b = new bp_support_sada<>();
-        //bp_s = *new bp_support_sada<>();
 
         bit_vector k_t_ = bit_vector(k_d, 0);
 
@@ -237,7 +234,9 @@ protected:
         k_t_.resize(t);
         k_t_s.resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
+
         cout << k_t_ << endl;
+
         // write 1^c 0
         n_children = t/k_d;//
         k_t_b.resize(size_bv_b + n_children );
@@ -247,20 +246,10 @@ protected:
 
         // bitvectors
         bv_s = rank_bv_64(k_t_s);
-        //bv_b = rank_bv_64(k_t_b);
+        bit_vector_b = new bit_vector(k_t_b);
 
-
-        cout << "here" << endl;
-        cout << k_t_b << endl;
         // construct bp
-        bp_b = asu::bp_support_sada_v2<>(&k_t_b);
-        cout << bp_b.preceding_closing_parentheses(10) << endl;
-        bp_b.pred_zero(10);
-        //cout << bp_b.pred_zero(10) << endl;
-
-        // support for rank_0 and select_0
-        k_t_b.flip();
-        cout << k_t_b << endl;
+        bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
     }
 
 public:
@@ -313,34 +302,6 @@ public:
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
-    // TODO : todo lo q tenga q ver con bp_support no funciona!
-
-    // TODO: check if we need bit_vector S
-
-    /**
-     * Operations:
-     * - root()
-     * - fchild(v)
-     * - lchild(v)
-     * - nsibling(v)
-     * - psibling(v)
-     * - parent(v)
-     * - isleaf(v)
-     * - subtree(v)
-     * - children(v)
-     * - child(v,t)
-     * - childran(v)
-     * - leafrank(v)
-     * - leafnum(v)
-     * - leafselect(i)
-     *
-     *
-     */
-
-    void hello(){
-        cout << "hello" << endl;
-    }
-
     // pred_0(B,v)
     size_type_bp pred_zero(size_type_bp node_v) const{
         // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
@@ -373,7 +334,6 @@ public:
 
     }
      */
-
     size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
         return this->bp_b.fwd_search(start_pos, diff_excess);
     }
@@ -415,7 +375,7 @@ public:
     }
 
     bool isLeaf(size_type_bp node_v)const{
-        return true;// bv_b[node_v] == 0;
+        return true;// bit_vector_b[node_v] == 0;
     }
 
     size_type_bv subtree(size_type_bp node_v)const{
@@ -443,6 +403,7 @@ public:
     size_type_bv leaf_num(size_type_bp node_v) const{
         return leaf_rank(fwd_search(node_v - 1, -1) + 1) - leaf_rank(node_v);
     }
+
 
 
 
