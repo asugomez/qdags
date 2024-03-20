@@ -1,6 +1,5 @@
 #include <algorithm>
 #include "../qdags.hpp"
-#include "../MinMaxHeap.hpp"
 #include "../utils.hpp"
 
 const uint8_t TYPE_FUN_NUM_LEAVES = 0;
@@ -35,11 +34,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
         qdagWeight tupleQdags = pq.top();
         pq.pop();
         cur_level = tupleQdags.level;
-        /*uint64_t roots[nQ];
-        // HERE we have a problem
-        for(uint64_t i = 0; i < nQ; i++){
-            roots[i] = tupleQdags.roots[i];
-        }*/
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
