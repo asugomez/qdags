@@ -15,8 +15,8 @@ using namespace std::chrono;
 #include "src/qdags.hpp"
 #include "src/qdags_dfuds.hpp"
 #include "src/joins.cpp"
-#include "src/join_partial_results.cpp"
-#include "src/join_ranked_results.cpp"
+#include "src/louds/join_partial_results.cpp"
+#include "src/louds/join_ranked_results.cpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;

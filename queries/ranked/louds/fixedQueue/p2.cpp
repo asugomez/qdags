@@ -1,4 +1,4 @@
-#include "../../../../src/join_ranked_results.cpp"
+#include "../../../../src/louds/join_ranked_results.cpp"
 
 
 #include <fstream>
