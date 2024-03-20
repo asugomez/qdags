@@ -283,19 +283,20 @@ public:
 
     // TODO: see how the extend works in DFS!
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank_one(node);
+        // get the number of 1s of that level
+        uint64_t r = 0;// Q->rank_one(node);
         return tab_extend_3[Q->get_node(node, rank_vector, r)];
     }
 
 
     inline uint32_t materialize_node_4(uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank_one( node);
+        uint64_t r = 0;//Q->rank_one( node);
         return tab_extend_4[Q->get_node(node, rank_vector, r)];
     }
 
 
     inline uint32_t materialize_node_5(uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank_one( node);
+        uint64_t r = 0;//Q->rank_one( node);
         return tab_extend_5[Q->get_node(node, rank_vector, r)];
     }
 
@@ -316,6 +317,10 @@ public:
 
     void printBv() {
         //Q->printBv();
+    }
+
+    uint64_t get_num_leaves(uint64_t node) {
+        return Q->leaf_num(node);
     }
 
     // TODO: only for testing

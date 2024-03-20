@@ -128,7 +128,7 @@ protected:
                 k_t_s.resize(size_bv_s+t);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-                cout << k_t_ << endl;
+                //cout << k_t_ << endl;
 
                 size_bv_s += t;
 
@@ -235,7 +235,7 @@ protected:
         k_t_s.resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-        cout << k_t_ << endl;
+        //cout << k_t_ << endl;
 
         // write 1^c 0
         n_children = t/k_d;//
@@ -245,11 +245,15 @@ protected:
         }
 
         // bitvectors
-        bv_s = rank_bv_64(k_t_s);
+        bv_s = rank_bv_64(k_t_s); // TODO: fix this!! max 64 bits!!
         bit_vector_b = new bit_vector(k_t_b);
 
+        // TODO: fix problem size uint64_t
         // construct bp
+        const bit_vector* bv_tttt = new bit_vector(k_t_s);
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
+        asu::bp_support_sada_v2<> bp_b_test = asu::bp_support_sada_v2<>(bv_tttt);
+        cout << "finish" << endl;
     }
 
 public:
@@ -273,9 +277,10 @@ public:
 
     ~se_quadtree_dfuds() {
         ref_count--;
-        //delete bp_b;
-        //delete bp_s;
-        // TODO: complete it delete
+        if(ref_count == 0){
+            delete bit_vector_b;
+            //delete bv_s;
+        }
     }
 
     void inc_ref_count() {
@@ -296,12 +301,11 @@ public:
     }
 
     inline uint8_t get_node_bits(uint64_t start_pos) {
-        bv_s.get_kd_bits(start_pos, k_d);
+        return bv_s.get_kd_bits(start_pos, k_d);
     }
 
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
-
 
     uint64_t rank_one(size_type_bv node_v){
         return bv_s.rank(node_v);
@@ -345,6 +349,14 @@ public:
 
     size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
         return this->bp_b.bwd_search(start_pos, diff_excess);
+    }
+
+    size_type_bp find_open(size_type_bp node_v)const{
+        return bp_b.find_open(node_v);
+    }
+
+    size_type_bv find_close(size_type_bp node_v)const{
+        return bp_b.find_close(node_v);
     }
 
     size_type_bp root()const{
@@ -402,11 +414,11 @@ public:
     }
 
     size_type_bv leaf_rank(size_type_bp node_v) const{
-        return rank_zero_zero(node_v - 1) + 1;
+        return rank_zero_zero(node_v) + 1;
     }
 
     size_type_bv leaf_num(size_type_bp node_v) const{
-        return leaf_rank(fwd_search(node_v - 1, -1) + 1) - leaf_rank(node_v);
+        return leaf_rank(fwd_search(node_v, -1) + 1) - leaf_rank(node_v);
     }
 
 

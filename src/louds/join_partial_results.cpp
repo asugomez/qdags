@@ -115,14 +115,14 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                     coordinates[k] = 0;
                 }
                 getCoordinates(path, l, max_level, coordinates);
-                cout << endl;
+                /*cout << endl;
                 cout << "nro result: " << results << endl;
                 cout << "top " << path << endl;
-                cout << "coord: ";
-                for(uint32_t k = 0; k < nAtt; k++){
+                cout << "coord: ";*/
+                /*for(uint32_t k = 0; k < nAtt; k++){
                     cout << coordinates[k] << " , ";
-                }
-                cout << endl;
+                }*/
+                //cout << endl;
                 if(bounded_result && ++results >= UPPER_BOUND)
                     return true;
             }
@@ -132,6 +132,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             }
         }
     }
+    cout << "number of results: " << results << endl;
     return true;
 }
 

@@ -17,6 +17,7 @@ using namespace std::chrono;
 #include "src/joins.cpp"
 #include "src/louds/join_partial_results.cpp"
 #include "src/louds/join_ranked_results.cpp"
+#include "src/dfuds/join_partial_results.cpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -90,42 +91,41 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>> *rel_R_2 = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
+    std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
     uint64_t grid_side =32;// 52000000; // es como +infty para wikidata
 
-    //cout << " grid size R : " << att_R.size() << endl;
-    //cout << " grid size S : " << att_S.size() << endl;
-
-    //qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
-    qdag_dfuds qdag_rel_R_dfuds(*rel_R, att_R, grid_side, 2, att_R.size());
-    //qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
+    qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
+    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
+    qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
-    cout << "parent"<< endl;
-    qdag_rel_R_dfuds.getQ()->hello();
-    /*cout << qdag_rel_R_dfuds.getQ()->next_sibling(7)<< endl;
-    cout << qdag_rel_R_dfuds.getQ()->parent(10) << endl;
-    cout << "leaf 3"<< qdag_rel_R_dfuds.getQ()->isLeaf(3)<< endl;
-    cout << "leaf 16"<< qdag_rel_R_dfuds.getQ()->isLeaf(16)<< endl;
-    cout << "leaf 62"<< qdag_rel_R_dfuds.getQ()->isLeaf(62)<< endl;
-    cout << "leaf 63"<< qdag_rel_R_dfuds.getQ()->isLeaf(63)<< endl;
-*/
+    qdag_rel_R_dfuds.getQ()->rank_one(20);
+    qdag_rel_R_dfuds.getQ()->find_close(3);
+    qdag_rel_R_dfuds.getQ()->find_close(4);
 
+
+    // print the tree
     cout << endl << "rel R" << endl;
-    //qdag_rel_R.printBv();
-    //cout << endl << "rel S" << endl;
-    //qdag_rel_S.printBv();
-    //qdag_dfuds qdag_rel_S_dfuds(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_rel_R.printBv();
+    cout << endl << "rel S" << endl;
+    qdag_rel_S.printBv();
 
-    // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
+    vector<qdag_dfuds> Q_dfuds(2);
 
-    //Q[0] = qdag_rel_R;
-    //Q[1] = qdag_rel_S;
+    Q[0] = qdag_rel_R;
+    Q[1] = qdag_rel_S;
     //Q[2] = qdag_rel_T;
     qdag *Join_Result;
+
+    Q_dfuds[0] = qdag_rel_R_dfuds;
+    Q_dfuds[1] = qdag_rel_S_dfuds;
+    //Q[2] = qdag_rel_T;
+    qdag_dfuds *Join_Result_dfuds;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;
@@ -181,19 +181,24 @@ int main(int argc, char **argv) {
     int_vector<> prioritiesS={1,1,1,1,4,1,200,3,31,22,3,4,5,2,1,15,27,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     vector<int_vector<>> p2;
     p2.push_back(prioritiesR);
-    p2.push_back(prioritiesS);*/
+    p2.push_back(prioritiesS);
+     */
 
 
 
 
     start = high_resolution_clock::now();
-    //cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-    //Join_Result = multiJoin(Q, true, 1000);
-    //cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
-    //multiJoinPartialResults(Q, true, 1000, 0, 0);
-    //cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
-    //multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
+    cout << "--> LOUDS <--" << endl;
+    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+    Join_Result = multiJoin(Q, true, 1000);
+    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    multiJoinPartialResults(Q, true, 1000, 0, 0);
+    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
+    multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
 
+
+    cout << "--> DFUDS <--" << endl;
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, 0, 0);
     // PARTIAL JOIN
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
