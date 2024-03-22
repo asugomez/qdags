@@ -391,8 +391,8 @@ public:
         return pred_zero(node_v - 1) + 1;
     }
 
-    bool isLeaf(size_type_bp node_v)const{
-        return true;// bit_vector_b[node_v] == 0;
+    bool is_leaf(size_type_bp node_v)const{
+        return bit_vector_b->get_int(node_v,1) == 0;
     }
 
     size_type_bv subtree(size_type_bp node_v)const{
@@ -413,85 +413,106 @@ public:
         return succ_zero(p) - p;
     }
 
+    // numbers of 1s per level til node_v
+
     size_type_bv leaf_rank(size_type_bp node_v) const{
-        return rank_zero_zero(node_v) + 1;
+        return rank_zero_zero(node_v-1) + 1;
     }
 
     size_type_bv leaf_num(size_type_bp node_v) const{
-        return leaf_rank(fwd_search(node_v, -1) + 1) - leaf_rank(node_v);
+        return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
     }
 
 
     // ---- other operations for join ---- //
-    // TODO: see how it works without level
+    // TODO: see how it works without level (i dont think we need it)!
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array, uint64_t r) {
         uint8_t nd;
+        r += 1;
         if(k_d == 4){
             nd = bv_s.get_4_bits(node);
             switch (nd) {
                 case 0:
                     break;
                 case 1:
-                    rank_array[0] = r + 1;
+                    rank_array[0] = r;
                     break;
                 case 2:
-                    rank_array[1] = r + 1;
+                    rank_array[1] = r;
                     break;
                 case 3:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[1] = r;
                     break;
                 case 4:
-                    rank_array[2] = r + 1;
+                    rank_array[2] = r;
                     break;
                 case 5:
-                    rank_array[0] = r + 1;
-                    rank_array[2] = r + 2;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[2] = r;
                     break;
                 case 6:
-                    rank_array[1] = r + 1;
-                    rank_array[2] = r + 2;
+                    rank_array[1] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[2] = r;
                     break;
                 case 7:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
-                    rank_array[2] = r + 3;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[1] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[2] = r;
                     break;
                 case 8:
-                    rank_array[3] = r + 1;
+                    rank_array[3] = r;
                     break;
                 case 9:
-                    rank_array[0] = r + 1;
-                    rank_array[3] = r + 2;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
                     break;
                 case 10:
-                    rank_array[1] = r + 1;
-                    rank_array[3] = r + 2;
+                    rank_array[1] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
                     break;
                 case 11:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
-                    rank_array[3] = r + 3;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[1] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
                     break;
                 case 12:
-                    rank_array[2] = r + 1;
-                    rank_array[3] = r + 2;
+                    rank_array[2] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
                     break;
                 case 13:
-                    rank_array[0] = r + 1;
-                    rank_array[2] = r + 2;
-                    rank_array[3] = r + 3;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[2] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
                     break;
                 case 14:
-                    rank_array[1] = r + 1;
-                    rank_array[2] = r + 2;
-                    rank_array[3] = r + 3;
+                    rank_array[1] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[2] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
+                    r+= subtree(r) + 1;
                     break;
                 case 15:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
-                    rank_array[2] = r + 3;
-                    rank_array[3] = r + 4;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[1] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[2] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[3] = r;
                     break;
             }
         } else {
@@ -500,14 +521,15 @@ public:
                 case 0:
                     break;
                 case 1:
-                    rank_array[0] = r + 1;
+                    rank_array[0] = r;
                     break;
                 case 2:
-                    rank_array[1] = r + 1;
+                    rank_array[1] = r;
                     break;
                 case 3:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
+                    rank_array[0] = r;
+                    r+= subtree(r) + 1;
+                    rank_array[1] = r;
                     break;
             }
         }

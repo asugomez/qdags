@@ -96,6 +96,8 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                    //cout << " child " << child;
+                    //cout << " getM(child) " << Q[j]->getM(child) << endl;
                     uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level, Q[j]->getM(child));
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;

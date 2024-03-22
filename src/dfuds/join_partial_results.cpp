@@ -88,7 +88,8 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
 
         for (i = 0; i < children_to_recurse_size; ++i) {
             uint64_t* root_temp= new uint64_t[nQ];
-            child = children_to_recurse[i];
+            // ex: 1011 --> children_to_recurse = [0,2,3]
+            child = children_to_recurse[i]; // the index of children where we have 1
 
             // compute the weight of the tuple (ONLY if it's not a leaf)
             double total_weight = DBL_MAX;
@@ -96,8 +97,15 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
-                    root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    uint64_t n_leaves_child_node = Q[j]->get_num_leaves(Q[j]->getM(child));
+                    // TODO: check getM and how is the mapping function
+                    // see what are we trying to retrieve in root_temp
+                    // is the root of the children that will be sinerted in the queue
+                    // do we need to store k_d?
+                    //root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                    root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
+                    cout << "root: " << root_temp[j] << endl;
+                    uint64_t n_leaves_child_node = Q[j]->get_num_leaves(root_temp[j]);
+                    cout << "num leves " << n_leaves_child_node << endl;
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
                     }
