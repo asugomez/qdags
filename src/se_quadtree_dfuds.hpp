@@ -8,7 +8,6 @@
 #include <tuple>
 #include <fstream>
 #include "include/bp_support_sada_v2.hpp"
-//#include <sdsl/bp_support.hpp>
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/k2_tree_helper.hpp>
 //#include "rank.hpp"
@@ -97,6 +96,8 @@ protected:
         k_t_b[2] = 0;
         size_type_bv size_bv_b = 3; // starting position to write in the bit_vector
         size_type_bv size_bv_s = 0; // starting position to write in the bit_vector
+
+
 
         std::stack<t_part_tuple> s;
         idx_type t = 0;
@@ -236,7 +237,6 @@ protected:
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
         //cout << k_t_ << endl;
-
         // write 1^c 0
         n_children = t/k_d;//
         k_t_b.resize(size_bv_b + n_children );
@@ -250,9 +250,8 @@ protected:
 
         // TODO: fix problem size uint64_t
         // construct bp
-        const bit_vector* bv_tttt = new bit_vector(k_t_s);
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
-        asu::bp_support_sada_v2<> bp_b_test = asu::bp_support_sada_v2<>(bv_tttt);
+
         cout << "finish" << endl;
     }
 
@@ -300,6 +299,10 @@ public:
         return k_d;
     }
 
+    uint64_t getHeight() const{
+        return height;
+    }
+
     inline uint8_t get_node_bits(uint64_t start_pos) {
         return bv_s.get_kd_bits(start_pos, k_d);
     }
@@ -307,20 +310,48 @@ public:
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
-    uint64_t rank_one(size_type_bv node_v){
-        return bv_s.rank(node_v);
+    size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+        return this->bp_b.fwd_search(start_pos, diff_excess);
     }
 
-    // pred_0(B,v)
-    size_type_bp pred_zero(size_type_bp node_v) const{
-        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
-        return bp_b.pred_zero(node_v);
+//    size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+//        return this->bp_b.bwd_search(start_pos, diff_excess);
+//    }
+
+//    size_type_bp find_open(size_type_bp node_v)const{
+//        return bp_b.find_open(node_v);
+//    }
+
+    size_type_bv find_close(size_type_bp node_v)const{
+        return bp_b.find_close(node_v);
+    }
+
+    size_type_bp root()const{
+        return 3;
+    }
+
+    uint64_t rank_one(size_type_bv node_v){
+        return bv_s.rank(node_v);
     }
 
     // suc_0(B,v)
     size_type_bp succ_zero(size_type_bp node_v) const{
         return bp_b.succ_zero(node_v);
     }
+
+//    // select_0(B,v)
+//    size_type_bp select_zero(size_type_bp node_v){
+//        return bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
+//    }
+
+    /*
+    // pred_0(B,v)
+    size_type_bp pred_zero(size_type_bp node_v) const{
+        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
+        return bp_b.pred_zero(node_v);
+    }
+
+
 
     // rank_0(B,v) (de B[0,v-1])
     size_type_bp rank_zero(size_type_bp node_v) const{
@@ -332,36 +363,14 @@ public:
         return bp_b.rank_zero_zero(node_v);
     }
 
-    /* no need of these operations
-    // select_0(B,v)
-    size_type_bp select_zero(size_type_bp node_v){
+     //no need of these operations?
 
-    }
 
     // select_00(B,v)
     size_type_bp select_zero_zero(size_type_bp node_v){
 
     }
-     */
-    size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
-        return this->bp_b.fwd_search(start_pos, diff_excess);
-    }
 
-    size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
-        return this->bp_b.bwd_search(start_pos, diff_excess);
-    }
-
-    size_type_bp find_open(size_type_bp node_v)const{
-        return bp_b.find_open(node_v);
-    }
-
-    size_type_bv find_close(size_type_bp node_v)const{
-        return bp_b.find_close(node_v);
-    }
-
-    size_type_bp root()const{
-        return 3;
-    }
 
     size_type_bp first_child(size_type_bp node_v)const{
         assert(bp_b.is_open(node_v));
@@ -393,17 +402,19 @@ public:
 
     bool is_leaf(size_type_bp node_v)const{
         return bit_vector_b->get_int(node_v,1) == 0;
-    }
+    }*/
 
+    // size of the subtree (counting the node_v)
     size_type_bv subtree(size_type_bp node_v)const{
         // (fwdsearch(B, v-1, -1) - v)/2 + 1
+        assert(node_v >= 3);
         return (fwd_search(node_v -1, -1) - node_v)/2 + 1;
     }
 
     size_type_bv children(size_type_bp node_v) const{
         return succ_zero(node_v) - node_v;
     }
-
+/*
     size_type_bv child(size_type_bp node_v, size_type_bp t) const{
         return bp_b.find_close(succ_zero(node_v));// - t) + 1;
     }
@@ -412,6 +423,7 @@ public:
         size_type_bv p = bp_b.find_open(node_v - 1);
         return succ_zero(p) - p;
     }
+
 
     // numbers of 1s per level til node_v
 
@@ -422,15 +434,26 @@ public:
     size_type_bv leaf_num(size_type_bp node_v) const{
         return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
     }
+     */
 
 
     // ---- other operations for join ---- //
     // TODO: see how it works without level (i dont think we need it)!
+    /**
+     *
+     * @param node the starting position in the bitvector S in preorder
+     * @param rank_array
+     * @param r the starting position in the bitvector B in preorder
+     * @return
+     */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array, uint64_t r) {
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
         uint8_t nd;
-        r += 1;
+        // r + n_children + 1 (1^c 0)
+        size_type_bv n_children = children(node);
+        r += n_children + 1;
         if(k_d == 4){
-            nd = bv_s.get_4_bits(node);
+            nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
                 case 0:
                     break;
@@ -516,7 +539,7 @@ public:
                     break;
             }
         } else {
-            nd = bv_s.get_2_bits(node);
+            nd = bv_s.get_2_bits(start_pos);
             switch (nd) {
                 case 0:
                     break;

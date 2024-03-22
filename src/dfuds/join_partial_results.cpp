@@ -38,11 +38,13 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
+            // TODO: debug nQ
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
                 if (cur_level == max_level) {
                     children &= Q[i]->materialize_node_3_lastlevel(tupleQdags.roots[i]);
                 } else {
+                    // TODO: fix here: que le paso? nodo en preorder? posicion en BP del DFUDS?
                     children &= Q[i]->materialize_node_3(tupleQdags.roots[i], rank_vector[i]);
                 }
             }
@@ -102,10 +104,13 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                     // is the root of the children that will be sinerted in the queue
                     // do we need to store k_d?
                     //root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                    uint16_t th_child = Q[j]->getM(child); // i-th child
+                    //rank_child(roots[j], th_child); ?
+
                     root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
-                    cout << "root: " << root_temp[j] << endl;
+                    // TODO: get_num_leaves le paso el nodo en pre order: ej root = 3!
+                    // opcion 1: pasar en roots y root temp el nodo para bv B (root = 3, y asi}
                     uint64_t n_leaves_child_node = Q[j]->get_num_leaves(root_temp[j]);
-                    cout << "num leves " << n_leaves_child_node << endl;
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
                     }
@@ -124,10 +129,10 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                     coordinates[k] = 0;
                 }
                 getCoordinates(path, l, max_level, coordinates);
-                /*cout << endl;
+                cout << endl;
                 cout << "nro result: " << results << endl;
                 cout << "top " << path << endl;
-                cout << "coord: ";
+                /*cout << "coord: ";
                 for(uint32_t k = 0; k < nAtt; k++){
                     cout << coordinates[k] << " , ";
                 }
@@ -190,7 +195,7 @@ bool multiJoinPartialResultsDfuds(vector<qdag_dfuds> &Q, bool bounded_result, ui
             exit(1);
         }
         // esta en 0 en todos lados al inicio
-        Q_roots[i] = 0; // root of every qdag
+        Q_roots[i] = 3; // root of every qdag
     }
 
 

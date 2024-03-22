@@ -429,69 +429,6 @@ namespace asu
             }
         }
 
-        /*
-
-        bp_support_sada_v2(bit_vector &bp): m_bp(&bp),
-                                           m_size(&bp==nullptr?0:bp.size()),
-                                           m_sml_blocks((m_size+t_sml_blk-1)/t_sml_blk),
-                                           m_med_blocks((m_size+t_sml_blk* t_med_deg-1)/(t_sml_blk* t_med_deg)),
-                                           m_med_inner_blocks(0)
-        {
-            if (&bp == nullptr or bp.size()==0)
-                return;
-            // initialize rank and select
-            util::init_support(m_bp_rank, &bp);
-            util::init_support(m_bp_select, &bp);
-
-            m_med_inner_blocks = 1;
-            // m_med_inner_blocks = (next power of 2 greater than or equal to m_med_blocks)-1
-            while (m_med_inner_blocks < m_med_blocks) {
-                m_med_inner_blocks <<= 1; assert(m_med_inner_blocks!=0);
-            }
-            --m_med_inner_blocks;
-            assert((m_med_inner_blocks == 0) or(m_med_inner_blocks%2==1));
-
-            m_sml_block_min_max = int_vector<>(2*m_sml_blocks, 0, bits::hi(t_sml_blk+2)+1);
-            m_med_block_min_max = int_vector<>(2*(m_med_blocks+m_med_inner_blocks), 0, bits::hi(2*m_size+2)+1);
-
-            // calculate min/max excess values of the small blocks and medium blocks
-            difference_type min_ex = 1, max_ex = -1, curr_rel_ex = 0, curr_abs_ex = 0;
-            for (size_type i=0; i < m_size; ++i) {
-                if ((bp)[i])
-                    ++curr_rel_ex;
-                else
-                    --curr_rel_ex;
-                if (curr_rel_ex > max_ex) max_ex = curr_rel_ex;
-                if (curr_rel_ex < min_ex) min_ex = curr_rel_ex;
-                if ((i+1)%t_sml_blk == 0 or i+1 == m_size) {
-                    size_type sidx = i/t_sml_blk;
-                    m_sml_block_min_max[2*sidx    ] = -(min_ex-1);
-                    m_sml_block_min_max[2*sidx + 1] = max_ex+1;
-
-                    size_type v = m_med_inner_blocks + sidx/t_med_deg;
-
-                    if ((difference_type)(-(curr_abs_ex + min_ex)+m_size) > ((difference_type)m_med_block_min_max[2*v])) {
-                        assert(curr_abs_ex+min_ex <= min_value(v));
-                        m_med_block_min_max[2*v] = -(curr_abs_ex + min_ex)+m_size;
-                    }
-
-                    if ((difference_type)(curr_abs_ex + max_ex + m_size) > (difference_type)m_med_block_min_max[2*v + 1])
-                        m_med_block_min_max[2*v + 1] = curr_abs_ex + max_ex + m_size;
-
-                    curr_abs_ex += curr_rel_ex;
-                    min_ex = 1; max_ex = -1; curr_rel_ex = 0;
-                }
-            }
-
-            for (size_type v = m_med_block_min_max.size()/2 - 1; !is_root(v); --v) {
-                size_type p = parent(v);
-                if (min_value(v) < min_value(p))  // update minimum
-                    m_med_block_min_max[2*p] = m_med_block_min_max[2*v];
-                if (max_value(v) > max_value(p))  // update maximum
-                    m_med_block_min_max[2*p+1] = m_med_block_min_max[2*v+1];
-            }
-        }
-        */
         //! Copy constructor
         bp_support_sada_v2(const bp_support_sada_v2& bp_support)
         {
@@ -1010,6 +947,11 @@ namespace asu
             m_med_block_min_max.load(in);
         }
 
+
+
+        /// --------  new operations --------- ///
+
+
         size_type rank_zero(size_type i)const
         {
             assert(i < m_size);
@@ -1022,8 +964,6 @@ namespace asu
                 return i;
             }
         }
-
-        /// --------  new operations --------- ///
 
         size_type rank_zero_zero(size_type i)const // TODO: debo contar los 00 del final?
         {
@@ -1062,8 +1002,5 @@ namespace asu
     };
 
 }// end namespace
-
-
-
 
 #endif

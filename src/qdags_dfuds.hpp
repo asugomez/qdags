@@ -179,9 +179,7 @@ public:
 
 
     uint64_t getHeight() {
-        // TODO
-        return 0;
-        //return Q->getHeight();
+        return Q->getHeight();
     }
 
 
@@ -203,6 +201,12 @@ public:
     }
 
 
+    /** the mapping between the children
+     * for example:
+     * original quadtree: 1011
+     * qdag: 1011 1011
+     * getM(5) = 1
+     **/
     uint16_t getM(uint16_t i) {
         return M[i];
     }
@@ -319,8 +323,10 @@ public:
         //Q->printBv();
     }
 
+    // TODO: change it by leaf num!!! it is not the same
     uint64_t get_num_leaves(uint64_t node) {
-        return Q->leaf_num(node);
+        return Q->subtree(node);
+        //return Q->leaf_num(node);
     }
 
     // TODO: only for testing
