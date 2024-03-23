@@ -339,6 +339,11 @@ public:
         return bp_b.succ_zero(node_v);
     }
 
+    // rank_00(B,v)
+    size_type_bp rank_zero_zero(size_type_bp node_v) const{
+        return bp_b.rank_zero_zero(node_v);
+    }
+
 //    // select_0(B,v)
 //    size_type_bp select_zero(size_type_bp node_v){
 //        return bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
@@ -358,10 +363,6 @@ public:
         return node_v - bp_b.rank(node_v);
     }
 
-    // rank_00(B,v)
-    size_type_bp rank_zero_zero(size_type_bp node_v) const{
-        return bp_b.rank_zero_zero(node_v);
-    }
 
      //no need of these operations?
 
@@ -428,169 +429,169 @@ public:
 
     // numbers of 1s per level til node_v
 
+     */
+
     size_type_bv leaf_rank(size_type_bp node_v) const{
         return rank_zero_zero(node_v-1) + 1;
     }
 
     size_type_bv leaf_num(size_type_bp node_v) const{
+        cout << "node_v = " << node_v << endl;
+//        cout << "fwd_search(node_v-1, -1)= " << fwd_search(node_v-1, -1) << endl;
+//        cout << "leaf_rank(fwd_search(node_v-1, -1) + 1)= " << leaf_rank(fwd_search(node_v-1, -1) + 1) << endl;
+//        cout << "leaf_rank(node_v)= " << leaf_rank(node_v) << endl;
         return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
     }
-     */
-
 
     // ---- other operations for join ---- //
-    // TODO: see how it works without level (i dont think we need it)!
+
     /**
      *
      * @param node the starting position in the bitvector S in preorder
      * @param rank_array
-     * @param r the starting position in the bitvector B in preorder
+     * @param node the starting position in the bitvector B in preorder
      * @return
      */
-    inline uint8_t get_node(uint64_t node, uint64_t *rank_array, uint64_t r) {
+    inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
         uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
         uint8_t nd;
-        // r + n_children + 1 (1^c 0)
+        // node + n_children + 1 (1^c 0)
         size_type_bv n_children = children(node);
-        r += n_children + 1;
-        cout << "node: " << node << " ";
-        cout << "r: " << r << endl;
-        cout << "start_pos " << (bp_b.rank_zero(node) - 1)  << endl;
-//        cout << "node: " << start_pos << endl;
+        node += n_children + 1;
         if(k_d == 4){
             nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
                 case 0:
                     break;
                 case 1:
-                    rank_array[0] = r;
+                    rank_array[0] = node;
                     break;
                 case 2:
-                    rank_array[1] = r;
+                    rank_array[1] = node;
                     break;
                 case 3:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0; // si tiene hijos, le agrego un 1 por el 0.
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0; // si tiene hijos, le agrego un 1 por el 0.
 
-                    rank_array[1] = r;
+                    rank_array[1] = node;
                     break;
                 case 4:
-                    rank_array[2] = r;
+                    rank_array[2] = node;
                     break;
                 case 5:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[2] = r;
+                    rank_array[2] = node;
                     break;
                 case 6:
-                    rank_array[1] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[2] = r;
+                    rank_array[2] = node;
                     break;
                 case 7:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[1] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[2] = r;
+                    rank_array[2] = node;
                     break;
                 case 8:
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 9:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 10:
-                    rank_array[1] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 11:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[1] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 12:
-                    rank_array[2] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 13:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[2] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 14:
-                    rank_array[1] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[2] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
                 case 15:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[1] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[2] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[3] = r;
+                    rank_array[3] = node;
                     break;
             }
         } else {
@@ -599,31 +600,27 @@ public:
                 case 0:
                     break;
                 case 1:
-                    rank_array[0] = r;
+                    rank_array[0] = node;
                     break;
                 case 2:
-                    rank_array[1] = r;
+                    rank_array[1] = node;
                     break;
                 case 3:
-                    rank_array[0] = r;
-                    n_children = subtree(r);
-                    r+= n_children;
-                    r+= n_children > 1 ? 1 : 0;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
 
-                    rank_array[1] = r;
+                    rank_array[1] = node;
                     break;
             }
         }
-
-        cout << "nd: " << nd << endl;
         return nd;
     }
 
     inline uint8_t get_node_last_level(uint64_t node) {
         uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
         if(k_d == 4){
-            cout<<"node: " << node ;
-            cout << " final node: " << (bp_b.rank_zero(node) - 1) << endl;
             return bv_s.get_4_bits(start_pos);
         } else {
             return bv_s.get_2_bits(start_pos);

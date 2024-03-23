@@ -36,17 +36,13 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
-        cout << "children: " << endl;
         for (uint64_t i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
-                // TODO: debug roots[i]
                 if (cur_level == max_level) {
                     children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
-                    cout << Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]) << " ";
                 } else {
                     children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                    cout << Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]) << " ";
                 }
             }
             else if (nAtt == 4) {
@@ -70,8 +66,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 return false;
             }
         }
-        cout << endl;
-
 
         // in children we have the actual non empty nodes
         // in children_to_recurse we store the index of these non emtpy nodes
@@ -101,9 +95,8 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    //cout << " child " << child;
-                    //cout << " getM(child) " << Q[j]->getM(child) << endl;
                     uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level, Q[j]->getM(child));
+                    cout << "n_leaves_child_node: " << n_leaves_child_node << endl;
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
                     }

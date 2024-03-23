@@ -328,10 +328,9 @@ public:
     }
 
     inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
-        if (k_d == 4) {
-            cout << "final node: " << node << endl;
+        if (k_d == 4)
             return bv[level].get_4_bits(node);
-        }else
+        else
             return bv[level].get_2_bits(node);
     }
 
@@ -365,8 +364,6 @@ public:
     inline uint8_t get_node(uint16_t level, uint64_t node, uint64_t *rank_array, uint64_t r) {
         uint8_t nd;// = path[level].get_4_bits(node);
         if (k_d == 4) {
-            cout << "level: " << level << " " ;
-            cout << "node: " << node << endl;
             nd = bv[level].get_4_bits(node);
             switch (nd) {
                 case 0:
@@ -451,7 +448,6 @@ public:
                     break;
             }
         }
-        cout << "nd: " << nd << endl;
         return nd;
     }
 

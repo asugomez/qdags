@@ -289,19 +289,17 @@ public:
     // we need the number of 1s of the level (until the node position)
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
         // get the number of 1s of that level
-        return tab_extend_3[Q->get_node(node, rank_vector, node)];
+        return tab_extend_3[Q->get_node(node, rank_vector)];
     }
 
 
     inline uint32_t materialize_node_4(uint64_t node, uint64_t *rank_vector) {
-        //uint64_t r = 0;//Q->rank_one( node);
-        return tab_extend_4[Q->get_node(node, rank_vector, node)];
+        return tab_extend_4[Q->get_node(node, rank_vector)];
     }
 
 
     inline uint32_t materialize_node_5(uint64_t node, uint64_t *rank_vector) {
-        //uint64_t r = 0;//Q->rank_one( node);
-        return tab_extend_5[Q->get_node(node, rank_vector, node)];
+        return tab_extend_5[Q->get_node(node, rank_vector)];
     }
 
 
@@ -325,8 +323,8 @@ public:
 
     // TODO: change it by leaf num!!! it is not the same
     uint64_t get_num_leaves(uint64_t node) {
-        return Q->subtree(node);
-        //return Q->leaf_num(node);
+//        return Q->subtree(node);
+        return Q->leaf_num(node);
     }
 
     // TODO: only for testing

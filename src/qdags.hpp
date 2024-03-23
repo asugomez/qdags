@@ -373,7 +373,6 @@ public:
         }
     }
 
-    // TODO: problema? siempre materializo,,, cuando uso el mapeo?
     // TODO: y porqué de 32 bits?
     // materializa el nodo del qdag, uno llega a un nodo en el quadtree que existe, pero conceptualmente
     // corresponde a un qdags q no existe en realidad.

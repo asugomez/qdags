@@ -37,7 +37,6 @@
 #include <algorithm>
 #endif
 #include <iostream>
-
 using namespace sdsl;
 namespace asu
 {
@@ -968,10 +967,21 @@ namespace asu
         size_type rank_zero_zero(size_type i)const // TODO: debo contar los 00 del final?
         {
             assert(i < m_size);
-            if (!i) return 0;
-            uint64_t m_bp_aux = *m_bp->data() << 1;
-            m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
-            return __builtin_popcount(m_bp_aux << i); // TODO: check if shift is correct
+            if (!i) return 0; // (~(*m_bp->data() << 1) & ~(*m_bp->data()))
+            if (m_size <= 16) {
+                uint16_t m_bp_aux = (uint16_t)*m_bp->data() << 1;
+                m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
+                return __builtin_popcount(m_bp_aux << (2*m_size - 1 - i)); // TODO: check if shift is correct
+            } else if (m_size <= 32){
+                int32_t m_bp_aux = *m_bp->data() << 1;
+                m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
+                return __builtin_popcount(m_bp_aux << (2*m_size + i));
+            }else{
+                uint64_t m_bp_aux = *m_bp->data() << 1;
+                m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
+                return __builtin_popcount(m_bp_aux << (2*m_size + i));
+            }
+                // TODO: see si contar o no el mismo i o i-1.
 
         }
 
