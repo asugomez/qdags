@@ -412,6 +412,7 @@ public:
     }
 
     size_type_bv children(size_type_bp node_v) const{
+        assert(node_v >= 3);
         return succ_zero(node_v) - node_v;
     }
 /*
@@ -447,11 +448,15 @@ public:
      * @return
      */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array, uint64_t r) {
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
         uint8_t nd;
         // r + n_children + 1 (1^c 0)
         size_type_bv n_children = children(node);
         r += n_children + 1;
+        cout << "node: " << node << " ";
+        cout << "r: " << r << endl;
+        cout << "start_pos " << (bp_b.rank_zero(node) - 1)  << endl;
+//        cout << "node: " << start_pos << endl;
         if(k_d == 4){
             nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
@@ -465,7 +470,10 @@ public:
                     break;
                 case 3:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0; // si tiene hijos, le agrego un 1 por el 0.
+
                     rank_array[1] = r;
                     break;
                 case 4:
@@ -473,19 +481,31 @@ public:
                     break;
                 case 5:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[2] = r;
                     break;
                 case 6:
                     rank_array[1] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[2] = r;
                     break;
                 case 7:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[1] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[2] = r;
                     break;
                 case 8:
@@ -493,48 +513,83 @@ public:
                     break;
                 case 9:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
                     break;
                 case 10:
                     rank_array[1] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
                     break;
                 case 11:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[1] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
                     break;
                 case 12:
                     rank_array[2] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
                     break;
                 case 13:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[2] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
                     break;
                 case 14:
                     rank_array[1] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[2] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
-                    r+= subtree(r) + 1;
                     break;
                 case 15:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[1] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[2] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[3] = r;
                     break;
             }
@@ -551,20 +606,27 @@ public:
                     break;
                 case 3:
                     rank_array[0] = r;
-                    r+= subtree(r) + 1;
+                    n_children = subtree(r);
+                    r+= n_children;
+                    r+= n_children > 1 ? 1 : 0;
+
                     rank_array[1] = r;
                     break;
             }
         }
 
+        cout << "nd: " << nd << endl;
         return nd;
     }
 
     inline uint8_t get_node_last_level(uint64_t node) {
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
         if(k_d == 4){
-            return bv_s.get_4_bits(node);
+            cout<<"node: " << node ;
+            cout << " final node: " << (bp_b.rank_zero(node) - 1) << endl;
+            return bv_s.get_4_bits(start_pos);
         } else {
-            return bv_s.get_2_bits(node);
+            return bv_s.get_2_bits(start_pos);
         }
     }
 

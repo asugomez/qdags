@@ -36,13 +36,17 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
+        cout << "children: " << endl;
         for (uint64_t i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
+                // TODO: debug roots[i]
                 if (cur_level == max_level) {
                     children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
+                    cout << Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]) << " ";
                 } else {
                     children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
+                    cout << Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]) << " ";
                 }
             }
             else if (nAtt == 4) {
@@ -66,6 +70,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 return false;
             }
         }
+        cout << endl;
 
 
         // in children we have the actual non empty nodes
@@ -117,9 +122,9 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                     coordinates[k] = 0;
                 }
                 getCoordinates(path, l, max_level, coordinates);
-                cout << endl;
-                cout << "nro result: " << results << endl;
-                cout << "top " << path << endl;
+//                cout << endl;
+//                cout << "nro result: " << results << endl;
+//                cout << "top " << path << endl;
                 /*cout << "coord: ";
                 for(uint32_t k = 0; k < nAtt; k++){
                     cout << coordinates[k] << " , ";

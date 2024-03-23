@@ -37,14 +37,17 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
+        cout << "children: " << endl;
         for (uint64_t i = 0; i < nQ && children; ++i){
             // TODO: debug nQ
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
             if (nAtt == 3) {
                 if (cur_level == max_level) {
                     children &= Q[i]->materialize_node_3_lastlevel(tupleQdags.roots[i]);
+                    //cout << Q[i]->materialize_node_3_lastlevel(tupleQdags.roots[i]) << " ";
                 } else {
                     // TODO: fix here: que le paso? nodo en preorder? posicion en BP del DFUDS?
+                    //cout << Q[i]->materialize_node_3(tupleQdags.roots[i], rank_vector[i]) << " ";
                     children &= Q[i]->materialize_node_3(tupleQdags.roots[i], rank_vector[i]);
                 }
             }
@@ -70,7 +73,7 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
             }
         }
 
-
+        cout << endl;
         // in children we have the actual non empty nodes
         // in children_to_recurse we store the index of these non emtpy nodes
         children_to_recurse_size = bits::cnt((uint64_t) children);
@@ -129,9 +132,9 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                     coordinates[k] = 0;
                 }
                 getCoordinates(path, l, max_level, coordinates);
-                cout << endl;
-                cout << "nro result: " << results << endl;
-                cout << "top " << path << endl;
+//                cout << endl;
+//                cout << "nro result: " << results << endl;
+//                cout << "top " << path << endl;
                 /*cout << "coord: ";
                 for(uint32_t k = 0; k < nAtt; k++){
                     cout << coordinates[k] << " , ";
