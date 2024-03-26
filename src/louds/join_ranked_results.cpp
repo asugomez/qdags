@@ -100,10 +100,15 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                 coordinatesTemp[k] = tupleQdags.coordinates[k];
             transformCoordinates(coordinatesTemp, l, diff_level, child);
 
-
-            // compute the weight of the tuple (ONLY if it's not a leaf)
-            double total_weight = 0;
-            if(cur_level != max_level) {
+            // compute the coordinates if it's a leaf
+            if(cur_level == max_level){
+                delete[] root_temp;
+                results_points.push_back(coordinatesTemp);
+                if(bounded_result && ++results >= UPPER_BOUND)
+                    return true;
+            } else{
+                // compute the weight of the tuple (ONLY if it's not a leaf)
+                double total_weight = 0;
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
@@ -127,15 +132,7 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
                         }
                     }
                 }
-            }
-            // compute the coordinates if it's a leaf
-            if(cur_level == max_level){
-                delete[] root_temp;
-                results_points.push_back(coordinatesTemp);
-                if(bounded_result && ++results >= UPPER_BOUND)
-                    return true;
-            }
-            else{ // insert the tuple
+                // insert the tuple
                 qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
                 pq.push(this_node); // add the tuple to the queue
             }
@@ -215,6 +212,7 @@ bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER
         for(uint64_t j = 0; j< A.size(); j++){
             cout << coordinates[j] << " ";
         }
+        cout << endl;
         i++;
     }
 
@@ -464,7 +462,6 @@ bool multiJoinRankedResultsBacktracking(vector<qdag> &Q, uint8_t type_priority_f
             cout << res.coordinates[k] << " ";
         }
         cout << endl;
-
     }
 
 

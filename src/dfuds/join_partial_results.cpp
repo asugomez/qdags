@@ -21,7 +21,7 @@ const uint8_t TYPE_FUN_DENSITY_LEAVES_DFUDS = 1;
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
 bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool bounded_result, uint64_t UPPER_BOUND,
-                 priority_queue<qdagWeight> &pq, uint8_t type_order_fun, uint64_t grid_size, vector<uint16_t*> results_points) {
+                 priority_queue<qdagWeight> &pq, uint8_t type_order_fun, uint64_t grid_size, vector<uint16_t*>& results_points) {
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
     uint32_t children;
@@ -94,9 +94,15 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                 coordinatesTemp[k] = tupleQdags.coordinates[k];
             transformCoordinates(coordinatesTemp, l, diff_level, child);
 
-            // compute the weight of the tuple (ONLY if it's not a leaf)
-            double total_weight = DBL_MAX;
-            if(cur_level != max_level) {
+            // compute the coordinates if it's a leaf
+            if(cur_level == max_level){
+                results_points.push_back(coordinatesTemp);
+                delete[] root_temp;
+                if(bounded_result && ++results >= UPPER_BOUND)
+                    return true;
+            } else{
+                // compute the weight of the tuple (ONLY if it's not a leaf)
+                double total_weight = DBL_MAX;
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
@@ -108,16 +114,7 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                 }
                 if(type_order_fun == TYPE_FUN_DENSITY_LEAVES_DFUDS) // density estimator, otherwise it's the number of leaves (min of the tuple)
                     total_weight /= grid_size;
-            }
-
-            // compute the coordinates if it's a leaf
-            if(cur_level == max_level){
-                results_points.push_back(coordinatesTemp);
-                delete[] root_temp;
-                if(bounded_result && ++results >= UPPER_BOUND)
-                    return true;
-            }
-            else{ // insert the tuple
+                // insert the tuple
                 qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
                 pq.push(this_node); // add the tuple to the queue
             }
@@ -198,6 +195,7 @@ bool multiJoinPartialResultsDfuds(vector<qdag_dfuds> &Q, bool bounded_result, ui
         for(uint64_t j = 0; j< A.size(); j++){
             cout << coordinates[j] << " ";
         }
+        cout << endl;
         i++;
     }
 

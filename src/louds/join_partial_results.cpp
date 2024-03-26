@@ -92,10 +92,16 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 coordinatesTemp[k] = tupleQdags.coordinates[k];
             transformCoordinates(coordinatesTemp, l, diff_level, child);
 
+            // compute the coordinates if it's a leaf
+            if(cur_level == max_level){
+                delete[] root_temp;
+                results_points.push_back(coordinatesTemp);
+                if(bounded_result && ++results >= UPPER_BOUND)
+                    return true;
+            } else{
+                // compute the weight of the tuple (ONLY if it's not a leaf)
+                double total_weight = DBL_MAX;
 
-            // compute the weight of the tuple (ONLY if it's not a leaf)
-            double total_weight = DBL_MAX;
-            if(cur_level != max_level) {
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
@@ -108,15 +114,7 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
                 }
                 if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                         total_weight /= grid_size;
-            }
-            // compute the coordinates if it's a leaf
-            if(cur_level == max_level){
-                delete[] root_temp;
-                results_points.push_back(coordinatesTemp);
-                if(bounded_result && ++results >= UPPER_BOUND)
-                    return true;
-            }
-            else{ // insert the tuple
+                // insert the tuple
                 qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
                 pq.push(this_node); // add the tuple to the queue
             }
@@ -193,6 +191,7 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
         for(uint64_t j = 0; j< A.size(); j++){
             cout << coordinates[j] << " ";
         }
+        cout << endl;
         i++;
     }
 
@@ -412,6 +411,7 @@ bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun
         for(uint64_t j = 0; j< A.size(); j++){
             cout << coordinates[j] << " ";
         }
+        cout << endl;
         i++;
     }
     for (uint64_t i = 0; i < Q.size(); i++)
