@@ -109,9 +109,9 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             path += tupleQdags.path; // add the bits to the bitvector
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
-                uint32_t coordinates[nAtt];
+                uint16_t coordinates[nAtt];
                 delete[] root_temp;
-                for(uint32_t k = 0; k < nAtt; k++){
+                for(uint16_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
                 }
                 getCoordinates(path, l, max_level, coordinates);
@@ -347,8 +347,8 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         }
 
         if(cur_level== 0){ // finish the recursion
-            uint32_t coordinates[nAtt];
-            for(uint32_t k = 0; k < nAtt; k++){
+            uint16_t coordinates[nAtt];
+            for(uint16_t k = 0; k < nAtt; k++){
                 coordinates[k] = 0;
             }
             cout << "number of results: " << top_results.size() << endl;

@@ -188,14 +188,14 @@ int main(int argc, char **argv) {
 
 
     start = high_resolution_clock::now();
-    cout << "--> LOUDS <--" << endl;
-    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-    Join_Result = multiJoin(Q, true, 1000);
-    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
-    multiJoinPartialResults(Q, true, 1000, 0, 0);
-    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
-    multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
-
+//    cout << "--> LOUDS <--" << endl;
+//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+//    Join_Result = multiJoin(Q, true, 1000);
+//    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+//    multiJoinPartialResults(Q, true, 1000, 0, 0);
+//    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
+//    multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
+//
 
     cout << "--> DFUDS <--" << endl;
     multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, 0, 0);

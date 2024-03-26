@@ -436,7 +436,7 @@ public:
     }
 
     size_type_bv leaf_num(size_type_bp node_v) const{
-        cout << "node_v = " << node_v << endl;
+//        cout << "node_v = " << node_v << endl;
 //        cout << "fwd_search(node_v-1, -1)= " << fwd_search(node_v-1, -1) << endl;
 //        cout << "leaf_rank(fwd_search(node_v-1, -1) + 1)= " << leaf_rank(fwd_search(node_v-1, -1) + 1) << endl;
 //        cout << "leaf_rank(node_v)= " << leaf_rank(node_v) << endl;

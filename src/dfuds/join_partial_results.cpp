@@ -86,10 +86,14 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
         uint64_t path;
 
         for (i = 0; i < children_to_recurse_size; ++i) {
-            uint64_t* root_temp= new uint64_t[nQ];
+            uint64_t* root_temp = new uint64_t[nQ];
+            uint16_t* coordinatesTemp = new uint16_t[l];
             // ex: 1011 --> children_to_recurse = [0,2,3]
             child = children_to_recurse[i]; // the index of children where we have 1
 
+            for(uint16_t k = 0; k < l; k++)
+                coordinatesTemp[k] = tupleQdags.coordinates[k];
+            transformCoordinates(coordinatesTemp, l, diff_level, child);
             // compute the weight of the tuple (ONLY if it's not a leaf)
             double total_weight = DBL_MAX;
             if(cur_level != max_level) {
@@ -98,7 +102,7 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
                     uint64_t n_leaves_child_node = Q[j]->get_num_leaves(root_temp[j]);
-                    cout << "n_leaves_child_node: " << n_leaves_child_node << endl;
+//                    cout << "n_leaves_child_node: " << n_leaves_child_node << endl;
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
                     }
@@ -109,30 +113,39 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
             // --> add the child to the path
             path = child << (diff_level * l); // height * bits to represent the children
             path += tupleQdags.path; // add the bits to the bitvector
+
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
-                uint32_t coordinates[nAtt];
                 delete[] root_temp;
-                for(uint32_t k = 0; k < nAtt; k++){
+//                delete[] tupleQdags.roots;
+                uint16_t coordinates[nAtt];
+                for(uint16_t k = 0; k < nAtt; k++){
                     coordinates[k] = 0;
                 }
                 getCoordinates(path, l, max_level, coordinates);
-//                cout << endl;
-//                cout << "nro result: " << results << endl;
-//                cout << "top " << path << endl;
-                /*cout << "coord: ";
-                for(uint32_t k = 0; k < nAtt; k++){
+                cout << endl;
+                cout << "nro result: " << results << endl;
+                cout << "top " << path << endl;
+                cout << "coord: " << endl;
+                for(uint16_t k = 0; k < l; k++){
                     cout << coordinates[k] << " , ";
                 }
-                cout << endl;*/
+                cout << "path: " << path << endl;
+                for(uint16_t k = 0; k < l; k++){
+                    cout << coordinatesTemp[k] << " , ";
+                }
+                cout << endl;
+                delete[] coordinatesTemp;
                 if(bounded_result && ++results >= UPPER_BOUND)
                     return true;
             }
             else{ // insert the tuple
-                qdagWeight this_node = {next_level, root_temp, total_weight, path} ;
+                //delete[] tupleQdags.coordinates;
+                qdagWeight this_node = {next_level, root_temp, total_weight, path, coordinatesTemp} ;
                 pq.push(this_node); // add the tuple to the queue
             }
         }
+//        delete[] tupleQdags.coordinates;
     }
 
     cout << "number of results: " << results << endl;
@@ -191,9 +204,13 @@ bool multiJoinPartialResultsDfuds(vector<qdag_dfuds> &Q, bool bounded_result, ui
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
+    //uint16_t l = (uint16_t) log2(Q[0].nChildren());
+    uint16_t coordinates[A.size()];
+    for(uint16_t i = 0; i < A.size(); i++)
+        coordinates[i] = 0;
 
     priority_queue<qdagWeight> pq; // maxHeap
-    pq.push({0, Q_roots, 1, 0}); // insert the root of the qda
+    pq.push({0, Q_roots, 1, 0, coordinates}); // insert the root of the qda
     AND_partial_dfuds(Q_star, Q.size(),
                 max_level, A.size(),
                 bounded_result, UPPER_BOUND,
