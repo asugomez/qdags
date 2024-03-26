@@ -10,17 +10,28 @@ const uint8_t TYPE_FUN_DENSITY_LEAVES = 1;
  *
  * @param Q set of qdags.
  * @param nQ number of Qdags
- * @param max_level of the qdag
  * @param nAtt number of attributes of the final quadtree.
  * @param bounded_result if we have to stop computing the results after a certain number of tuples.
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
- * @param pq the priority queue to store the tuples.
- * @param type_order_fun 0 num leaves, 1 density. Only taking into account if partial_results is false.
+ * @param max_level of the qdag
  * @param grid_size the size of the grid. Needed when type_order_fun is 1.
+ * @param type_order_fun 0 num leaves, 1 density. Only taking into account if partial_results is false.
+ * @param pq the priority queue to store the tuples.
+ * @param results_points vector with the coordinates of the output.
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
-bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool bounded_result, uint64_t UPPER_BOUND,
-                 priority_queue<qdagWeight> &pq, uint8_t type_order_fun, uint64_t grid_size, vector<uint16_t*>& results_points) {
+bool AND_partial(
+        qdag *Q[],
+        uint16_t nQ,
+        uint64_t nAtt,
+        bool bounded_result,
+        uint64_t UPPER_BOUND,
+        uint64_t max_level,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        priority_queue<qdagWeight> &pq,
+        vector<uint16_t *> &results_points) {
+
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
     uint32_t children;
@@ -101,7 +112,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             } else{
                 // compute the weight of the tuple (ONLY if it's not a leaf)
                 double total_weight = DBL_MAX;
-
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
@@ -128,13 +138,19 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
  * @param Q vector of qdags
  * @param bounded_result if we have to stop computing the results after a certain number of tuples.
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
- * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
  * @param grid_size the size of the grid. Needed when type_order_fun is 1.
- * @param size_queue the size of the priority queue. -1 if we don't want to limit the size of the queue.
+ * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
+ * @param results_points vector with the coordinates of the output.
  * @return
  */
-bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND, uint8_t type_order_fun,
-                             uint64_t grid_size, vector<uint16_t*>& results_points) {
+bool multiJoinPartialResults(
+        vector<qdag> &Q,
+        bool bounded_result,
+        uint64_t UPPER_BOUND,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        vector<uint16_t *> &results_points) {
+
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -179,10 +195,10 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
 
     priority_queue<qdagWeight> pq; // maxHeap
     pq.push({0, Q_roots, 1, coordinates}); // insert the root of the qda
-    AND_partial(Q_star, Q.size(),
-                max_level, A.size(),
+    AND_partial(Q_star, Q.size(), A.size(),
                 bounded_result, UPPER_BOUND,
-                pq, type_order_fun, grid_size, results_points);
+                max_level, grid_size, type_order_fun,
+                pq, results_points);
 
     cout << "number of results: " << results_points.size() << endl;
     uint64_t i=0;
@@ -204,26 +220,33 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
 
 /**
  * AND algorithm that will return the top k results.
- * We only visit the first k results
- *  TODO: pregunta? que pasa si el join era vacío? como me devuelvo?
- *  TODO: tiene sentido backtracking aquí? no hay nmayor prioridad
+ * We only visit the first k results.
  * @param Q
+ * @param nQ number of Qdags.
+ * @param nAtt number of attributes of the final quadtree.
  * @param roots
- * @param nQ
  * @param cur_level
- * @param max_level
- * @param outputPath
- * @param nAtt
- * @param type_order_fun
+ * @param max_level maximum level of the qdag.
  * @param grid_size
- * @param pq
- * @param size_queue
+ * @param type_order_fun 0 sum , 1 maximum. Only taking into account if partial_results is true.
+ * @param coordinates
+ * @param size_queue the size of the priority queue.
+ * @param top_results a vector with the points coordinates of the output.
  * @return
  */
-bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
-         uint16_t cur_level, uint16_t max_level, uint64_t nAtt,
-         uint16_t* coordinates, uint8_t type_order_fun, uint64_t grid_size,
-         vector<uint16_t*>& top_results, uint64_t size_queue) {
+bool
+AND_partial_backtracking(
+        qdag *Q[],
+        uint16_t nQ,
+        uint64_t nAtt,
+        uint64_t *roots,
+        uint16_t cur_level,
+        uint16_t max_level,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        uint16_t *coordinates,
+        uint64_t size_queue,
+        vector<uint16_t*> &top_results) {
 
     if(top_results.size() >= size_queue){
         cout << "number of results up: " << top_results.size() << endl;
@@ -346,8 +369,9 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         for (i = 0; i < children_to_recurse_size; ++i) {
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
-            AND_partial_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, nAtt,
-                                     order.coordinates, type_order_fun, grid_size, top_results, size_queue);
+            AND_partial_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, grid_size,
+                                     type_order_fun,
+                                     order.coordinates, size_queue, top_results);
         }
 
     }
@@ -356,7 +380,22 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
 }
 
 
-bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun, uint64_t grid_size, int64_t size_queue, vector<uint16_t*>& top_results){
+/**
+ *
+ * @param Q
+ * @param grid_size
+ * @param type_order_fun
+ * @param size_queue the size of the priority queue. In this case is a vector.
+ * @param top_results the vector to store the top results (output).
+ * @return
+ */
+bool
+multiJoinPartialResultsBacktracking(
+        vector<qdag> &Q,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        int64_t size_queue,
+        vector<uint16_t *> &top_results) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -400,9 +439,9 @@ bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun
     for(uint16_t i = 0; i < A.size(); i++)
         coordinates[i] = 0;
 
-    AND_partial_backtracking(Q_star, Q_roots, Q.size(), 0, max_level, A.size(),
-                             coordinates, type_order_fun, grid_size,
-                             top_results, size_queue);
+    AND_partial_backtracking(Q_star, Q.size(), A.size(), Q_roots, 0, max_level, grid_size, type_order_fun,
+                             coordinates, size_queue,
+                             top_results);
 
     cout << "number of results: " << top_results.size() << endl;
     uint64_t i=0;

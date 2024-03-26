@@ -332,6 +332,17 @@ public:
         return Q;
     }
 
+    /**
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Useful for the range Maximum query
+     * @param node
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     */
+    bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
+        return Q->get_range_leaves(node, init, end);
+    }
+
 };
 
 

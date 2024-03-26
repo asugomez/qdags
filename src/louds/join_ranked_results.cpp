@@ -21,16 +21,24 @@ const uint8_t TYPE_FUN_PRI_MAX = 1;
  * @param pq the priority queue to store the tuples.
  * @param type_priority_fun 0 sum , 1 maximum. Only taking into account if partial_results is true.
  * @param priorities the priorities of the points.
+ * @param rMq the rmq structure to get the minimum priority in a range.
+ * @param results_points the output.
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
-bool AND_ranked(qdag *Q[], uint16_t nQ,
-                uint64_t max_level, uint64_t nAtt, bool bounded_result, uint64_t UPPER_BOUND,
-                priority_queue<qdagWeight> &pq, uint8_t type_priority_fun, vector<int_vector<>> &priorities, vector<uint16_t*>& results_points ) {
+bool AND_ranked(
+        qdag *Q[],
+        uint16_t nQ,
+        uint64_t max_level,
+        uint64_t nAtt,
+        bool bounded_result,
+        uint64_t UPPER_BOUND,
+        priority_queue<qdagWeight> &pq,
+        uint8_t type_priority_fun,
+        vector<int_vector<>> &priorities,
+        vector<rmq_succinct_sct<false>> &rMq,
+        vector<uint16_t*>& results_points ) {
+
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
-    vector<rmq_succinct_sct<false>> rMq; // vector of rMq for each qdag
-    for(uint64_t i = 0; i < nQ; i++){
-        rMq.push_back(rmq_succinct_sct<false>(&priorities[i]));
-    }
     uint64_t k_d[nQ];
     uint32_t children;
     uint16_t children_to_recurse[p];
@@ -150,10 +158,19 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
  * @param type_priority_fun 0 sum , 1 maximum. (p1+p2+...+pn) or max(p1,p2,...,pn)
  * @param size_queue the size of the priority queue.
  * @param priorities the priorities of the points. We have a vector of priorities for each qdag.
+ * @param rMq the rmq structure to get the minimum priority in a range.
+ * @param results_points vector with the output
  * @return
  */
-bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
-                            uint8_t type_priority_fun, vector<int_vector<>> &priorities, vector<uint16_t*> results_points) {
+bool multiJoinRankedResults(
+        vector<qdag> &Q,
+        bool bounded_result,
+        uint64_t UPPER_BOUND,
+        uint8_t type_priority_fun,
+        vector<int_vector<>> &priorities,
+        vector<rmq_succinct_sct<false>> &rMq,
+        vector<uint16_t*> results_points) {
+
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     // iterar por el vector de los qdags
@@ -203,7 +220,8 @@ bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER
     AND_ranked(Q_star, Q.size(),
                max_level, A.size(),
                bounded_result, UPPER_BOUND,
-               pq, type_priority_fun, priorities, results_points);
+               pq, type_priority_fun,
+               priorities, rMq, results_points);
 
     cout << "number of results: " << results_points.size() << endl;
     uint64_t i=0;
@@ -225,22 +243,36 @@ bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER
 
 
 /**
- * Computing the join in a certain order. After computing size_queue results, we will stop computing the results.
+ * * Computing the join in a certain order. After computing size_queue results, we will stop computing the results.
  * @param Q
  * @param nQ number of Qdags
- * @param max_level of the qdag
  * @param nAtt number of attributes of the final quadtree.
- * @param pq the priority queue to store the tuples.
- * @param size_queue the size of the priority queue.
+ * @param roots
+ * @param cur_level
+ * @param max_level maximum level of the qdag
  * @param type_priority_fun 0 sum , 1 maximum. Only taking into account if partial_results is true.
+ * @param coordinates
+ * @param size_queue the size of the priority queue.
  * @param priorities the priorities of the points.
+ * @param rMq the rmq structure to get the minimum priority in a range.
+ * @param top_results the priority queue to store the top results (output).
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
-bool AND_ranked_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
-                              uint16_t cur_level, uint16_t max_level, uint64_t nAtt,
-                              uint16_t* coordinates, uint8_t type_priority_fun,
-                              priority_queue<qdagResults>& top_results, uint64_t size_queue,
-                              vector<int_vector<>> &priorities, vector<rmq_succinct_sct<false>> &rMq) {
+bool
+AND_ranked_backtracking(
+        qdag *Q[],
+        uint16_t nQ,
+        uint64_t nAtt,
+        uint64_t *roots,
+        uint16_t cur_level,
+        uint16_t max_level,
+        uint8_t type_priority_fun,
+        uint16_t *coordinates,
+        uint64_t size_queue,
+        vector<int_vector<>> &priorities,
+        vector<rmq_succinct_sct<false>> &rMq,
+        priority_queue<qdagResults> &top_results) {
+
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag (extended)
     bool just_zeroes = true;
     uint64_t k_d[nQ];
@@ -391,15 +423,31 @@ bool AND_ranked_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         for (i = 0; i < children_to_recurse_size; ++i) {
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
-            AND_ranked_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, nAtt,
-                                    order.coordinates, type_priority_fun, top_results, size_queue,
-                                     priorities, rMq);
+            AND_ranked_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, type_priority_fun,
+                                    order.coordinates, size_queue,
+                                    priorities, rMq, top_results);
         }
     }
     return !just_zeroes;
 }
 
-bool multiJoinRankedResultsBacktracking(vector<qdag> &Q, uint8_t type_priority_fun, int64_t size_queue, vector<int_vector<>> &priorities, priority_queue<qdagResults>& top_results) {
+/**
+ *
+ * @param Q
+ * @param type_priority_fun 0 sum , 1 maximum. Only taking into account if partial_results is true.
+ * @param size_queue the size of the priority queue.
+ * @param rMq the rmq structure to get the minimum priority in a range.
+ * @param priorities the priorities of the points.
+ * @param top_results the priority queue to store the top results (output).
+ * @return
+ */
+bool multiJoinRankedResultsBacktracking(
+        vector<qdag> &Q,
+        uint8_t type_priority_fun,
+        int64_t size_queue,
+        vector<int_vector<>> &priorities,
+        vector<rmq_succinct_sct<false>> &rMq,
+        priority_queue<qdagResults>& top_results) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     // iterar por el vector de los qdags
@@ -443,15 +491,13 @@ bool multiJoinRankedResultsBacktracking(vector<qdag> &Q, uint8_t type_priority_f
     for(uint16_t i = 0; i < A.size(); i++)
         coordinates[i] = 0;
 
-    vector<rmq_succinct_sct<false>> rMq;
-    for(uint64_t i = 0; i < Q.size(); i++){ // TODO: esto hacerlo aqui o antes?
-        rMq.push_back(rmq_succinct_sct<false>(&priorities[i]));
-    }
-
-    AND_ranked_backtracking(Q_star, Q_roots, Q.size(),
-                            0, max_level, A.size(),
-                            coordinates, type_priority_fun,
-                            top_results, size_queue, priorities, rMq);
+    AND_ranked_backtracking(Q_star, Q.size(),
+                            A.size(), Q_roots,
+                            0, max_level,
+                            type_priority_fun,
+                            coordinates, size_queue,
+                            priorities, rMq,
+                            top_results);
 
     uint64_t size_queue_top = top_results.size();
     cout << "number of results jeje: " << top_results.size() << endl;
