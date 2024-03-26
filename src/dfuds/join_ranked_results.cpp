@@ -130,7 +130,7 @@ bool AND_ranked(
                     uint64_t end = priorities[j].size()-1;
                     // TODO: see this: what to do when i-th bit is 0?
                     uint64_t priority_ith_node = 0;
-                    bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+                    bool success = Q[j]->get_range_leaves(Q[j]->getM(child),init,end);
                     if(success){
                         bit_vector::size_type min_idx = rMq[j](init, end);
                         priority_ith_node = priorities[j][min_idx];
@@ -404,7 +404,7 @@ AND_ranked_backtracking(
                 uint64_t end = priorities[j].size()-1;
                 // TODO: see this: what to do when i-th bit is 0?
                 uint64_t priority_ith_node = 0;
-                bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+                bool success = Q[j]->get_range_leaves(Q[j]->getM(child),init,end);
                 if(success){
                     bit_vector::size_type min_idx = rMq[j](init, end);
                     priority_ith_node = priorities[j][min_idx];

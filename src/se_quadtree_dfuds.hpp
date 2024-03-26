@@ -347,6 +347,29 @@ public:
         return bp_b.rank_zero_zero(node_v);
     }
 
+    /**
+     *
+     * @param node_v
+     * @return The next sibling of node v, if it exists.
+     */
+    size_type_bp next_sibling(size_type_bp node_v)const{
+        // B[open(B,v-1) - 1] == 1
+        assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
+        return fwd_search(node_v-1,-1) + 1;
+    }
+
+    /**
+     *
+     * @param node_v
+     * @return The previous sibling of node v, if it exists.
+     */
+    size_type_bp preceding_sibling(size_type_bp node_v)const{
+        // B[v-2, v-1] != [1,0]
+        assert(!bp_b.is_open(node_v - 2)); // 1
+        assert(bp_b.is_open(node_v - 1)); // 0
+        return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
+    }
+
 //    // select_0(B,v)
 //    size_type_bp select_zero(size_type_bp node_v){
 //        return bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
@@ -386,18 +409,7 @@ public:
         return bp_b.find_close(node_v) + 1;
     }
 
-    size_type_bp next_sibling(size_type_bp node_v)const{
-        // B[open(B,v-1) - 1] == 1
-        assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
-        return fwd_search(node_v-1,-1) + 1;
-    }
 
-    size_type_bp preceding_sibling(size_type_bp node_v)const{
-        // B[v-2, v-1] != [1,0]
-        assert(bp_b.is_open(node_v - 2)); // 1
-        assert(! bp_b.is_open(node_v - 1)); // 0
-        return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
-    }
 
     size_type_bp parent(size_type_bp node_v)const{
         assert(node_v != 3);
@@ -408,36 +420,61 @@ public:
         return bit_vector_b->get_int(node_v,1) == 0;
     }*/
 
-    // size of the subtree (counting the node_v)
+    /**
+     *
+     * @param node_v
+     * @return Number of nodes in the subtree of node_v, counting node_v.
+     */
     size_type_bv subtree(size_type_bp node_v)const{
         // (fwdsearch(B, v-1, -1) - v)/2 + 1
         assert(node_v >= 3);
         return (fwd_search(node_v -1, -1) - node_v)/2 + 1;
     }
 
+    /**
+     *
+     * @param node_v
+     * @return Number of children of node v.
+     */
     size_type_bv children(size_type_bp node_v) const{
         assert(node_v >= 3);
         return succ_zero(node_v) - node_v;
     }
-/*
+
+    /**
+     *
+     * @param node_v
+     * @param t
+     * @return The t-th child of node v, if it exists
+     */
     size_type_bv child(size_type_bp node_v, size_type_bp t) const{
         return bp_b.find_close(succ_zero(node_v));// - t) + 1;
     }
 
+    /**
+     *
+     * @param node_v
+     * @return The t such that node v is the tth child of its parent.
+     */
     size_type_bv childrank(size_type_bp node_v) const{
         size_type_bv p = bp_b.find_open(node_v - 1);
         return succ_zero(p) - p;
     }
 
 
-    // numbers of 1s per level til node_v
-
+    /**
+     * @param node_v
+     * @return The number of leaves to the left of node v, plus 1.
      */
-
     size_type_bv leaf_rank(size_type_bp node_v) const{
         return rank_zero_zero(node_v-1) + 1;
     }
 
+    /**
+     *
+     * @param node_v
+     * @return The number of leaves in the subtree of node v.
+     */
     size_type_bv leaf_num(size_type_bp node_v) const{
 //        cout << "node_v = " << node_v << endl;
 //        cout << "fwd_search(node_v-1, -1)= " << fwd_search(node_v-1, -1) << endl;
@@ -621,6 +658,11 @@ public:
         return nd;
     }
 
+    /**
+     *
+     * @param node
+     * @return The bits of the node of the tree that are descendants of the node.
+     */
     inline uint8_t get_node_last_level(uint64_t node) {
         uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
         if(k_d == 4){
@@ -630,7 +672,18 @@ public:
         }
     }
 
-
+    /**
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Useful for the range Maximum query
+     * @param node
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     */
+    bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
+        init = leaf_rank(node);
+        end = leaf_rank(next_sibling(node));
+        return init < end;
+    }
 
 
 };
