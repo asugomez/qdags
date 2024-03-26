@@ -243,7 +243,7 @@ int main(int argc, char **argv) {
 
     cout << "----- MULTI JOIN RANKED RESULTS DFUDS------" << endl;
     start = high_resolution_clock::now();
-    multiJoinRankedResults(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    //multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
@@ -252,7 +252,7 @@ int main(int argc, char **argv) {
 
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING DFUDS------" << endl;
     start = high_resolution_clock::now();
-    multiJoinRankedResultsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    //multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();

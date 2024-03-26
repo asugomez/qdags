@@ -30,7 +30,7 @@ const uint8_t TYPE_FUN_PRI_MAX_DFUDS = 1;
  * @param results_points the output.
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
-bool AND_ranked(
+bool AND_ranked_dfuds(
         qdag_dfuds *Q[],
         uint16_t nQ,
         uint64_t max_level,
@@ -125,7 +125,8 @@ bool AND_ranked(
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
-                    root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                    //root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                    root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
                     // TODO: see this: what to do when i-th bit is 0?
@@ -167,7 +168,7 @@ bool AND_ranked(
  * @param results_points vector with the output
  * @return
  */
-bool multiJoinRankedResults(
+bool multiJoinRankedResultsDfuds(
         vector<qdag_dfuds> &Q,
         bool bounded_result,
         uint64_t UPPER_BOUND,
@@ -222,7 +223,7 @@ bool multiJoinRankedResults(
     priority_queue<qdagWeight> pq;
     pq.push({0, Q_roots, 1, coordinates}); // insert the root of the qdag
 
-    AND_ranked(Q_star, Q.size(),
+    AND_ranked_dfuds(Q_star, Q.size(),
                max_level, A.size(),
                bounded_result, UPPER_BOUND,
                pq, type_priority_fun,
@@ -264,7 +265,7 @@ bool multiJoinRankedResults(
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
 bool
-AND_ranked_backtracking(
+AND_ranked_dfuds_backtracking(
         qdag_dfuds *Q[],
         uint16_t nQ,
         uint64_t nAtt,
@@ -399,7 +400,8 @@ AND_ranked_backtracking(
             // compute the weight of the tuple
             double total_weight = 0;
             for (uint64_t j = 0; j < nQ; j++) {
-                root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                //root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                root_temp[i][j] = (rank_vector[j][Q[j]->getM(child)]);
                 uint64_t init = 0;
                 uint64_t end = priorities[j].size()-1;
                 // TODO: see this: what to do when i-th bit is 0?
@@ -428,7 +430,7 @@ AND_ranked_backtracking(
         for (i = 0; i < children_to_recurse_size; ++i) {
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
-            AND_ranked_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, type_priority_fun,
+            AND_ranked_dfuds_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, type_priority_fun,
                                     order.coordinates, size_queue,
                                     priorities, rMq, top_results);
         }
@@ -446,7 +448,7 @@ AND_ranked_backtracking(
  * @param top_results the priority queue to store the top results (output).
  * @return
  */
-bool multiJoinRankedResultsBacktracking(
+bool multiJoinRankedResultsDfudsBacktracking(
         vector<qdag_dfuds> &Q,
         uint8_t type_priority_fun,
         int64_t size_queue,
@@ -496,7 +498,7 @@ bool multiJoinRankedResultsBacktracking(
     for(uint16_t i = 0; i < A.size(); i++)
         coordinates[i] = 0;
 
-    AND_ranked_backtracking(Q_star, Q.size(),
+    AND_ranked_dfuds_backtracking(Q_star, Q.size(),
                             A.size(), Q_roots,
                             0, max_level,
                             type_priority_fun,

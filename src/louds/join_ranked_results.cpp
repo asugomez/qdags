@@ -223,16 +223,16 @@ bool multiJoinRankedResults(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
-    uint64_t i=0;
-    while(i < results_points.size()){
-        uint16_t* coordinates = results_points[i];
-        for(uint64_t j = 0; j< A.size(); j++){
-            cout << coordinates[j] << " ";
-        }
-        cout << endl;
-        i++;
-    }
+//    cout << "number of results: " << results_points.size() << endl;
+//    uint64_t i=0;
+//    while(i < results_points.size()){
+//        uint16_t* coordinates = results_points[i];
+//        for(uint64_t j = 0; j< A.size(); j++){
+//            cout << coordinates[j] << " ";
+//        }
+//        cout << endl;
+//        i++;
+//    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
@@ -500,15 +500,15 @@ bool multiJoinRankedResultsBacktracking(
                             top_results);
 
     uint64_t size_queue_top = top_results.size();
-    cout << "number of results jeje: " << top_results.size() << endl;
-    for(uint64_t i=0; i<size_queue_top; i++){
-        qdagResults res = top_results.top();
-        top_results.pop();
-        for(uint64_t k=0; k<A.size(); k++) {
-            cout << res.coordinates[k] << " ";
-        }
-        cout << endl;
-    }
+//    cout << "number of results jeje: " << top_results.size() << endl;
+//    for(uint64_t i=0; i<size_queue_top; i++){
+//        qdagResults res = top_results.top();
+//        top_results.pop();
+//        for(uint64_t k=0; k<A.size(); k++) {
+//            cout << res.coordinates[k] << " ";
+//        }
+//        cout << endl;
+//    }
 
 
     for (uint64_t i = 0; i < Q.size(); i++)

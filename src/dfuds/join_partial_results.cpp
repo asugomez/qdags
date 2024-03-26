@@ -204,16 +204,16 @@ bool multiJoinPartialResultsDfuds(
                       pq, results_points);
 
 
-    cout << "number of results: " << results_points.size() << endl;
-    uint64_t i=0;
-    while(i < results_points.size()){
-        uint16_t* coordinates = results_points[i];
-        for(uint64_t j = 0; j< A.size(); j++){
-            cout << coordinates[j] << " ";
-        }
-        cout << endl;
-        i++;
-    }
+//    cout << "number of results: " << results_points.size() << endl;
+//    uint64_t i=0;
+//    while(i < results_points.size()){
+//        uint16_t* coordinates = results_points[i];
+//        for(uint64_t j = 0; j< A.size(); j++){
+//            cout << coordinates[j] << " ";
+//        }
+//        cout << endl;
+//        i++;
+//    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
@@ -352,8 +352,10 @@ bool AND_partial_dfuds_backtracking(
             // compute the weight of the tuple
             double total_weight = DBL_MAX;
             for (uint64_t j = 0; j < nQ; j++) {
-                root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                uint64_t n_leaves_child_node = Q[j]->get_num_leaves(Q[j]->getM(child));
+                //root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                //uint64_t n_leaves_child_node = Q[j]->get_num_leaves(Q[j]->getM(child));
+                root_temp[i][j] = (rank_vector[j][Q[j]->getM(child)]);
+                uint64_t n_leaves_child_node = Q[j]->get_num_leaves(root_temp[i][j]);
                 if (n_leaves_child_node < total_weight) {
                     total_weight = n_leaves_child_node;
                 }
@@ -397,7 +399,7 @@ bool multiJoinPartialResultsDfudsBacktracking(
         uint8_t type_order_fun,
         int64_t size_queue,
         vector<uint16_t *> &top_results) {
-    
+
     qdag_dfuds::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -445,16 +447,16 @@ bool multiJoinPartialResultsDfudsBacktracking(
                                    coordinates, size_queue,
                                    top_results);
 
-    cout << "number of results: " << top_results.size() << endl;
-    uint64_t i=0;
-    while(i < top_results.size()){
-        uint16_t* coordinates = top_results[i];
-        for(uint64_t j = 0; j< A.size(); j++){
-            cout << coordinates[j] << " ";
-        }
-        cout << endl;
-        i++;
-    }
+//    cout << "number of results: " << top_results.size() << endl;
+//    uint64_t i=0;
+//    while(i < top_results.size()){
+//        uint16_t* coordinates = top_results[i];
+//        for(uint64_t j = 0; j< A.size(); j++){
+//            cout << coordinates[j] << " ";
+//        }
+//        cout << endl;
+//        i++;
+//    }
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
 

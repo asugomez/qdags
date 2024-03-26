@@ -604,7 +604,6 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
  * @return a quadtree (qdag not extended) with the result of the multi join.
  */
 qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
-    cout << "call to multi join" << endl;
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
@@ -664,7 +663,7 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
         cout << endl;
     }*/
 
-    cout << "number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
+//    cout << "number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
 
     //cout << endl;
 
