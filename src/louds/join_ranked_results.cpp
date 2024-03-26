@@ -131,10 +131,6 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 delete[] root_temp;
-                for(uint16_t k = 0; k < l; k++){
-                    cout << coordinatesTemp[k] << " ";
-                }
-                cout << endl;
                 results_points.push_back(coordinatesTemp);
                 if(bounded_result && ++results >= UPPER_BOUND)
                     return true;
@@ -146,7 +142,6 @@ bool AND_ranked(qdag *Q[], uint16_t nQ,
         }
 
     }
-    cout << "number of results: " << results << endl;
     return true;
 }
 
@@ -212,6 +207,16 @@ bool multiJoinRankedResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER
                max_level, A.size(),
                bounded_result, UPPER_BOUND,
                pq, type_priority_fun, priorities, results_points);
+
+    cout << "number of results: " << results_points.size() << endl;
+    uint64_t i=0;
+    while(i < results_points.size()){
+        uint16_t* coordinates = results_points[i];
+        for(uint64_t j = 0; j< A.size(); j++){
+            cout << coordinates[j] << " ";
+        }
+        i++;
+    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];

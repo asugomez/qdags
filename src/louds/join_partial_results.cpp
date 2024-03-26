@@ -112,10 +112,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 delete[] root_temp;
-                for(uint16_t k = 0; k < l; k++){
-                    cout << coordinatesTemp[k] << " , ";
-                }
-                cout << endl;
                 results_points.push_back(coordinatesTemp);
                 if(bounded_result && ++results >= UPPER_BOUND)
                     return true;
@@ -126,7 +122,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             }
         }
     }
-    cout << "number of results: " << results << endl;
     return true;
 }
 
@@ -191,6 +186,16 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
                 bounded_result, UPPER_BOUND,
                 pq, type_order_fun, grid_size, results_points);
 
+    cout << "number of results: " << results_points.size() << endl;
+    uint64_t i=0;
+    while(i < results_points.size()){
+        uint16_t* coordinates = results_points[i];
+        for(uint64_t j = 0; j< A.size(); j++){
+            cout << coordinates[j] << " ";
+        }
+        i++;
+    }
+
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
 
@@ -222,7 +227,7 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
          vector<uint16_t*>& top_results, uint64_t size_queue) {
 
     if(top_results.size() >= size_queue){
-        cout << "number of results: " << top_results.size() << endl;
+        cout << "number of results up: " << top_results.size() << endl;
         return true;
     }
     // number of children of the qdag (extended)
@@ -271,11 +276,6 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
             for(uint16_t k = 0; k < l; k++)
                 coordinatesTemp[k] = coordinates[k];
             transformCoordinates(coordinatesTemp, l, diff_level, child);
-
-            for(uint16_t k = 0; k < l; k++){
-                cout << coordinatesTemp[k] << " , ";
-            }
-            cout << endl;
 
             top_results.push_back(coordinatesTemp);
             just_zeroes = false;
@@ -353,7 +353,6 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
     }
 
-    cout << "number of results: " << top_results.size() << endl;
     return !just_zeroes;
 }
 
@@ -406,6 +405,15 @@ bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun
                              coordinates, type_order_fun, grid_size,
                              top_results, size_queue);
 
+    cout << "number of results: " << top_results.size() << endl;
+    uint64_t i=0;
+    while(i < top_results.size()){
+        uint16_t* coordinates = top_results[i];
+        for(uint64_t j = 0; j< A.size(); j++){
+            cout << coordinates[j] << " ";
+        }
+        i++;
+    }
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
 

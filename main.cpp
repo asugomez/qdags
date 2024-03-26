@@ -212,7 +212,6 @@ int main(int argc, char **argv) {
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
     //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
-    //bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 6); // warmup join -> activar el caché
     int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
     vector<int_vector<>> p;
@@ -221,10 +220,14 @@ int main(int argc, char **argv) {
     //qdag_rel_R.create_dfuds();
     //qdag_rel_R.printBv();
 
+    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    multiJoinPartialResults(Q, true, 1000, 1, grid_side, results_partial_louds); // warmup join -> activar el caché
+    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
+    multiJoinPartialResultsBacktracking(Q,1, grid_side, 1000, results_partial_louds_back);
     cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
     multiJoinRankedResults(Q, true, 1000, 1, p, results_ranked_louds); // warmup join -> activar el caché
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING------" << endl;
-    multiJoinRankedResultsBacktracking(Q, 1, 20, p2, results_ranked_louds_back); // warmup join -> activar el caché
+    multiJoinRankedResultsBacktracking(Q, 1, 1000, p2, results_ranked_louds_back); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

@@ -112,10 +112,6 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
 
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
-                for(uint16_t k = 0; k < l; k++){
-                    cout << coordinatesTemp[k] << " ";
-                }
-                cout << endl;
                 results_points.push_back(coordinatesTemp);
                 delete[] root_temp;
                 if(bounded_result && ++results >= UPPER_BOUND)
@@ -127,8 +123,6 @@ bool AND_partial_dfuds(qdag_dfuds *Q[], uint16_t nQ, uint64_t max_level, uint64_
             }
         }
     }
-
-    cout << "number of results: " << results << endl;
     return true;
 }
 
@@ -195,6 +189,17 @@ bool multiJoinPartialResultsDfuds(vector<qdag_dfuds> &Q, bool bounded_result, ui
                 max_level, A.size(),
                 bounded_result, UPPER_BOUND,
                 pq, type_order_fun, grid_size, results_points);
+
+
+    cout << "number of results: " << results_points.size() << endl;
+    uint64_t i=0;
+    while(i < results_points.size()){
+        uint16_t* coordinates = results_points[i];
+        for(uint64_t j = 0; j< A.size(); j++){
+            cout << coordinates[j] << " ";
+        }
+        i++;
+    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
