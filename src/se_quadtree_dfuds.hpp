@@ -276,8 +276,11 @@ public:
 
     ~se_quadtree_dfuds() {
         ref_count--;
+        //bit_vector_b
+        //bp_b
+        //bv_s
         if(ref_count == 0){
-            delete bit_vector_b;
+            //delete bit_vector_b;
             //delete bv_s;
         }
     }

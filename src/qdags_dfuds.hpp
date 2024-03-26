@@ -119,9 +119,9 @@ public:
     }
 
     ~qdag_dfuds(){
-        if (Q && !is_extended_qdag) {
-            delete Q;
-        }
+//        if (Q && !is_extended_qdag) {
+//            delete Q;
+//        }
         if (is_extended_qdag) delete M;
     }
 
