@@ -14,7 +14,7 @@ struct qdagWeight {
     uint16_t level; // the level of the node
     uint64_t* roots; // the parent of the subtree of each qdag that conform the tuple.
     double weight; // priority or number of leaves of the tuple
-    uint64_t path;  // the bits that encode the path down the leaf in the first qdag.
+    //uint64_t path;  // the bits that encode the path down the leaf in the first qdag.
     uint16_t* coordinates;
     bool operator<(const qdagWeight &qdag) const {
         return weight < qdag.weight; // max heap
@@ -22,8 +22,9 @@ struct qdagWeight {
 };
 
 
-struct qdagResults{
-    uint64_t path;
+struct qdagResults{ // we store the output of the join
+    uint16_t* coordinates;
+    //uint64_t path;
     double weight; // priority or number of leaves of the tuple
     bool operator<(const qdagResults &qdag) const {
         return weight > qdag.weight; // min heap
@@ -32,7 +33,8 @@ struct qdagResults{
 
 struct orderJoinQdag{
     uint64_t index;
-    uint64_t path;
+    //uint64_t path;
+    uint16_t* coordinates;
     double weight;
     bool operator<(const orderJoinQdag &ojq) const {
         return weight < ojq.weight; // max heap

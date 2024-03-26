@@ -176,13 +176,13 @@ int main(int argc, char **argv) {
     p.push_back(priorities_S);
     p.push_back(priorities_T);*/
 
-    /*
-    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,15,16,1,22,3,4,5,2,1,0,0,50,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    int_vector<> prioritiesS={1,1,1,1,4,1,200,3,31,22,3,4,5,2,1,15,27,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+
+    int_vector<> prioritiesR2={6,2,7,3,2,4,2,1,5,8,2,10,1,15,16,1,22,3,4,5,2,1,0,0,50,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesS2={1,1,1,1,4,1,200,3,31,22,3,4,5,2,1,15,27,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     vector<int_vector<>> p2;
-    p2.push_back(prioritiesR);
-    p2.push_back(prioritiesS);
-     */
+    p2.push_back(prioritiesR2);
+    p2.push_back(prioritiesS2);
+
 
 
 
@@ -198,24 +198,33 @@ int main(int argc, char **argv) {
 //
 
     cout << "--> DFUDS <--" << endl;
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, 0, 0);
+    vector<uint16_t*> results_partial_dfuds;
+    vector<uint16_t*> results_partial_dfuds_back;
+    vector<uint16_t*> results_ranked_dfuds;
+    vector<uint16_t*> results_ranked_dfuds_back;
+    vector<uint16_t*> results_partial_louds;
+    vector<uint16_t*> results_partial_louds_back;
+    vector<uint16_t*> results_ranked_louds;
+    priority_queue<qdagResults> results_ranked_louds_back;
+    cout << "----- MULTI JOIN DFUDS------" << endl;
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, 0, 0, results_partial_dfuds);
     // PARTIAL JOIN
     // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
     //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
     //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
     //bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 6); // warmup join -> activar el caché
-    /*int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
     vector<int_vector<>> p;
     p.push_back(prioritiesR);
-    p.push_back(prioritiesS);*/
+    p.push_back(prioritiesS);
     //qdag_rel_R.create_dfuds();
     //qdag_rel_R.printBv();
 
-    //cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
-    //bool join = multiJoinRankedResults(Q, true, 1000, 1, -1, p); // warmup join -> activar el caché
-    //cout << "----- MULTI JOIN RANKED RESULTS BACKTRACLOMG------" << endl;
-    //multiJoinRankedResultsBacktracking(Q, 1, 10, p2); // warmup join -> activar el caché
+    cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
+    multiJoinRankedResults(Q, true, 1000, 1, p, results_ranked_louds); // warmup join -> activar el caché
+    cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING------" << endl;
+    multiJoinRankedResultsBacktracking(Q, 1, 20, p2, results_ranked_louds_back); // warmup join -> activar el caché
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
