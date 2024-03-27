@@ -127,7 +127,7 @@ bool AND_ranked_dfuds(
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     //root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
+                    root_temp[j] = (rank_vector[j][Q[j]->getM(child)]); // new roots
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
                     // TODO: see this: what to do when i-th bit is 0?
@@ -153,7 +153,6 @@ bool AND_ranked_dfuds(
                 pq.push(this_node); // add the tuple to the queue
             }
         }
-
     }
     return true;
 }
@@ -231,16 +230,16 @@ bool multiJoinRankedResultsDfuds(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: hello " << results_points.size() << endl;
-    uint64_t i=0;
-    while(i < results_points.size()){
-        uint16_t* coordinates = results_points[i];
-        for(uint64_t j = 0; j< A.size(); j++){
-            cout << coordinates[j] << " ";
-        }
-        cout << endl;
-        i++;
-    }
+    cout << "number of results: " << results_points.size() << endl;
+//    uint64_t i=0;
+//    while(i < results_points.size()){
+//        uint16_t* coordinates = results_points[i];
+//        for(uint64_t j = 0; j< A.size(); j++){
+//            cout << coordinates[j] << " ";
+//        }
+//        cout << endl;
+//        i++;
+//    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
@@ -509,15 +508,15 @@ bool multiJoinRankedResultsDfudsBacktracking(
                             top_results);
 
     uint64_t size_queue_top = top_results.size();
-    cout << "number of results jeje: " << top_results.size() << endl;
-    for(uint64_t i=0; i<size_queue_top; i++){
-        qdagResults res = top_results.top();
-        top_results.pop();
-        for(uint64_t k=0; k<A.size(); k++) {
-            cout << res.coordinates[k] << " ";
-        }
-        cout << endl;
-    }
+    cout << "number of results: " << top_results.size() << endl;
+//    for(uint64_t i=0; i<size_queue_top; i++){
+//        qdagResults res = top_results.top();
+//        top_results.pop();
+//        for(uint64_t k=0; k<A.size(); k++) {
+//            cout << res.coordinates[k] << " ";
+//        }
+//        cout << endl;
+//    }
 
 
     for (uint64_t i = 0; i < Q.size(); i++)

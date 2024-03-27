@@ -507,10 +507,7 @@ public:
                     break;
                 case 3:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0; // si tiene hijos, le agrego un 1 por el 0.
-
+                    node = next_sibling(node);
                     rank_array[1] = node;
                     break;
                 case 4:
@@ -518,31 +515,19 @@ public:
                     break;
                 case 5:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[2] = node;
                     break;
                 case 6:
                     rank_array[1] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[2] = node;
                     break;
                 case 7:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[1] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[2] = node;
                     break;
                 case 8:
@@ -550,83 +535,47 @@ public:
                     break;
                 case 9:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
                 case 10:
                     rank_array[1] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
                 case 11:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[1] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
                 case 12:
                     rank_array[2] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
                 case 13:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[2] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
                 case 14:
                     rank_array[1] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[2] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
                 case 15:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[1] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[2] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[3] = node;
                     break;
             }
@@ -643,10 +592,7 @@ public:
                     break;
                 case 3:
                     rank_array[0] = node;
-                    n_children = subtree(node);
-                    node+= n_children;
-                    node+= n_children > 1 ? 1 : 0;
-
+                    node = next_sibling(node);
                     rank_array[1] = node;
                     break;
             }
