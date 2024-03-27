@@ -145,7 +145,7 @@ protected:
                 }
                 if(is_leaves){
                     n_children = t/k_d;
-                    k_t_b.resize(size_bv_b + n_children );
+                    k_t_b.resize(size_bv_b + n_children);
                     for(index = size_bv_b; index < size_bv_b + n_children; index++){
                         k_t_b[index] = 0;
                     }
@@ -236,8 +236,8 @@ protected:
         k_t_s.resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-        //cout << k_t_ << endl;
         // write 1^c 0
+        // DEBUG: k_t_s how mamny elements
         n_children = t/k_d;//
         k_t_b.resize(size_bv_b + n_children );
         for(index = size_bv_b; index < size_bv_b + n_children; index++){
@@ -247,9 +247,7 @@ protected:
         // bitvectors
         bv_s = rank_bv_64(k_t_s); // TODO: fix this!! max 64 bits!!
         bit_vector_b = new bit_vector(k_t_b);
-//        bit_vector * testing = [k_t_b, k_t_s]
 
-        // TODO: fix problem size uint64_t
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
 
@@ -371,55 +369,22 @@ public:
         return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
     }
 
-//    // select_0(B,v)
-//    size_type_bp select_zero(size_type_bp node_v){
-//        return bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
-//    }
+    // select_0(B,v)
+    size_type_bv select_zero(size_type_bp node_v){
+        return 0;// bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
+    }
 
-    /*
+    // select_00(B,v)
+    size_type_bv select_zero_zero(size_type_bp node_v) const{
+        return bp_b.select_zero_zero(node_v);
+    }
+
     // pred_0(B,v)
     size_type_bp pred_zero(size_type_bp node_v) const{
         // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
         return bp_b.pred_zero(node_v);
     }
 
-
-
-    // rank_0(B,v) (de B[0,v-1])
-    size_type_bp rank_zero(size_type_bp node_v) const{
-        return node_v - bp_b.rank(node_v);
-    }
-
-
-     //no need of these operations?
-
-
-    // select_00(B,v)
-    size_type_bp select_zero_zero(size_type_bp node_v){
-
-    }
-
-
-    size_type_bp first_child(size_type_bp node_v)const{
-        assert(bp_b.is_open(node_v));
-        return succ_zero(node_v) + 1;
-    }
-
-    size_type_bp last_child(size_type_bp node_v)const{
-        assert(bp_b.is_open(node_v));
-        return bp_b.find_close(node_v) + 1;
-    }
-
-
-
-    size_type_bp parent(size_type_bp node_v)const{
-        assert(node_v != 3);
-        return pred_zero(node_v - 1) + 1;
-    }
-
-    bool is_leaf(size_type_bp node_v)const{
-        return bit_vector_b->get_int(node_v,1) == 0;
-    }*/
 
     /**
      *
@@ -458,7 +423,7 @@ public:
      * @return The t such that node v is the tth child of its parent.
      */
     size_type_bv childrank(size_type_bp node_v) const{
-        size_type_bv p = bp_b.find_open(node_v - 1);
+        size_type_bp p = bp_b.find_open(node_v - 1);
         return succ_zero(p) - p;
     }
 
@@ -474,14 +439,44 @@ public:
     /**
      *
      * @param node_v
+     * @return The ith left-to-right leaf node in the tree-
+     */
+    size_type_bv leaf_select(size_type_bp node_v) const{
+        return select_zero_zero(node_v) + 1;
+    }
+
+    /**
+     *
+     * @param node_v
      * @return The number of leaves in the subtree of node v.
      */
     size_type_bv leaf_num(size_type_bp node_v) const{
-//        cout << "node_v = " << node_v << endl;
-//        cout << "fwd_search(node_v-1, -1)= " << fwd_search(node_v-1, -1) << endl;
-//        cout << "leaf_rank(fwd_search(node_v-1, -1) + 1)= " << leaf_rank(fwd_search(node_v-1, -1) + 1) << endl;
-//        cout << "leaf_rank(node_v)= " << leaf_rank(node_v) << endl;
         return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
+    }
+
+    // rank_0(B,v) (de B[0,v-1])
+    size_type_bp rank_zero(size_type_bp node_v) const{
+        return node_v - bp_b.rank(node_v);
+    }
+
+
+    size_type_bp first_child(size_type_bp node_v)const{
+        assert(bp_b.is_open(node_v));
+        return succ_zero(node_v) + 1;
+    }
+
+    size_type_bp last_child(size_type_bp node_v)const{
+        assert(bp_b.is_open(node_v));
+        return bp_b.find_close(node_v) + 1;
+    }
+
+    size_type_bp parent(size_type_bp node_v)const{
+        assert(node_v != 3);
+        return pred_zero(node_v - 1) + 1;
+    }
+
+    bool is_leaf(size_type_bp node_v)const{
+        return bit_vector_b->get_int(node_v,1) == 0;
     }
 
     // ---- other operations for join ---- //
@@ -682,7 +677,19 @@ public:
      */
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         init = leaf_rank(node);
+        size_type_bv init_num_leaf = leaf_select(init);
         end = leaf_rank(next_sibling(node));
+        //end = leaf_select(end);;
+        // first idea: recorrer linealmente las hojas
+        //TODO: complete it
+        uint64_t n_leaves = end - init + 1;
+        uint64_t n_ones = 0;
+        uint8_t cur_node;
+        for(uint64_t i = 0; i < n_leaves; i++){
+            cur_node = get_node_last_level(init_num_leaf);
+            n_ones += bits::cnt(cur_node);
+            init_num_leaf = next_sibling(init_num_leaf);
+        }
         return init < end;
     }
 

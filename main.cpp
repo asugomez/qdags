@@ -103,6 +103,8 @@ int main(int argc, char **argv) {
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
+    qdag_rel_R_dfuds.getQ()->rank_zero_zero(5);
+
 
     // print the tree
     cout << endl << "rel R" << endl;
@@ -241,9 +243,9 @@ int main(int argc, char **argv) {
 
 
     cout << "----- MULTI JOIN RANKED RESULTS DFUDS------" << endl;
-    //multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
     start = high_resolution_clock::now();
-    //multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
@@ -251,9 +253,9 @@ int main(int argc, char **argv) {
 
 
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING DFUDS------" << endl;
-    //multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
     start = high_resolution_clock::now();
-    //multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();

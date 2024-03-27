@@ -32,6 +32,7 @@ bool AND_partial_dfuds(
         uint8_t type_order_fun,
         priority_queue<qdagWeight> &pq,
         vector<uint16_t *> &results_points) {
+
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
     uint32_t children;

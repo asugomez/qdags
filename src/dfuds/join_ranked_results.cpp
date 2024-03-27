@@ -104,6 +104,7 @@ bool AND_ranked_dfuds(
         uint16_t child;
         uint16_t diff_level = max_level-cur_level;
         uint16_t next_level = cur_level + 1;
+
         for (i = 0; i < children_to_recurse_size; ++i) {
             uint64_t* root_temp= new uint64_t[nQ];
             uint16_t* coordinatesTemp = new uint16_t[l];
@@ -131,12 +132,13 @@ bool AND_ranked_dfuds(
                     uint64_t end = priorities[j].size()-1;
                     // TODO: see this: what to do when i-th bit is 0?
                     uint64_t priority_ith_node = 0;
-                    bool success = Q[j]->get_range_leaves(Q[j]->getM(child),init,end);
+                    bool success = true;//Q[j]->get_range_leaves(root_temp[j],init,end);
                     if(success){
+                        // TODO: fix the index
                         bit_vector::size_type min_idx = rMq[j](init, end);
                         priority_ith_node = priorities[j][min_idx];
                     } else {
-                        //cout << "error in get range leaves" << endl;
+                        cout << "error in get range leaves" << endl;
                     }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
                         total_weight += priority_ith_node;
@@ -229,7 +231,7 @@ bool multiJoinRankedResultsDfuds(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
+    cout << "number of results: hello " << results_points.size() << endl;
     uint64_t i=0;
     while(i < results_points.size()){
         uint16_t* coordinates = results_points[i];
@@ -406,7 +408,7 @@ AND_ranked_dfuds_backtracking(
                 uint64_t end = priorities[j].size()-1;
                 // TODO: see this: what to do when i-th bit is 0?
                 uint64_t priority_ith_node = 0;
-                bool success = Q[j]->get_range_leaves(Q[j]->getM(child),init,end);
+                bool success = Q[j]->get_range_leaves(root_temp[i][j],init,end);
                 if(success){
                     bit_vector::size_type min_idx = rMq[j](init, end);
                     priority_ith_node = priorities[j][min_idx];

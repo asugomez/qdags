@@ -964,26 +964,30 @@ namespace asu
             }
         }
 
-        size_type rank_zero_zero(size_type i)const // TODO: debo contar los 00 del final?
+        /**
+         *
+         * @param i
+         * @return number of 00 before position i.
+         * @example 110101011010011000
+         * -> rank_zero_zero(14) = 1
+         * -> rank_zero_zero(17) = 2
+         * ~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-18) + (18-14))
+         */
+        size_type rank_zero_zero(size_type i)const
         {
             assert(i < m_size);
-            if (!i) return 0; // (~(*m_bp->data() << 1) & ~(*m_bp->data()))
-            if (m_size <= 16) {
-                uint16_t m_bp_aux = (uint16_t)*m_bp->data() << 1;
-                m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
-                return __builtin_popcount(m_bp_aux << (2*m_size - 1 - i)); // TODO: check if shift is correct
-            } else if (m_size <= 32){
-                int32_t m_bp_aux = *m_bp->data() << 1;
-                m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
-                return __builtin_popcount(m_bp_aux << (2*m_size + i));
-            }else{
-                uint64_t m_bp_aux = *m_bp->data() << 1;
-                m_bp_aux = ~(*m_bp->data() | m_bp_aux); // = B NOR (B<<1)
-                return __builtin_popcount(m_bp_aux << (2*m_size + i));
-            }
-                // TODO: see si contar o no el mismo i o i-1.
+            if (!i) return 0;
+            //m_bp_aux = ~(*m_bp->data() | *m_bp_aux); // = B NOR (B<<1)
+            return bits::cnt(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
 
         }
+
+        size_type select_zero_zero(size_type i) const {
+            //select_type sel(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
+            // TODO implement
+            return 0;
+        }
+
 
         size_type pred_zero(size_type i)const {
             assert(i < m_size);
