@@ -247,7 +247,7 @@ protected:
         // bitvectors
         bv_s = rank_bv_64(k_t_s); // TODO: fix this!! max 64 bits!!
         bit_vector_b = new bit_vector(k_t_b);
-        bit_vector * testing = [k_t_b, k_t_s]
+//        bit_vector * testing = [k_t_b, k_t_s]
 
         // TODO: fix problem size uint64_t
         // construct bp
