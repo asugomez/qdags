@@ -17,6 +17,8 @@ using namespace std::chrono;
 #include "src/joins.cpp"
 #include "src/louds/join_partial_results.cpp"
 #include "src/louds/join_ranked_results.cpp"
+#include "src/dfuds/join_partial_results.cpp"
+#include "src/dfuds/join_ranked_results.cpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -90,42 +92,37 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>> *rel_R_2 = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
+    std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
     uint64_t grid_side =32;// 52000000; // es como +infty para wikidata
 
-    //cout << " grid size R : " << att_R.size() << endl;
-    //cout << " grid size S : " << att_S.size() << endl;
-
-    //qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
-    qdag_dfuds qdag_rel_R_dfuds(*rel_R, att_R, grid_side, 2, att_R.size());
-    //qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
+    qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
+    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
+    qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
-    cout << "parent"<< endl;
-    qdag_rel_R_dfuds.getQ()->hello();
-    /*cout << qdag_rel_R_dfuds.getQ()->next_sibling(7)<< endl;
-    cout << qdag_rel_R_dfuds.getQ()->parent(10) << endl;
-    cout << "leaf 3"<< qdag_rel_R_dfuds.getQ()->isLeaf(3)<< endl;
-    cout << "leaf 16"<< qdag_rel_R_dfuds.getQ()->isLeaf(16)<< endl;
-    cout << "leaf 62"<< qdag_rel_R_dfuds.getQ()->isLeaf(62)<< endl;
-    cout << "leaf 63"<< qdag_rel_R_dfuds.getQ()->isLeaf(63)<< endl;
-*/
 
+    // print the tree
     cout << endl << "rel R" << endl;
-    //qdag_rel_R.printBv();
-    //cout << endl << "rel S" << endl;
-    //qdag_rel_S.printBv();
-    //qdag_dfuds qdag_rel_S_dfuds(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_rel_R.printBv();
+    cout << endl << "rel S" << endl;
+    qdag_rel_S.printBv();
 
-    // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
+    vector<qdag_dfuds> Q_dfuds(2);
 
-    //Q[0] = qdag_rel_R;
-    //Q[1] = qdag_rel_S;
+    Q[0] = qdag_rel_R;
+    Q[1] = qdag_rel_S;
     //Q[2] = qdag_rel_T;
     qdag *Join_Result;
+
+    Q_dfuds[0] = qdag_rel_R_dfuds;
+    Q_dfuds[1] = qdag_rel_S_dfuds;
+    //Q[2] = qdag_rel_T;
+    qdag_dfuds *Join_Result_dfuds;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;
@@ -176,48 +173,127 @@ int main(int argc, char **argv) {
     p.push_back(priorities_S);
     p.push_back(priorities_T);*/
 
-    /*
-    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,15,16,1,22,3,4,5,2,1,0,0,50,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    int_vector<> prioritiesS={1,1,1,1,4,1,200,3,31,22,3,4,5,2,1,15,27,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    vector<int_vector<>> p2;
-    p2.push_back(prioritiesR);
-    p2.push_back(prioritiesS);*/
-
-
-
-
-    start = high_resolution_clock::now();
-    //cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-    //Join_Result = multiJoin(Q, true, 1000);
-    //cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
-    //multiJoinPartialResults(Q, true, 1000, 0, 0);
-    //cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING------" << endl;
-    //multiJoinPartialResultsBacktracking(Q, 0, 50, 100);
-
-    // PARTIAL JOIN
-    // vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
-    //                                  bool partial_results, int16_t type_priority_fun, int16_t type_order_fun, uint64_t grid_size)
-    //bool join = multiJoinPartialResults(Q, true, 1000, true, 1, 1, grid_side, -1); // warmup join -> activar el caché
-    //bool join = multiJoinPartialResults(Q, true, 1000, 1, grid_side, 6); // warmup join -> activar el caché
-    /*int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
     int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
     vector<int_vector<>> p;
     p.push_back(prioritiesR);
-    p.push_back(prioritiesS);*/
-    //qdag_rel_R.create_dfuds();
-    //qdag_rel_R.printBv();
+    p.push_back(prioritiesS);
 
-    //cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
-    //bool join = multiJoinRankedResults(Q, true, 1000, 1, -1, p); // warmup join -> activar el caché
-    //cout << "----- MULTI JOIN RANKED RESULTS BACKTRACLOMG------" << endl;
-    //multiJoinRankedResultsBacktracking(Q, 1, 10, p2); // warmup join -> activar el caché
+    int_vector<> prioritiesR2={6,2,7,3,2,4,2,1,5,8,2,10,1,15,16,1,22,3,4,5,2,1,0,0,50,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    int_vector<> prioritiesS2={1,1,1,1,4,1,200,3,31,22,3,4,5,2,1,15,27,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
+    vector<int_vector<>> p2;
+    p2.push_back(prioritiesR2);
+    p2.push_back(prioritiesS2);
 
+    vector<rmq_succinct_sct<false>> rMq_louds; // vector of rMq for each qdag
+    vector<rmq_succinct_sct<false>> rMq_louds_back; // vector of rMq for each qdag
+    vector<rmq_succinct_sct<false>> rMq_dfuds; // vector of rMq for each qdag
+    vector<rmq_succinct_sct<false>> rMq_dfuds_back; // vector of rMq for each qdag
+    for(uint64_t i = 0; i < Q.size(); i++){
+        rMq_louds.push_back(rmq_succinct_sct<false>(&p[i]));
+        rMq_louds_back.push_back(rmq_succinct_sct<false>(&p2[i]));
+        rMq_dfuds.push_back(rmq_succinct_sct<false>(&p[i]));
+        rMq_dfuds_back.push_back(rmq_succinct_sct<false>(&p2[i]));
+    }
+
+
+
+
+
+    vector<uint16_t*> results_partial_dfuds;
+    vector<uint16_t*> results_partial_dfuds_back;
+    vector<uint16_t*> results_ranked_dfuds;
+    priority_queue<qdagResults> results_ranked_dfuds_back;
+    vector<uint16_t*> results_partial_louds;
+    vector<uint16_t*> results_partial_louds_back;
+    vector<uint16_t*> results_ranked_louds;
+    priority_queue<qdagResults> results_ranked_louds_back;
+
+
+    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+    multiJoin(Q, true, 1000);
+    start = high_resolution_clock::now();
+    multiJoin(Q, true, 1000);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 
+    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, 1, results_partial_dfuds);
+    start = high_resolution_clock::now();
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, 1, results_partial_dfuds);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
+
+    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING DFUDS------" << endl;
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, 1, 1000, results_partial_dfuds_back);
+    start = high_resolution_clock::now();
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, 1, 1000, results_partial_dfuds_back);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+
+    cout << "----- MULTI JOIN RANKED RESULTS DFUDS------" << endl;
+    //multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    start = high_resolution_clock::now();
+    //multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+
+    cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING DFUDS------" << endl;
+    //multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    start = high_resolution_clock::now();
+    //multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+
+    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    multiJoinPartialResults(Q, true, 1000, grid_side, 1, results_partial_louds); // warmup join -> activar el caché
+    start = high_resolution_clock::now();
+    multiJoinPartialResults(Q, true, 1000, grid_side, 1, results_partial_louds); // warmup join -> activar el caché
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
+    multiJoinPartialResultsBacktracking(Q, grid_side, 1, 1000, results_partial_louds_back);
+    start = high_resolution_clock::now();
+    multiJoinPartialResultsBacktracking(Q, grid_side, 1, 1000, results_partial_louds_back);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+    cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
+    multiJoinRankedResults(Q, true, 1000, 1, p, rMq_louds, results_ranked_louds); // warmup join -> activar el caché
+    start = high_resolution_clock::now();
+    multiJoinRankedResults(Q, true, 1000, 1, p, rMq_louds, results_ranked_louds); // warmup join -> activar el caché
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+    cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING------" << endl;
+    multiJoinRankedResultsBacktracking(Q, 1, 1000, p2, rMq_louds_back, results_ranked_louds_back); // warmup join -> activar el caché
+    start = high_resolution_clock::now();
+    multiJoinRankedResultsBacktracking(Q, 1, 1000, p2, rMq_louds_back, results_ranked_louds_back); // warmup join -> activar el caché
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;

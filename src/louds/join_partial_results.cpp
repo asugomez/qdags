@@ -1,6 +1,5 @@
 #include <algorithm>
 #include "../qdags.hpp"
-#include "../MinMaxHeap.hpp"
 #include "../utils.hpp"
 
 const uint8_t TYPE_FUN_NUM_LEAVES = 0;
@@ -11,17 +10,28 @@ const uint8_t TYPE_FUN_DENSITY_LEAVES = 1;
  *
  * @param Q set of qdags.
  * @param nQ number of Qdags
- * @param max_level of the qdag
  * @param nAtt number of attributes of the final quadtree.
  * @param bounded_result if we have to stop computing the results after a certain number of tuples.
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
- * @param pq the priority queue to store the tuples.
- * @param type_order_fun 0 num leaves, 1 density. Only taking into account if partial_results is false.
+ * @param max_level of the qdag
  * @param grid_size the size of the grid. Needed when type_order_fun is 1.
+ * @param type_order_fun 0 num leaves, 1 density. Only taking into account if partial_results is false.
+ * @param pq the priority queue to store the tuples.
+ * @param results_points vector with the coordinates of the output.
  * @return true if we accomplished succesfully the join. Otherwise, return false.
  */
-bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool bounded_result, uint64_t UPPER_BOUND,
-                 priority_queue<qdagWeight> &pq, uint8_t type_order_fun, uint64_t grid_size) {
+bool AND_partial(
+        qdag *Q[],
+        uint16_t nQ,
+        uint64_t nAtt,
+        bool bounded_result,
+        uint64_t UPPER_BOUND,
+        uint64_t max_level,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        priority_queue<qdagWeight> &pq,
+        vector<uint16_t *> &results_points) {
+
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
     uint32_t children;
@@ -35,11 +45,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
         qdagWeight tupleQdags = pq.top();
         pq.pop();
         cur_level = tupleQdags.level;
-        /*uint64_t roots[nQ];
-        // HERE we have a problem
-        for(uint64_t i = 0; i < nQ; i++){
-            roots[i] = tupleQdags.roots[i];
-        }*/
         // if it's a leaf, output the point coordenates
         uint64_t rank_vector[nQ][64];
         for (uint64_t i = 0; i < nQ && children; ++i){
@@ -73,7 +78,6 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
             }
         }
 
-
         // in children we have the actual non empty nodes
         // in children_to_recurse we store the index of these non emtpy nodes
         children_to_recurse_size = bits::cnt((uint64_t) children);
@@ -89,51 +93,39 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
         uint16_t child;
         uint16_t diff_level = max_level-cur_level;
         uint16_t next_level = cur_level + 1;
-        uint64_t path;
 
         for (i = 0; i < children_to_recurse_size; ++i) {
             uint64_t* root_temp= new uint64_t[nQ];
+            uint16_t* coordinatesTemp = new uint16_t[l];
             child = children_to_recurse[i];
 
-            // compute the weight of the tuple (ONLY if it's not a leaf)
-            double total_weight = DBL_MAX;
-            if(cur_level != max_level) {
+            for(uint16_t k = 0; k < l; k++)
+                coordinatesTemp[k] = tupleQdags.coordinates[k];
+            transformCoordinates(coordinatesTemp, l, diff_level, child);
+
+            // compute the coordinates if it's a leaf
+            if(cur_level == max_level){
+                delete[] root_temp;
+                results_points.push_back(coordinatesTemp);
+                if(bounded_result && ++results >= UPPER_BOUND)
+                    return true;
+            } else{
+                // compute the weight of the tuple (ONLY if it's not a leaf)
+                double total_weight = DBL_MAX;
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level, Q[j]->getM(child));
+                    //cout << "n_leaves_child_node: " << n_leaves_child_node << endl;
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
                     }
                 }
                 if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                         total_weight /= grid_size;
-            }
-            // --> add the child to the path
-            path = child << (diff_level * l); // height * bits to represent the children
-            path += tupleQdags.path; // add the bits to the bitvector
-            // compute the coordinates if it's a leaf
-            if(cur_level == max_level){
-                uint32_t coordinates[nAtt];
-                delete[] root_temp;
-                for(uint32_t k = 0; k < nAtt; k++){
-                    coordinates[k] = 0;
-                }
-                getCoordinates(path, l, max_level, coordinates);
-                cout << endl;
-                cout << "nro result: " << results << endl;
-                cout << "top " << path << endl;
-                cout << "coord: ";
-                for(uint32_t k = 0; k < nAtt; k++){
-                    cout << coordinates[k] << " , ";
-                }
-                cout << endl;
-                if(bounded_result && ++results >= UPPER_BOUND)
-                    return true;
-            }
-            else{ // insert the tuple
-                qdagWeight this_node = {next_level, root_temp, total_weight, path} ;
+                // insert the tuple
+                qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
                 pq.push(this_node); // add the tuple to the queue
             }
         }
@@ -146,13 +138,19 @@ bool AND_partial(qdag *Q[], uint16_t nQ, uint64_t max_level, uint64_t nAtt, bool
  * @param Q vector of qdags
  * @param bounded_result if we have to stop computing the results after a certain number of tuples.
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
- * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
  * @param grid_size the size of the grid. Needed when type_order_fun is 1.
- * @param size_queue the size of the priority queue. -1 if we don't want to limit the size of the queue.
+ * @param type_order_fun 0 num leaves, 1 density. (n1+n2+...+nn) or (n1/100+n2/100+...+nn/100)
+ * @param results_points vector with the coordinates of the output.
  * @return
  */
-bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND, uint8_t type_order_fun,
-                             uint64_t grid_size) {
+bool multiJoinPartialResults(
+        vector<qdag> &Q,
+        bool bounded_result,
+        uint64_t UPPER_BOUND,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        vector<uint16_t *> &results_points) {
+
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -191,14 +189,27 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
     // ---------------  everything is the same up to here --------------- //
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
-
+    uint16_t coordinates[A.size()];
+    for(uint16_t i = 0; i < A.size(); i++)
+        coordinates[i] = 0;
 
     priority_queue<qdagWeight> pq; // maxHeap
-    pq.push({0, Q_roots, 1, 0}); // insert the root of the qda
-    AND_partial(Q_star, Q.size(),
-                max_level, A.size(),
+    pq.push({0, Q_roots, 1, coordinates}); // insert the root of the qda
+    AND_partial(Q_star, Q.size(), A.size(),
                 bounded_result, UPPER_BOUND,
-                pq, type_order_fun, grid_size);
+                max_level, grid_size, type_order_fun,
+                pq, results_points);
+
+//    cout << "number of results: " << results_points.size() << endl;
+//    uint64_t i=0;
+//    while(i < results_points.size()){
+//        uint16_t* coordinates = results_points[i];
+//        for(uint64_t j = 0; j< A.size(); j++){
+//            cout << coordinates[j] << " ";
+//        }
+//        cout << endl;
+//        i++;
+//    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
@@ -208,30 +219,39 @@ bool multiJoinPartialResults(vector<qdag> &Q, bool bounded_result, uint64_t UPPE
 
 
 /**
- * AND algorithm that will return the top k results
- *  TODO: pregunta? que pasa si el join era vacío? como me devuelvo?
- *  TODO: tiene sentido backtracking aquí? no hay nmayor prioridad
+ * AND algorithm that will return the top k results.
+ * We only visit the first k results.
  * @param Q
+ * @param nQ number of Qdags.
+ * @param nAtt number of attributes of the final quadtree.
  * @param roots
- * @param nQ
  * @param cur_level
- * @param max_level
- * @param outputPath
- * @param nAtt
- * @param type_order_fun
+ * @param max_level maximum level of the qdag.
  * @param grid_size
- * @param pq
- * @param size_queue
+ * @param type_order_fun 0 sum , 1 maximum. Only taking into account if partial_results is true.
+ * @param coordinates
+ * @param size_queue the size of the priority queue.
+ * @param top_results a vector with the points coordinates of the output.
  * @return
  */
-bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
-         uint16_t cur_level, uint16_t max_level, uint64_t nAtt,
-         uint64_t outputPath, uint8_t type_order_fun, uint64_t grid_size,
-         priority_queue<uint64_t, std::vector<uint64_t>, std::greater<uint64_t>>& top_results, uint64_t size_queue) {
+bool
+AND_partial_backtracking(
+        qdag *Q[],
+        uint16_t nQ,
+        uint64_t nAtt,
+        uint64_t *roots,
+        uint16_t cur_level,
+        uint16_t max_level,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        uint16_t *coordinates,
+        uint64_t size_queue,
+        vector<uint16_t*> &top_results) {
+
     if(top_results.size() >= size_queue){
+        cout << "number of results up: " << top_results.size() << endl;
         return true;
     }
-
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool just_zeroes = true;
@@ -271,12 +291,15 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t diff_level = max_level-cur_level;
         // we do not call recursively the function AND as we do in the other levels
         // add output to the priority queue of results
-        uint64_t path;
         for (i = 0; i < children_to_recurse_size; ++i){
             child = children_to_recurse[i];
-            path = child << (diff_level * l);
-            path += outputPath;
-            top_results.push(path);
+            uint16_t* coordinatesTemp = new uint16_t[l];
+
+            for(uint16_t k = 0; k < l; k++)
+                coordinatesTemp[k] = coordinates[k];
+            transformCoordinates(coordinatesTemp, l, diff_level, child);
+
+            top_results.push_back(coordinatesTemp);
             just_zeroes = false;
             // queue full
             if(top_results.size() >= size_queue){
@@ -313,12 +336,16 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         uint16_t diff_level = max_level-cur_level;
         uint16_t next_level = cur_level + 1;
-        uint64_t path = 0;
+
         priority_queue<orderJoinQdag> order_to_traverse;
         // veo cada hijo en común que tiene el nodo actual
         uint64_t root_temp[children_to_recurse_size][nQ];
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
+            uint16_t* coordinatesTemp = new uint16_t[l];
+            for(uint16_t k = 0; k < l; k++)
+                coordinatesTemp[k] = coordinates[k];
+            transformCoordinates(coordinatesTemp, l, diff_level, child);
 
             // compute the weight of the tuple
             double total_weight = DBL_MAX;
@@ -333,11 +360,7 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
             if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                 total_weight /= grid_size;
 
-            path = child << (diff_level * l); // nro child shifted by (height * bits) to represent the children
-            path += outputPath; // add the bits to the bitvector
-
-
-            orderJoinQdag this_node = {i, path, total_weight} ;
+            orderJoinQdag this_node = {i, coordinatesTemp, total_weight} ;
             order_to_traverse.push(this_node); // add the tuple to the queue
 
         }
@@ -346,25 +369,9 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
         for (i = 0; i < children_to_recurse_size; ++i) {
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
-            AND_partial_backtracking(Q, root_temp[order.index], nQ, next_level, max_level, nAtt,
-                                     order.path, type_order_fun, grid_size, top_results, size_queue);
-        }
-
-        if(cur_level== 0){ // finish the recursion
-            uint32_t coordinates[nAtt];
-            for(uint32_t k = 0; k < nAtt; k++){
-                coordinates[k] = 0;
-            }
-            cout << "number of results: " << top_results.size() << endl;
-            for(uint64_t index = 0; index < top_results.size(); index++){
-                getCoordinates(top_results.top(), l, max_level, coordinates);
-                /*cout << "top: " << top_results.top() << endl;
-                cout << "coord: ";
-                for(uint32_t k = 0; k < nAtt; k++){
-                    cout << coordinates[k] << " , ";
-                }*/
-                //cout << endl;
-            }
+            AND_partial_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, grid_size,
+                                     type_order_fun,
+                                     order.coordinates, size_queue, top_results);
         }
 
     }
@@ -373,7 +380,22 @@ bool AND_partial_backtracking(qdag *Q[], uint64_t *roots, uint16_t nQ,
 }
 
 
-bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun, uint64_t grid_size, int64_t size_queue){
+/**
+ *
+ * @param Q
+ * @param grid_size
+ * @param type_order_fun
+ * @param size_queue the size of the priority queue. In this case is a vector.
+ * @param top_results the vector to store the top results (output).
+ * @return
+ */
+bool
+multiJoinPartialResultsBacktracking(
+        vector<qdag> &Q,
+        uint64_t grid_size,
+        uint8_t type_order_fun,
+        int64_t size_queue,
+        vector<uint16_t *> &top_results) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -413,15 +435,24 @@ bool multiJoinPartialResultsBacktracking(vector<qdag> &Q, uint8_t type_order_fun
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
+    uint16_t coordinates[A.size()];
+    for(uint16_t i = 0; i < A.size(); i++)
+        coordinates[i] = 0;
 
-    priority_queue<uint64_t, std::vector<uint64_t>, std::greater<uint64_t>> output; // minHeap
-    uint64_t path = 0;
-    AND_partial_backtracking(Q_star, Q_roots, Q.size(), 0, max_level, A.size(),
-                             path, type_order_fun, grid_size,
-                             output, size_queue);
+    AND_partial_backtracking(Q_star, Q.size(), A.size(), Q_roots, 0, max_level, grid_size, type_order_fun,
+                             coordinates, size_queue,
+                             top_results);
 
-
-
+//    cout << "number of results: " << top_results.size() << endl;
+//    uint64_t i=0;
+//    while(i < top_results.size()){
+//        uint16_t* coordinates = top_results[i];
+//        for(uint64_t j = 0; j< A.size(); j++){
+//            cout << coordinates[j] << " ";
+//        }
+//        cout << endl;
+//        i++;
+//    }
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
 

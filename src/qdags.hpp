@@ -268,6 +268,12 @@ public:
     }
 
 
+    /** the mapping between the children
+     * for example:
+     * original quadtree: 1011
+     * qdag: 1011 1011
+     * getM(5) = 1
+     **/
     uint16_t getM(uint16_t i) {
         return M[i];
     }
@@ -367,7 +373,6 @@ public:
         }
     }
 
-    // TODO: problema? siempre materializo,,, cuando uso el mapeo?
     // TODO: y porqué de 32 bits?
     // materializa el nodo del qdag, uno llega a un nodo en el quadtree que existe, pero conceptualmente
     // corresponde a un qdags q no existe en realidad.

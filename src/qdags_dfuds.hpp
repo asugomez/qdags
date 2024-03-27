@@ -119,9 +119,9 @@ public:
     }
 
     ~qdag_dfuds(){
-        if (Q && !is_extended_qdag) {
-            delete Q;
-        }
+//        if (Q && !is_extended_qdag) {
+//            delete Q;
+//        }
         if (is_extended_qdag) delete M;
     }
 
@@ -179,9 +179,7 @@ public:
 
 
     uint64_t getHeight() {
-        // TODO
-        return 0;
-        //return Q->getHeight();
+        return Q->getHeight();
     }
 
 
@@ -203,6 +201,12 @@ public:
     }
 
 
+    /** the mapping between the children
+     * for example:
+     * original quadtree: 1011
+     * qdag: 1011 1011
+     * getM(5) = 1
+     **/
     uint16_t getM(uint16_t i) {
         return M[i];
     }
@@ -282,21 +286,20 @@ public:
 
 
     // TODO: see how the extend works in DFS!
+    // we need the number of 1s of the level (until the node position)
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank_one(node);
-        return tab_extend_3[Q->get_node(node, rank_vector, r)];
+        // get the number of 1s of that level
+        return tab_extend_3[Q->get_node(node, rank_vector)];
     }
 
 
     inline uint32_t materialize_node_4(uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank_one( node);
-        return tab_extend_4[Q->get_node(node, rank_vector, r)];
+        return tab_extend_4[Q->get_node(node, rank_vector)];
     }
 
 
     inline uint32_t materialize_node_5(uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank_one( node);
-        return tab_extend_5[Q->get_node(node, rank_vector, r)];
+        return tab_extend_5[Q->get_node(node, rank_vector)];
     }
 
 
@@ -318,9 +321,26 @@ public:
         //Q->printBv();
     }
 
+    // TODO: change it by leaf num!!! it is not the same
+    uint64_t get_num_leaves(uint64_t node) {
+//        return Q->subtree(node);
+        return Q->leaf_num(node);
+    }
+
     // TODO: only for testing
     se_quadtree_dfuds *getQ() {
         return Q;
+    }
+
+    /**
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Useful for the range Maximum query
+     * @param node
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     */
+    bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
+        return Q->get_range_leaves(node, init, end);
     }
 
 };

@@ -8,7 +8,6 @@
 #include <tuple>
 #include <fstream>
 #include "include/bp_support_sada_v2.hpp"
-//#include <sdsl/bp_support.hpp>
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/k2_tree_helper.hpp>
 //#include "rank.hpp"
@@ -98,6 +97,8 @@ protected:
         size_type_bv size_bv_b = 3; // starting position to write in the bit_vector
         size_type_bv size_bv_s = 0; // starting position to write in the bit_vector
 
+
+
         std::stack<t_part_tuple> s;
         idx_type t = 0;
         idx_type t_aux;
@@ -128,7 +129,7 @@ protected:
                 k_t_s.resize(size_bv_s+t);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-                cout << k_t_ << endl;
+                //cout << k_t_ << endl;
 
                 size_bv_s += t;
 
@@ -235,8 +236,7 @@ protected:
         k_t_s.resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-        cout << k_t_ << endl;
-
+        //cout << k_t_ << endl;
         // write 1^c 0
         n_children = t/k_d;//
         k_t_b.resize(size_bv_b + n_children );
@@ -245,11 +245,15 @@ protected:
         }
 
         // bitvectors
-        bv_s = rank_bv_64(k_t_s);
+        bv_s = rank_bv_64(k_t_s); // TODO: fix this!! max 64 bits!!
         bit_vector_b = new bit_vector(k_t_b);
+//        bit_vector * testing = [k_t_b, k_t_s]
 
+        // TODO: fix problem size uint64_t
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
+
+//        cout << "finish" << endl;
     }
 
 public:
@@ -273,9 +277,13 @@ public:
 
     ~se_quadtree_dfuds() {
         ref_count--;
-        //delete bp_b;
-        //delete bp_s;
-        // TODO: complete it delete
+        //bit_vector_b
+        //bp_b
+        //bv_s
+        if(ref_count == 0){
+            //delete bit_vector_b;
+            //delete bv_s;
+        }
     }
 
     void inc_ref_count() {
@@ -295,22 +303,39 @@ public:
         return k_d;
     }
 
+    uint64_t getHeight() const{
+        return height;
+    }
+
     inline uint8_t get_node_bits(uint64_t start_pos) {
-        bv_s.get_kd_bits(start_pos, k_d);
+        return bv_s.get_kd_bits(start_pos, k_d);
     }
 
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
+    size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+        return this->bp_b.fwd_search(start_pos, diff_excess);
+    }
+
+//    size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+//        return this->bp_b.bwd_search(start_pos, diff_excess);
+//    }
+
+//    size_type_bp find_open(size_type_bp node_v)const{
+//        return bp_b.find_open(node_v);
+//    }
+
+    size_type_bv find_close(size_type_bp node_v)const{
+        return bp_b.find_close(node_v);
+    }
+
+    size_type_bp root()const{
+        return 3;
+    }
 
     uint64_t rank_one(size_type_bv node_v){
         return bv_s.rank(node_v);
-    }
-
-    // pred_0(B,v)
-    size_type_bp pred_zero(size_type_bp node_v) const{
-        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
-        return bp_b.pred_zero(node_v);
     }
 
     // suc_0(B,v)
@@ -318,38 +343,62 @@ public:
         return bp_b.succ_zero(node_v);
     }
 
-    // rank_0(B,v) (de B[0,v-1])
-    size_type_bp rank_zero(size_type_bp node_v) const{
-        return node_v - bp_b.rank(node_v);
-    }
-
     // rank_00(B,v)
     size_type_bp rank_zero_zero(size_type_bp node_v) const{
         return bp_b.rank_zero_zero(node_v);
     }
 
-    /* no need of these operations
-    // select_0(B,v)
-    size_type_bp select_zero(size_type_bp node_v){
-
+    /**
+     *
+     * @param node_v
+     * @return The next sibling of node v, if it exists.
+     */
+    size_type_bp next_sibling(size_type_bp node_v)const{
+        // B[open(B,v-1) - 1] == 1
+        assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
+        return fwd_search(node_v-1,-1) + 1;
     }
+
+    /**
+     *
+     * @param node_v
+     * @return The previous sibling of node v, if it exists.
+     */
+    size_type_bp preceding_sibling(size_type_bp node_v)const{
+        // B[v-2, v-1] != [1,0]
+        assert(!bp_b.is_open(node_v - 2)); // 1
+        assert(bp_b.is_open(node_v - 1)); // 0
+        return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
+    }
+
+//    // select_0(B,v)
+//    size_type_bp select_zero(size_type_bp node_v){
+//        return bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
+//    }
+
+    /*
+    // pred_0(B,v)
+    size_type_bp pred_zero(size_type_bp node_v) const{
+        // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
+        return bp_b.pred_zero(node_v);
+    }
+
+
+
+    // rank_0(B,v) (de B[0,v-1])
+    size_type_bp rank_zero(size_type_bp node_v) const{
+        return node_v - bp_b.rank(node_v);
+    }
+
+
+     //no need of these operations?
+
 
     // select_00(B,v)
     size_type_bp select_zero_zero(size_type_bp node_v){
 
     }
-     */
-    size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
-        return this->bp_b.fwd_search(start_pos, diff_excess);
-    }
 
-    size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
-        return this->bp_b.bwd_search(start_pos, diff_excess);
-    }
-
-    size_type_bp root()const{
-        return 3;
-    }
 
     size_type_bp first_child(size_type_bp node_v)const{
         assert(bp_b.is_open(node_v));
@@ -361,157 +410,281 @@ public:
         return bp_b.find_close(node_v) + 1;
     }
 
-    size_type_bp next_sibling(size_type_bp node_v)const{
-        // B[open(B,v-1) - 1] == 1
-        assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
-        return fwd_search(node_v-1,-1) + 1;
-    }
 
-    size_type_bp preceding_sibling(size_type_bp node_v)const{
-        // B[v-2, v-1] != [1,0]
-        assert(bp_b.is_open(node_v - 2)); // 1
-        assert(! bp_b.is_open(node_v - 1)); // 0
-        return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
-    }
 
     size_type_bp parent(size_type_bp node_v)const{
         assert(node_v != 3);
         return pred_zero(node_v - 1) + 1;
     }
 
-    bool isLeaf(size_type_bp node_v)const{
-        return true;// bit_vector_b[node_v] == 0;
-    }
+    bool is_leaf(size_type_bp node_v)const{
+        return bit_vector_b->get_int(node_v,1) == 0;
+    }*/
 
+    /**
+     *
+     * @param node_v
+     * @return Number of nodes in the subtree of node_v, counting node_v.
+     */
     size_type_bv subtree(size_type_bp node_v)const{
         // (fwdsearch(B, v-1, -1) - v)/2 + 1
+        assert(node_v >= 3);
         return (fwd_search(node_v -1, -1) - node_v)/2 + 1;
     }
 
+    /**
+     *
+     * @param node_v
+     * @return Number of children of node v.
+     */
     size_type_bv children(size_type_bp node_v) const{
+        assert(node_v >= 3);
         return succ_zero(node_v) - node_v;
     }
 
+    /**
+     *
+     * @param node_v
+     * @param t
+     * @return The t-th child of node v, if it exists
+     */
     size_type_bv child(size_type_bp node_v, size_type_bp t) const{
         return bp_b.find_close(succ_zero(node_v));// - t) + 1;
     }
 
+    /**
+     *
+     * @param node_v
+     * @return The t such that node v is the tth child of its parent.
+     */
     size_type_bv childrank(size_type_bp node_v) const{
         size_type_bv p = bp_b.find_open(node_v - 1);
         return succ_zero(p) - p;
     }
 
+
+    /**
+     * @param node_v
+     * @return The number of leaves to the left of node v, plus 1.
+     */
     size_type_bv leaf_rank(size_type_bp node_v) const{
-        return rank_zero_zero(node_v - 1) + 1;
+        return rank_zero_zero(node_v-1) + 1;
     }
 
+    /**
+     *
+     * @param node_v
+     * @return The number of leaves in the subtree of node v.
+     */
     size_type_bv leaf_num(size_type_bp node_v) const{
-        return leaf_rank(fwd_search(node_v - 1, -1) + 1) - leaf_rank(node_v);
+//        cout << "node_v = " << node_v << endl;
+//        cout << "fwd_search(node_v-1, -1)= " << fwd_search(node_v-1, -1) << endl;
+//        cout << "leaf_rank(fwd_search(node_v-1, -1) + 1)= " << leaf_rank(fwd_search(node_v-1, -1) + 1) << endl;
+//        cout << "leaf_rank(node_v)= " << leaf_rank(node_v) << endl;
+        return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
     }
-
 
     // ---- other operations for join ---- //
-    // TODO: see how it works without level
-    inline uint8_t get_node(uint64_t node, uint64_t *rank_array, uint64_t r) {
+
+    /**
+     *
+     * @param node the starting position in the bitvector S in preorder
+     * @param rank_array
+     * @param node the starting position in the bitvector B in preorder
+     * @return
+     */
+    inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
         uint8_t nd;
+        // node + n_children + 1 (1^c 0)
+        size_type_bv n_children = children(node);
+        node += n_children + 1;
         if(k_d == 4){
-            nd = bv_s.get_4_bits(node);
+            nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
                 case 0:
                     break;
                 case 1:
-                    rank_array[0] = r + 1;
+                    rank_array[0] = node;
                     break;
                 case 2:
-                    rank_array[1] = r + 1;
+                    rank_array[1] = node;
                     break;
                 case 3:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0; // si tiene hijos, le agrego un 1 por el 0.
+
+                    rank_array[1] = node;
                     break;
                 case 4:
-                    rank_array[2] = r + 1;
+                    rank_array[2] = node;
                     break;
                 case 5:
-                    rank_array[0] = r + 1;
-                    rank_array[2] = r + 2;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[2] = node;
                     break;
                 case 6:
-                    rank_array[1] = r + 1;
-                    rank_array[2] = r + 2;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[2] = node;
                     break;
                 case 7:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
-                    rank_array[2] = r + 3;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[2] = node;
                     break;
                 case 8:
-                    rank_array[3] = r + 1;
+                    rank_array[3] = node;
                     break;
                 case 9:
-                    rank_array[0] = r + 1;
-                    rank_array[3] = r + 2;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
                 case 10:
-                    rank_array[1] = r + 1;
-                    rank_array[3] = r + 2;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
                 case 11:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
-                    rank_array[3] = r + 3;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
                 case 12:
-                    rank_array[2] = r + 1;
-                    rank_array[3] = r + 2;
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
                 case 13:
-                    rank_array[0] = r + 1;
-                    rank_array[2] = r + 2;
-                    rank_array[3] = r + 3;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
                 case 14:
-                    rank_array[1] = r + 1;
-                    rank_array[2] = r + 2;
-                    rank_array[3] = r + 3;
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
                 case 15:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
-                    rank_array[2] = r + 3;
-                    rank_array[3] = r + 4;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[1] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[2] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[3] = node;
                     break;
             }
         } else {
-            nd = bv_s.get_2_bits(node);
+            nd = bv_s.get_2_bits(start_pos);
             switch (nd) {
                 case 0:
                     break;
                 case 1:
-                    rank_array[0] = r + 1;
+                    rank_array[0] = node;
                     break;
                 case 2:
-                    rank_array[1] = r + 1;
+                    rank_array[1] = node;
                     break;
                 case 3:
-                    rank_array[0] = r + 1;
-                    rank_array[1] = r + 2;
+                    rank_array[0] = node;
+                    n_children = subtree(node);
+                    node+= n_children;
+                    node+= n_children > 1 ? 1 : 0;
+
+                    rank_array[1] = node;
                     break;
             }
         }
-
         return nd;
     }
 
+    /**
+     *
+     * @param node
+     * @return The bits of the node of the tree that are descendants of the node.
+     */
     inline uint8_t get_node_last_level(uint64_t node) {
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
         if(k_d == 4){
-            return bv_s.get_4_bits(node);
+            return bv_s.get_4_bits(start_pos);
         } else {
-            return bv_s.get_2_bits(node);
+            return bv_s.get_2_bits(start_pos);
         }
     }
 
-
+    /**
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Useful for the range Maximum query
+     * @param node
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     */
+    bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
+        init = leaf_rank(node);
+        end = leaf_rank(next_sibling(node));
+        return init < end;
+    }
 
 
 };
