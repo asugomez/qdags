@@ -983,7 +983,8 @@ namespace asu
             for(size_type j = 0; j < n_bitvectors; ++j) {
                 n_zero_zero += bits::cnt(~((m_bp->data()[j] << 1) | m_bp->data()[j] ));
             }
-            n_zero_zero += bits::cnt(~((m_bp->data()[n_bitvectors] << 1) | m_bp->data()[n_bitvectors] ) << (64 - (i-64*n_bitvectors)));
+            uint64_t diff_shift = 63 - (i-64*n_bitvectors);
+            n_zero_zero += bits::cnt(((~((m_bp->data()[n_bitvectors] << 1) | m_bp->data()[n_bitvectors] )) << diff_shift));
             return n_zero_zero;
         }
 
@@ -1000,6 +1001,7 @@ namespace asu
             if(!is_open(i)) return i;
             // TODO: change divission by shift
             // i >> 6 <==> i/64
+            // TODO: buscar en cada arrglo?
             size_type n = __builtin_ctz(~ ( m_bp->data()[i >> 6] << (i - (i/64)*64) ));
 //            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] << (i - (i/64)*64) ));
 //            size_type n = __builtin_clz((~(*m_bp->data())) << (m_bp->size()-i));
@@ -1016,6 +1018,7 @@ namespace asu
             if(! is_open(i)) return i; // if bv[i] is a 0, return i
             //m_bp->data()[i/64] >> (i - (i/64)*64);
             // 100 - ()
+            // TODO: buscar en cada arreglo
             size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] >> (i - (i/64)*64) ));
             return n + i;
         }
