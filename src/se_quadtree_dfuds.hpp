@@ -125,27 +125,26 @@ protected:
 
             if (l != cur_l) {
                 cur_l = l;
-                k_t_.resize(t);
-                k_t_s.resize(size_bv_s+t);
+                k_t_s.bit_resize(size_bv_s+t);
+                k_t_s.bit_resize(size_bv_s+k_d);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-                //cout << k_t_ << endl;
+                cout << k_t_ << endl;
 
                 size_bv_s += t;
 
                 // write 1^c 0
                 if(!is_leaves){
                     n_children = __builtin_popcount(*k_t_.data());//t/k_d;
-                    k_t_b.resize(size_bv_b + n_children  + 1);
+                    k_t_b.bit_resize(size_bv_b + n_children  + 1);
                     for(index = size_bv_b; index < size_bv_b + n_children; index++){
                         k_t_b[index] = 1;
                     }
                     k_t_b[index] = 0;
                     size_bv_b+= n_children + 1;
-                }
-                if(is_leaves){
+                } else {
                     n_children = t/k_d;
-                    k_t_b.resize(size_bv_b + n_children);
+                    k_t_b.bit_resize(size_bv_b + n_children);
                     for(index = size_bv_b; index < size_bv_b + n_children; index++){
                         k_t_b[index] = 0;
                     }
@@ -229,29 +228,29 @@ protected:
                 }
             }
             delete[] top_left_point;
-
         }
 
-        k_t_.resize(t);
-        k_t_s.resize(size_bv_s+t);
+        k_t_.resize(t );
+        k_t_s.bit_resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
         // write 1^c 0
-        // DEBUG: k_t_s how mamny elements
+
         n_children = t/k_d;//
-        k_t_b.resize(size_bv_b + n_children );
+        k_t_b.bit_resize(size_bv_b + n_children );
         for(index = size_bv_b; index < size_bv_b + n_children; index++){
             k_t_b[index] = 0;
         }
 
-        // bitvectors
-        bv_s = rank_bv_64(k_t_s); // TODO: fix this!! max 64 bits!!
+        // bitvectors // TODO: fix size of bv_s (144 and should be 204)
+        bv_s = rank_bv_64(k_t_s);
         bit_vector_b = new bit_vector(k_t_b);
 
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
 
-//        cout << "finish" << endl;
+        cout << "finish: " << bv_s.size() << endl;
+        cout << endl;
     }
 
 public:
@@ -312,23 +311,23 @@ public:
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
-    size_type_bp fwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+    size_type_bv fwd_search(size_type_bv start_pos, difference_type diff_excess)const{
         return this->bp_b.fwd_search(start_pos, diff_excess);
     }
 
-//    size_type_bp bwd_search(size_type_bp start_pos, difference_type diff_excess)const{
+//    size_type_bv bwd_search(size_type_bv start_pos, difference_type diff_excess)const{
 //        return this->bp_b.bwd_search(start_pos, diff_excess);
 //    }
 
-//    size_type_bp find_open(size_type_bp node_v)const{
+//    size_type_bv find_open(size_type_bv node_v)const{
 //        return bp_b.find_open(node_v);
 //    }
 
-    size_type_bv find_close(size_type_bp node_v)const{
+    size_type_bv find_close(size_type_bv node_v)const{
         return bp_b.find_close(node_v);
     }
 
-    size_type_bp root()const{
+    size_type_bv root()const{
         return 3;
     }
 
@@ -337,12 +336,12 @@ public:
     }
 
     // suc_0(B,v)
-    size_type_bp succ_zero(size_type_bp node_v) const{
+    size_type_bv succ_zero(size_type_bv node_v) const{
         return bp_b.succ_zero(node_v);
     }
 
     // rank_00(B,v)
-    size_type_bp rank_zero_zero(size_type_bp node_v) const{
+    size_type_bv rank_zero_zero(size_type_bv node_v) const{
         return bp_b.rank_zero_zero(node_v);
     }
 
@@ -351,7 +350,7 @@ public:
      * @param node_v
      * @return The next sibling of node v, if it exists.
      */
-    size_type_bp next_sibling(size_type_bp node_v)const{
+    size_type_bv next_sibling(size_type_bv node_v)const{
         // B[open(B,v-1) - 1] == 1
         assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
         return fwd_search(node_v-1,-1) + 1;
@@ -362,7 +361,7 @@ public:
      * @param node_v
      * @return The previous sibling of node v, if it exists.
      */
-    size_type_bp preceding_sibling(size_type_bp node_v)const{
+    size_type_bv preceding_sibling(size_type_bv node_v)const{
         // B[v-2, v-1] != [1,0]
         assert(!bp_b.is_open(node_v - 2)); // 1
         assert(bp_b.is_open(node_v - 1)); // 0
@@ -370,17 +369,17 @@ public:
     }
 
     // select_0(B,v)
-    size_type_bv select_zero(size_type_bp node_v){
+    size_type_bv select_zero(size_type_bv node_v){
         return 0;// bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
     }
 
     // select_00(B,v)
-    size_type_bv select_zero_zero(size_type_bp node_v) const{
+    size_type_bv select_zero_zero(size_type_bv node_v) const{
         return bp_b.select_zero_zero(node_v);
     }
 
     // pred_0(B,v)
-    size_type_bp pred_zero(size_type_bp node_v) const{
+    size_type_bv pred_zero(size_type_bv node_v) const{
         // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
         return bp_b.pred_zero(node_v);
     }
@@ -391,7 +390,7 @@ public:
      * @param node_v
      * @return Number of nodes in the subtree of node_v, counting node_v.
      */
-    size_type_bv subtree(size_type_bp node_v)const{
+    size_type_bv subtree(size_type_bv node_v)const{
         // (fwdsearch(B, v-1, -1) - v)/2 + 1
         assert(node_v >= 3);
         return (fwd_search(node_v -1, -1) - node_v)/2 + 1;
@@ -402,7 +401,7 @@ public:
      * @param node_v
      * @return Number of children of node v.
      */
-    size_type_bv children(size_type_bp node_v) const{
+    size_type_bv children(size_type_bv node_v) const{
         assert(node_v >= 3);
         return succ_zero(node_v) - node_v;
     }
@@ -413,8 +412,8 @@ public:
      * @param t
      * @return The t-th child of node v, if it exists
      */
-    size_type_bv child(size_type_bp node_v, size_type_bp t) const{
-        return bp_b.find_close(succ_zero(node_v));// - t) + 1;
+    size_type_bv child(size_type_bv node_v, size_type_bv t) const{
+        return bp_b.find_close(succ_zero(node_v) - t) + 1;
     }
 
     /**
@@ -422,7 +421,7 @@ public:
      * @param node_v
      * @return The t such that node v is the tth child of its parent.
      */
-    size_type_bv childrank(size_type_bp node_v) const{
+    size_type_bv childrank(size_type_bv node_v) const{
         size_type_bp p = bp_b.find_open(node_v - 1);
         return succ_zero(p) - p;
     }
@@ -432,7 +431,7 @@ public:
      * @param node_v
      * @return The number of leaves to the left of node v, plus 1.
      */
-    size_type_bv leaf_rank(size_type_bp node_v) const{
+    size_type_bv leaf_rank(size_type_bv node_v) const{
         return rank_zero_zero(node_v-1) + 1;
     }
 
@@ -441,7 +440,7 @@ public:
      * @param node_v
      * @return The ith left-to-right leaf node in the tree-
      */
-    size_type_bv leaf_select(size_type_bp node_v) const{
+    size_type_bv leaf_select(size_type_bv node_v) const{
         return select_zero_zero(node_v) + 1;
     }
 
@@ -450,32 +449,32 @@ public:
      * @param node_v
      * @return The number of leaves in the subtree of node v.
      */
-    size_type_bv leaf_num(size_type_bp node_v) const{
+    size_type_bv leaf_num(size_type_bv node_v) const{
         return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
     }
 
     // rank_0(B,v) (de B[0,v-1])
-    size_type_bp rank_zero(size_type_bp node_v) const{
+    size_type_bv rank_zero(size_type_bv node_v) const{
         return node_v - bp_b.rank(node_v);
     }
 
 
-    size_type_bp first_child(size_type_bp node_v)const{
+    size_type_bv first_child(size_type_bv node_v)const{
         assert(bp_b.is_open(node_v));
         return succ_zero(node_v) + 1;
     }
 
-    size_type_bp last_child(size_type_bp node_v)const{
+    size_type_bv last_child(size_type_bv node_v)const{
         assert(bp_b.is_open(node_v));
         return bp_b.find_close(node_v) + 1;
     }
 
-    size_type_bp parent(size_type_bp node_v)const{
+    size_type_bv parent(size_type_bv node_v)const{
         assert(node_v != 3);
         return pred_zero(node_v - 1) + 1;
     }
 
-    bool is_leaf(size_type_bp node_v)const{
+    bool is_leaf(size_type_bv node_v)const{
         return bit_vector_b->get_int(node_v,1) == 0;
     }
 
@@ -492,8 +491,9 @@ public:
         uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
         uint8_t nd;
         // node + n_children + 1 (1^c 0)
-        size_type_bv n_children = children(node);
-        node += n_children + 1;
+        node = first_child(node);
+//        size_type_bv n_children = children(node);
+//        node += n_children + 1;
         if(k_d == 4){
             nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
@@ -606,6 +606,8 @@ public:
      * @return The bits of the node of the tree that are descendants of the node.
      */
     inline uint8_t get_node_last_level(uint64_t node) {
+        assert(bit_vector_b[node]==0); // check the node is a leaf
+        assert(bit_vector_b[node-1]==0);
         uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
         if(k_d == 4){
             return bv_s.get_4_bits(start_pos);
@@ -636,7 +638,7 @@ public:
             n_ones += bits::cnt(cur_node);
             init_num_leaf = next_sibling(init_num_leaf);
         }
-        return init < end;
+        return false;init < end;
     }
 
 
