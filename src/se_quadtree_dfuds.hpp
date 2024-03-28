@@ -129,7 +129,7 @@ protected:
                 k_t_s.bit_resize(size_bv_s+k_d);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-                cout << k_t_ << endl;
+//                cout << k_t_ << endl;
 
                 size_bv_s += t;
 
@@ -248,9 +248,6 @@ protected:
 
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
-
-        cout << "finish: " << bv_s.size() << endl;
-        cout << endl;
     }
 
 public:
@@ -461,6 +458,7 @@ public:
 
     size_type_bv first_child(size_type_bv node_v)const{
         assert(bp_b.is_open(node_v));
+        assert(bp_b.is_close(node_v-1)); // TODO: maybe?
         return succ_zero(node_v) + 1;
     }
 

@@ -989,15 +989,19 @@ namespace asu
         }
 
 
+        // TODO: assert open
         size_type pred_zero(size_type i)const {
             assert(i < m_size);
-            size_type n = __builtin_clz((~(*m_bp->data())) << (m_bp->size()-i));
-            return n - (m_bp->size()-i);
+            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] << (i - (i/64)*64) ));
+//            size_type n = __builtin_clz((~(*m_bp->data())) << (m_bp->size()-i));
+            return n - (m_size-i);
         }
 
         size_type succ_zero(size_type i)const { // TODO: si bv[i] = 0? (sino, hay q hacer shift >> (i+1)
             assert(i < m_size);
-            size_type n = __builtin_ctz((~(*m_bp->data())) >> i);
+            if(!is_open(i)) return i;
+            //m_bp->data()[i/63] >> (i - (i/63)*63);
+            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] >> (i - (i/64)*64) ));
             return n + i;
         }
 
@@ -1010,7 +1014,9 @@ namespace asu
         }
 
         bool is_open(size_type i)const {
-            return (*m_bp)[i];
+            assert(i < m_size);
+            // TODO: get the [i - (i/64)*64] - th bit
+            return true;//m_bp->data()[i/64]. //[i - (i/64)*64]; // TODO: fix it
         }
 
     };
