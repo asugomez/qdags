@@ -978,29 +978,44 @@ namespace asu
             assert(i < m_size);
             if (!i) return 0;
             //m_bp_aux = ~(*m_bp->data() | *m_bp_aux); // = B NOR (B<<1)
-            return bits::cnt(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
-
+            size_type n_zero_zero = 0;
+            size_type n_bitvectors = i/64;
+            for(size_type j = 0; j < n_bitvectors; ++j) {
+                n_zero_zero += bits::cnt(~((m_bp->data()[j] << 1) | m_bp->data()[j] ));
+            }
+            n_zero_zero += bits::cnt(~((m_bp->data()[n_bitvectors] << 1) | m_bp->data()[n_bitvectors] ) << (64 - (i-64*n_bitvectors)));
+            return n_zero_zero;
         }
 
         size_type select_zero_zero(size_type i) const {
-            //select_type sel(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
-            // TODO implement
-            return 0;
+            //size_type test = select_support_mcl<1>(~((m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) )).select(i);
+            return 0;//test;
+//            select_type sel(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
+//            return 0;
         }
 
 
-        // TODO: assert open
         size_type pred_zero(size_type i)const {
             assert(i < m_size);
-            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] << (i - (i/64)*64) ));
+            if(!is_open(i)) return i;
+            // TODO: change divission by shift
+            // i >> 6 <==> i/64
+            size_type n = __builtin_ctz(~ ( m_bp->data()[i >> 6] << (i - (i/64)*64) ));
+//            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] << (i - (i/64)*64) ));
 //            size_type n = __builtin_clz((~(*m_bp->data())) << (m_bp->size()-i));
             return n - (m_size-i);
         }
 
-        size_type succ_zero(size_type i)const { // TODO: si bv[i] = 0? (sino, hay q hacer shift >> (i+1)
+        /**
+         *
+         * @param i position of the bitvector
+         * @return the position of the next appearance of a 0 after i. If bv[i]=0, returns i.
+         */
+        size_type succ_zero(size_type i)const {
             assert(i < m_size);
-            if(!is_open(i)) return i;
-            //m_bp->data()[i/63] >> (i - (i/63)*63);
+            if(! is_open(i)) return i; // if bv[i] is a 0, return i
+            //m_bp->data()[i/64] >> (i - (i/64)*64);
+            // 100 - ()
             size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] >> (i - (i/64)*64) ));
             return n + i;
         }
@@ -1014,9 +1029,7 @@ namespace asu
         }
 
         bool is_open(size_type i)const {
-            assert(i < m_size);
-            // TODO: get the [i - (i/64)*64] - th bit
-            return true;//m_bp->data()[i/64]. //[i - (i/64)*64]; // TODO: fix it
+            return find_open(i)==i;
         }
 
     };

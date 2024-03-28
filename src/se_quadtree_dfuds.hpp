@@ -248,6 +248,11 @@ protected:
 
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
+
+        bp_b.rank_zero_zero(100);
+        bp_b.select_zero_zero(23);
+        bp_b.pred_zero(63);
+        bp_b.pred_zero(110);
     }
 
 public:
@@ -636,7 +641,7 @@ public:
             n_ones += bits::cnt(cur_node);
             init_num_leaf = next_sibling(init_num_leaf);
         }
-        return false;init < end;
+        return init < end;
     }
 
 
