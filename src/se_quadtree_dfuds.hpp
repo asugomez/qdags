@@ -249,15 +249,6 @@ protected:
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
 
-        bp_b.rank_zero_zero(64);
-        bp_b.rank_zero_zero(100);
-        bp_b.select_zero_zero(23);
-        bp_b.pred_zero(64);
-        bp_b.succ_zero(0);
-        bp_b.succ_zero(80);
-        bp_b.succ_zero(104);
-        bp_b.succ_zero(79);
-        bp_b.succ_zero(66);
     }
 
 public:
@@ -318,13 +309,6 @@ public:
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
 
-    size_type_bv fwd_search(size_type_bv start_pos, difference_type diff_excess)const{
-        return this->bp_b.fwd_search(start_pos, diff_excess);
-    }
-
-//    size_type_bv bwd_search(size_type_bv start_pos, difference_type diff_excess)const{
-//        return this->bp_b.bwd_search(start_pos, diff_excess);
-//    }
 
 //    size_type_bv find_open(size_type_bv node_v)const{
 //        return bp_b.find_open(node_v);
@@ -360,7 +344,7 @@ public:
     size_type_bv next_sibling(size_type_bv node_v)const{
         // B[open(B,v-1) - 1] == 1
         assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
-        return fwd_search(node_v-1,-1) + 1;
+        return bp_b.next_sibling(node_v);
     }
 
     /**
@@ -400,7 +384,7 @@ public:
     size_type_bv subtree(size_type_bv node_v)const{
         // (fwdsearch(B, v-1, -1) - v)/2 + 1
         assert(node_v >= 3);
-        return (fwd_search(node_v -1, -1) - node_v)/2 + 1;
+        return bp_b.subtree(node_v);
     }
 
     /**
@@ -457,7 +441,7 @@ public:
      * @return The number of leaves in the subtree of node v.
      */
     size_type_bv leaf_num(size_type_bv node_v) const{
-        return leaf_rank(fwd_search(node_v-1, -1) + 1) - leaf_rank(node_v);
+        return leaf_rank(bp_b.next_sibling(node_v)) - leaf_rank(node_v);
     }
 
     // rank_0(B,v) (de B[0,v-1])

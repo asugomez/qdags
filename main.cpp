@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
+    uint64_t grid_side = 32;//52000000; // es como +infty para wikidata
 
     qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
     qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
@@ -103,14 +103,13 @@ int main(int argc, char **argv) {
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
-    qdag_rel_R_dfuds.getQ()->rank_zero_zero(5);
 
 
 //    // print the tree
-//    cout << endl << "rel R" << endl;
-//    qdag_rel_R.printBv();
-//    cout << endl << "rel S" << endl;
-//    qdag_rel_S.printBv();
+    cout << endl << "rel R" << endl;
+    qdag_rel_R.printBv();
+    cout << endl << "rel S" << endl;
+    qdag_rel_S.printBv();
 
     //vector<qdag> Q(3);
     vector<qdag> Q(2);

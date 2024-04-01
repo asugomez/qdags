@@ -1044,13 +1044,14 @@ namespace asu
             return i + (64-i%64) + ((j-cur_bitvector-1)<<6) + n;
         }
 
-        size_type fwd_search(size_type i, difference_type rel)const {
-            return fwd_excess(i, rel);
+        size_type next_sibling(size_type node_v)const {
+            return fwd_excess(node_v-1,-1) + 1;
         }
 
-        size_type bwd_search(size_type i, difference_type rel)const {
-            return bwd_excess(i, rel);
+        size_type subtree(size_type node_v)const {
+            return (fwd_excess(node_v - 1, -1) - node_v) / 2 + 1;
         }
+        
 
         bool is_open(size_type i)const {
             return find_open(i)==i;
