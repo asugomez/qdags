@@ -1001,11 +1001,25 @@ namespace asu
             if(!is_open(i)) return i;
             // TODO: change divission by shift
             // i >> 6 <==> i/64
-            // TODO: buscar en cada arrglo?
-            size_type n = __builtin_ctz(~ ( m_bp->data()[i >> 6] << (i - (i/64)*64) ));
-//            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] << (i - (i/64)*64) ));
-//            size_type n = __builtin_clz((~(*m_bp->data())) << (m_bp->size()-i));
-            return n - (m_size-i);
+            size_type n_bitvectors = i/64;
+            size_type n = 0;
+            uint64_t diff_shift = 63 - (i-64*n_bitvectors);
+            // check if there is a 0 in the same bitvector
+            n = __builtin_clzll(~ (m_bp->data()[n_bitvectors] << diff_shift) );
+            if(n<64-diff_shift) {
+                //n += n_bitvectors * 64;
+                return i - n;
+            }
+            // otherwise, check the other bitvectors
+            size_type j = n_bitvectors;
+            n=64;
+            while(j>0 && n==64){
+                n = __builtin_clzll(~ (m_bp->data()[j-1] ) );
+                j--;
+            }
+            if(n==64) return 0;
+            //TODO debug i%64
+            return i- (i%64) - (n_bitvectors-j-1)*64 - n - 1;
         }
 
         /**

@@ -252,8 +252,11 @@ protected:
         bp_b.rank_zero_zero(64);
         bp_b.rank_zero_zero(100);
         bp_b.select_zero_zero(23);
-        bp_b.pred_zero(63);
-        bp_b.pred_zero(110);
+        bp_b.pred_zero(64);
+        bp_b.pred_zero(108);
+        bp_b.pred_zero(104);
+        bp_b.pred_zero(79);
+        bp_b.pred_zero(66);
     }
 
 public:
