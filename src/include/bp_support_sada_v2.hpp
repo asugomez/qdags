@@ -998,14 +998,12 @@ namespace asu
 
         size_type pred_zero(size_type i)const {
             assert(i < m_size);
-            if(!is_open(i)) return i;
-            // TODO: change divission by shift
+            if(! is_open(i)) return i;
             // i >> 6 <==> i/64
-            size_type n_bitvectors = i/64;
-            size_type n = 0;
-            uint64_t diff_shift = 63 - (i-64*n_bitvectors);
+            size_type n_bitvectors = i>>6;
+            uint64_t diff_shift = 63 - (i-(n_bitvectors<<6));
             // check if there is a 0 in the same bitvector
-            n = __builtin_clzll(~ (m_bp->data()[n_bitvectors] << diff_shift) );
+            size_type n = __builtin_clzll(~ (m_bp->data()[n_bitvectors] << diff_shift) );
             if(n<64-diff_shift) {
                 //n += n_bitvectors * 64;
                 return i - n;
@@ -1018,8 +1016,7 @@ namespace asu
                 j--;
             }
             if(n==64) return 0;
-            //TODO debug i%64
-            return i- (i%64) - (n_bitvectors-j-1)*64 - n - 1;
+            return i- (i%64) - ((n_bitvectors-j-1)<<6) - n - 1;
         }
 
         /**
@@ -1031,10 +1028,20 @@ namespace asu
             assert(i < m_size);
             if(! is_open(i)) return i; // if bv[i] is a 0, return i
             //m_bp->data()[i/64] >> (i - (i/64)*64);
-            // 100 - ()
-            // TODO: buscar en cada arreglo
-            size_type n = __builtin_ctz(~ ( m_bp->data()[i/64] >> (i - (i/64)*64) ));
-            return n + i;
+            size_type cur_bitvector = i>>6; // u/64
+            uint64_t diff_shift = (i-(cur_bitvector<<6));
+            size_type n = __builtin_ctzll(~ ( m_bp->data()[cur_bitvector] >> diff_shift) );
+            if(n<64-diff_shift) {
+                return i + n;
+            }
+            size_type total_n_bv = m_size/64 + 1;
+            size_type j = cur_bitvector + 1;
+            n=64;
+            while(j<total_n_bv && n==64){
+                n = __builtin_ctzll(~ (m_bp->data()[j] ) );
+                j++;
+            }
+            return i + (64-i%64) + ((j-cur_bitvector-1)<<6) + n;
         }
 
         size_type fwd_search(size_type i, difference_type rel)const {
