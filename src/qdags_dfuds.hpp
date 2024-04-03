@@ -321,9 +321,8 @@ public:
         //Q->printBv();
     }
 
-    // TODO: change it by leaf num!!! it is not the same
+    // TODO: modify: get the actual nnumber of leaves (points)
     uint64_t get_num_leaves(uint64_t node) {
-//        return Q->subtree(node);
         return Q->leaf_num(node);
     }
 

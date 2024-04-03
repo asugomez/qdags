@@ -64,7 +64,6 @@ protected:
         return total_sum;
     }
 
-    // TODO: see if it's necessary to add 110!!
 
     //! Build a space efficient quadtree from a set of d-dimensional points
     /*! This method takes a vector of d-dimensional points
@@ -133,7 +132,7 @@ protected:
 
                 size_bv_s += t;
 
-                // write 1^c 0
+                // write 1^c0
                 if(!is_leaves){
                     n_children = __builtin_popcount(*k_t_.data());//t/k_d;
                     k_t_b.bit_resize(size_bv_b + n_children  + 1);
@@ -143,12 +142,27 @@ protected:
                     k_t_b[index] = 0;
                     size_bv_b+= n_children + 1;
                 } else {
-                    n_children = t/k_d;
-                    k_t_b.bit_resize(size_bv_b + n_children);
-                    for(index = size_bv_b; index < size_bv_b + n_children; index++){
+                    // separar en chunks de k_t=4
+                    uint64_t n_leaves = t/k_d;
+                    for(uint64_t leaf = 0; leaf < n_leaves; leaf++){
+                        n_children = __builtin_popcount(k_t_.get_int(leaf*k_d,k_d));//t/k_d;
+                        k_t_b.bit_resize(size_bv_b + 2*n_children  + 1);
+                        for(index = size_bv_b; index < size_bv_b + n_children; index++){
+                            k_t_b[index] = 1;
+                        }
                         k_t_b[index] = 0;
+                        size_bv_b += n_children + 1;
+                        for(index = index+1; index < size_bv_b + n_children; index++){
+                            k_t_b[index] = 0;
+                        }
+                        size_bv_b += n_children;
                     }
-                    size_bv_b+= n_children;
+//                    k_t_b.bit_resize(size_bv_b + n_children);
+//                    // TODO: fix this, put all n leaves
+//                    for(index = size_bv_b; index < size_bv_b + n_children; index++){
+//                        k_t_b[index] = 0;
+//                    }
+//                    size_bv_b+= n_children;
                 }
 
                 is_leaves = false;
@@ -230,19 +244,29 @@ protected:
             delete[] top_left_point;
         }
 
+        // write bv S
         k_t_.resize(t );
         k_t_s.bit_resize(size_bv_s+t);
         k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
+        // write bv B
         // write 1^c 0
-
-        n_children = t/k_d;//
-        k_t_b.bit_resize(size_bv_b + n_children );
-        for(index = size_bv_b; index < size_bv_b + n_children; index++){
+        uint64_t n_leaves = t/k_d;
+        for(uint64_t leaf = 0; leaf < n_leaves; leaf++){
+            n_children = __builtin_popcount(k_t_.get_int(leaf*k_d,k_d));//t/k_d;
+            k_t_b.bit_resize(size_bv_b + 2*n_children  + 1);
+            for(index = size_bv_b; index < size_bv_b + n_children; index++){
+                k_t_b[index] = 1;
+            }
             k_t_b[index] = 0;
+            size_bv_b += n_children + 1;
+            for(index = index+1; index < size_bv_b + n_children; index++){
+                k_t_b[index] = 0;
+            }
+            size_bv_b += n_children;
         }
 
-        // bitvectors // TODO: fix size of bv_s (144 and should be 204)
+        // bitvectors
         bv_s = rank_bv_64(k_t_s);
         bit_vector_b = new bit_vector(k_t_b);
 

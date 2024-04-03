@@ -1051,7 +1051,7 @@ namespace asu
         size_type subtree(size_type node_v)const {
             return (fwd_excess(node_v - 1, -1) - node_v) / 2 + 1;
         }
-        
+
 
         bool is_open(size_type i)const {
             return find_open(i)==i;
