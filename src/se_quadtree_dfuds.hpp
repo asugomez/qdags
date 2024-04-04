@@ -378,15 +378,15 @@ public:
         return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
     }
 
-    // select_0(B,v)
-    size_type_bv select_zero(size_type_bv node_v){
-        return 0;// bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
-    }
+//    // select_0(B,v)
+//    size_type_bv select_zero(size_type_bv node_v){
+//        return 0;// bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
+//    }
 
-    // select_00(B,v)
-    size_type_bv select_zero_zero(size_type_bv node_v) const{
-        return bp_b.select_zero_zero(node_v);
-    }
+//    // select_00(B,v)
+//    size_type_bv select_zero_zero(size_type_bv node_v) const{
+//        return bp_b.select_zero_zero(node_v);
+//    }
 
     // pred_0(B,v)
     size_type_bv pred_zero(size_type_bv node_v) const{
@@ -445,14 +445,14 @@ public:
         return bp_b.rank_zero_zero(node_v);
     }
 
-    /**
-     *
-     * @param node_v
-     * @return The ith left-to-right leaf node in the tree-
-     */
-    size_type_bv leaf_select(size_type_bv node_v) const{
-        return select_zero_zero(node_v) + 1;
-    }
+//    /**
+//     *
+//     * @param node_v
+//     * @return The ith left-to-right leaf node in the tree-
+//     */
+//    size_type_bv leaf_select(size_type_bv node_v) const{
+//        return select_zero_zero(node_v) + 1;
+//    }
 
     /**
      *
@@ -501,8 +501,7 @@ public:
      * @return
      */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
-        //uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;// * k_d;
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
         uint8_t nd;
         // node + n_children + 1 (1^c 0)
         node = first_child(node);
@@ -591,7 +590,8 @@ public:
                     rank_array[3] = node;
                     break;
             }
-        } else {
+        }
+        else {
             nd = bv_s.get_2_bits(start_pos);
             switch (nd) {
                 case 0:
@@ -618,7 +618,7 @@ public:
      * @return The bits of the node of the tree that are descendants of the node.
      */
     inline uint8_t get_node_last_level(uint64_t node) {
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;// * k_d;
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
         if(k_d == 4){
             return bv_s.get_4_bits(start_pos);
         } else {

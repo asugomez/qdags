@@ -950,6 +950,18 @@ namespace asu
 
         /// --------  new operations --------- ///
 
+        size_type next_sibling(size_type node_v)const {
+            return fwd_excess(node_v-1,-1) + 1;
+        }
+
+        size_type subtree(size_type node_v)const {
+            return (fwd_excess(node_v - 1, -1) - node_v) / 2 + 1;
+        }
+
+
+        bool is_open(size_type i)const {
+            return find_open(i)==i;
+        }
 
         size_type rank_zero(size_type i)const
         {
@@ -977,7 +989,7 @@ namespace asu
         size_type rank_zero_zero(size_type i)const
         {
             assert(i < m_size);
-            if (!i) return 0;
+            //if (!i) return 0; // TODO: que hucha quise decir aqui?
             //m_bp_aux = ~(*m_bp->data() | *m_bp_aux); // = B NOR (B<<1)
             size_type cur_bitvector = i / 64;
             uint64_t diff_shift = 63 - (i- 64 * cur_bitvector);
@@ -995,17 +1007,17 @@ namespace asu
             return n_zero_zero;
         }
 
-        size_type select_zero_zero(size_type i) const {
-            //size_type test = select_support_mcl<1>(~((m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) )).select(i);
-            return 0;//test;
-//            select_type sel(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
-//            return 0;
-        }
+//        size_type select_zero_zero(size_type i) const {
+//            //size_type test = select_support_mcl<1>(~((m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) )).select(i);
+//            return 0;//test;
+////            select_type sel(~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-m_size) + (m_size-i) ));
+////            return 0;
+//        }
 
 
         size_type pred_zero(size_type i)const {
             assert(i < m_size);
-            if(! is_open(i)) return i;
+            if(! is_open(i)) return i; // if bv[i] is a 0, return i
             // i >> 6 <==> i/64
             size_type cur_bitvector = i >> 6;
             uint64_t diff_shift = 63 - (i-(cur_bitvector << 6));
@@ -1050,19 +1062,6 @@ namespace asu
             }
             // i, difference between i and the end of that chunk of 64 bits, all the chunks with no zeros, the position of 0 in that chunk
             return i + ((64*(cur_bitvector+1))-1-i)%63 + ((j-cur_bitvector-2)<<6) + n + 1;
-        }
-
-        size_type next_sibling(size_type node_v)const {
-            return fwd_excess(node_v-1,-1) + 1;
-        }
-
-        size_type subtree(size_type node_v)const {
-            return (fwd_excess(node_v - 1, -1) - node_v) / 2 + 1;
-        }
-
-
-        bool is_open(size_type i)const {
-            return find_open(i)==i;
         }
 
     };

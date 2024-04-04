@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 32;//52000000; // es como +infty para wikidata
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
 
     qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
     qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
@@ -106,10 +106,10 @@ int main(int argc, char **argv) {
 
 
 //    // print the tree
-    cout << endl << "rel R" << endl;
-    qdag_rel_R.printBv();
-    cout << endl << "rel S" << endl;
-    qdag_rel_S.printBv();
+//    cout << endl << "rel R" << endl;
+//    qdag_rel_R.printBv();
+//    cout << endl << "rel S" << endl;
+//    qdag_rel_S.printBv();
 
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
     duration<double> time_span;
 
     // read priorities from file
-    /*std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
+    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
     std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
     std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
     if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open()) {
@@ -172,29 +172,20 @@ int main(int argc, char **argv) {
     vector<int_vector<>> p;
     p.push_back(priorities_R);
     p.push_back(priorities_S);
-    p.push_back(priorities_T);*/
+    p.push_back(priorities_T);
 
-    int_vector<> prioritiesR={6,2,7,3,2,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    int_vector<> prioritiesS={1,1,1,1,4,1,1,1,1,1,22,3,4,5,2,1,0,0,50,4,5,2,1,0,};
-    vector<int_vector<>> p;
-    p.push_back(prioritiesR);
-    p.push_back(prioritiesS);
-
-    int_vector<> prioritiesR2={6,2,7,3,2,4,2,1,5,8,2,10,1,15,16,1,22,3,4,5,2,1,0,0,50,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    int_vector<> prioritiesS2={1,1,1,1,4,1,200,3,31,22,3,4,5,2,1,15,27,50,4,5,2,1,0,4,2,1,5,8,2,10,1,1,1,1,22,3,4,5,2,1,0,0,50};
-    vector<int_vector<>> p2;
-    p2.push_back(prioritiesR2);
-    p2.push_back(prioritiesS2);
+    // size queue
+    int64_t size_queue = argv[7] ? atoi(argv[7]) : 100;
 
     vector<rmq_succinct_sct<false>> rMq_louds; // vector of rMq for each qdag
-    vector<rmq_succinct_sct<false>> rMq_louds_back; // vector of rMq for each qdag
-    vector<rmq_succinct_sct<false>> rMq_dfuds; // vector of rMq for each qdag
-    vector<rmq_succinct_sct<false>> rMq_dfuds_back; // vector of rMq for each qdag
+//    vector<rmq_succinct_sct<false>> rMq_louds_back; // vector of rMq for each qdag
+//    vector<rmq_succinct_sct<false>> rMq_dfuds; // vector of rMq for each qdag
+//    vector<rmq_succinct_sct<false>> rMq_dfuds_back; // vector of rMq for each qdag
     for(uint64_t i = 0; i < Q.size(); i++){
         rMq_louds.push_back(rmq_succinct_sct<false>(&p[i]));
-        rMq_louds_back.push_back(rmq_succinct_sct<false>(&p2[i]));
-        rMq_dfuds.push_back(rmq_succinct_sct<false>(&p[i]));
-        rMq_dfuds_back.push_back(rmq_succinct_sct<false>(&p2[i]));
+//        rMq_louds_back.push_back(rmq_succinct_sct<false>(&p2[i]));
+//        rMq_dfuds.push_back(rmq_succinct_sct<false>(&p[i]));
+//        rMq_dfuds_back.push_back(rmq_succinct_sct<false>(&p2[i]));
     }
 
 
@@ -242,9 +233,9 @@ int main(int argc, char **argv) {
 
 
     cout << "----- MULTI JOIN RANKED RESULTS DFUDS------" << endl;
-    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_louds, results_ranked_dfuds);
     start = high_resolution_clock::now();
-    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_dfuds, results_ranked_dfuds);
+    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, 1, p, rMq_louds, results_ranked_dfuds);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
@@ -252,9 +243,9 @@ int main(int argc, char **argv) {
 
 
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING DFUDS------" << endl;
-    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p, rMq_louds, results_ranked_dfuds_back);
     start = high_resolution_clock::now();
-    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p2, rMq_dfuds, results_ranked_dfuds_back);
+    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, 1000,  p, rMq_louds, results_ranked_dfuds_back);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
@@ -289,9 +280,9 @@ int main(int argc, char **argv) {
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING------" << endl;
-    multiJoinRankedResultsBacktracking(Q, 1, 1000, p2, rMq_louds_back, results_ranked_louds_back); // warmup join -> activar el caché
+    multiJoinRankedResultsBacktracking(Q, 1, 1000, p, rMq_louds, results_ranked_louds_back); // warmup join -> activar el caché
     start = high_resolution_clock::now();
-    multiJoinRankedResultsBacktracking(Q, 1, 1000, p2, rMq_louds_back, results_ranked_louds_back); // warmup join -> activar el caché
+    multiJoinRankedResultsBacktracking(Q, 1, 1000, p, rMq_louds, results_ranked_louds_back); // warmup join -> activar el caché
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
