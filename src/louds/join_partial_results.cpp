@@ -37,7 +37,7 @@ bool AND_partial(
     uint32_t children;
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size;
-    int16_t cur_level;
+    uint16_t cur_level;
     uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
     uint64_t results = 0;
     while(!pq.empty()){

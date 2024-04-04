@@ -355,11 +355,6 @@ public:
         return bp_b.succ_zero(node_v);
     }
 
-    // rank_00(B,v)
-    size_type_bv rank_zero_zero(size_type_bv node_v) const{
-        return bp_b.rank_zero_zero(node_v);
-    }
-
     /**
      *
      * @param node_v
@@ -447,7 +442,7 @@ public:
      * @return The number of leaves to the left of node v, plus 1.
      */
     size_type_bv leaf_rank(size_type_bv node_v) const{
-        return rank_zero_zero(node_v-1) + 1;
+        return bp_b.rank_zero_zero(node_v);
     }
 
     /**
@@ -487,11 +482,13 @@ public:
 
     size_type_bv parent(size_type_bv node_v)const{
         assert(node_v != 3);
-        return pred_zero(node_v - 1) + 1;
+        return pred_zero(bp_b.find_open(node_v - 1)) + 1;
     }
 
     bool is_leaf(size_type_bv node_v)const{
-        return bit_vector_b->get_int(node_v,1) == 0;
+        //assert(bit_vector_b[node]==0); // check the node is a leaf
+        //assert(bit_vector_b[node-1]==0);
+        return bit_vector_b->get_int(node_v-1,2) == 0;
     }
 
     // ---- other operations for join ---- //
@@ -508,8 +505,7 @@ public:
         uint8_t nd;
         // node + n_children + 1 (1^c 0)
         node = first_child(node);
-//        size_type_bv n_children = children(node);
-//        node += n_children + 1;
+        first_child(126);
         if(k_d == 4){
             nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
@@ -622,9 +618,7 @@ public:
      * @return The bits of the node of the tree that are descendants of the node.
      */
     inline uint8_t get_node_last_level(uint64_t node) {
-        assert(bit_vector_b[node]==0); // check the node is a leaf
-        assert(bit_vector_b[node-1]==0);
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d;
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;// * k_d;
         if(k_d == 4){
             return bv_s.get_4_bits(start_pos);
         } else {
@@ -641,19 +635,7 @@ public:
      */
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         init = leaf_rank(node);
-        size_type_bv init_num_leaf = leaf_select(init);
         end = leaf_rank(next_sibling(node));
-        //end = leaf_select(end);;
-        // first idea: recorrer linealmente las hojas
-        //TODO: complete it
-        uint64_t n_leaves = end - init + 1;
-        uint64_t n_ones = 0;
-        uint8_t cur_node;
-        for(uint64_t i = 0; i < n_leaves; i++){
-            cur_node = get_node_last_level(init_num_leaf);
-            n_ones += bits::cnt(cur_node);
-            init_num_leaf = next_sibling(init_num_leaf);
-        }
         return init < end;
     }
 

@@ -321,7 +321,6 @@ public:
         //Q->printBv();
     }
 
-    // TODO: modify: get the actual nnumber of leaves (points)
     uint64_t get_num_leaves(uint64_t node) {
         return Q->leaf_num(node);
     }

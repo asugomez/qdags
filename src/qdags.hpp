@@ -434,7 +434,7 @@ public:
      * get_num_leaves(0,1) --> 4
      * get_num_leaves(2,7) --> 1
      */
-    uint64_t get_num_leaves(int16_t level, uint64_t node) {
+    uint64_t get_num_leaves(uint16_t level, uint64_t node) {
         return Q->get_num_leaves(level, node);
     }
 

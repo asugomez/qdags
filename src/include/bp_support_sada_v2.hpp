@@ -967,10 +967,11 @@ namespace asu
         /**
          *
          * @param i
-         * @return number of 00 before position i.
+         * @return number of 00 before position i (counting this position).
          * @example 110101011010011000
          * -> rank_zero_zero(14) = 1
-         * -> rank_zero_zero(17) = 2
+         * -> rank_zero_zero(16) = 2
+         * -> rank_zero_zero(17) = 3
          * ~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-18) + (18-14))
          */
         size_type rank_zero_zero(size_type i)const
@@ -978,13 +979,19 @@ namespace asu
             assert(i < m_size);
             if (!i) return 0;
             //m_bp_aux = ~(*m_bp->data() | *m_bp_aux); // = B NOR (B<<1)
-            size_type n_zero_zero = 0;
-            size_type n_bitvectors = i/64;
-            for(size_type j = 0; j < n_bitvectors; ++j) {
-                n_zero_zero += bits::cnt(~((m_bp->data()[j] << 1) | m_bp->data()[j] ));
+            size_type cur_bitvector = i / 64;
+            uint64_t diff_shift = 63 - (i- 64 * cur_bitvector);
+            size_type n_zero_zero = bits::cnt( (~(((m_bp->data()[cur_bitvector] << 1) + 1) | m_bp->data()[cur_bitvector] ) ) << diff_shift );
+            size_type j = cur_bitvector;
+            bool last_bit = m_bp->get_int(64*j, 1);
+            while(j>0) {
+                n_zero_zero += bits::cnt(~((m_bp->data()[j-1] << 1) | m_bp->data()[j-1] ));
+                // border case arr[0][63] = 0 and arr[1][0] = 0
+                if(!last_bit && !m_bp->get_int(64*j-1, 1))
+                    n_zero_zero++;
+                j--;
+                last_bit = m_bp->get_int(64*j, 1);
             }
-            uint64_t diff_shift = 63 - (i-64*n_bitvectors);
-            n_zero_zero += bits::cnt(((~((m_bp->data()[n_bitvectors] << 1) | m_bp->data()[n_bitvectors] )) << diff_shift));
             return n_zero_zero;
         }
 
@@ -1000,23 +1007,23 @@ namespace asu
             assert(i < m_size);
             if(! is_open(i)) return i;
             // i >> 6 <==> i/64
-            size_type n_bitvectors = i>>6;
-            uint64_t diff_shift = 63 - (i-(n_bitvectors<<6));
+            size_type cur_bitvector = i >> 6;
+            uint64_t diff_shift = 63 - (i-(cur_bitvector << 6));
             // check if there is a 0 in the same bitvector
-            size_type n = __builtin_clzll(~ (m_bp->data()[n_bitvectors] << diff_shift) );
+            size_type n = __builtin_clzll(~ (m_bp->data()[cur_bitvector] << diff_shift) );
             if(n<64-diff_shift) {
-                //n += n_bitvectors * 64;
+                //n += cur_bitvector * 64;
                 return i - n;
             }
             // otherwise, check the other bitvectors
-            size_type j = n_bitvectors;
+            size_type j = cur_bitvector;
             n=64;
             while(j>0 && n==64){
                 n = __builtin_clzll(~ (m_bp->data()[j-1] ) );
                 j--;
             }
             if(n==64) return 0;
-            return i- (i%64) - ((n_bitvectors-j-1)<<6) - n - 1;
+            return i - (i%64) - ((cur_bitvector - j - 1) << 6) - n - 1;
         }
 
         /**
@@ -1041,7 +1048,8 @@ namespace asu
                 n = __builtin_ctzll(~ (m_bp->data()[j] ) );
                 j++;
             }
-            return i + (64-i%64) + ((j-cur_bitvector-1)<<6) + n;
+            // i, difference between i and the end of that chunk of 64 bits, all the chunks with no zeros, the position of 0 in that chunk
+            return i + ((64*(cur_bitvector+1))-1-i)%63 + ((j-cur_bitvector-2)<<6) + n + 1;
         }
 
         size_type next_sibling(size_type node_v)const {

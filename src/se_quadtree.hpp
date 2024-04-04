@@ -606,7 +606,8 @@ public:
     }
 
     /**
-     * @param level of the node. -1 if is the root
+     * @param level of the node.
+     * Change uint16_t for int16_t if we want to accept level = -1 as for the root
      * @param node the i-th node (0 or 1) of the level
      * @return number of leaves of the ith-node of the level.
      * @example
@@ -618,7 +619,7 @@ public:
      * get_num_leaves(0,1) --> 4
      * get_num_leaves(2,7) --> 1
      */
-    uint64_t get_num_leaves(int16_t level, uint64_t node){
+    uint64_t get_num_leaves(uint16_t level, uint64_t node){
         if(level == -1){
             return total_ones_level(getHeight()-1);
         }
@@ -646,7 +647,7 @@ public:
      * @param siblings number of left siblings. It's useful to have as a starting position.
      * @return the number of children of the i-th node.
      */
-    uint64_t get_num_leaves_aux(int16_t level, uint64_t children, uint64_t siblings){
+    uint64_t get_num_leaves_aux(uint16_t level, uint64_t children, uint64_t siblings){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
