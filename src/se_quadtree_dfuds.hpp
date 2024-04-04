@@ -501,11 +501,11 @@ public:
      * @return
      */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
+        //uint64_t start_pos = (bp_b.rank_zero(node) - 1) * k_d; // position of node_V in preorder
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;// * k_d;
         uint8_t nd;
         // node + n_children + 1 (1^c 0)
         node = first_child(node);
-        first_child(126);
         if(k_d == 4){
             nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
