@@ -1,0 +1,1453 @@
+0.003809
+0.010851
+0.024657
+0.013883
+0.004953
+0.015843
+0.010236
+0.006463
+0.003746
+0.011852
+results nro ° 0
+point output: 18446744070841450634
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 1
+point output: 18446744070841450635
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 2
+point output: 18446744072114353308
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 3
+point output: 18446744071074199741
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 4
+point output: 18446744072113338556
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 5
+point output: 18446744072113338557
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 6
+point output: 18446744072113305788
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 7
+point output: 18446744072113305789
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 8
+point output: 18446744072113337532
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 9
+point output: 18446744072113337533
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 10
+point output: 18446744072113305756
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 11
+point output: 18446744072113305757
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 12
+point output: 18446744072113338524
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 13
+point output: 18446744072113338525
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 14
+point output: 18446744072113304764
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 15
+point output: 18446744072113304765
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 16
+point output: 18446744072113304732
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 17
+point output: 18446744072113304733
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 18
+point output: 18446744072113337500
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 19
+point output: 18446744072113337501
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 20
+point output: 18446744072226721518
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 21
+point output: 18446744072226721519
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 22
+point output: 18446744072194216719
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 23
+point output: 18446744072226689806
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 24
+point output: 18446744072226689807
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 25
+point output: 18446744072226688782
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 26
+point output: 18446744072226688783
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 27
+point output: 18446744072226688750
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 28
+point output: 18446744072226688751
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 29
+point output: 18446744072226689774
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 30
+point output: 18446744072226689775
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 31
+point output: 18446744071102473416
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 32
+point output: 18446744071102473417
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 33
+point output: 18446744070834308242
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 34
+point output: 18446744070834308243
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 35
+point output: 18446744070834300104
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 36
+point output: 18446744070834300105
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 37
+point output: 18446744071102473354
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 38
+point output: 18446744071102473355
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 39
+point output: 18446744070834308040
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 40
+point output: 18446744070834308041
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 41
+point output: 18446744070833293458
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 42
+point output: 18446744070833293459
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 43
+point output: 18446744070833293256
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 44
+point output: 18446744070833293257
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 45
+point output: 18446744070833293194
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 46
+point output: 18446744070833293195
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 47
+point output: 18446744070833293288
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 48
+point output: 18446744070833293289
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 49
+point output: 18446744070833293226
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 50
+point output: 18446744070833293227
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 51
+point output: 18446744070833292264
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 52
+point output: 18446744070833292265
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 53
+point output: 18446744070834307978
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 54
+point output: 18446744070834307979
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 55
+point output: 18446744070834300042
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 56
+point output: 18446744070834300043
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 57
+point output: 18446744070833285352
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 58
+point output: 18446744070833285353
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 59
+point output: 18446744071101458632
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 60
+point output: 18446744071101458633
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 61
+point output: 18446744071101425896
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 62
+point output: 18446744071101425897
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 63
+point output: 18446744070833292232
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 64
+point output: 18446744070833292233
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 65
+point output: 18446744071101458602
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 66
+point output: 18446744071101458603
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 67
+point output: 18446744070833252584
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 68
+point output: 18446744070833252585
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 69
+point output: 18446744071101457608
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 70
+point output: 18446744071101457609
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 71
+point output: 18446744071101458570
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 72
+point output: 18446744071101458571
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 73
+point output: 18446744071101425834
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 74
+point output: 18446744071101425835
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 75
+point output: 18446744070833252552
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 76
+point output: 18446744070833252553
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 77
+point output: 18446744070833252522
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 78
+point output: 18446744070833252523
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 79
+point output: 18446744070833292202
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 80
+point output: 18446744070833292203
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 81
+point output: 18446744071101425802
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 82
+point output: 18446744071101425803
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 83
+point output: 18446744071101457578
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 84
+point output: 18446744071101457579
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 85
+point output: 18446744070833285320
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 86
+point output: 18446744070833285321
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 87
+point output: 18446744071101425864
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 88
+point output: 18446744071101425865
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 89
+point output: 18446744070833285258
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 90
+point output: 18446744070833285259
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 91
+point output: 18446744070833284328
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 92
+point output: 18446744070833284329
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 93
+point output: 18446744070833292170
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 94
+point output: 18446744070833292171
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 95
+point output: 18446744070833284296
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 96
+point output: 18446744070833284297
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 97
+point output: 18446744070833284266
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 98
+point output: 18446744070833284267
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 99
+point output: 18446744070833284234
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 0
+point output: 18446744070841450634
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 1
+point output: 18446744070841450635
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 2
+point output: 18446744072114353308
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 3
+point output: 18446744071074199741
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 4
+point output: 18446744072113338556
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 5
+point output: 18446744072113338557
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 6
+point output: 18446744072113305788
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 7
+point output: 18446744072113305789
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 8
+point output: 18446744072113337532
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 9
+point output: 18446744072113337533
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 10
+point output: 18446744072113305756
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 11
+point output: 18446744072113305757
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 12
+point output: 18446744072113338524
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 13
+point output: 18446744072113338525
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 14
+point output: 18446744072113304764
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 15
+point output: 18446744072113304765
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 16
+point output: 18446744072113304732
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 17
+point output: 18446744072113304733
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 18
+point output: 18446744072113337500
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 19
+point output: 18446744072113337501
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 20
+point output: 18446744072226721518
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 21
+point output: 18446744072226721519
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 22
+point output: 18446744072194216719
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 23
+point output: 18446744072226689806
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 24
+point output: 18446744072226689807
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 25
+point output: 18446744072226688782
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 26
+point output: 18446744072226688783
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 27
+point output: 18446744072226688750
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 28
+point output: 18446744072226688751
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 29
+point output: 18446744072226689774
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 30
+point output: 18446744072226689775
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 31
+point output: 18446744071102473416
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 32
+point output: 18446744071102473417
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 33
+point output: 18446744070834308242
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 34
+point output: 18446744070834308243
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 35
+point output: 18446744070834300104
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 36
+point output: 18446744070834300105
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 37
+point output: 18446744071102473354
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 38
+point output: 18446744071102473355
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 39
+point output: 18446744070834308040
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 40
+point output: 18446744070834308041
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 41
+point output: 18446744070833293458
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 42
+point output: 18446744070833293459
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 43
+point output: 18446744070833293256
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 44
+point output: 18446744070833293257
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 45
+point output: 18446744070833293194
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 46
+point output: 18446744070833293195
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 47
+point output: 18446744070833293288
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 48
+point output: 18446744070833293289
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 49
+point output: 18446744070833293226
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 50
+point output: 18446744070833293227
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 51
+point output: 18446744070833292264
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 52
+point output: 18446744070833292265
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 53
+point output: 18446744070834307978
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 54
+point output: 18446744070834307979
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 55
+point output: 18446744070834300042
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 56
+point output: 18446744070834300043
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 57
+point output: 18446744070833285352
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 58
+point output: 18446744070833285353
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 59
+point output: 18446744071101458632
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 60
+point output: 18446744071101458633
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 61
+point output: 18446744071101425896
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 62
+point output: 18446744071101425897
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 63
+point output: 18446744070833292232
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 64
+point output: 18446744070833292233
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 65
+point output: 18446744071101458602
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 66
+point output: 18446744071101458603
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 67
+point output: 18446744070833252584
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 68
+point output: 18446744070833252585
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 69
+point output: 18446744071101457608
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 70
+point output: 18446744071101457609
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 71
+point output: 18446744071101458570
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 72
+point output: 18446744071101458571
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 73
+point output: 18446744071101425834
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 74
+point output: 18446744071101425835
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 75
+point output: 18446744070833252552
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 76
+point output: 18446744070833252553
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 77
+point output: 18446744070833252522
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 78
+point output: 18446744070833252523
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 79
+point output: 18446744070833292202
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 80
+point output: 18446744070833292203
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 81
+point output: 18446744071101425802
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 82
+point output: 18446744071101425803
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 83
+point output: 18446744071101457578
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 84
+point output: 18446744071101457579
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 85
+point output: 18446744070833285320
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 86
+point output: 18446744070833285321
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 87
+point output: 18446744071101425864
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 88
+point output: 18446744071101425865
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 89
+point output: 18446744070833285258
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 90
+point output: 18446744070833285259
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 91
+point output: 18446744070833284328
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 92
+point output: 18446744070833284329
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 93
+point output: 18446744070833292170
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 94
+point output: 18446744070833292171
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 95
+point output: 18446744070833284296
+ coord 0 = 0
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 96
+point output: 18446744070833284297
+ coord 0 = 0
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 97
+point output: 18446744070833284266
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 98
+point output: 18446744070833284267
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 99
+point output: 18446744070833284234
+ coord 0 = 33554432
+ coord 1 = 0
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+0.013805
+0.002188
+0.01363
+0.008077
+0.003214
+0.011084
+0.006004
+0.013387
+0.016431
+0.038043
+0.01366
+0.009653
+0.004252
+0.018972
+0.006566
+0.004948
+0.010852
+0.009484
+0.010037
+results nro ° 0
+point output: 730829859
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+results nro ° 0
+point output: 730829859
+ coord 0 = 33554432
+ coord 1 = 33554432
+ coord 2 = 0
+ coord 3 = 0
+ coord 4 = 0
+0.012051
+0.011045
+0.008011
+0.003366
+0.018935
+0.01187
+0.008394
+0.022319
+0.011534
+0.006287
