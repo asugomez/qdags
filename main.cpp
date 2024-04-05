@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
 
 
 
-//    // print the tree
+    // print the tree
 //    cout << endl << "rel R" << endl;
 //    qdag_rel_R.printBv();
 //    cout << endl << "rel S" << endl;

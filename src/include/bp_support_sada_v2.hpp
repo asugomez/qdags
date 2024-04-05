@@ -989,7 +989,6 @@ namespace asu
         size_type rank_zero_zero(size_type i)const
         {
             assert(i < m_size);
-            //if (!i) return 0; // TODO: que hucha quise decir aqui?
             //m_bp_aux = ~(*m_bp->data() | *m_bp_aux); // = B NOR (B<<1)
             size_type cur_bitvector = i / 64;
             uint64_t diff_shift = 63 - (i- 64 * cur_bitvector);
@@ -997,7 +996,7 @@ namespace asu
             size_type j = cur_bitvector;
             bool last_bit = m_bp->get_int(64*j, 1);
             while(j>0) {
-                n_zero_zero += bits::cnt(~((m_bp->data()[j-1] << 1) | m_bp->data()[j-1] ));
+                n_zero_zero += bits::cnt(~(((m_bp->data()[j-1] << 1) + 1) | m_bp->data()[j-1] ));
                 // border case arr[0][63] = 0 and arr[1][0] = 0
                 if(!last_bit && !m_bp->get_int(64*j-1, 1))
                     n_zero_zero++;
