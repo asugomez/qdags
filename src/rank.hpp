@@ -228,7 +228,8 @@ public:
 
         // bit most significant first
         // otherwise do: i=0; i<4; i++
-        for (int i = 3; i > -1; i--) {
+        //for (int i = 3; i > -1; i--) { // bit most significant first
+        for(int i=0; i<4; i++){ // bit less significant first
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";

@@ -21,7 +21,7 @@ extern duration<double> time_span_rank;
 
 typedef uint8_t type_mapping_M;
 
-bool compare_pairs(const pair<uint64_t, uint64_t> &i, const pair<uint64_t, uint64_t> &j) {
+bool compare_pairs_dfuds(const pair<uint64_t, uint64_t> &i, const pair<uint64_t, uint64_t> &j) {
     return i.second < j.second;
 }
 
@@ -98,7 +98,7 @@ public:
         for (i = 0; i < d; i++)
             map_sort_att[i] = make_pair(i, attribute_set[i]);
 
-        std::sort(map_sort_att.begin(), map_sort_att.end(), compare_pairs);
+        std::sort(map_sort_att.begin(), map_sort_att.end(), compare_pairs_dfuds);
 
         for (i = 0; i < points.size(); i++) {
             //if (i%1000000==0) cout << i << endl;
@@ -119,9 +119,9 @@ public:
     }
 
     ~qdag_dfuds(){
-        if (Q && !is_extended_qdag) {
-            delete Q;
-        }
+//        if (Q && !is_extended_qdag) {
+//            delete Q;
+//        }
         if (is_extended_qdag) delete M;
     }
 
@@ -135,6 +135,7 @@ public:
         uint64_t mask;
         uint64_t i, i_prime;
 
+        // TODO: see if we have to change something (order DFS, idk)
         for (i = 0; i < p; ++i) {
             // todos los bits están en cero excepto el bit en la posición dim_prime - 1.
             mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
@@ -200,6 +201,12 @@ public:
     }
 
 
+    /** the mapping between the children
+     * for example:
+     * original quadtree: 1011
+     * qdag: 1011 1011
+     * getM(5) = 1
+     **/
     uint16_t getM(uint16_t i) {
         return M[i];
     }
@@ -277,41 +284,61 @@ public:
         }
     }
 
-    inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        // DEBUG: ver roots[i] = node
-        uint64_t r = Q->rank(level, node);
-        return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
+
+    // TODO: see how the extend works in DFS!
+    // we need the number of 1s of the level (until the node position)
+    inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
+        // get the number of 1s of that level
+        return tab_extend_3[Q->get_node(node, rank_vector)];
     }
 
 
-    inline uint32_t materialize_node_4(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank(level, node);
-        return tab_extend_4[Q->get_node(level, node, rank_vector, r)];
+    inline uint32_t materialize_node_4(uint64_t node, uint64_t *rank_vector) {
+        return tab_extend_4[Q->get_node(node, rank_vector)];
     }
 
 
-    inline uint32_t materialize_node_5(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        uint64_t r = Q->rank(level, node);
-        return tab_extend_5[Q->get_node(level, node, rank_vector, r)];
+    inline uint32_t materialize_node_5(uint64_t node, uint64_t *rank_vector) {
+        return tab_extend_5[Q->get_node(node, rank_vector)];
     }
 
 
-    inline uint32_t materialize_node_3_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_3[Q->get_node_last_level(level, node)];
+    inline uint32_t materialize_node_3_lastlevel(uint64_t node) {
+        return tab_extend_3[Q->get_node_last_level(node)];
     }
 
 
-    inline uint32_t materialize_node_4_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_4[Q->get_node_last_level(level, node)];
+    inline uint32_t materialize_node_4_lastlevel(uint64_t node) {
+        return tab_extend_4[Q->get_node_last_level(node)];
     }
 
 
-    inline uint32_t materialize_node_5_lastlevel(uint64_t level, uint64_t node) {
-        return tab_extend_5[Q->get_node_last_level(level, node)];
+    inline uint32_t materialize_node_5_lastlevel(uint64_t node) {
+        return tab_extend_5[Q->get_node_last_level(node)];
     }
 
     void printBv() {
-        Q->printBv();
+        //Q->printBv();
+    }
+
+    uint64_t get_num_leaves(uint64_t node) {
+        return Q->leaf_num(node);
+    }
+
+    // TODO: only for testing
+    se_quadtree_dfuds *getQ() {
+        return Q;
+    }
+
+    /**
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Useful for the range Maximum query
+     * @param node
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     */
+    bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
+        return Q->get_range_leaves(node, init, end);
     }
 
 };

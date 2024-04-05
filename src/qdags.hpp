@@ -85,6 +85,7 @@ public:
          uint8_t k, uint8_t d
     ) {
 
+        // TODO: debug see the points!
         Msize = std::pow(k, d);
 
         M = new type_mapping_M[Msize];
@@ -267,6 +268,12 @@ public:
     }
 
 
+    /** the mapping between the children
+     * for example:
+     * original quadtree: 1011
+     * qdag: 1011 1011
+     * getM(5) = 1
+     **/
     uint16_t getM(uint16_t i) {
         return M[i];
     }
@@ -366,7 +373,6 @@ public:
         }
     }
 
-    // TODO: problema? siempre materializo,,, cuando uso el mapeo?
     // TODO: y porqué de 32 bits?
     // materializa el nodo del qdag, uno llega a un nodo en el quadtree que existe, pero conceptualmente
     // corresponde a un qdags q no existe en realidad.
@@ -375,7 +381,6 @@ public:
     // pero trabajo en dimension 5 --> se extiende a 32 hijos
     // a partir de esos 4 bits, te genera el de 32 inmediatamente
     inline uint32_t materialize_node_3(uint64_t level, uint64_t node, uint64_t *rank_vector) {
-        // DEBUG: ver roots[i] = node
         uint64_t r = Q->rank(level, node);
         return tab_extend_3[Q->get_node(level, node, rank_vector, r)];
     }
@@ -433,7 +438,7 @@ public:
      * get_num_leaves(0,1) --> 4
      * get_num_leaves(2,7) --> 1
      */
-    uint64_t get_num_leaves(int16_t level, uint64_t node) {
+    uint64_t get_num_leaves(uint16_t level, uint64_t node) {
         return Q->get_num_leaves(level, node);
     }
 
@@ -490,11 +495,7 @@ public:
                 return 0.5;
         }
     }
-
-
-    void create_dfuds(){
-        return Q->create_dfuds();
-    }
+    
 };
 
 #endif

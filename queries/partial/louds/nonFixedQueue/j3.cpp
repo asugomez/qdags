@@ -1,4 +1,4 @@
-#include "../../../../src/join_partial_results.cpp"
+#include "../../../../src/louds/join_partial_results.cpp"
 #include "../../../../src/joins.cpp"
 // cada una de las query tiene su codigo
 // j --> una forma q sale en el paper

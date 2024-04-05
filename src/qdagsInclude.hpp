@@ -9,8 +9,8 @@
 #include <algorithm>
 #include "../src/qdags.hpp"
 #include "../src/joins.cpp"
-#include "../src/join_partial_results.cpp"
-#include "../src/join_ranked_results.cpp"
+#include "louds/join_partial_results.cpp"
+#include "louds/join_ranked_results.cpp"
 
 
 #endif //QDAGS_QDAGSINCLUDE_HPP

@@ -1,4 +1,4 @@
-#include "../../../../src/join_partial_results.cpp"
+#include "../../../../src/louds/join_partial_results.cpp"
 
 #include <fstream>
 #include<bits/stdc++.h>
