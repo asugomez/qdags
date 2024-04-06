@@ -19,6 +19,7 @@ using namespace std::chrono;
 #include "src/louds/join_ranked_results.cpp"
 #include "src/dfuds/join_partial_results.cpp"
 #include "src/dfuds/join_ranked_results.cpp"
+#include "src/lqdag.hpp"
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -82,6 +83,9 @@ int main(int argc, char **argv) {
     att_S.push_back(AT_Y); att_S.push_back(AT_Z);// TODO: el orden hay q cambiarlo para el join
 
 
+    qdag::att_set att_A;
+    att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z);
+
     /*att_R.push_back(AT_Y); att_R.push_back(AT_X);
     att_S.push_back(AT_Z); att_S.push_back(AT_X);
     att_T.push_back(AT_X); att_T.push_back(AT_V);*/
@@ -103,6 +107,21 @@ int main(int argc, char **argv) {
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());*/
 
+    //////////////// LAZY QDAGs ///////////////////////
+
+    subQuadtreeChild* subQuadtreeChild_R;// = subQuadtreeChild{qdag_rel_R, -1,0};
+    subQuadtreeChild_R->qdag = &qdag_rel_R;
+    subQuadtreeChild_R->level = -1;
+    subQuadtreeChild_R->node = 0;
+
+    subQuadtreeChild* subQuadtreeChild_S;// = subQuadtreeChild{qdag_rel_S, -1,0};
+    subQuadtreeChild_S->qdag = &qdag_rel_S;
+    subQuadtreeChild_S->level = -1;
+    subQuadtreeChild_S->node = 0;
+
+    lqdag join_r_s = lqdag(FUNCTOR_AND,
+                           lqdag(FUNCTOR_EXTEND, lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
+                           lqdag(FUNCTOR_EXTEND, lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
 
 
     // print the tree

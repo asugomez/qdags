@@ -22,17 +22,19 @@ struct node {
 
 // represents a subtree of the quadtree
 struct subQuadtreeChild {
-    qdag *Qdag;
-    uint16_t level; // the level of the node. -1 for the root
+    qdag *qdag;
+    int16_t level; // the level of the node. -1 for the root
     uint64_t node;
 };
 
+// lqdag as a syntax tree
 class lqdag {
 
 public:
     typedef vector<uint64_t> att_set;
 
 private:
+    // lqdag L=(f,o), where f is a functor.
     uint8_t functor; // QTREE, NOT, AND, OR, EXTEND
     subQuadtreeChild *subQuadtree;
     lqdag *lqdag1;
@@ -53,7 +55,7 @@ public:
 
     // L = (QTREE, Q_r) o L = (NOT, Q_r)
     lqdag(uint8_t functor, subQuadtreeChild* subQuadtree) {
-        // TODO: assert functor is QTREE, NOT,
+        assert(functor == FUNCTOR_QTREE || functor == FUNCTOR_NOT);
         this->functor = functor;
         this->subQuadtree = subQuadtree;
         this->lqdag1 = nullptr;
@@ -63,7 +65,7 @@ public:
 
     // L = (AND, L1, L2) o L = (OR, L1, L2)
     lqdag(uint8_t functor, lqdag *l1, lqdag *l2) {
-        // TODO: assert functor is AND, OR,
+        assert(functor == FUNCTOR_AND || functor == FUNCTOR_OR);
         this->functor = functor;
         this->lqdag1 = l1;
         this->lqdag2 = l2;
@@ -73,7 +75,7 @@ public:
 
     // L = (EXTEND, L1, A)
     lqdag(uint8_t functor, lqdag* l, att_set &attribute_set_A) {
-        // TODO: assert functor is EXTEND
+        assert(functor == FUNCTOR_EXTEND);
         this->functor = functor;
         this->lqdag1 = l;
         this->attribute_set_A = attribute_set_A;
@@ -86,9 +88,9 @@ public:
     uint64_t get_grid_side(){
         if(this->functor == FUNCTOR_QTREE) {
             uint16_t curr_level = this->subQuadtree->level;
-            uint64_t k= this->subQuadtree->Qdag->getK();
+            uint64_t k= this->subQuadtree->qdag->getK();
             // TODO: debug see if ceil is working!
-            return ceil(this->subQuadtree->Qdag->getGridSide()/(pow(k, curr_level)));
+            return ceil(this->subQuadtree->qdag->getGridSide() / (pow(k, curr_level)));
         } else{
             cout << "error: get_grid_side called on non-quadtree" << endl;
             return 0;
@@ -104,14 +106,14 @@ public:
      */
     double value_quadtree(){
         if(this->functor == FUNCTOR_QTREE) {
-            uint16_t max_level = this->subQuadtree->Qdag->getHeight() -1;
+            uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
             uint16_t cur_level = this->subQuadtree->level;
             uint64_t cur_node = this->subQuadtree->node;
             // grid side is 1 or leaf at last level
             if(this->get_grid_side() == 1 || cur_level == max_level) // TODO: esta bien cambiar asi la grid side?, no es lo mismo ambas condiciones?
-                return this->subQuadtree->Qdag->get_ith_bit(cur_level, cur_node); // TODO: see if problems bcause get_ith_bit returns bool.
+                return this->subQuadtree->qdag->get_ith_bit(cur_level, cur_node); // TODO: see if problems bcause get_ith_bit returns bool.
             // leaf higher level (subgrid full of 1s or 0s)
-            uint8_t is_leaf = this->subQuadtree->Qdag->get_node_last_level(cur_level, cur_node);
+            uint8_t is_leaf = this->subQuadtree->qdag->get_node_last_level(cur_level, cur_node);
             if(is_leaf == 0 || (is_leaf & 255) == 1)
                 return is_leaf;
             else
@@ -125,6 +127,7 @@ public:
     /**
      * Algorithm 2 child(Q,i)
      * @param i
+     * @param subQuad a subQuadtreeChild which represents the i-th child of a node of the quadtree.
      * @return a subQuadtreeChild which represents the i-th child of a node of the quadtree.
      */
     void get_child_quadtree(uint64_t i, subQuadtreeChild* subQuad){
@@ -134,13 +137,13 @@ public:
         }
         uint16_t curr_level = this->subQuadtree->level;
         uint64_t curr_node = this->subQuadtree->node;
-        uint64_t siblings = this->subQuadtree->Qdag->rank(curr_level,curr_node); // number of nodes of the left of the node in that level in the qdag
+        uint64_t siblings = this->subQuadtree->qdag->rank(curr_level, curr_node); // number of nodes of the left of the node in that level in the qdag
         uint16_t new_level = curr_level+1;
-        uint64_t new_node = siblings * this->subQuadtree->Qdag->getKD() + i;
-        subQuad->Qdag = this->subQuadtree->Qdag;
+        uint64_t new_node = siblings * this->subQuadtree->qdag->getKD() + i;
+        subQuad->qdag = this->subQuadtree->qdag;
         subQuad->level = new_level;
         subQuad->node = new_node;
-        //subQuad = subQuadtreeChild{this->subQuadtree->Qdag, new_level, new_node};
+        //subQuad = subQuadtreeChild{this->subQuadtree->qdag, new_level, new_node};
         //return subQuad; // TODO: test que entrega bien el puntero
     }
 
@@ -225,7 +228,7 @@ public:
             i_prime = 0;
 
             for (uint16_t j = 0; j < dim_prime; ++j) {
-                if (i & (1 << (dim - this->subQuadtree->Qdag->getAttr(j) - 1)))
+                if (i & (1 << (dim - this->subQuadtree->qdag->getAttr(j) - 1)))
                     i_prime |= mask;
                 mask >>= 1;
             }
@@ -257,7 +260,7 @@ public:
             if(this->value_lqdag()) // if it's 1, put a 1 as a leaf
                 bv[0] = vector<uint64_t>(0);
             // TODO: see que pasa cuando value = 0, bv empty... memory leakS?
-            qdag* Q_f = new qdag(bv, this->attribute_set_A, 1, this->subQuadtree->Qdag->getK(), this->subQuadtree->Qdag->getD());
+            qdag* Q_f = new qdag(bv, this->attribute_set_A, 1, this->subQuadtree->qdag->getK(), this->subQuadtree->qdag->getD());
             return Q_f;*/
         }
         double max_value = 0;
@@ -265,7 +268,7 @@ public:
         vector<node*> Q_f_children;
         // if all quadtres are empty, return a 0 leaf.
         // TODO: this is wrong the D dimension
-        for(uint64_t i = 0; i < this->subQuadtree->Qdag->getD(); i++){
+        for(uint64_t i = 0; i < this->subQuadtree->qdag->getD(); i++){
             node* newNode = this->get_child_lqdag(i)->completion();
             Q_f_children.push_back(newNode);
             max_value = max(max_value, newNode->val_leaf);
@@ -286,7 +289,7 @@ public:
         quadtree->val_leaf = 1/2;
         quadtree->children = Q_f_children;
         quadtree->height = 2;
-        quadtree->k = this->subQuadtree->Qdag->getK();
+        quadtree->k = this->subQuadtree->qdag->getK();
         return quadtree;
     }
 
