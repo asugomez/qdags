@@ -285,7 +285,7 @@ public:
     /**
      *
      * @param level of the node
-     * @param node the i-th position of the level.
+     * @param node the node-th position of the level.
      * @return 0 or 1 if the node is empty or not.
      */
     inline bool get_ith_bit(uint16_t level, uint64_t node){

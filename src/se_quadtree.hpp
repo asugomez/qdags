@@ -58,7 +58,7 @@ private:
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
-    uint8_t k; // k_d--tree
+    uint8_t k;
     uint8_t d; // number of attributs
     size_type k_d; // k^d
     vector<uint64_t> total_ones;

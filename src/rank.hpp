@@ -201,15 +201,15 @@ public:
     /**
      *
      * @param level of the node
-     * @param node the i-th position of the level.
+     * @param node the node-th position of the level.
      * @return 0 or 1 if the node is empty or not.
      */
-    bool get_ith_bit(uint64_t i, uint64_t k_d){
+    bool get_ith_bit(uint64_t node, uint64_t k_d){
         uint8_t x;
         if(k_d == 4) {
-            x = get_4_bits(i);
+            x = get_4_bits(node);
         } else {
-            x = get_2_bits(i);
+            x = get_2_bits(node);
         }
         return x&1;
     }
