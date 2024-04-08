@@ -229,10 +229,9 @@ public:
         switch (this->functor) {
             case FUNCTOR_QTREE: case FUNCTOR_NOT: {
                 subQuadtreeChild *subQuadtree = new subQuadtreeChild();
-                this->get_child_quadtree(i,
-                                         subQuadtree); // TODO: check if it's necessary to create another subquadtreechild
+                this->get_child_quadtree(i,subQuadtree);
                 lqdag *l = new lqdag(this->functor, subQuadtree);
-                return l; // TODO: see memory leaks
+                return l;
             }
             case FUNCTOR_AND: {
                 if (this->lqdag1->value_lqdag() == 1)
@@ -283,51 +282,47 @@ public:
      * The completion Q_f is the quadtree representing the output of the formula F, represented as an lqdag
      *
      */
-    node* completion(){
-        if(this->value_lqdag() == 0 || this->value_lqdag() == 1){
+    node* completion(uint8_t dim){
+        double val_lqdag = this->value_lqdag();
+        if(val_lqdag == 0 || val_lqdag == 1){
             node* newNode = new node();
-            newNode->val_leaf = this->value_lqdag();
+            newNode->val_leaf = val_lqdag;
             newNode->children = {};
             newNode->height = 1;
             newNode->k = 0;
             newNode->d = 0;
+            cout << val_lqdag << endl;
             return newNode;
-            /* if we return a qdag* :
-            vector<uint64_t> bv[1];
-            //bv.push_back(this->value_lqdag());
-            if(this->value_lqdag()) // if it's 1, put a 1 as a leaf
-                bv[0] = vector<uint64_t>(0);
-            // TODO: see que pasa cuando value = 0, bv empty... memory leakS?
-            qdag* Q_f = new qdag(bv, this->attribute_set_A, 1, this->subQuadtree->qdag->getK(), this->subQuadtree->qdag->getD());
-            return Q_f;*/
         }
         double max_value = 0;
         double min_value = 255;
         vector<node*> Q_f_children;
         // if all quadtres are empty, return a 0 leaf.
-        // TODO: this is wrong the D dimension
-        for(uint64_t i = 0; i < this->subQuadtree->qdag->getD(); i++){
-            node* newNode = this->get_child_lqdag(i)->completion();
+        // C_i ← Completion(Child(L_F,i))
+        for(uint64_t i = 0; i < pow(2,dim); i++){
+            node* newNode = this->get_child_lqdag(i)->completion(dim);
             Q_f_children.push_back(newNode);
             max_value = max(max_value, newNode->val_leaf);
             min_value = min(min_value, newNode->val_leaf);
         }
-        if(max_value == 0 || min_value == 1){
+        if(max_value == 0 || min_value == 1){ // return a leaf
             Q_f_children.clear(); // memory
             node* newNode = new node();
-            newNode->val_leaf = max_value == 0 ? 0 : 1;
+            newNode->val_leaf = (max_value == 0)? 0 : 1;
             newNode->children = {};
             newNode->height = 1;
             newNode->k = 0;
             newNode->d = 0;
+            cout << val_lqdag << endl;
             return newNode;
         }
 
         node* quadtree = new node();
-        quadtree->val_leaf = 1/2;
+        quadtree->val_leaf = 0.5;
         quadtree->children = Q_f_children;
         quadtree->height = 2;
         quadtree->k = this->subQuadtree->qdag->getK();
+        cout << val_lqdag << endl;
         return quadtree;
     }
 
@@ -354,61 +349,72 @@ public:
 
     }
 
-    void print(lqdag* l, int depth=0){
-        if(l->functor == FUNCTOR_QTREE) {
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
+    void print(int depth = 0) {
+        switch (this->functor) {
+            case FUNCTOR_QTREE: {
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                cout << " QTREE" << endl;
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                cout << " " << this->subQuadtree->level << " " << this->subQuadtree->node << endl;
+                break;
             }
-            cout << " QTREE" << endl;
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
+            case FUNCTOR_NOT: {
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                cout << " NOT" << endl;
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                this->lqdag1->print(depth + 1);
+                break;
             }
-            cout << " " << l->subQuadtree->level << " " << l->subQuadtree->node << endl;
-            return;
-        }
-        if(l->functor == FUNCTOR_NOT) {
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
+            case FUNCTOR_AND: {
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                cout << " AND" << endl;
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                this->lqdag1->print(depth + 1);
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                this->lqdag2->print(depth + 1);
+                break;
             }
-            cout << " NOT" << endl;
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
+            case FUNCTOR_OR: {
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                cout << " OR" << endl;
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                this->lqdag1->print(depth + 1);
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                this->lqdag2->print(depth + 1);
+                break;
             }
-            print(l->lqdag1, depth+1);
-            return;
-        }
-        if(l->functor == FUNCTOR_AND) {
-            cout << " AND" << endl;
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
+            case FUNCTOR_EXTEND: {
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << ">";
+                }
+                cout << " EXTEND";
+                cout << " att_a: " << this->attribute_set_A << endl;
+                this->lqdag1->print(depth + 1);
+                break;
             }
-            print(l->lqdag1, depth+1);
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
-            }
-            print(l->lqdag2, depth+1);
-            return;
-        }
-        if(l->functor == FUNCTOR_OR) {
-            cout << " OR" << endl;
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
-            }
-            print(l->lqdag1, depth+1);
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
-            }
-            print(l->lqdag2, depth+1);
-            return;
-        }
-        if(l->functor == FUNCTOR_EXTEND) {
-            for (int i = 0; i < depth; ++i) {
-                std::cout << ">";
-            }
-            cout << " EXTEND";
-            cout << " att_a: " << l->attribute_set_A << endl;
-            print(l->lqdag1, depth+1);
-            return;
+            default:
+                throw "error: value_lqdag non valid functor";
+
         }
     }
 };

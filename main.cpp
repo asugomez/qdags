@@ -128,8 +128,9 @@ int main(int argc, char **argv) {
     qdag_rel_R.printBv();
     cout << endl << "rel S" << endl;
     qdag_rel_S.printBv();
-    join_r_s->print(join_r_s);
-    join_r_s->print(join_r_s->get_child_lqdag(0));
+    join_r_s->print();
+//    join_r_s->get_child_lqdag(0)->print();
+    node* result = join_r_s->completion(2);
 
 
     //vector<qdag> Q(3);
