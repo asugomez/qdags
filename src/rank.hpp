@@ -11,7 +11,7 @@ using namespace std;
 
 class rank_bv_64 {
     uint64_t *seq; // bloques de a 64
-    uint32_t *block;
+    uint32_t *block; // count the 1s in the blocks of 64 bits
     uint64_t u;  //bit vector length
     uint64_t n; // # ones
 

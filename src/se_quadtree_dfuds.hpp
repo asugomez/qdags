@@ -267,6 +267,10 @@ protected:
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
 
+        bp_b.rank_zero_zero(63);
+        bp_b.rank_zero_zero(140);
+
+
     }
 
 public:

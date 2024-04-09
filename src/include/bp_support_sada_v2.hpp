@@ -87,7 +87,7 @@ namespace asu
         const bit_vector* m_bp        = nullptr;   // the supported balanced parentheses sequence as bit_vector
         rank_type         m_bp_rank;   // RS for the BP sequence => see excess() and rank()
         select_type       m_bp_select; // SS for the BP sequence => see select()
-        size_type *       m_n_zero_zero= nullptr;
+        size_type *       m_n_zero_zero = nullptr;
 
         sml_block_array_type  m_sml_block_min_max;
         med_block_array_type  m_med_block_min_max;
@@ -365,7 +365,6 @@ namespace asu
         const select_type&          bp_select         = m_bp_select;         //!< SS for the underlying BP sequence.
         const sml_block_array_type& sml_block_min_max = m_sml_block_min_max; //!< Small blocks array. Rel. min/max for the small blocks.
         const med_block_array_type& med_block_min_max = m_med_block_min_max; //!< Array containing the min max tree of the medium blocks.
-//        const size_type* n_zero_zero = m_n_zero_zero;
 
 
         bp_support_sada_v2() {}
@@ -393,9 +392,24 @@ namespace asu
             m_sml_block_min_max = int_vector<>(2*m_sml_blocks, 0, bits::hi(t_sml_blk+2)+1);
             m_med_block_min_max = int_vector<>(2*(m_med_blocks+m_med_inner_blocks), 0, bits::hi(2*m_size+2)+1);
 
+            // SUPPORT FOR RANK_ZERO_ZERO
+            m_n_zero_zero = new size_type[m_size/64 + 1];
+            for(size_type j = 0; j < m_size/64 + 1; j++) {
+                m_n_zero_zero[j] = 0;
+            }
+            bool last_bit = 1;
             // calculate min/max excess values of the small blocks and medium blocks
             difference_type min_ex = 1, max_ex = -1, curr_rel_ex = 0, curr_abs_ex = 0;
             for (size_type i=0; i < m_size; ++i) {
+                // init rank_zero_zero
+                if(!last_bit && !(*bp)[i]) {
+                    m_n_zero_zero[i/64]+=1;
+                }
+                if(i > 0 && i%64==0)
+                    m_n_zero_zero[i/64] += m_n_zero_zero[i/64-1];
+                last_bit = (*bp)[i];
+
+
                 if ((*bp)[i])
                     ++curr_rel_ex;
                 else
@@ -432,20 +446,20 @@ namespace asu
 
             // SUPPORT FOR RANK_ZERO_ZERO
             // init rank_zero_zero
-            size_type n_bv = m_size/64 + 1;
-            m_n_zero_zero = new size_type[n_bv];
-            bool last_bit;
-            for(size_type j = 0; j < n_bv; j++) {
-                m_n_zero_zero[j] += bits::cnt(~(((m_bp->data()[j] << 1) + 1) | m_bp->data()[j] ));
-                if(j!=0) {
-                    m_n_zero_zero[j] += m_n_zero_zero[j-1];
-                    // border case arr[0][63] = 0 and arr[1][0] = 0
-                    last_bit = m_bp->get_int(64 * j - 1, 1);
-                    if(!last_bit && !m_bp->get_int(64*j, 1)) {
-                        m_n_zero_zero[j]++;
-                    }
-                }
-            }
+//            size_type n_bv = m_size/64 + 1;
+//            m_n_zero_zero = new size_type[n_bv];
+//            bool last_bit;
+//            for(size_type j = 0; j < n_bv; j++) {
+//                m_n_zero_zero[j] += bits::cnt(~(((m_bp->data()[j] << 1) + 1) | m_bp->data()[j] ));
+//                if(j!=0) {
+//                    m_n_zero_zero[j] += m_n_zero_zero[j-1];
+//                    // border case arr[0][63] = 0 and arr[1][0] = 0
+//                    last_bit = m_bp->get_int(64 * j - 1, 1);
+//                    if(!last_bit && !m_bp->get_int(64*j, 1)) {
+//                        m_n_zero_zero[j]++;
+//                    }
+//                }
+//            }
         }
 
         //! Copy constructor
@@ -1013,10 +1027,10 @@ namespace asu
             assert(i < m_size);
             // = B NOR (B<<1)
             size_type cur_bitvector = i / 64;
-            uint64_t diff_shift = 63 - (i- 64 * cur_bitvector);
+            uint64_t diff_shift = 63 - (i - 64 * cur_bitvector);
             size_type count_zero_zero = bits::cnt( (~(((m_bp->data()[cur_bitvector] << 1) + 1) | m_bp->data()[cur_bitvector] ) ) << diff_shift );
-            count_zero_zero += m_n_zero_zero[cur_bitvector-1];
             if(cur_bitvector>0){
+                count_zero_zero += m_n_zero_zero[cur_bitvector-1];
                 bool last_bit = m_bp->get_int(64*cur_bitvector-1, 1);
                 if(!last_bit && !m_bp->get_int(64*cur_bitvector, 1))
                     count_zero_zero++;
