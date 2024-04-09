@@ -24,7 +24,7 @@ public:
     typedef bit_vector::difference_type difference_type;
 
 private:
-    rank_bv_64 bv_s; // TODO: maybe we can delete this!
+    rank_bv_64 bv_s;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
     const bit_vector* bit_vector_b;
     asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
@@ -157,12 +157,6 @@ protected:
                         }
                         size_bv_b += n_children;
                     }
-//                    k_t_b.bit_resize(size_bv_b + n_children);
-//                    // TODO: fix this, put all n leaves
-//                    for(index = size_bv_b; index < size_bv_b + n_children; index++){
-//                        k_t_b[index] = 0;
-//                    }
-//                    size_bv_b+= n_children;
                 }
 
                 is_leaves = false;
@@ -272,6 +266,10 @@ protected:
 
         // construct bp
         bp_b = asu::bp_support_sada_v2<>(bit_vector_b);
+
+        bp_b.rank_zero_zero(63);
+        bp_b.rank_zero_zero(140);
+
 
     }
 

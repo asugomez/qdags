@@ -87,6 +87,7 @@ namespace asu
         const bit_vector* m_bp        = nullptr;   // the supported balanced parentheses sequence as bit_vector
         rank_type         m_bp_rank;   // RS for the BP sequence => see excess() and rank()
         select_type       m_bp_select; // SS for the BP sequence => see select()
+        size_type *       m_n_zero_zero = nullptr;
 
         sml_block_array_type  m_sml_block_min_max;
         med_block_array_type  m_med_block_min_max;
@@ -109,6 +110,7 @@ namespace asu
             m_bp_rank.set_vector(m_bp);
             m_bp_select = bp_support.m_bp_select;
             m_bp_select.set_vector(m_bp);
+            m_n_zero_zero = bp_support.m_n_zero_zero;
 
             m_sml_block_min_max = bp_support.m_sml_block_min_max;
             m_med_block_min_max = bp_support.m_med_block_min_max;
@@ -364,6 +366,7 @@ namespace asu
         const sml_block_array_type& sml_block_min_max = m_sml_block_min_max; //!< Small blocks array. Rel. min/max for the small blocks.
         const med_block_array_type& med_block_min_max = m_med_block_min_max; //!< Array containing the min max tree of the medium blocks.
 
+
         bp_support_sada_v2() {}
 
         //! Constructor
@@ -378,7 +381,6 @@ namespace asu
             // initialize rank and select
             util::init_support(m_bp_rank, bp);
             util::init_support(m_bp_select, bp);
-
             m_med_inner_blocks = 1;
             // m_med_inner_blocks = (next power of 2 greater than or equal to m_med_blocks)-1
             while (m_med_inner_blocks < m_med_blocks) {
@@ -390,9 +392,24 @@ namespace asu
             m_sml_block_min_max = int_vector<>(2*m_sml_blocks, 0, bits::hi(t_sml_blk+2)+1);
             m_med_block_min_max = int_vector<>(2*(m_med_blocks+m_med_inner_blocks), 0, bits::hi(2*m_size+2)+1);
 
+            // SUPPORT FOR RANK_ZERO_ZERO
+            m_n_zero_zero = new size_type[m_size/64 + 1];
+            for(size_type j = 0; j < m_size/64 + 1; j++) {
+                m_n_zero_zero[j] = 0;
+            }
+            bool last_bit = 1;
             // calculate min/max excess values of the small blocks and medium blocks
             difference_type min_ex = 1, max_ex = -1, curr_rel_ex = 0, curr_abs_ex = 0;
             for (size_type i=0; i < m_size; ++i) {
+                // init rank_zero_zero
+                if(!last_bit && !(*bp)[i]) {
+                    m_n_zero_zero[i/64]+=1;
+                }
+                if(i > 0 && i%64==0)
+                    m_n_zero_zero[i/64] += m_n_zero_zero[i/64-1];
+                last_bit = (*bp)[i];
+
+
                 if ((*bp)[i])
                     ++curr_rel_ex;
                 else
@@ -457,6 +474,8 @@ namespace asu
                 m_sml_blocks       = std::move(bp_support.m_sml_blocks);
                 m_med_blocks       = std::move(bp_support.m_med_blocks);
                 m_med_inner_blocks = std::move(bp_support.m_med_inner_blocks);
+
+                m_n_zero_zero = std::move(bp_support.m_n_zero_zero);
             }
             return *this;
         }
@@ -987,6 +1006,32 @@ namespace asu
          * ~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-18) + (18-14))
          */
         size_type rank_zero_zero(size_type i)const
+        {
+            assert(i < m_size);
+            // = B NOR (B<<1)
+            size_type cur_bitvector = i / 64;
+            uint64_t diff_shift = 63 - (i - 64 * cur_bitvector);
+            size_type count_zero_zero = bits::cnt( (~(((m_bp->data()[cur_bitvector] << 1) + 1) | m_bp->data()[cur_bitvector] ) ) << diff_shift );
+            if(cur_bitvector>0){
+                count_zero_zero += m_n_zero_zero[cur_bitvector-1];
+                bool last_bit = m_bp->get_int(64*cur_bitvector-1, 1);
+                if(!last_bit && !m_bp->get_int(64*cur_bitvector, 1))
+                    count_zero_zero++;
+            }
+            return count_zero_zero;
+        }
+
+        /**
+         * DEPRECATED
+         * @param i
+         * @return number of 00 before position i (counting this position).
+         * @example 110101011010011000
+         * -> rank_zero_zero(14) = 1
+         * -> rank_zero_zero(16) = 2
+         * -> rank_zero_zero(17) = 3
+         * ~((*m_bp->data() << 1) | *m_bp->data() ) << ((64-18) + (18-14))
+         */
+        size_type rank_zero_zero_old_version(size_type i)const
         {
             assert(i < m_size);
             //m_bp_aux = ~(*m_bp->data() | *m_bp_aux); // = B NOR (B<<1)
