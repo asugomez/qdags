@@ -443,23 +443,6 @@ namespace asu
                 if (max_value(v) > max_value(p))  // update maximum
                     m_med_block_min_max[2*p+1] = m_med_block_min_max[2*v+1];
             }
-
-            // SUPPORT FOR RANK_ZERO_ZERO
-            // init rank_zero_zero
-//            size_type n_bv = m_size/64 + 1;
-//            m_n_zero_zero = new size_type[n_bv];
-//            bool last_bit;
-//            for(size_type j = 0; j < n_bv; j++) {
-//                m_n_zero_zero[j] += bits::cnt(~(((m_bp->data()[j] << 1) + 1) | m_bp->data()[j] ));
-//                if(j!=0) {
-//                    m_n_zero_zero[j] += m_n_zero_zero[j-1];
-//                    // border case arr[0][63] = 0 and arr[1][0] = 0
-//                    last_bit = m_bp->get_int(64 * j - 1, 1);
-//                    if(!last_bit && !m_bp->get_int(64*j, 1)) {
-//                        m_n_zero_zero[j]++;
-//                    }
-//                }
-//            }
         }
 
         //! Copy constructor
