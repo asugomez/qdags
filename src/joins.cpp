@@ -136,7 +136,7 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
                 // CHECK WHETHER TO SKIP THIS NODE
                 // THIS ASSUMES THE FIRST LEVELS ARE FULL
                 if ((firstNodeId + child) % totalThreads != threadId)
-                    // This node corresponds to another thread, skip it!
+                    // This quadtree_formula corresponds to another thread, skip it!
                     continue;
             }
 
@@ -185,9 +185,9 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
     uint64_t i;
     uint64_t children_to_recurse_size = 0;
 
-    uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
+    uint32_t children = 0xffffffff; // each bit represent a quadtree_formula (empty or not)
 
-    // in the last level we materialize the node
+    // in the last level we materialize the quadtree_formula
     if (cur_level == max_level){
         for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
@@ -240,7 +240,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
                 //uint32_t testing_node = Q[i]->materialize_node_3(cur_level, roots[i], rank_vector[i]);
-                //std::bitset<32> t_node(testing_node); // DEBUG: ver los bits del materialize node
+                //std::bitset<32> t_node(testing_node); // DEBUG: ver los bits del materialize quadtree_formula
                 // te retorna un entero de 32 bits (materializacion) y se le hace AND con el children --> sobreviven solo los 1s que corresponde al nodo del primer qdag
                 children &= Q[i]->materialize_node_3(cur_level, roots[i],rank_vector[i]); // entero de 32 bits, y se hace &,
                 // sobreviven solo los 1s
@@ -279,8 +279,8 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 uint16_t cur_node_test = Q[j]->getM(child);
                 std::bitset<64> ith_node(cur_node_test);
                 uint16_t this_level = max_level-cur_level;
-                // the node in the j-th quadtree where we are moving
-                // it's like a mapping between the get_child_se_quadtree in the output and which node in the qdag we are moving
+                // the quadtree_formula in the j-th quadtree where we are moving
+                // it's like a mapping between the get_child_se_quadtree in the output and which quadtree_formula in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
             }
             // testing
@@ -449,7 +449,7 @@ bool parAND(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut, std::
                 // CHECK WHETHER TO SKIP THIS NODE
                 // THIS ASSUMES THE FIRST LEVELS ARE FULL
                 if ((firstNodeId + child) % totalThreads != threadId)
-                    // This node corresponds to another thread, skip it!
+                    // This quadtree_formula corresponds to another thread, skip it!
                     continue;
             }
 
@@ -618,7 +618,7 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
         A.push_back(it->first);
 
     qdag *Q_star[Q.size()]; // Q star array
-    uint64_t Q_roots[Q.size()]; // int array that tells you the current node of each qdag we are.
+    uint64_t Q_roots[Q.size()]; // int array that tells you the current quadtree_formula of each qdag we are.
 
     // extension of the qdags
     for (uint64_t i = 0; i < Q.size(); i++){
@@ -655,13 +655,13 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     // we create a new qdag with the output store in path (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
 
-    /*cout << "positions" << endl;
-    for (uint64_t i = 0; i < Q_star[0]->getHeight(); i++) {
-        for (uint64_t j = 0; j < bv[i].size(); j++) {
-            cout << bv[i][j] << " ";
-        }
-        cout << endl;
-    }*/
+//    cout << "positions" << endl;
+//    for (uint64_t i = 0; i < Q_star[0]->getHeight(); i++) {
+//        for (uint64_t j = 0; j < bv[i].size(); j++) {
+//            cout << bv[i][j] << " ";
+//        }
+//        cout << endl;
+//    }
 
     cout << "number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
 

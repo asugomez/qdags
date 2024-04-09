@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
+    uint64_t grid_side = 32;//52000000; // es como +infty para wikidata
 
     qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
     qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
@@ -117,22 +117,22 @@ int main(int argc, char **argv) {
     subQuadtreeChild *subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
 //    subQuadtreeChild_S->qdag = &qdag_rel_S;
 //    subQuadtreeChild_S->level = -1;
-//    subQuadtreeChild_S->node = 0;
+//    subQuadtreeChild_S->quadtree_formula = 0;
 
     lqdag* join_r_s = new lqdag(FUNCTOR_AND,
                            new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
                            new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
 
-    // print the tree
-    cout << endl << "rel R" << endl;
-    qdag_rel_R.printBv();
-    cout << endl << "rel S" << endl;
-    qdag_rel_S.printBv();
-    join_r_s->print();
+//    // print the tree
+//    cout << endl << "rel R" << endl;
+//    qdag_rel_R.printBv();
+//    cout << endl << "rel S" << endl;
+//    qdag_rel_S.printBv();
+//    join_r_s->print();
 //    join_r_s->get_child_lqdag(0)->print();
-    node* result = join_r_s->completion(2);
+    quadtree_formula* result = join_r_s->completion(3);
 
-
+    // TODO: debug see result
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
     vector<qdag_dfuds> Q_dfuds(2);
@@ -223,9 +223,9 @@ int main(int argc, char **argv) {
     vector<uint16_t*> results_ranked_louds;
     priority_queue<qdagResults> results_ranked_louds_back;
 
-//
-//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-//    multiJoin(Q, true, 1000);
+
+    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+    multiJoin(Q, true, 1000);
 //    start = high_resolution_clock::now();
 //    multiJoin(Q, true, 1000);
 //    stop = high_resolution_clock::now();

@@ -44,7 +44,7 @@ bool AND_ranked(
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size;
     uint16_t cur_level;
-    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
+    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
     uint64_t results = 0;
     while(!pq.empty()){
         children = 0xffffffff;
@@ -119,7 +119,7 @@ bool AND_ranked(
                 double total_weight = 0;
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
-                    // we store the parent node that corresponds in the original quadtree of each qdag
+                    // we store the parent quadtree_formula that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
@@ -279,8 +279,8 @@ AND_ranked_backtracking(
     uint16_t children_to_recurse[p];
     uint64_t i;
     uint64_t children_to_recurse_size = 0;
-    uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
-    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
+    uint32_t children = 0xffffffff; // each bit represent a quadtree_formula (empty or not)
+    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
 
     // last level --> add result to the priority queue
     if (cur_level == max_level){

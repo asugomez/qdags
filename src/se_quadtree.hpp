@@ -273,10 +273,8 @@ public:
 
         // OJO con lo que sigue, tengo que hacer este constructor de buena manera
         uint64_t size;
-        // TODO: completar esto para no tener bits de mas
-        // ver con cuantos bloques necesitamos
         for (uint16_t i = 0; i < height; i++) {
-            size = i==0? 2 : total_ones[i-1];
+            size = i==0? 1 : total_ones[i-1];
             bv[i] = modify_to_bit_vector(_bv[i], i, size);
         }
         /*for (uint16_t i = 0; i < height; i++) {
@@ -285,6 +283,24 @@ public:
             bv_select[i] = sd_vector<>::select_1_type(path[i]);
             total_ones[i] = bv_rank[i].rank(path[i].size());
         }*/
+
+    }
+
+    /**
+     * given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+     * @param _bv_int
+     * @param level
+     * @param n_ones
+     * @return
+     */
+    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_chunks){
+        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+        bit_vector _bv(n_chunks*k_d);
+        for(uint64_t i : _bv_int){
+            _bv[i] = 1;
+            total_ones[level]++;
+        }
+        return rank_bv_64(_bv);
 
     }
 
@@ -321,7 +337,7 @@ public:
         return bv;
     }
 
-    inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in path[level][0,node-1]
+    inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in path[level][0,quadtree_formula-1]
         if(bv[level].size() == node)
             return bv[level].n_ones();
         return bv[level].rank(node); //bv[level].u
@@ -335,25 +351,6 @@ public:
     }
 
     /**
-     * TODO: mejorarla pues entrega mas 0s de los que debería
-     * given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
-     * @param _bv_int
-     * @param level
-     * @param n_ones
-     * @return
-     */
-    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_ones){
-        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
-        bit_vector _bv(_bv_int.size()*8);
-        for(uint64_t i : _bv_int){
-            _bv[i] = 1;
-            total_ones[level]++;
-        }
-        return rank_bv_64(_bv);
-
-    }
-
-    /**
      * TODO: como funciona
      * @param level
      * @param node
@@ -362,7 +359,7 @@ public:
      * @return
      */
     inline uint8_t get_node(uint16_t level, uint64_t node, uint64_t *rank_array, uint64_t r) {
-        uint8_t nd;// = path[level].get_4_bits(node);
+        uint8_t nd;// = path[level].get_4_bits(quadtree_formula);
         if (k_d == 4) {
             nd = bv[level].get_4_bits(node);
             switch (nd) {
@@ -454,11 +451,11 @@ public:
 
     /**
      *
-     * @param level of the node
+     * @param level of the quadtree_formula
      * @param node the i-th 1 of the level
-     * @param children_array will have the index of the children of the node.
-     * @param n_children will correspond to the number of children of the node
-     * @example: the 2-th node of the level 1 is 1001, then the children array will be:
+     * @param children_array will have the index of the children of the quadtree_formula.
+     * @param n_children will correspond to the number of children of the quadtree_formula
+     * @example: the 2-th quadtree_formula of the level 1 is 1001, then the children array will be:
      * children_array[0] = 0
      * children_array[1] = 3
      * And n_children = 2.
@@ -575,9 +572,9 @@ public:
 
     /**
      *
-     * @param level of the node
+     * @param level of the quadtree_formula
      * @param node the i-th position of the level.
-     * @return 0 or 1 if the node is empty or not.
+     * @return 0 or 1 if the quadtree_formula is empty or not.
      */
     inline bool get_ith_bit(uint16_t level, uint64_t node){
         return bv[level].get_ith_bit(node, k_d);
@@ -606,10 +603,10 @@ public:
     }
 
     /**
-     * @param level of the node.
+     * @param level of the quadtree_formula.
      * Change uint16_t for int16_t if we want to accept level = -1 as for the root
-     * @param node the i-th node (0 or 1) of the level
-     * @return number of leaves of the ith-node of the level.
+     * @param node the i-th quadtree_formula (0 or 1) of the level
+     * @return number of leaves of the ith-quadtree_formula of the level.
      * @example
      * 0101
      * 0100 1001
@@ -643,9 +640,9 @@ public:
     /**
      *
      * @param level current level
-     * @param children number of children of the parent (i-th node).
+     * @param children number of children of the parent (i-th quadtree_formula).
      * @param siblings number of left siblings. It's useful to have as a starting position.
-     * @return the number of children of the i-th node.
+     * @return the number of children of the i-th quadtree_formula.
      */
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t children, uint64_t siblings){
         siblings = rank(level,siblings*k_d);
@@ -661,7 +658,7 @@ public:
      * @param level of the parent. -2 if it is the grandparent of the root. -1 if it is the parent of the root.
      * @param parent the i-th 1 of the level.
      * @param child the index of the get_child_se_quadtree, 0,1,..., k_d-1.
-     * @return the number of leaves of the i-th get_child_se_quadtree of the parent node.
+     * @return the number of leaves of the i-th get_child_se_quadtree of the parent quadtree_formula.
      */
     uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child){
         // number of leaves of the entire tree
@@ -678,13 +675,13 @@ public:
     }
 
     /**
-     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Get the range of leaves in the last level of the tree that are descendants of the quadtree_formula.
      * Useful for the range Maximum query
      * @param level
      * @param node
-     * @param init will be modified if the node is not the root.
-     * @param end will be modified if the node is not the root.
-     * @return false if the node is empty or if the node is not the root and it has no children.
+     * @param init will be modified if the quadtree_formula is not the root.
+     * @param end will be modified if the quadtree_formula is not the root.
+     * @return false if the quadtree_formula is empty or if the quadtree_formula is not the root and it has no children.
      */
     bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         if(level == -1){
