@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 
     subQuadtreeChild* subQuadtreeChild_R;// = subQuadtreeChild{qdag_rel_R, -1,0};
     subQuadtreeChild_R->qdag = &qdag_rel_R;
-    subQuadtreeChild_R->level = 0;
+    subQuadtreeChild_R->level = -1;
     subQuadtreeChild_R->node = 0;
 
     subQuadtreeChild *subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
@@ -123,14 +123,16 @@ int main(int argc, char **argv) {
                            new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
                            new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
 
-//    // print the tree
-//    cout << endl << "rel R" << endl;
-//    qdag_rel_R.printBv();
+    // print the tree
+    cout << endl << "rel R" << endl;
+    qdag_rel_R.printBv();
 //    cout << endl << "rel S" << endl;
 //    qdag_rel_S.printBv();
 //    join_r_s->print();
 //    join_r_s->get_child_lqdag(0)->print();
-    quadtree_formula* result = join_r_s->completion(3);
+    lqdag* test = new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R);
+    quadtree_formula* result_v1 =  test->completion(2);
+//    quadtree_formula* result = join_r_s->completion(3);
 
     // TODO: debug see result
     //vector<qdag> Q(3);

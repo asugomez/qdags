@@ -269,8 +269,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         int64_t last_child = -1;
         uint16_t child;
 
-        // TODO: pregunta cómo es tener un hijo en la parte extendida?
-        // TODO: problema con cur_node_test --> siempre corresponde al quadtree original , no del output
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
             uint64_t leaves;
@@ -283,29 +281,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 // it's like a mapping between the get_child_se_quadtree in the output and which quadtree_formula in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
             }
-            // testing
-            // --> add the get_child_se_quadtree to the path
-            /*uint64_t coordinates[nAtt];
-            for(uint64_t k = 0; k < nAtt; k++){
-                coordinates[k] = 0;
-            }
-            uint16_t diff_level = max_level-cur_level;
-            uint64_t l = (uint64_t) log2(p);
-            uint64_t path = get_child_se_quadtree << (diff_level * l);
-            uint32_t node_cur_level = (uint32_t) path >> (diff_level * l);
-            uint64_t n_ones = bits::cnt((uint64_t) node_cur_level);
-
-            uint64_t msb_2, num_point;
-            for(uint64_t k=0; k< n_ones;k++){
-                msb_2 = __builtin_ctz(node_cur_level);
-                node_cur_level &= ~(1 << msb_2);//(((uint32_t) 0xffffffff) >> (msb_2 + 1)); // delete the msb of children
-                msb_2%=l;
-                num_point = (l-1)-msb_2;
-                coordinates[num_point] += 1 << diff_level;
-            }*/
-
-            // final testing
-
 
             // we are writing the result in the output bitvector
             if (child - last_child > 1)
