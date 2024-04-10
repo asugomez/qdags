@@ -235,7 +235,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint64_t root_temp[16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
         uint64_t rank_vector[16][64];
 
-        // TODO: pregunta pero esto va qdag por qdag, y no atributo x atributo del qdag
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {

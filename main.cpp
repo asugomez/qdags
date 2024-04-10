@@ -114,14 +114,14 @@ int main(int argc, char **argv) {
     subQuadtreeChild_R->level = -1;
     subQuadtreeChild_R->node = 0;
 
-    subQuadtreeChild *subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
+//    subQuadtreeChild *subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
 //    subQuadtreeChild_S->qdag = &qdag_rel_S;
 //    subQuadtreeChild_S->level = -1;
 //    subQuadtreeChild_S->quadtree_formula = 0;
 
-    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
-                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
-                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
+//    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
+//                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
+//                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
 
     // print the tree
     cout << endl << "rel R" << endl;
@@ -135,6 +135,8 @@ int main(int argc, char **argv) {
 //    quadtree_formula* result = join_r_s->completion(3);
 
     // TODO: debug see result
+
+    // TODO test AND of two leaves!
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
     vector<qdag_dfuds> Q_dfuds(2);
