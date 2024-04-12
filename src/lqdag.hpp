@@ -163,8 +163,11 @@ public:
                 throw "error: invalid k_d";
         }
         if((node_description & val_full_ones) == val_full_ones){ // check the children
+            if(level == max_level)
+                return FULL_LEAF;
+            uint64_t siblings = this->subQuadtree->qdag->rank(level,node);
             for(uint8_t i = 0; i < k_d; i++){
-                if(is_leaf(level+1, node*k_d + i, k) != 1)
+                if(is_leaf(level+1, siblings*k_d + i, k) != 1)
                     return INTERNAL_NODE;
             }
             return FULL_LEAF;
@@ -208,7 +211,7 @@ public:
     /**
      * algorithm 7 value(L)
      * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s
-     * @return the value of the root of the lqdag.
+     * @return the value of the root of the lqdag. Can be EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE or VALUE_NEED_CHILDREN.
      */
     double value_lqdag(){
         switch(this->functor){
@@ -217,7 +220,7 @@ public:
             case FUNCTOR_NOT:
                 return 1 - this->value_quadtree();
             case FUNCTOR_AND: {
-                double val_lqdag1 = this->lqdag1->value_lqdag();
+                double val_lqdag1 = this->lqdag1->value_lqdag(); // TODO: maybe save this value because is needed after in get_child
                 double val_lqdag2 = this->lqdag2->value_lqdag();
                 if (val_lqdag1 == 0 || val_lqdag2 == 0)
                     return EMPTY_LEAF;
@@ -327,8 +330,6 @@ public:
      *
      */
     quadtree_formula* completion(uint8_t dim, int depth = 0){ // TODO: see how to get dimension
-
-        // TODO: debug value
         double val_lqdag = this->value_lqdag();
         // return a leaf
         if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){

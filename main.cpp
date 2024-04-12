@@ -81,6 +81,7 @@ int main(int argc, char **argv) {
     // only for testing
     att_R.push_back(AT_Y); att_R.push_back(AT_X);
     att_S.push_back(AT_Y); att_S.push_back(AT_Z);// TODO: el orden hay q cambiarlo para el join
+//    att_S.push_back(AT_X); att_S.push_back(AT_Z);// TODO: el orden hay q cambiarlo para el join
 
 
     qdag::att_set att_A;
@@ -109,34 +110,24 @@ int main(int argc, char **argv) {
 
     //////////////// LAZY QDAGs ///////////////////////
 
-    subQuadtreeChild* subQuadtreeChild_R;// = subQuadtreeChild{qdag_rel_R, -1,0};
-    subQuadtreeChild_R->qdag = &qdag_rel_R;
-    subQuadtreeChild_R->level = 0;
-    subQuadtreeChild_R->node = 0;
+    subQuadtreeChild* subQuadtreeChild_R = new subQuadtreeChild{&qdag_rel_R, 0,0};
+    subQuadtreeChild* subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
 
-//    subQuadtreeChild *subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
-//    subQuadtreeChild_S->qdag = &qdag_rel_S;
-//    subQuadtreeChild_S->level = -1;
-//    subQuadtreeChild_S->quadtree_formula = 0;
 
-//    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
-//                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
-//                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
 
+    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
+                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
+                           new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
+
+    quadtree_formula* test_join = join_r_s->completion(att_A.size());
     // print the tree
     cout << endl << "rel R" << endl;
     qdag_rel_R.printBv();
-//    cout << endl << "rel S" << endl;
-//    qdag_rel_S.printBv();
-//    join_r_s->print();
-//    join_r_s->get_child_lqdag(0)->print();
+    cout << endl << "rel S" << endl;
+    qdag_rel_S.printBv();
     lqdag* test = new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R);
     quadtree_formula* result_v1 =  test->completion(2);
-//    quadtree_formula* result = join_r_s->completion(3);
 
-    // TODO: debug see result
-
-    // TODO test AND of two leaves!
     //vector<qdag> Q(3);
     vector<qdag> Q(2);
     vector<qdag_dfuds> Q_dfuds(2);
@@ -144,7 +135,13 @@ int main(int argc, char **argv) {
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     //Q[2] = qdag_rel_T;
-    qdag *Join_Result;
+
+    // THIS WON'T WORK BEACAUSE THE JOIN DOES NOT BUILD THE BITVECTOR
+//    qdag *Join_Result = multiJoin(Q, true, 1000);
+//    subQuadtreeChild* quad_join = new subQuadtreeChild{Join_Result, 0,0};
+//    lqdag* join_result = new lqdag(FUNCTOR_QTREE, quad_join);
+//    quadtree_formula* result_join_result =  join_result->completion(att_A.size());
+
 
     Q_dfuds[0] = qdag_rel_R_dfuds;
     Q_dfuds[1] = qdag_rel_S_dfuds;
