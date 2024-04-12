@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
     //std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 32;//52000000; // es como +infty para wikidata
+    uint64_t grid_side = 16;//52000000; // es como +infty para wikidata
 
     qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
     qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 
     subQuadtreeChild* subQuadtreeChild_R;// = subQuadtreeChild{qdag_rel_R, -1,0};
     subQuadtreeChild_R->qdag = &qdag_rel_R;
-    subQuadtreeChild_R->level = -1;
+    subQuadtreeChild_R->level = 0;
     subQuadtreeChild_R->node = 0;
 
 //    subQuadtreeChild *subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};

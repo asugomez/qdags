@@ -474,6 +474,11 @@ public:
      */
     uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
         return Q->get_num_leaves_ith_node(level, parent, child);
+
+    }
+
+    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child){
+        return Q->get_child(level, node, ith_child);
     }
 
     void test_rank(){
