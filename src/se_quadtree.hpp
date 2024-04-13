@@ -726,18 +726,19 @@ public:
     }
 
     /**
-     *
+     * Algorithm 2 child(Q,i)
      * @param level of the node.
      * @param node starting position in the level.
      * @param ith_child
      * @return the index in the bv[level+1] of the ith-child of node. If the i-th child of the node doesn't exist, it returns the total the position where the level ends.
      * For the last level, return the position of the leaf.
      */
-    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child){
+    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
         if(level == getHeight()-1){
             return node + ith_child;
         }
         if(!get_ith_bit(level, node + ith_child)){
+            exists = false;
             return total_ones_level(level)*k_d;
         }
         uint64_t siblings = rank(level,node+ith_child);

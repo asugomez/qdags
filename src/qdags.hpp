@@ -477,8 +477,8 @@ public:
 
     }
 
-    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child){
-        return Q->get_child(level, node, ith_child);
+    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
+        return Q->get_child(level, node, ith_child, exists);
     }
 
     void test_rank(){

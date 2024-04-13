@@ -11,6 +11,7 @@ const uint8_t FUNCTOR_OR = 3; // internal quadtree_formula
 const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
 const uint8_t NOT_A_LEAF = 2;
 
+const double NO_VALUE_LEAF = 2;
 const double EMPTY_LEAF = 0;
 const double FULL_LEAF = 1;
 const double INTERNAL_NODE = 0.5;
@@ -29,6 +30,7 @@ struct subQuadtreeChild {
     qdag *qdag;
     uint16_t level; // the level of the quadtree_formula. 0 to start.
     uint64_t node; // absolute position in the bv[level] of the quadtree
+    double value;// = NO_VALUE_LEAF;
     // can only be a number from the original quadtree (not extended)
 };
 
@@ -44,6 +46,8 @@ private:
     subQuadtreeChild *subQuadtree;
     lqdag *lqdag1;
     lqdag *lqdag2;
+    double val_lqdag1 = NO_VALUE_LEAF;
+    double val_lqdag2 = NO_VALUE_LEAF;
     att_set attribute_set_A; // for extend functor
 
 public:
@@ -53,6 +57,7 @@ public:
     lqdag(subQuadtreeChild* subQuadtree) {
         this->functor = FUNCTOR_QTREE;
         this->subQuadtree = subQuadtree;
+        this->subQuadtree->value = NO_VALUE_LEAF;
         this->lqdag1 = nullptr;
         this->lqdag2 = nullptr;
         for(uint64_t i = 0; i < subQuadtree->qdag->nAttr(); i++)
@@ -64,6 +69,7 @@ public:
         assert(functor == FUNCTOR_QTREE || functor == FUNCTOR_NOT);
         this->functor = functor;
         this->subQuadtree = subQuadtree;
+        this->subQuadtree->value = NO_VALUE_LEAF;
         this->lqdag1 = nullptr;
         this->lqdag2 = nullptr;
         for(uint64_t i = 0; i < subQuadtree->qdag->nAttr(); i++)
@@ -85,9 +91,7 @@ public:
         assert(functor == FUNCTOR_EXTEND);
         this->functor = functor;
         this->lqdag1 = l;
-        this->lqdag1->attribute_set_A = attribute_set_A;
         this->attribute_set_A = attribute_set_A;
-
         this->subQuadtree = nullptr;
         this->lqdag2 = nullptr;
     }
@@ -115,10 +119,10 @@ public:
      */
     double value_quadtree(){
         if(this->functor == FUNCTOR_QTREE) {
-            uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
             uint16_t cur_level = this->subQuadtree->level;
             uint64_t cur_node = this->subQuadtree->node;
-            return is_leaf(cur_level, cur_node, this->subQuadtree->qdag->getK());
+            this->subQuadtree->value = is_leaf(cur_level, cur_node, this->subQuadtree->qdag->getK());
+            return this->subQuadtree->value;
 
             // grid side is 1 or leaf at last level
             // this->get_grid_side() == 1 ?? // TODO: esta bien cambiar asi la grid side?, no es lo mismo ambas condiciones?
@@ -175,38 +179,38 @@ public:
         return INTERNAL_NODE;
     }
 
-    /**
-     * Algorithm 2 child(Q,i)
-     * @param i
-     * @param subQuad a subQuadtreeChild which represents the i-th child of a quadtree_formula of the quadtree.
-     * @return a subQuadtreeChild which represents the i-th child of a quadtree_formula of the quadtree.
-     */
-    void get_child_quadtree_v2(uint64_t i, subQuadtreeChild* subQuad){
-        // assert functor == QUADTREE
-        if(this->functor != FUNCTOR_QTREE){
-            throw "error: get_child_quadtree called on non-quadtree";
-        }
-        uint16_t cur_level = this->subQuadtree->level;
-        if(cur_level +1 >= this->subQuadtree->qdag->getHeight() - 1){
-            throw "error: get_child_quadtree called on last level";
-        }
-
-        uint64_t cur_node = this->subQuadtree->node;
-        uint64_t siblings = 0;
-        if(cur_level != -1)
-            siblings = this->subQuadtree->qdag->rank(cur_level, cur_node); // number of nodes of the left of the quadtree_formula in that level in the qdag
-        int32_t new_level = cur_level + 1;
-//        // TODO: dont think it's neecssary bcause only is called between the limits
-//        i = this->subQuadtree->qdag->getM(i); // mapping
-        uint64_t ith_child_node = siblings * this->subQuadtree->qdag->getKD() + i;
-
-        subQuad->qdag = this->subQuadtree->qdag;
-        subQuad->level = new_level;
-        subQuad->node = ith_child_node;
-
-        //subQuad = subQuadtreeChild{this->subQuadtree->qdag, new_level, ith_child_node};
-        //return subQuad; // TODO: test que entrega bien el puntero
-    }
+//    /**
+//     * Algorithm 2 child(Q,i)
+//     * @param i
+//     * @param subQuad a subQuadtreeChild which represents the i-th child of a quadtree_formula of the quadtree.
+//     * @return a subQuadtreeChild which represents the i-th child of a quadtree_formula of the quadtree.
+//     */
+//    void get_child_quadtree_v2(uint64_t i, subQuadtreeChild* subQuad){
+//        // assert functor == QUADTREE
+//        if(this->functor != FUNCTOR_QTREE){
+//            throw "error: get_child_quadtree called on non-quadtree";
+//        }
+//        uint16_t cur_level = this->subQuadtree->level;
+//        if(cur_level +1 >= this->subQuadtree->qdag->getHeight() - 1){
+//            throw "error: get_child_quadtree called on last level";
+//        }
+//
+//        uint64_t cur_node = this->subQuadtree->node;
+//        uint64_t siblings = 0;
+//        if(cur_level != -1)
+//            siblings = this->subQuadtree->qdag->rank(cur_level, cur_node); // number of nodes of the left of the quadtree_formula in that level in the qdag
+//        int32_t new_level = cur_level + 1;
+////        // TODO: dont think it's neecssary bcause only is called between the limits
+////        i = this->subQuadtree->qdag->getM(i); // mapping
+//        uint64_t ith_child_node = siblings * this->subQuadtree->qdag->getKD() + i;
+//
+//        subQuad->qdag = this->subQuadtree->qdag;
+//        subQuad->level = new_level;
+//        subQuad->node = ith_child_node;
+//
+//        //subQuad = subQuadtreeChild{this->subQuadtree->qdag, new_level, ith_child_node};
+//        //return subQuad; // TODO: test que entrega bien el puntero
+//    }
 
     /**
      * algorithm 7 value(L)
@@ -216,33 +220,47 @@ public:
     double value_lqdag(){
         switch(this->functor){
             case FUNCTOR_QTREE:
-                return this->value_quadtree();
+                return this->subQuadtree->value == NO_VALUE_LEAF ? this->value_quadtree() : this->subQuadtree->value ;
             case FUNCTOR_NOT:
-                return 1 - this->value_quadtree();
+                return this->subQuadtree->value == NO_VALUE_LEAF ? 1 - this->value_quadtree() : 1 - this->subQuadtree->value ;
             case FUNCTOR_AND: {
-                double val_lqdag1 = this->lqdag1->value_lqdag(); // TODO: maybe save this value because is needed after in get_child
-                double val_lqdag2 = this->lqdag2->value_lqdag();
-                if (val_lqdag1 == 0 || val_lqdag2 == 0)
+                if(this->val_lqdag1 == NO_VALUE_LEAF)
+                    this->val_lqdag1 = this->lqdag1->value_lqdag();
+                if(this->val_lqdag1 == 0)
                     return EMPTY_LEAF;
-                if (val_lqdag1 == 1)
-                    return val_lqdag2;
-                if (val_lqdag2 == 1)
-                    return val_lqdag1;
+
+                if(this->val_lqdag2 == NO_VALUE_LEAF)
+                    this->val_lqdag2 = this->lqdag2->value_lqdag();
+                if(this->val_lqdag2 == 0)
+                    return EMPTY_LEAF;
+
+                if (this->val_lqdag1 == 1)
+                    return this->val_lqdag2;
+                if (this->val_lqdag2 == 1)
+                    return this->val_lqdag1;
+
                 return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the AND between the children of Q1 and Q2 has been computed
             }
             case FUNCTOR_OR: {
-                double val_lqdag1 = this->lqdag1->value_lqdag();
-                double val_lqdag2 = this->lqdag2->value_lqdag();
-                if (val_lqdag1 == 1 || val_lqdag2 == 1)
+                if(this->val_lqdag1 == NO_VALUE_LEAF)
+                    this->val_lqdag1 = this->lqdag1->value_lqdag();
+                if(this->val_lqdag1 == 1)
                     return FULL_LEAF;
-                if (val_lqdag1 == 0)
-                    return val_lqdag2;
-                if (val_lqdag2 == 0)
-                    return val_lqdag1;
+
+                if(this->val_lqdag2 == NO_VALUE_LEAF)
+                    this->val_lqdag2 = this->lqdag2->value_lqdag();
+                if(this->val_lqdag2 == 1)
+                    return FULL_LEAF;
+
+                if (this->val_lqdag1 == 0)
+                    return this->val_lqdag2;
+                if (this->val_lqdag2 == 0)
+                    return this->val_lqdag1;
+
                 return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the OR between the children of Q1 and Q2 has been computed
             }
             case FUNCTOR_EXTEND:
-                return this->lqdag1->value_lqdag();
+                return this->lqdag1->val_lqdag1 == NO_VALUE_LEAF ? this->lqdag1->value_lqdag() : this->lqdag1->val_lqdag1;
             default:
                 throw "error: value_lqdag non valid functor";
         }
@@ -260,25 +278,32 @@ public:
             case FUNCTOR_QTREE: case FUNCTOR_NOT: {
                 uint16_t cur_level = this->subQuadtree->level;
                 uint16_t cur_node = this->subQuadtree->node;
-                uint64_t ith_child = this->subQuadtree->qdag->get_child(cur_level, cur_node, i);
+                bool node_exists = true;
+                uint64_t ith_child = this->subQuadtree->qdag->get_child(cur_level, cur_node, i, node_exists);
                 cur_level++;
-                subQuadtreeChild *subQuadtree = new subQuadtreeChild{this->subQuadtree->qdag, cur_level, ith_child};
+                double value = node_exists ? NO_VALUE_LEAF : EMPTY_LEAF;
+                subQuadtreeChild *subQuadtree = new subQuadtreeChild{this->subQuadtree->qdag, cur_level, ith_child, value};
 //                this->get_child_quadtree(i,subQuadtree);
                 lqdag *l = new lqdag(this->functor, subQuadtree);
                 return l;
             }
             case FUNCTOR_AND: {
-                if (this->lqdag1->value_lqdag() == 1)
+                // TODO: reemplazar la funcion por el valor guardado!
+                double val_l1 = this->val_lqdag1 != NO_VALUE_LEAF ? this->val_lqdag1 : this->lqdag1->value_lqdag();
+                if (val_l1== 1)
                     return lqdag2->get_child_lqdag(i);
-                if (this->lqdag2->value_lqdag() == 1)
+                double val_l2 = this->val_lqdag2 != NO_VALUE_LEAF ? this->val_lqdag2 : this->lqdag2->value_lqdag();
+                if (val_l2 == 1)
                     return lqdag1->get_child_lqdag(i);
                 lqdag *l = new lqdag(FUNCTOR_AND, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
                 return l;
             }
             case FUNCTOR_OR: {
-                if (this->lqdag1->value_lqdag() == 0)
+                double val_l1 = this->val_lqdag1 != NO_VALUE_LEAF ? this->val_lqdag1 : this->lqdag1->value_lqdag();
+                if (val_l1 == 0)
                     return lqdag2->get_child_lqdag(i);
-                if (this->lqdag2->value_lqdag() == 0)
+                double val_l2 = this->val_lqdag2 != NO_VALUE_LEAF ? this->val_lqdag2 : this->lqdag2->value_lqdag();
+                if (val_l2 == 0)
                     return lqdag1->get_child_lqdag(i);
                 lqdag *l = new lqdag(FUNCTOR_OR, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
                 return l;
@@ -297,7 +322,7 @@ public:
                 i_prime = 0;
 
                 for (uint16_t j = 0; j < dim_prime; ++j) {
-                    if (i & (1 << (dim - this->attribute_set_A[j]- 1)))
+                    if (i & (1 << (dim - this->lqdag1->attribute_set_A[j]- 1)))
                         i_prime |= mask;
                     mask >>= 1;
                 }
