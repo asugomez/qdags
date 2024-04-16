@@ -11,7 +11,7 @@ const uint8_t FUNCTOR_OR = 3; // internal quadtree_formula
 const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
 const uint8_t NOT_A_LEAF = 2;
 
-const double NO_VALUE_LEAF = 2;
+const double NO_VALUE_LEAF = 3;
 const double EMPTY_LEAF = 0;
 const double FULL_LEAF = 1;
 const double INTERNAL_NODE = 0.5;
@@ -143,12 +143,12 @@ public:
      * @return whether is an EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
      */
     double is_leaf(uint16_t level, uint64_t node, uint8_t k){
-        uint8_t node_description = this->subQuadtree->qdag->get_node_last_level(level, node);
         uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
 //        this->subQuadtree->qdag->get_ith_bit(level, node);
         if(level > max_level){ // level + 1 == max_level
             return this->subQuadtree->qdag->get_ith_bit(level-1, node);//(node_description & 255) == 255;
         }
+        uint8_t node_description = this->subQuadtree->qdag->get_node_last_level(level, node);
         if((node_description | 0) == 0)
             return EMPTY_LEAF;
         uint8_t val_full_ones = 3;
@@ -214,7 +214,8 @@ public:
 
     /**
      * algorithm 7 value(L)
-     * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s
+     * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s.
+     * We save the value in val_lqdag_1, val_lqdag_2 or subQuatree->value. If we've already computed the value, we return it.
      * @return the value of the root of the lqdag. Can be EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE or VALUE_NEED_CHILDREN.
      */
     double value_lqdag(){
@@ -288,7 +289,6 @@ public:
                 return l;
             }
             case FUNCTOR_AND: {
-                // TODO: reemplazar la funcion por el valor guardado!
                 double val_l1 = this->val_lqdag1 != NO_VALUE_LEAF ? this->val_lqdag1 : this->lqdag1->value_lqdag();
                 if (val_l1== 1)
                     return lqdag2->get_child_lqdag(i);
@@ -308,12 +308,11 @@ public:
                 lqdag *l = new lqdag(FUNCTOR_OR, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
                 return l;
             }
+            // TODO: case extend: save M like in qdags??
             case FUNCTOR_EXTEND: { // Extend quadtree to attributes att_set
                 // same mapping as in the extend function but only for this i. See extend in qdags.hpp
-                uint16_t dim = this->attribute_set_A.size();
-                uint16_t dim_prime = this->lqdag1->attribute_set_A.size();
-
-                type_mapping_M M = 0;
+                uint16_t dim = this->attribute_set_A.size(); // d
+                uint16_t dim_prime = this->lqdag1->attribute_set_A.size(); // d'
 
                 uint64_t mask;
                 uint64_t i_prime;
@@ -324,8 +323,10 @@ public:
                 for (uint16_t j = 0; j < dim_prime; ++j) {
                     if (i & (1 << (dim - this->lqdag1->attribute_set_A[j]- 1)))
                         i_prime |= mask;
+
                     mask >>= 1;
                 }
+                i_prime = this->lqdag1->subQuadtree->qdag->getM(i_prime);
                 lqdag *l = new lqdag(FUNCTOR_EXTEND, this->lqdag1->get_child_lqdag(i_prime), this->attribute_set_A);
                 return l;
             }

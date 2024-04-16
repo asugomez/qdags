@@ -274,6 +274,7 @@ public:
         // OJO con lo que sigue, tengo que hacer este constructor de buena manera
         uint64_t size;
         for (uint16_t i = 0; i < height; i++) {
+            total_ones[i] = 0;
             size = i==0? 1 : total_ones[i-1];
             bv[i] = modify_to_bit_vector(_bv[i], i, size);
         }
@@ -287,7 +288,7 @@ public:
     }
 
     /**
-     * given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+     * Given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector.
      * @param _bv_int
      * @param level
      * @param n_ones

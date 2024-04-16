@@ -212,7 +212,7 @@ public:
 
                 mask >>= 1;
             }
-
+            // TODO: debug i_prime
             _M[i] = M[i_prime];
         }
 
