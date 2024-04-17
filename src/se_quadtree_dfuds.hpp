@@ -27,7 +27,7 @@ private:
     rank_bv_64 bv_s;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
     const bit_vector* bit_vector_b;
-    asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
+    asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each quadtree_formula 1^c 0, with c the number of children.
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
@@ -356,7 +356,7 @@ public:
     /**
      *
      * @param node_v
-     * @return The next sibling of node v, if it exists.
+     * @return The next sibling of quadtree_formula v, if it exists.
      */
     size_type_bv next_sibling(size_type_bv node_v)const{
         // B[open(B,v-1) - 1] == 1
@@ -367,7 +367,7 @@ public:
     /**
      *
      * @param node_v
-     * @return The previous sibling of node v, if it exists.
+     * @return The previous sibling of quadtree_formula v, if it exists.
      */
     size_type_bv preceding_sibling(size_type_bv node_v)const{
         // B[v-2, v-1] != [1,0]
@@ -407,7 +407,7 @@ public:
     /**
      *
      * @param node_v
-     * @return Number of children of node v.
+     * @return Number of children of quadtree_formula v.
      */
     size_type_bv children(size_type_bv node_v) const{
         assert(node_v >= 3);
@@ -418,7 +418,7 @@ public:
      *
      * @param node_v
      * @param t
-     * @return The t-th child of node v, if it exists
+     * @return The t-th child of quadtree_formula v, if it exists
      */
     size_type_bv child(size_type_bv node_v, size_type_bv t) const{
         return bp_b.find_close(succ_zero(node_v) - t) + 1;
@@ -427,7 +427,7 @@ public:
     /**
      *
      * @param node_v
-     * @return The t such that node v is the tth child of its parent.
+     * @return The t such that quadtree_formula v is the tth child of its parent.
      */
     size_type_bv childrank(size_type_bv node_v) const{
         size_type_bp p = bp_b.find_open(node_v - 1);
@@ -437,7 +437,7 @@ public:
 
     /**
      * @param node_v
-     * @return The number of leaves to the left of node v, plus 1.
+     * @return The number of leaves to the left of quadtree_formula v, plus 1.
      */
     size_type_bv leaf_rank(size_type_bv node_v) const{
         return bp_b.rank_zero_zero(node_v);
@@ -446,7 +446,7 @@ public:
 //    /**
 //     *
 //     * @param node_v
-//     * @return The ith left-to-right leaf node in the tree-
+//     * @return The ith left-to-right leaf quadtree_formula in the tree-
 //     */
 //    size_type_bv leaf_select(size_type_bv node_v) const{
 //        return select_zero_zero(node_v) + 1;
@@ -455,7 +455,7 @@ public:
     /**
      *
      * @param node_v
-     * @return The number of leaves in the subtree of node v.
+     * @return The number of leaves in the subtree of quadtree_formula v.
      */
     size_type_bv leaf_num(size_type_bv node_v) const{
         return leaf_rank(bp_b.next_sibling(node_v)) - leaf_rank(node_v);
@@ -484,8 +484,8 @@ public:
     }
 
     bool is_leaf(size_type_bv node_v)const{
-        //assert(bit_vector_b[node]==0); // check the node is a leaf
-        //assert(bit_vector_b[node-1]==0);
+        //assert(bit_vector_b[quadtree_formula]==0); // check the quadtree_formula is a leaf
+        //assert(bit_vector_b[quadtree_formula-1]==0);
         return bit_vector_b->get_int(node_v-1,2) == 0;
     }
 
@@ -501,7 +501,7 @@ public:
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
         uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
         uint8_t nd;
-        // node + n_children + 1 (1^c 0)
+        // quadtree_formula + n_children + 1 (1^c 0)
         node = first_child(node);
         if(k_d == 4){
             nd = bv_s.get_4_bits(start_pos);
@@ -613,7 +613,7 @@ public:
     /**
      *
      * @param node
-     * @return The bits of the node of the tree that are descendants of the node.
+     * @return The bits of the quadtree_formula of the tree that are descendants of the quadtree_formula.
      */
     inline uint8_t get_node_last_level(uint64_t node) {
         uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
@@ -625,11 +625,11 @@ public:
     }
 
     /**
-     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Get the range of leaves in the last level of the tree that are descendants of the quadtree_formula.
      * Useful for the range Maximum query
      * @param node
-     * @param init will be modified if the node is not the root. -1 if the node is empty.
-     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     * @param init will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
+     * @param fin will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
      */
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         init = leaf_rank(node);

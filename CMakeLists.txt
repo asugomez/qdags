@@ -14,6 +14,7 @@ set(SOURCE_FILES
         src/louds/join_partial_results.cpp
         src/louds/join_ranked_results.cpp
         src/qdags.hpp
+        src/lqdag.hpp
         src/rank.hpp
         src/se_quadtree.hpp
         src/MinMaxHeap.hpp

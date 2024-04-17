@@ -58,7 +58,7 @@ private:
 
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
-    uint8_t k; // k_d--tree
+    uint8_t k;
     uint8_t d; // number of attributs
     size_type k_d; // k^d
     vector<uint64_t> total_ones;
@@ -273,10 +273,9 @@ public:
 
         // OJO con lo que sigue, tengo que hacer este constructor de buena manera
         uint64_t size;
-        // TODO: completar esto para no tener bits de mas
-        // ver con cuantos bloques necesitamos
         for (uint16_t i = 0; i < height; i++) {
-            size = i==0? 2 : total_ones[i-1];
+            total_ones[i] = 0;
+            size = i==0? 1 : total_ones[i-1];
             bv[i] = modify_to_bit_vector(_bv[i], i, size);
         }
         /*for (uint16_t i = 0; i < height; i++) {
@@ -285,6 +284,24 @@ public:
             bv_select[i] = sd_vector<>::select_1_type(path[i]);
             total_ones[i] = bv_rank[i].rank(path[i].size());
         }*/
+
+    }
+
+    /**
+     * Given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector.
+     * @param _bv_int
+     * @param level
+     * @param n_ones
+     * @return
+     */
+    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_chunks){
+        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
+        bit_vector _bv(n_chunks*k_d);
+        for(uint64_t i : _bv_int){
+            _bv[i] = 1;
+            total_ones[level]++;
+        }
+        return rank_bv_64(_bv);
 
     }
 
@@ -332,25 +349,6 @@ public:
             return bv[level].get_4_bits(node);
         else
             return bv[level].get_2_bits(node);
-    }
-
-    /**
-     * TODO: mejorarla pues entrega mas 0s de los que debería
-     * given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
-     * @param _bv_int
-     * @param level
-     * @param n_ones
-     * @return
-     */
-    rank_bv_64 modify_to_bit_vector(vector<uint64_t> _bv_int, uint16_t level, uint64_t n_ones){
-        // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
-        bit_vector _bv(_bv_int.size()*8);
-        for(uint64_t i : _bv_int){
-            _bv[i] = 1;
-            total_ones[level]++;
-        }
-        return rank_bv_64(_bv);
-
     }
 
     /**
@@ -726,6 +724,26 @@ public:
         }
         level++;
         return get_range_leaves_aux(level, children, siblings, init, end);
+    }
+
+    /**
+     * Algorithm 2 child(Q,i)
+     * @param level of the node.
+     * @param node starting position in the level.
+     * @param ith_child
+     * @return the index in the bv[level+1] of the ith-child of node. If the i-th child of the node doesn't exist, it returns the total the position where the level ends.
+     * For the last level, return the position of the leaf.
+     */
+    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
+        if(level == getHeight()-1){
+            return node + ith_child;
+        }
+        if(!get_ith_bit(level, node + ith_child)){
+            exists = false;
+            return total_ones_level(level)*k_d;
+        }
+        uint64_t siblings = rank(level,node+ith_child);
+        return siblings*k_d;
     }
 
 

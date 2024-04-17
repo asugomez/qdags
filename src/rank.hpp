@@ -54,7 +54,7 @@ public:
 
     // los 4 bits que definen un nodo
     /**
-     * Get the 4 bits that define a node
+     * Get the 4 bits that define a quadtree_formula
      * @param start_pos the position in the level
      * @return the 4 bits from the start position
      * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 6 (=0110).
@@ -201,16 +201,16 @@ public:
 
     /**
      *
-     * @param level of the node
-     * @param node the i-th position of the level.
-     * @return 0 or 1 if the node is empty or not.
+     * @param level of the quadtree_formula
+     * @param node the quadtree_formula-th position of the level.
+     * @return 0 or 1 if the quadtree_formula is empty or not.
      */
-    bool get_ith_bit(uint64_t i, uint64_t k_d){
+    bool get_ith_bit(uint64_t node, uint64_t k_d){
         uint8_t x;
         if(k_d == 4) {
-            x = get_4_bits(i);
+            x = get_4_bits(node);
         } else {
-            x = get_2_bits(i);
+            x = get_2_bits(node);
         }
         return x&1;
     }

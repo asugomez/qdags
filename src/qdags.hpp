@@ -36,7 +36,7 @@ private:
 
     uint64_t grid_side;
 
-    uint16_t Msize;  // number of children of every qdag node, k^d
+    uint16_t Msize;  // number of children of every qdag quadtree_formula, k^d
 
     bool is_extended_qdag;
 
@@ -85,7 +85,6 @@ public:
          uint8_t k, uint8_t d
     ) {
 
-        // TODO: debug see the points!
         Msize = std::pow(k, d);
 
         M = new type_mapping_M[Msize];
@@ -163,6 +162,9 @@ public:
         //    M_prime[M[i]]->push_back(i);
         //}
 
+        // TODO: OFT print!
+//        printBv();
+
     }
 
 
@@ -209,7 +211,7 @@ public:
 
                 mask >>= 1;
             }
-
+            // TODO: debug i_prime
             _M[i] = M[i_prime];
         }
 
@@ -284,9 +286,9 @@ public:
 
     /**
      *
-     * @param level of the node
-     * @param node the i-th position of the level.
-     * @return 0 or 1 if the node is empty or not.
+     * @param level of the quadtree_formula
+     * @param node the quadtree_formula-th position of the level.
+     * @return 0 or 1 if the quadtree_formula is empty or not.
      */
     inline bool get_ith_bit(uint16_t level, uint64_t node){
         return Q->getBv()[level].get_ith_bit(node, getKD());
@@ -300,7 +302,7 @@ public:
         return Q->get_children(level, node, children_array, n_children);
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
     // son tablas precomputadas para materializar los nodos
     void createTableExtend5()  // para join con 5 atributos, se constuyen al momento del join
     {
@@ -325,7 +327,7 @@ public:
         }
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
     void createTableExtend4() // para join con 4 atributos
     {
         uint64_t i, j;
@@ -349,7 +351,7 @@ public:
         }
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
     void createTableExtend3() // para join con 3 atributos
     {
         uint64_t i, j;
@@ -412,6 +414,10 @@ public:
         return tab_extend_5[Q->get_node_last_level(level, node)];
     }
 
+    inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
+        return Q->get_node_last_level(level, node);
+    }
+
 
     //void print(std::ofstream &ofs)
     //{
@@ -422,9 +428,9 @@ public:
     }
 
     /**
-     * @param level of the node. -1 if is the root
-     * @param node the i-th node (0 or 1) of the level
-     * @return number of leaves of the ith-node of the level.
+     * @param level of the quadtree_formula. -1 if is the root
+     * @param node the i-th quadtree_formula (0 or 1) of the level
+     * @return number of leaves of the ith-quadtree_formula of the level.
      * @example:
      * 0101
      * 0100 1001
@@ -439,12 +445,12 @@ public:
     }
 
     /**
-     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Get the range of leaves in the last level of the tree that are descendants of the quadtree_formula.
      * Useful for the range Maximum query
      * @param level
      * @param node
-     * @param init will be modified if the node is not the root. -1 if the node is empty.
-     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     * @param init will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
+     * @param fin will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
      */
     bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         return Q->get_range_leaves(level, node, init, end);
@@ -455,7 +461,7 @@ public:
      * @param level of the parent
      * @param parent
      * @param child the i-th get_child_se_quadtree of the parent
-     * @return the number of leaves of the i-th get_child_se_quadtree of the parent node.
+     * @return the number of leaves of the i-th get_child_se_quadtree of the parent quadtree_formula.
      * @example:
      * 0101
      * 0100 1001
@@ -467,6 +473,11 @@ public:
      */
     uint64_t get_num_leaves_ith_node(int16_t level, uint64_t parent, uint64_t child) {
         return Q->get_num_leaves_ith_node(level, parent, child);
+
+    }
+
+    uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
+        return Q->get_child(level, node, ith_child, exists);
     }
 
     void test_rank(){

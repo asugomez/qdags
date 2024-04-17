@@ -39,7 +39,7 @@ private:
 
     uint64_t grid_side;
 
-    uint16_t Msize;  // number of children of every qdag node, k^d
+    uint16_t Msize;  // number of children of every qdag quadtree_formula, k^d
 
     bool is_extended_qdag;
 
@@ -211,7 +211,7 @@ public:
         return M[i];
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
     // son tablas precomputadas para materializar los nodos
     void createTableExtend5()  // para join con 5 atributos, se constuyen al momento del join
     {
@@ -236,7 +236,7 @@ public:
         }
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
     void createTableExtend4() // para join con 4 atributos
     {
         uint64_t i, j;
@@ -260,7 +260,7 @@ public:
         }
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
     void createTableExtend3() // para join con 3 atributos
     {
         uint64_t i, j;
@@ -286,7 +286,7 @@ public:
 
 
     // TODO: see how the extend works in DFS!
-    // we need the number of 1s of the level (until the node position)
+    // we need the number of 1s of the level (until the quadtree_formula position)
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
         // get the number of 1s of that level
         return tab_extend_3[Q->get_node(node, rank_vector)];
@@ -331,11 +331,11 @@ public:
     }
 
     /**
-     * Get the range of leaves in the last level of the tree that are descendants of the node.
+     * Get the range of leaves in the last level of the tree that are descendants of the quadtree_formula.
      * Useful for the range Maximum query
      * @param node
-     * @param init will be modified if the node is not the root. -1 if the node is empty.
-     * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     * @param init will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
+     * @param fin will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
      */
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         return Q->get_range_leaves(node, init, end);
