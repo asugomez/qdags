@@ -85,7 +85,6 @@ public:
          uint8_t k, uint8_t d
     ) {
 
-        // TODO: debug see the points!
         Msize = std::pow(k, d);
 
         M = new type_mapping_M[Msize];
@@ -164,7 +163,7 @@ public:
         //}
 
         // TODO: OFT print!
-        printBv();
+//        printBv();
 
     }
 

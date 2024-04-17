@@ -355,11 +355,18 @@ public:
      * The completion Q_f is the quadtree representing the output of the formula F, represented as an lqdag
      *
      */
-    quadtree_formula* completion(uint8_t dim, int depth = 0){ // TODO: see how to get dimension
+    quadtree_formula *completion(uint8_t k, uint16_t dim, uint64_t &results, uint16_t max_level, uint16_t level = 0) {
         double val_lqdag = this->value_lqdag();
         // return a leaf
         if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
             quadtree_formula* newNode = create_leaf(val_lqdag);
+            if(val_lqdag == FULL_LEAF){
+                if(level < max_level)
+                    results += (max_level - level)*std::pow(k, dim);
+                else
+                    results++;
+            }
+
             return newNode;
         }
         double max_value = 0;   // 00000000
@@ -367,9 +374,9 @@ public:
         vector<quadtree_formula*> Q_f_children;
         // if all quadtres are empty, return a 0 leaf.
         // C_i ← Completion(Child(L_F,i))
-        uint64_t p = std::pow(2, dim); // TODO: check if base is always 2
+        uint64_t p = std::pow(k, dim);
         for(uint64_t i = 0; i < p; i++){
-            quadtree_formula* newNode = this->get_child_lqdag(i)->completion(dim, depth + 1);
+            quadtree_formula* newNode = this->get_child_lqdag(i)->completion(k, dim, results, max_level, level+1);
             Q_f_children.push_back(newNode);
             max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
             min_value = min(min_value, newNode->val_leaf);
@@ -379,6 +386,12 @@ public:
             Q_f_children.clear(); // memory
             double val_leaf = (max_value == EMPTY_LEAF)? EMPTY_LEAF : FULL_LEAF;
             quadtree_formula* newNode = create_leaf(val_leaf);
+            if(val_leaf == FULL_LEAF){
+                if(level <= max_level)
+                    results += (max_level - level)*std::pow(k, dim);
+                else
+                    results++;
+            }
             return newNode;
         } else {
             // return an internal node with children
