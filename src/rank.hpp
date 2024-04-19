@@ -72,11 +72,11 @@ public:
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
     }
 
-    inline uint8_t get_16_bits(uint64_t start_pos) {
+    inline uint16_t get_16_bits(uint64_t start_pos) {
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffff);
     }
 
-    inline uint8_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
+    inline uint16_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
         switch(k_d){
             case 2:
                 return get_2_bits(start_pos);
@@ -217,7 +217,7 @@ public:
     }
 
     void print_16_bits(uint64_t start_pos) {
-        uint8_t x =  get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+        uint16_t x =  get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
 
         for (int i = 0; i < 16; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");

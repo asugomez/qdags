@@ -90,8 +90,8 @@ int main(int argc, char **argv) {
 
 
     qdag::att_set att_A;
-//    att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z); att_A.push_back(AT_V);
-    att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z);
+    att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z); att_A.push_back(AT_V);
+//    att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z);
 
     /*att_R.push_back(AT_Y); att_R.push_back(AT_X);
     att_S.push_back(AT_Z); att_S.push_back(AT_X);
@@ -107,7 +107,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
     std::vector<std::vector<uint64_t>>* rel_T_2 = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 16;//52000000; // es como +infty para wikidata
+//    uint64_t grid_side = 52000000; // es como +infty para wikidata
+    uint64_t grid_side = 32;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -214,7 +215,7 @@ int main(int argc, char **argv) {
     priority_queue<qdagResults> results_ranked_louds_back;
 //
     cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-    multiJoin(Q, true, 1000);
+//    multiJoin(Q, true, 1000);
     start = high_resolution_clock::now();
     multiJoin(Q, true, 1000);
     stop = high_resolution_clock::now();
@@ -303,6 +304,7 @@ int main(int argc, char **argv) {
 
     subQuadtreeChild* subQuadtreeChild_R = new subQuadtreeChild{&qdag_rel_R, 0,0};
     subQuadtreeChild* subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
+    subQuadtreeChild* subQuadtreeChild_T = new subQuadtreeChild{&qdag_rel_T, 0,0};
 
     uint64_t res = 0;
 
@@ -310,13 +312,17 @@ int main(int argc, char **argv) {
 //    quadtree_formula* test_and_completion = test_and->completion(qdag_rel_R.getK(), 2, res, qdag_rel_R.getHeight());
 //    cout << "number of results and R S: " << res << endl;
 
-    res = 0;
-    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
-                                new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
-                                new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
+    lqdag* extend_r = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A);
+    lqdag* extend_s = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A);
+    lqdag* extend_t = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_T), att_A);
+    lqdag* join_r_s = new lqdag(FUNCTOR_AND, extend_r, extend_s);
+    lqdag* join_s_t = new lqdag(FUNCTOR_AND, extend_s, extend_t);
+    lqdag* join_r_s_t = new lqdag(FUNCTOR_AND, join_r_s, extend_t);
+//    lqdag* join_r_s_t = new lqdag(FUNCTOR_AND, extend_r, join_s_t);
 
+    res = 0;
     start = high_resolution_clock::now();
-    quadtree_formula* test_join = join_r_s->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
+    quadtree_formula* test_join = join_r_s_t->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();

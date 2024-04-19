@@ -298,9 +298,10 @@ public:
         // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
         bit_vector _bv(n_chunks*k_d);
         for(uint64_t i : _bv_int){
+//            _bv.set_int(i,1,1);
             _bv[i] = 1;
-            total_ones[level]++;
         }
+        total_ones[level] = _bv_int.size();
         return rank_bv_64(_bv);
 
     }
@@ -752,7 +753,7 @@ public:
         for (int i = 0; i < getHeight(); i++) {
             //cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
             this->getBv()[i].print(k_d);
-            //cout << endl;
+//            cout << endl;
         }
     }
 
