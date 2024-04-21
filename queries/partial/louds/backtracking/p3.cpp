@@ -70,7 +70,8 @@ int main(int argc, char** argv)
     att_T.push_back(AT_X3); att_T.push_back(AT_X4); 
     
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]);
-    int64_t size_queue = argv[4] ? atoi(argv[4]) : 100;
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+    int64_t size_queue = argv[5] ? atoi(argv[5]) : 1000;
     
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
@@ -90,44 +91,6 @@ int main(int argc, char** argv)
     
     vector<qdag> Q(3);
 
-    /*if (rel_R->size() < rel_S->size()) {
-        if (rel_S->size() < rel_T->size()) {
-	    Q[0] = qdag_rel_R;
-	    Q[1] = qdag_rel_S;
-	    Q[2] = qdag_rel_T;
-        }
-	else {
-	    if (rel_R->size() < rel_T->size()) {
-	        Q[0] = qdag_rel_R;
-		Q[2] = qdag_rel_S;
-	        Q[1] = qdag_rel_T;
-	    }
-	    else {
-	        Q[1] = qdag_rel_R;
-                Q[2] = qdag_rel_S;
-                Q[0] = qdag_rel_T;
-	    }
-	}
-    }
-    else {
-        if (rel_R->size() < rel_T->size()) {
-	    Q[1] = qdag_rel_R;
-            Q[0] = qdag_rel_S;
-            Q[2] = qdag_rel_T;
-	}
-        else {
-            if (rel_S->size() < rel_T->size()) {
-	        Q[2] = qdag_rel_R;
-		Q[0] = qdag_rel_S;
-		Q[1] = qdag_rel_T;
-	    }
-	    else {
-	        Q[2] = qdag_rel_R;
-		Q[1] = qdag_rel_S;
-		Q[0] = qdag_rel_T;
-	    }
-        }
-    }*/
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
@@ -138,11 +101,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsBacktracking(Q, grid_side, 1, size_queue, results_partial_louds_back);
+    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResultsBacktracking(Q, grid_side, 1, size_queue, results_partial_louds_back);
+    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

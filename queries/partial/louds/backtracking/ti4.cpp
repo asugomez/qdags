@@ -72,7 +72,8 @@ int main(int argc, char** argv)
     att_U.push_back(AT_V); att_U.push_back(AT_X); 
     
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]), strRel_U(argv[4]);
-    int64_t size_queue = argv[5] ? atoi(argv[5]) : 100;
+    uint8_t type_fun = argv[5] ? atoi(argv[5]) : 1;
+    int64_t size_queue = argv[6] ? atoi(argv[6]) : 1000;
     
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
@@ -109,11 +110,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsBacktracking(Q, grid_side, 1, size_queue, results_partial_louds_back);
+    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
 
     start = high_resolution_clock::now();
 
-    multiJoinPartialResultsBacktracking(Q, grid_side, 1, size_queue, results_partial_louds_back);
+    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(stop - start);

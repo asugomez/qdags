@@ -1,4 +1,5 @@
 #include "../../../../src/louds/join_partial_results.cpp"
+#include "../../../../src/louds/join_partial_results.cpp"
 
 #include <fstream>
 #include<bits/stdc++.h>
@@ -69,7 +70,8 @@ int main(int argc, char** argv)
     att_T.push_back(AT_C); att_T.push_back(AT_A); 
     
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]);
-    int64_t size_queue = argv[4] ? atoi(argv[4]) : 100;
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+    int64_t size_queue = argv[5] ? atoi(argv[5]) : 1000;
     
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
@@ -101,11 +103,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsBacktracking(Q, grid_side, 1, size_queue, results_partial_louds_back);
+    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResultsBacktracking(Q, grid_side, 1, size_queue, results_partial_louds_back);
+    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
