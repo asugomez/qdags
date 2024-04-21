@@ -92,18 +92,19 @@ int main(int argc, char** argv)
     Q_dfuds[1] = qdag_dfuds_rel_S;
     
     vector<uint16_t*> results_partial_dfuds_back;
+    uint8_t type_fun = argv[3] ? atoi(argv[3]) : 1;
     // size queue
-    int64_t size_queue = argv[7] ? atoi(argv[7]) : 1000;
+    int64_t size_queue = argv[4] ? atoi(argv[4]) : 1000;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, 1, size_queue, results_partial_dfuds_back); // cache warmup
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back); // cache warmup
     
     start = high_resolution_clock::now();    
     
-    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, 1, size_queue, results_partial_dfuds_back);
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(stop - start);

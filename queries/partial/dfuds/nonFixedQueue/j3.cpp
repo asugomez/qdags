@@ -97,6 +97,8 @@ int main(int argc, char** argv)
     Q_dfuds[1] = qdag_dfuds_rel_S;
     Q_dfuds[2] = qdag_dfuds_rel_T;
 
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+
     vector<uint16_t*> results_partial_dfuds;
  
     high_resolution_clock::time_point start, stop;
@@ -104,11 +106,11 @@ int main(int argc, char** argv)
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, 1, results_partial_dfuds); // warmup join -> activar el caché
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds); // warmup join -> activar el caché
  
     start = high_resolution_clock::now();    
     
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, 1, results_partial_dfuds);
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

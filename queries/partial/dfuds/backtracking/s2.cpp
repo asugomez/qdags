@@ -100,10 +100,11 @@ int main(int argc, char** argv)
     Q_dfuds[3] = qdag_dfuds_rel_U;
     
     vector<uint16_t*> results_partial_dfuds_back;
+    uint8_t type_fun = argv[5] ? atoi(argv[5]) : 1;
     // size queue
-    int64_t size_queue = argv[7] ? atoi(argv[7]) : 1000;
+    int64_t size_queue = argv[6] ? atoi(argv[6]) : 1000;
   
-    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, 1, size_queue, results_partial_dfuds_back);  // cache warmup
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);  // cache warmup
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -111,7 +112,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();    
     
-    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, 1, size_queue, results_partial_dfuds_back);
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);
 
     //uint64_t ntuples = multiJoinCount(Q);
 
