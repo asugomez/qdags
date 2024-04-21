@@ -1,5 +1,6 @@
 #include "../../../../src/dfuds/join_ranked_results.cpp"
 
+
 #include <fstream>
 #include<bits/stdc++.h>
 #include<ratio>
@@ -7,6 +8,7 @@
 #include<ctime>
 
 using namespace std::chrono;
+
 
 
 
@@ -90,24 +92,77 @@ int main(int argc, char** argv)
     
     // cout << ((((float)qdag_dfuds_rel_R.size()*8) + ((float)qdag_dfuds_rel_S.size()*8) + ((float)qdag_dfuds_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
 
-    vector<qdag_dfuds> Q_dfuds(3);
+    vector<qdag_dfuds> Q(3);
 
-    Q_dfuds[0] = qdag_dfuds_rel_R;
-    Q_dfuds[1] = qdag_dfuds_rel_S;
-    Q_dfuds[2] = qdag_dfuds_rel_T;
+    Q[0] = qdag_dfuds_rel_R;
+    Q[1] = qdag_dfuds_rel_S;
+    Q[2] = qdag_dfuds_rel_T;
     
-    vector<uint16_t*> results_partial_dfuds_back;
-    int64_t size_queue = argv[7] ? atoi(argv[7]) : 1000;
+    qdag_dfuds *Join_Result;
+
+    // read priorities from file
+    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
+    if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
+        return 1;
+    }
+
+    // get number of priorities of each file
+    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    std::string line;
+    while(std::getline(data_file_R, line))
+        ++number_of_lines_R;
+    while(std::getline(data_file_S, line))
+        ++number_of_lines_S;
+    while(std::getline(data_file_T, line))
+        ++number_of_lines_T;
+    int_vector<> priorities_R(number_of_lines_R,0);
+    int_vector<> priorities_S(number_of_lines_S,0);
+    int_vector<> priorities_T(number_of_lines_T,0);
+
+    // put the priorities in the int_vector
+    int value;
+    int i=0;
+    while(data_file_R >> value){
+        priorities_R[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_S >> value){
+        priorities_S[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_T >> value){
+        priorities_T[i]=value;
+        i++;
+    }
+
+    vector<int_vector<>> p;
+    p.push_back(priorities_R);
+    p.push_back(priorities_S);
+    p.push_back(priorities_T);
+
+    uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    priority_queue<qdagResults> results_ranked_louds_back;
+    int64_t size_queue = argv[8] ? atoi(argv[8]) : 1000;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, size_queue,  p, rMq_louds, results_ranked_dfuds_back); // warmup join
+    multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+
      
     start = high_resolution_clock::now();
 
-    multiJoinRankedResultsDfudsBacktracking(Q_dfuds, 1, size_queue,  p, rMq_louds, results_ranked_dfuds_back);
+    multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

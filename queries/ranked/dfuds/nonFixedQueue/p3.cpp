@@ -1,5 +1,6 @@
 #include "../../../../src/dfuds/join_ranked_results.cpp"
 
+
 #include <fstream>
 #include<bits/stdc++.h>
 #include<ratio>
@@ -7,6 +8,7 @@
 #include<ctime>
 
 using namespace std::chrono;
+
 
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -86,23 +88,112 @@ int main(int argc, char** argv)
     qdag_dfuds qdag_dfuds_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     qdag_dfuds qdag_dfuds_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
     
-    vector<qdag_dfuds> Q_dfuds(3);
+    vector<qdag_dfuds> Q(3);
 
-    Q_dfuds[0] = qdag_dfuds_rel_R;
-    Q_dfuds[1] = qdag_dfuds_rel_S;
-    Q_dfuds[2] = qdag_dfuds_rel_T;
+    /*if (rel_R->size() < rel_S->size()) {
+        if (rel_S->size() < rel_T->size()) {
+	    Q[0] = qdag_dfuds_rel_R;
+	    Q[1] = qdag_dfuds_rel_S;
+	    Q[2] = qdag_dfuds_rel_T;
+        }
+	else {
+	    if (rel_R->size() < rel_T->size()) {
+	        Q[0] = qdag_dfuds_rel_R;
+		Q[2] = qdag_dfuds_rel_S;
+	        Q[1] = qdag_dfuds_rel_T;
+	    }
+	    else {
+	        Q[1] = qdag_dfuds_rel_R;
+                Q[2] = qdag_dfuds_rel_S;
+                Q[0] = qdag_dfuds_rel_T;
+	    }
+	}
+    }
+    else {
+        if (rel_R->size() < rel_T->size()) {
+	    Q[1] = qdag_dfuds_rel_R;
+            Q[0] = qdag_dfuds_rel_S;
+            Q[2] = qdag_dfuds_rel_T;
+	}
+        else {
+            if (rel_S->size() < rel_T->size()) {
+	        Q[2] = qdag_dfuds_rel_R;
+		Q[0] = qdag_dfuds_rel_S;
+		Q[1] = qdag_dfuds_rel_T;
+	    }
+	    else {
+	        Q[2] = qdag_dfuds_rel_R;
+		Q[1] = qdag_dfuds_rel_S;
+		Q[0] = qdag_dfuds_rel_T;
+	    }
+        }
+    }*/
+    Q[0] = qdag_dfuds_rel_R;
+    Q[1] = qdag_dfuds_rel_S;
+    Q[2] = qdag_dfuds_rel_T;
     
-    vector<uint16_t*> results_partial_dfuds;
-  
+    qdag_dfuds *Join_Result;
+
+    // read priorities from file
+    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
+    if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
+        return 1;
+    }
+
+    // get number of priorities of each file
+    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    std::string line;
+    while(std::getline(data_file_R, line))
+        ++number_of_lines_R;
+    while(std::getline(data_file_S, line))
+        ++number_of_lines_S;
+    while(std::getline(data_file_T, line))
+        ++number_of_lines_T;
+    int_vector<> priorities_R(number_of_lines_R,0);
+    int_vector<> priorities_S(number_of_lines_S,0);
+    int_vector<> priorities_T(number_of_lines_T,0);
+
+    // put the priorities in the int_vector
+    int value;
+    int i=0;
+    while(data_file_R >> value){
+        priorities_R[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_S >> value){
+        priorities_S[i]=value;
+        i++;
+    }
+    i=0;
+    while(data_file_T >> value){
+        priorities_T[i]=value;
+        i++;
+    }
+
+    vector<int_vector<>> p;
+    p.push_back(priorities_R);
+    p.push_back(priorities_S);
+    p.push_back(priorities_T);
+
+    uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    vector<uint16_t*> results_ranked_louds;
+
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, 1, results_partial_dfuds); // cache warmup
+    multiJoinRankedResultsDfuds(Q, true, 1000, type_fun, p, rMq, results_ranked_louds);
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, 1, results_partial_dfuds);
+    multiJoinRankedResultsDfuds(Q, true, 1000, type_fun, p, rMq, results_ranked_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
