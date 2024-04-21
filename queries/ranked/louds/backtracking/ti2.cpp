@@ -140,7 +140,8 @@ int main(int argc, char** argv)
 
     multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
 
- 
+    results_ranked_louds_back = priority_queue<qdagResults>();
+
     start = high_resolution_clock::now();
 
     multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);

@@ -172,6 +172,8 @@ int main(int argc, char** argv)
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
+
+    results_ranked_louds_back = priority_queue<qdagResults>();
     
     start = high_resolution_clock::now();
 

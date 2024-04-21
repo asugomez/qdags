@@ -159,7 +159,9 @@ int main(int argc, char** argv)
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
     multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);  // warmup join -> activar el caché
- 
+
+    results_ranked_louds_back = priority_queue<qdagResults>();
+
     start = high_resolution_clock::now();
 
     multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);

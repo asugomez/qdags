@@ -96,8 +96,7 @@ int main(int argc, char** argv)
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
-    
-    qdag *Join_Result;
+
 
     // read priorities from file
     std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
@@ -158,7 +157,8 @@ int main(int argc, char** argv)
 
     multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
 
-    
+    results_ranked_louds_back = priority_queue<qdagResults>();
+
     start = high_resolution_clock::now();
 
     multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
