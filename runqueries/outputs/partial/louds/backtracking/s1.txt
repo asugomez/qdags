@@ -1,0 +1,150 @@
+11.538	number of results: 0
+number of results: 0
+1.8e-05
+13.2313	number of results: 0
+number of results: 0
+1.7e-05
+17.7607	number of results: 0
+number of results: 0
+1.4e-05
+16.4868	number of results: 0
+number of results: 0
+1.4e-05
+26.1478	number of results: 0
+number of results: 0
+1.4e-05
+14.9974	number of results: 0
+number of results: 0
+1.4e-05
+9.35626	number of results: 0
+number of results: 0
+1.6e-05
+11.538	number of results: 0
+number of results: 0
+2.6e-05
+14.1052	number of results: 0
+number of results: 0
+1.4e-05
+17.0639	number of results: 0
+number of results: 0
+1.5e-05
+13.1219	number of results: 0
+number of results: 0
+1.4e-05
+24.3596	number of results: 0
+number of results: 0
+1.4e-05
+11.9577	number of results: 0
+number of results: 0
+1.4e-05
+15.8936	number of results: 0
+number of results: 0
+0.000119
+16.4994	number of results: 0
+number of results: 0
+1.3e-05
+8.62261	number of results: 0
+number of results: 0
+1.5e-05
+21.2581	number of results: 0
+number of results: 0
+1.4e-05
+13.6279	number of results: 0
+number of results: 0
+1.8e-05
+23.43	number of results: 0
+number of results: 0
+2.1e-05
+26.1809	number of results: 0
+number of results: 0
+1.4e-05
+15.927	number of results: 0
+number of results: 0
+2.1e-05
+28.3603	number of results: 0
+number of results: 0
+1.4e-05
+18.1352	number of results: 0
+number of results: 0
+1.4e-05
+14.9654	number of results: 0
+number of results: 0
+1.9e-05
+16.1946	number of results: 0
+number of results: 0
+1.4e-05
+14.3447	number of results: 0
+number of results: 0
+1.4e-05
+15.9429	number of results: 0
+number of results: 0
+1.4e-05
+14.5703	number of results: 0
+number of results: 0
+1.4e-05
+14.1101	number of results: 0
+number of results: 0
+1.4e-05
+12.7839	number of results: 0
+number of results: 0
+1.4e-05
+18.025	number of results: 0
+number of results: 0
+1.4e-05
+14.9537	number of results: 0
+number of results: 0
+1.4e-05
+17.5201	number of results: 0
+number of results: 0
+1.4e-05
+12.7192	number of results: 0
+number of results: 0
+1.7e-05
+16.4994	number of results: 0
+number of results: 0
+1.4e-05
+25.3125	number of results: 0
+number of results: 0
+1.4e-05
+18.0577	number of results: 0
+number of results: 0
+1.4e-05
+11.928	number of results: 0
+number of results: 0
+1.4e-05
+16.5	number of results: 0
+number of results: 0
+1.7e-05
+25.256	number of results: 0
+number of results: 0
+1.8e-05
+20.4826	number of results: 0
+number of results: 0
+1.4e-05
+12.4036	number of results: 0
+number of results: 0
+1.4e-05
+16.3734	number of results: 0
+number of results: 0
+1.4e-05
+12.5592	number of results: 0
+number of results: 0
+1.4e-05
+22.6157	number of results: 0
+number of results: 0
+1.7e-05
+22.9161	number of results: 0
+number of results: 0
+1.7e-05
+14.6245	number of results: 0
+number of results: 0
+1.4e-05
+24.5363	number of results: 0
+number of results: 0
+1.4e-05
+24.3617	number of results: 0
+number of results: 0
+1.5e-05
+14.1894	number of results: 0
+number of results: 0
+1.4e-05
