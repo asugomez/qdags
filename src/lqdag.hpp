@@ -9,8 +9,10 @@ const uint8_t FUNCTOR_NOT = 1; // leaf
 const uint8_t FUNCTOR_AND = 2; // internal quadtree_formula
 const uint8_t FUNCTOR_OR = 3; // internal quadtree_formula
 const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
+
 const uint8_t NOT_A_LEAF = 2;
 
+// TODO: when is 0.5 and when 2.0
 const double NO_VALUE_LEAF = 3;
 const double EMPTY_LEAF = 0;
 const double FULL_LEAF = 1;
@@ -114,7 +116,7 @@ public:
      * Value of a qdag
      * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s.
      * Leaves can be in a higher level than the last one, when the subgrids are all 0s or all 1s.
-     * 1 if the qdag represents a full single cell, 0 if it is empty, 1/2 if is an internal quadtree_formula.
+     * FULL_LEAF if the qdag represents a full single cell, EMPTY_LEAF if it is an empty leaf, INTERNAL_NODE if is an internal quadtree_formula.
      * @return EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE.
      */
     double value_quadtree(){
@@ -151,7 +153,7 @@ public:
         uint8_t node_description = this->subQuadtree->qdag->get_node_last_level(level, node);
         if((node_description | 0) == 0)
             return EMPTY_LEAF;
-        uint8_t val_full_ones = 3;
+        uint16_t val_full_ones;
         uint64_t k_d = this->subQuadtree->qdag->getKD();
         switch (k_d) {
             case 2:
@@ -163,6 +165,8 @@ public:
             case 8:
                 val_full_ones = 255;
                 break;
+            case 16:
+                val_full_ones = 65535;
             default:
                 throw "error: invalid k_d";
         }
@@ -213,17 +217,23 @@ public:
 //    }
 
     /**
-     * algorithm 7 value(L)
+     * algorithm 7 value(L).
      * In lqdags we introduce a new idea: full leaves, that denote subgrids full of 1s.
      * We save the value in val_lqdag_1, val_lqdag_2 or subQuatree->value. If we've already computed the value, we return it.
      * @return the value of the root of the lqdag. Can be EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE or VALUE_NEED_CHILDREN.
      */
     double value_lqdag(){
         switch(this->functor){
-            case FUNCTOR_QTREE:
-                return this->subQuadtree->value == NO_VALUE_LEAF ? this->value_quadtree() : this->subQuadtree->value ;
-            case FUNCTOR_NOT:
-                return this->subQuadtree->value == NO_VALUE_LEAF ? 1 - this->value_quadtree() : 1 - this->subQuadtree->value ;
+            case FUNCTOR_QTREE: {
+                if(this->subQuadtree->value == NO_VALUE_LEAF)
+                    this->subQuadtree->value = this->value_quadtree();
+                return this->subQuadtree->value;
+            }
+            case FUNCTOR_NOT: {
+                if(this->subQuadtree->value == NO_VALUE_LEAF)
+                    this->subQuadtree->value= this->value_quadtree();
+                return 1 - this->subQuadtree->value;
+            }
             case FUNCTOR_AND: {
                 if(this->val_lqdag1 == NO_VALUE_LEAF)
                     this->val_lqdag1 = this->lqdag1->value_lqdag();
@@ -260,8 +270,11 @@ public:
 
                 return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the OR between the children of Q1 and Q2 has been computed
             }
-            case FUNCTOR_EXTEND:
-                return this->lqdag1->val_lqdag1 == NO_VALUE_LEAF ? this->lqdag1->value_lqdag() : this->lqdag1->val_lqdag1;
+            case FUNCTOR_EXTEND: {
+                if (this->val_lqdag1 == NO_VALUE_LEAF)
+                    this->val_lqdag1 = this->lqdag1->value_lqdag();
+                return this->val_lqdag1;
+            }
             default:
                 throw "error: value_lqdag non valid functor";
         }
@@ -326,7 +339,7 @@ public:
 
                     mask >>= 1;
                 }
-                i_prime = this->lqdag1->subQuadtree->qdag->getM(i_prime);
+//                i_prime = this->lqdag1->subQuadtree->qdag->getM(i_prime);
                 lqdag *l = new lqdag(FUNCTOR_EXTEND, this->lqdag1->get_child_lqdag(i_prime), this->attribute_set_A);
                 return l;
             }
@@ -404,28 +417,6 @@ public:
         }
     }
 
-
-    // ---------- FULL RELATIONAL ALGEBRA ---------- //
-    // join = (and(and(extend(Q_TREE, (A,B,C)), (extend(Q_TREE, (A,B,C)))), extend(Q_TREE, (A,B,C)))
-    //
-
-    void pred(){
-        // TODO: no tengo idea como hacerla
-    }
-
-    void selection(){
-
-    }
-
-    //(JOIN, L1(A1), L2(A2)) = (AND, (EXTEND, L1, A1 ∪ A2), (EXTEND, L2, A1 ∪ A2))
-    void join(){
-
-    }
-
-    // (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
-    void diff(){
-
-    }
 
     void print(int depth = 0) {
         switch (this->functor) {

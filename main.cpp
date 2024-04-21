@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_T_2 = read_relation(strRel_T, att_T.size());
 
 //    uint64_t grid_side = 52000000; // es como +infty para wikidata
-    uint64_t grid_side = 32;
+    uint64_t grid_side = 64;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
