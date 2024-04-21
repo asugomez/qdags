@@ -98,8 +98,9 @@ int main(int argc, char** argv)
     Q_dfuds[2] = qdag_dfuds_rel_T;
 
     vector<uint16_t*> results_partial_dfuds_back;
-    // size queue
-    int64_t size_queue = argv[7] ? atoi(argv[7]) : 1000;
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+    int64_t size_queue = argv[5] ? atoi(argv[5]) : 1000;
+    vector<int_vector<>> p;
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       

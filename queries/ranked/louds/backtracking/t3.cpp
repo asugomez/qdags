@@ -146,18 +146,24 @@ int main(int argc, char** argv)
     p.push_back(priorities_S);
     p.push_back(priorities_T);
 
-    // size queue
-    int64_t size_queue = argv[7] ? atoi(argv[7]) : 100;
-  
+    uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    priority_queue<qdagResults> results_ranked_louds_back;
+    int64_t size_queue = argv[8] ? atoi(argv[8]) : 1000;
+
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinRankedResultsBacktracking(Q, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+
  
     start = high_resolution_clock::now();
 
-    multiJoinRankedResultsBacktracking(Q, 1, size_queue, p);
+    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

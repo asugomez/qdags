@@ -99,8 +99,7 @@ int main(int argc, char** argv)
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
-   
-    qdag *Join_Result;
+
 
     // read priorities from file
     std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
@@ -146,18 +145,23 @@ int main(int argc, char** argv)
     p.push_back(priorities_R);
     p.push_back(priorities_S);
     p.push_back(priorities_T);
-    
- 
+
+    uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    vector<uint16_t*> results_ranked_louds;
+
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinRankedResults(Q, true, 1000, 1, -1, p);  // warmup join -> activar el caché
+    multiJoinRankedResults(Q, true, 1000, type_fun, p, rMq, results_ranked_louds);  // warmup join -> activar el caché
  
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, size_queue, p);
+    multiJoinRankedResults(Q, true, 1000, type_fun, p, rMq, results_ranked_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
