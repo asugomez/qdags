@@ -361,7 +361,7 @@ bool AND_partial_dfuds_backtracking(
                 }
             }
 
-            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
+            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES_DFUDS) // density estimator, otherwise it's the number of leaves (min of the tuple)
                 total_weight /= grid_size;
 
             orderJoinQdag this_node = {i, coordinatesTemp, total_weight} ;
