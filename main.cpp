@@ -125,17 +125,16 @@ int main(int argc, char **argv) {
 
     //vector<qdag> Q(3);
     vector<qdag> Q(3);
-    vector<qdag_dfuds> Q_dfuds(3);
 
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
 
+    vector<qdag_dfuds> Q_dfuds(3);
 
     Q_dfuds[0] = qdag_rel_R_dfuds;
     Q_dfuds[1] = qdag_rel_S_dfuds;
     Q_dfuds[2] = qdag_rel_T_dfuds;
-    qdag_dfuds *Join_Result_dfuds;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;

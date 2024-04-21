@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # acces to this file:
-# chmod +x ./runqueries/partial/louds/fixedQueue/runqueries-j3-bfs-sorted.sh
+# chmod +x ./runqueries/partial/louds/backtracking/runqueries-j3-bfs-sorted.sh
 # add queue size, otherwise it will be 100
 ./j3 ../../../../data/all/prop-direct-P197 ../../../../data/all/prop-direct-P800 ../../../../data/all/prop-direct-P1366
 ./j3 ../../../../data/all/prop-direct-P206 ../../../../data/all/prop-direct-P138 ../../../../data/all/prop-direct-P4839

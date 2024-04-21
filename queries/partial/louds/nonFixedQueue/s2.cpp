@@ -101,9 +101,9 @@ int main(int argc, char** argv)
     Q[2] = qdag_rel_T;
     Q[3] = qdag_rel_U;
     
-    qdag *Join_Result;
+    vector<uint16_t*> results_partial_louds;
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
+    multiJoinPartialResults(Q, true, 1000, grid_side, 1, results_partial_louds);
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
+    multiJoinPartialResults(Q, true, 1000, grid_side, 1, results_partial_louds);
 
     //uint64_t ntuples = multiJoinCount(Q);
 
