@@ -1,150 +1,50 @@
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1.6e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.5e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.2e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1.1e-05
-number of results: 0
-number of results: 0
-1.2e-05
+6e-06
+7e-06
+6e-06
+6e-06
+6e-06
+7e-06
+7e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+7e-06
+7e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+6e-06
+7e-06
+7e-06
+6e-06
+7e-06
+7e-06
+6e-06
+6e-06
+6e-06
+6e-06
+7e-06
+7e-06
+6e-06
+7e-06
+6e-06
+6e-06
+6e-06
+7e-06
+7e-06
+7e-06
+7e-06
+7e-06
+6e-06
+7e-06
+6e-06
+6e-06

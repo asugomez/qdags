@@ -1,13 +1,16 @@
 #!/bin/bash
 
 # Verificar si se proporciona un argumento de archivo
-if [ $# -ne 1 ]; then
-    echo "Uso: $0 <archivo>"
+# Verificar si se proporciona un nombre de archivo
+if [ $# -ne 2 ]; then
+    echo "Sin archivo: $0"
     exit 1
 fi
 
 # Nombre del archivo de datos
 data_file="$1"
+
+name="$2"
 
 # Verificar si el archivo de datos existe
 if [ ! -f "$data_file" ]; then
@@ -22,7 +25,7 @@ file_length=$(wc -l < "$data_file")
 seed=$(od -An -N2 -i /dev/random | awk '{print $1}')
 
 # Crear el archivo de prioridades
-priorities_file="priorities"
+priorities_file="p$name"
 rm -f "$priorities_file"  # Eliminar el archivo de prioridades si ya existe
 
 # Establecer la semilla para el generador de números aleatorios

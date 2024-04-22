@@ -1,72 +1,50 @@
-number of results: 0
-number of results: 0
-1.6e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.5e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-3.4e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-2.6e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.7e-05
-number of results: 0
-number of results: 0
-1.4e-05
-number of results: 0
-number of results: 0
-1.3e-05
-number of results: 0
-number of results: 0
-1.4e-05
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+9e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+9e-06
+8e-06
+8e-06
+9e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06
+9e-06
+8e-06
+8e-06
+8e-06
+8e-06
+8e-06

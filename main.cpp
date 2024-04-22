@@ -141,6 +141,7 @@ int main(int argc, char **argv) {
     duration<double> time_span;
 
     // read priorities from file
+//    system("../data/priorities/createPriorities.sh")
     std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
     std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
     std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
