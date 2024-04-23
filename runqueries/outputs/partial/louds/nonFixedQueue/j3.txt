@@ -1,0 +1,4 @@
+number of results: 3
+number of results: 6
+1.29032
+number of results: 52

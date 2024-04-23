@@ -31,7 +31,7 @@ for((type_fun = 0; type_fun < 2; type_fun +=1)); do
       ../../../../data/priorities/createRandomPriorities.sh $dataset4 "pri4"
 
       input_file="./runqueries-$file-bfs-sorted.sh"
-      output_file="./runqueries-$file-bfs-sorted-priority.sh"
+      output_file="./runqueries-$file-bfs-sorted-args.sh"
 
       # Add priorities, type_fun and size_queue
       # Iterate over each line of the input file
@@ -53,9 +53,9 @@ for((type_fun = 0; type_fun < 2; type_fun +=1)); do
 
       results_file="../../../outputs/ranked/louds/backtracking/$file.txt"
 
-      chmod +x runqueries-$file-bfs-sorted-priority.sh
+      chmod +x $output_file
 
-      ./runqueries-$file-bfs-sorted-priority.sh >> $results_file
+      $output_file >> $results_file
 
       # Calculate mean using awk
       mean=$(awk '{ suma += $1 } END { print suma / NR }' "$results_file")
