@@ -70,6 +70,7 @@ int main(int argc, char** argv)
     qdag::att_set att_R; // R(Y,X)
     qdag::att_set att_S; // S(Z,X)
     qdag::att_set att_T; // T(X,V)
+
     
     att_R.push_back(AT_Y); att_R.push_back(AT_X); 
     att_S.push_back(AT_Z); att_S.push_back(AT_X); 
@@ -102,6 +103,11 @@ int main(int argc, char** argv)
 
 
     // read priorities from file
+
+//    cout << "PRiorities: ."  << endl;
+//    printf("%s",*argv[4]);
+//    printf("%s",*argv[5]);
+//    printf("%s",*argv[6]);
     std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
     std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
     std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
@@ -122,6 +128,13 @@ int main(int argc, char** argv)
     int_vector<> priorities_R(number_of_lines_R,0);
     int_vector<> priorities_S(number_of_lines_S,0);
     int_vector<> priorities_T(number_of_lines_T,0);
+
+    data_file_R.clear();
+    data_file_R.seekg(0, std::ios::beg);
+    data_file_S.clear();
+    data_file_S.seekg(0, std::ios::beg);
+    data_file_T.clear();
+    data_file_T.seekg(0, std::ios::beg);
 
     // put the priorities in the int_vector
     int value;
@@ -157,7 +170,7 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
    
-   // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
+    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
     multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);  // warmup join -> activar el caché
     results_ranked_louds_back = priority_queue<qdagResults>();
  

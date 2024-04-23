@@ -156,6 +156,14 @@ int main(int argc, char** argv)
     int_vector<> priorities_S(number_of_lines_S,0);
     int_vector<> priorities_T(number_of_lines_T,0);
 
+    data_file_R.clear();
+    data_file_R.seekg(0, std::ios::beg);
+    data_file_S.clear();
+    data_file_S.seekg(0, std::ios::beg);
+    data_file_T.clear();
+    data_file_T.seekg(0, std::ios::beg);
+
+
     // put the priorities in the int_vector
     int value;
     int i=0;

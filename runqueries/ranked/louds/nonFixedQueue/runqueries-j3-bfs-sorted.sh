@@ -2,7 +2,7 @@
 
 # acces to this file: acces to this file:
 # chmod +x ./runqueries/partial/louds/backtracking/runqueries-j3-bfs-sorted.sh chmod +x runqueries/partial/louds/backtracking/runqueries-j3-bfs-sorted.sh
-
+./j3 ../../../../data/all/prop-direct-P81 ../../../../data/all/prop-direct-P2547 ../../../../data/all/prop-direct-P1877 ../../../../data/priorities/pri1 ../../../../data/priorities/pri2 ../../../../data/priorities/pri3
 ./j3 ../../../../data/all/prop-direct-P197 ../../../../data/all/prop-direct-P800 ../../../../data/all/prop-direct-P1366 ../../../../data/all/prop-direct-P197 ../../../../data/all/prop-direct-P800 ../../../../data/all/prop-direct-P1366
 ./j3 ../../../../data/all/prop-direct-P206 ../../../../data/all/prop-direct-P138 ../../../../data/all/prop-direct-P4839 ../../../../data/all/prop-direct-P206 ../../../../data/all/prop-direct-P138 ../../../../data/all/prop-direct-P4839
 ./j3 ../../../../data/all/prop-direct-P4132 ../../../../data/all/prop-direct-P461 ../../../../data/all/prop-direct-P4342 ../../../../data/all/prop-direct-P4132 ../../../../data/all/prop-direct-P461 ../../../../data/all/prop-direct-P4342
