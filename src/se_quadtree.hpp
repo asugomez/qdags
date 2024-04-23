@@ -684,7 +684,7 @@ public:
      * @param end will be modified if the node is not the root.
      * @return false if the node is empty or if the node is not the root and it has no children.
      */
-    bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
+    bool get_range_leaves(uint16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         if(level == -1){
             return true; // dejar init y end como estaban (rango completo!)
         }
@@ -714,6 +714,7 @@ public:
         return get_range_leaves_aux(level, n_children, siblings, init, end);
     }
 
+    // TODO: fix
     bool get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t& init, uint64_t& end){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);

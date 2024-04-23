@@ -1,4 +1,5 @@
 #!/bin/bash
+chmod a+x *.sh
 # ./runqueries-$file-bfs-sorted.sh > ../../../outputs/ranked/louds/backtracking/$file.txt
 # run tests for each type_fun and each size_queue
 for((type_fun = 0; type_fun < 2; type_fun +=1)); do
@@ -52,11 +53,12 @@ for((type_fun = 0; type_fun < 2; type_fun +=1)); do
 
       results_file="../../../outputs/ranked/louds/backtracking/$file.txt"
 
-      ./runqueries-$file-bfs-sorted.sh #> results_file
+      chmod +x runqueries-$file-bfs-sorted-priority.sh
+
+      ./runqueries-$file-bfs-sorted-priority.sh >> $results_file
 
       # Calculate mean using awk
-      mean=$(awk '{ suma += $1 } END { print suma / NR }' "results_file")
-      echo mean $mean
+      mean=$(awk '{ suma += $1 } END { print suma / NR }' "$results_file")
       printf $mean, >> ../../../outputs/ranked/louds/backtracking/results.csv
     done
     echo "" >> ../../../outputs/ranked/louds/backtracking/results.csv

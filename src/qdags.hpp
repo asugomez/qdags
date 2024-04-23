@@ -452,7 +452,7 @@ public:
      * @param init will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
      * @param fin will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
      */
-    bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
+    bool get_range_leaves(uint16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         return Q->get_range_leaves(level, node, init, end);
     }
 
