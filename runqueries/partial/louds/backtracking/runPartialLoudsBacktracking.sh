@@ -4,13 +4,13 @@ chmod a+x *.sh
 # run tests for each type_fun and each size_queue
 for type_fun in {0..1}; do
   # echo type fun
-  echo type_fun$type_fun>> ../../../outputs/partial/louds/backtracking/results.csv
+  echo type_fun,$type_fun>> ../../../outputs/partial/louds/backtracking/results.csv
   echo size_queue,j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/partial/louds/backtracking/results.csv
 #  echo >> ../../../outputs/partial/louds/backtracking/results.csv
-  for size_queue in 1 10 100 1000; do
+  for size_queue in 1 10 ; do #100 1000; do
     # echo size_queue
     printf $size_queue, >> ../../../outputs/partial/louds/backtracking/results.csv
-    for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
+    for file in j3; do #j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
 
       input_file="./runqueries-$file-bfs-sorted.sh"
       output_file="./runqueries-$file-bfs-sorted-args.sh"
@@ -22,7 +22,7 @@ for type_fun in {0..1}; do
         echo "$modified_line"
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/partial/louds/backtracking/$file.txt"
+      results_file="../../../outputs/partial/louds/backtracking/$file-f$type_fun-s$size_queue.txt"
 
       chmod +x $output_file
 

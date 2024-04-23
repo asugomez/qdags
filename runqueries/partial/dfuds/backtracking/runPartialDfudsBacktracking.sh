@@ -4,7 +4,7 @@ chmod a+x *.sh
 # run tests for each type_fun and each size_queue
 for type_fun in {0..1}; do
   # echo type fun
-  echo type_fun$type_fun>> ../../../outputs/partial/dfuds/backtracking/results.csv
+  echo type_fun,$type_fun>> ../../../outputs/partial/dfuds/backtracking/results.csv
   echo size_queue,j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/partial/dfuds/backtracking/results.csv
 #  echo >> ../../../outputs/partial/dfuds/backtracking/results.csv
   for size_queue in 1 10 100 1000; do
@@ -22,7 +22,7 @@ for type_fun in {0..1}; do
         echo "$modified_line"
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/partial/dfuds/backtracking/$file.txt"
+      results_file="../../../outputs/partial/dfuds/backtracking/$file-f$type_fun-s$size_queue.txt"
 
       chmod +x $output_file
 

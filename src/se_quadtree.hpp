@@ -627,7 +627,7 @@ public:
         if(get_ith_bit(level, node) == 0){
             return 0;
         }
-        uint64_t siblings = rank(level,node);
+        uint64_t siblings = rank(level,node); // start position in the next level
         uint64_t n_children;
         uint64_t children_array[k_d];
         level++;
@@ -646,7 +646,7 @@ public:
      * @return the number of children of the i-th node.
      */
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t children, uint64_t siblings){
-        siblings = rank(level,siblings*k_d);
+        siblings = rank(level,siblings*k_d); // start position in the next level
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
             return children;
@@ -718,9 +718,12 @@ public:
     bool get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t& init, uint64_t& end){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
-        if(level == getHeight()-2){
-            init = siblings;
-            end = init + children - 1;
+        if(level == getHeight()-2){ // TODO: delete n_ones
+            uint64_t n_ones_init = (siblings*k_d) - rank(level+1,siblings*k_d);
+            uint64_t n_ones_end = (children + siblings)*k_d - rank(level+1,(children + siblings)*k_d);
+            n_ones_end -= n_ones_init;
+            init = siblings - n_ones_init;
+            end = init + children - 1 - n_ones_end;
             return true;
         }
         level++;

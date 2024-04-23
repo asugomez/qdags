@@ -1,13 +1,11 @@
 #!/bin/bash
 chmod a+x *.sh
-# ./runqueries-$file-bfs-sorted.sh type_fun size_queue > ../../../outputs/partial/dfuds/backtracking/$file.txt
+# ./runqueries-$file-bfs-sorted.sh type_fun size_queue > ../../../outputs/partial/dfuds/nonFixedQueue/$file.txt
 # run tests for each type_fun and each size_queue
 for type_fun in {0..1}; do
   # echo type fun
-  echo type_fun$type_fun>> ../../../outputs/partial/dfuds/nonFixedQueue/results.csv
-  echo size_queue,j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/partial/dfuds/backtracking/results.csv
-#  echo >> ../../../outputs/partial/dfuds/nonFixedQueue/results.csv
-  printf $size_queue, >> ../../../outputs/partial/dfuds/nonFixedQueue/results.csv
+  echo type_fun,$type_fun>> ../../../outputs/partial/dfuds/nonFixedQueue/results.csv
+  echo j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/partial/dfuds/nonFixedQueue/results.csv
   for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
 
     input_file="./runqueries-$file-bfs-sorted.sh"
@@ -20,7 +18,7 @@ for type_fun in {0..1}; do
       echo "$modified_line"
     done < "$input_file" > "$output_file"
 
-    results_file="../../../outputs/partial/dfuds/nonFixedQueue/$file.txt"
+    results_file="../../../outputs/partial/dfuds/nonFixedQueue/$file-f$type_fun.txt"
 
     chmod +x $output_file
 

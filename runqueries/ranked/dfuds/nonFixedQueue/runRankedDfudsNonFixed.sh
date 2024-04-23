@@ -6,11 +6,8 @@ chmod a+x *.sh
 # run tests for each type_fun and each size_queue
 for((type_fun = 0; type_fun < 2; type_fun +=1)); do
   # echo type fun
-  echo type_fun$type_fun >> ../../../outputs/ranked/dfuds/nonFixedQueue/results.csv
-  echo size_queue,j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/ranked/dfuds/nonFixedQueue/results.csv
-
-  # echo size_queue
-  printf $size_queue, >> ../../../outputs/ranked/dfuds/nonFixedQueue/results.csv
+  echo type_fun,$type_fun >> ../../../outputs/ranked/dfuds/nonFixedQueue/results.csv
+  echo j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/ranked/dfuds/nonFixedQueue/results.csv
   for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
     # get the number of datasets for each query
     line=$(awk 'NR==10 { print $2, $3, $4, $5 }' ./runqueries-$file-bfs-sorted.sh)
@@ -53,7 +50,7 @@ for((type_fun = 0; type_fun < 2; type_fun +=1)); do
       echo "$modified_line"
     done < "$input_file" > "$output_file"
 
-    results_file="../../../outputs/ranked/dfuds/nonFixedQueue/$file.txt"
+    results_file="../../../outputs/ranked/dfuds/nonFixedQueue/$file-f$type_fun.txt"
 
     chmod +x runqueries-$file-bfs-sorted-priority.sh
 
