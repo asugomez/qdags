@@ -13,8 +13,7 @@ for type_fun in {0..1}; do
 
   for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
     # get the number of datasets for each query
-    line=$(awk 'NR==10 { print $2; $3; $4; $5 }' ./runqueries-$file-bfs-sorted.sh)
-    read t1 t2 t3 t4 <<< "$line"
+    read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
 
     # Create priorities
     priority_file_1="../../../../data/priorities/pri1"
@@ -22,15 +21,10 @@ for type_fun in {0..1}; do
     priority_file_3="../../../../data/priorities/pri3"
     priority_file_4="../../../../data/priorities/pri4"
 
-    dataset1="../../../../data/all/"$(../../../../data/chooseDataset.sh)
-    dataset2="../../../../data/all/"$(../../../../data/chooseDataset.sh)
-    dataset3="../../../../data/all/"$(../../../../data/chooseDataset.sh)
-    dataset4="../../../../data/all/"$(../../../../data/chooseDataset.sh)
-
-    ../../../../data/priorities/createRandomPriorities.sh $dataset1 "pri1"
-    ../../../../data/priorities/createRandomPriorities.sh $dataset2 "pri2"
-    ../../../../data/priorities/createRandomPriorities.sh $dataset3 "pri3"
-    ../../../../data/priorities/createRandomPriorities.sh $dataset4 "pri4"
+    ../../../../data/priorities/createRandomPriorities.sh $t1 "pri1"
+    ../../../../data/priorities/createRandomPriorities.sh $t2 "pri2"
+    ../../../../data/priorities/createRandomPriorities.sh $t3 "pri3"
+    ../../../../data/priorities/createRandomPriorities.sh $t4 "pri4"
 
     input_file="./runqueries-$file-bfs-sorted.sh"
     output_file="./runqueries-$file-bfs-sorted-args.sh"

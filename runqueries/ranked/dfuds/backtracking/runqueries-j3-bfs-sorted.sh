@@ -48,5 +48,3 @@
 ./j3 ../../../../data/all/prop-direct-P1591 ../../../../data/all/prop-direct-P710 ../../../../data/all/prop-direct-normalized-P1015
 ./j3 ../../../../data/all/prop-direct-P1347 ../../../../data/all/prop-direct-P607 ../../../../data/all/prop-direct-normalized-P1014
 ./j3 ../../../../data/all/prop-direct-P530 ../../../../data/all/prop-direct-P205 ../../../../data/all/prop-direct-P2427
-
-

@@ -49,3 +49,6 @@
 0.34754
 6.49364
 1.63264
+number of results: 3
+number of results: 6
+1.25258

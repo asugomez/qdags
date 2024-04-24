@@ -8,7 +8,7 @@
 using namespace std::chrono;
 
 
-#include "../src/joins.cpp"
+#include "../../src/joins.cpp"
 
 high_resolution_clock::time_point start_select, stop_select;
 double total_time_select = 0.0;       
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();    
     
-    Join_Result = parMultiJoin(Q, true, 1000); 
+    Join_Result = multiJoin(Q, true, 1000);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(stop - start);

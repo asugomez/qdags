@@ -8,7 +8,7 @@
 using namespace std::chrono;
 
 
-#include "../src/joins.cpp"
+#include "../../src/joins.cpp"
 
 high_resolution_clock::time_point start_select, stop_select;
 double total_time_select = 0.0;       
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
     
     qdag *Join_Result;
   
-    Join_Result = parMultiJoin(Q, 1000, true);  // cache warmup    
+    Join_Result = multiJoin(Q, 1000, true);  // cache warmup
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();    
     
-    Join_Result = parMultiJoin(Q, 1000, true); 
+    Join_Result = multiJoin(Q, 1000, true);
 
     //uint64_t ntuples = multiJoinCount(Q);
 

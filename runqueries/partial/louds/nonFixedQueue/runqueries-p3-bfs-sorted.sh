@@ -47,4 +47,4 @@
 ./p3 ../../../../data/all/prop-direct-P136 ../../../../data/all/prop-direct-P2283 ../../../../data/all/prop-direct-P652 
 ./p3 ../../../../data/all/prop-direct-P1687 ../../../../data/all/prop-direct-P1552 ../../../../data/all/prop-direct-P3827 
 ./p3 ../../../../data/all/prop-direct-P2684 ../../../../data/all/prop-direct-P156 ../../../../data/all/prop-direct-P155 
-./p3 ../../../../data/all/prop-direct-P1792 ../../../../data/all/prop-direct-P1753 ../../../../data/all/prop-direct-P360 
+./p3 ../../../../data/all/prop-direct-P1792 ../../../../data/all/prop-direct-P1753 ../../../../data/all/prop-direct-P360

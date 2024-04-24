@@ -8,7 +8,7 @@
 using namespace std::chrono;
 
 
-#include "../src/joins.cpp"
+#include "../../src/joins.cpp"
 
 high_resolution_clock::time_point start_select, stop_select;
 double total_time_select = 0.0;       

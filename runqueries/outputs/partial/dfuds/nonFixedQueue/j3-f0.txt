@@ -298,3 +298,55 @@ number of results: 186
 number of results: 7
 number of results: 14
 1.84101
+number of results: 3
+number of results: 6
+0.982999
+number of results: 52
+number of results: 104
+48.0401
+number of results: 1
+number of results: 2
+0.272646
+number of results: 1000
+number of results: 2000
+1.00057
+number of results: 2
+number of results: 4
+0.366027
+number of results: 1
+number of results: 2
+0.719262
+number of results: 7
+number of results: 14
+3.70515
+number of results: 1000
+number of results: 2000
+1.01384
+number of results: 5
+number of results: 10
+4.76371
+number of results: 2
+number of results: 4
+5.60506
+number of results: 1
+number of results: 2
+0.00547
+number of results: 697
+number of results: 1394
+24.9493
+number of results: 141
+number of results: 282
+3.90876
+number of results: 6
+number of results: 12
+0.292831
+number of results: 5
+number of results: 10
+1.61668
+number of results: 2
+number of results: 4
+1.13898
+number of results: 6
+number of results: 12
+1.34581
+number of results: 1

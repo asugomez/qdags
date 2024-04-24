@@ -66,6 +66,8 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char** argv)
 {
+    // Obtener el directorio actual
+    std::__fs::filesystem::path current_dir = std::__fs::filesystem::current_path();
     // 3 tablas R, S y T
     qdag::att_set att_R; // R(Y,X)
     qdag::att_set att_S; // S(Z,X)
