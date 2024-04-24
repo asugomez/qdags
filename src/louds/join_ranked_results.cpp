@@ -123,7 +123,6 @@ bool AND_ranked(
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
-                    // TODO: see this: what to do when i-th bit is 0?
                     uint64_t priority_ith_node = 0;
                     bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
                     if(success){
@@ -500,7 +499,7 @@ bool multiJoinRankedResultsBacktracking(
                             top_results);
 
     uint64_t size_queue_top = top_results.size();
-//    cout << "number of results: " << top_results.size() << endl;
+    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
 //        top_results.pop();

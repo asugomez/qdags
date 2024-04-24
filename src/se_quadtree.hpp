@@ -707,23 +707,20 @@ public:
         level++;
         get_children(level,siblings*k_d, children_array,n_children);
         if(level == getHeight()-1){
-            init = siblings;
+            init = rank(level+1,siblings*k_d);;
             end = init + n_children - 1;
             return true;
         }
         return get_range_leaves_aux(level, n_children, siblings, init, end);
     }
 
-    // TODO: fix
     bool get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t& init, uint64_t& end){
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
-        if(level == getHeight()-2){ // TODO: delete n_ones
-            uint64_t n_ones_init = (siblings*k_d) - rank(level+1,siblings*k_d);
-            uint64_t n_ones_end = (children + siblings)*k_d - rank(level+1,(children + siblings)*k_d);
-            n_ones_end -= n_ones_init;
-            init = siblings - n_ones_init;
-            end = init + children - 1 - n_ones_end;
+        if(level == getHeight()-2){
+            // start position
+            init = rank(level+1,siblings*k_d);;
+            end = init + children - 1;
             return true;
         }
         level++;
