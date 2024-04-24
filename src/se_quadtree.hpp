@@ -707,7 +707,7 @@ public:
         level++;
         get_children(level,siblings*k_d, children_array,n_children);
         if(level == getHeight()-1){
-            init = rank(level+1,siblings*k_d);;
+            init = rank(level,siblings*k_d);
             end = init + n_children - 1;
             return true;
         }
@@ -719,7 +719,7 @@ public:
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
             // start position
-            init = rank(level+1,siblings*k_d);;
+            init = rank(level+1,siblings*k_d);
             end = init + children - 1;
             return true;
         }
