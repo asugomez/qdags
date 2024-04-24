@@ -1,17 +1,19 @@
 #!/bin/bash
 chmod a+x *.sh
+data_csv="../../../outputs/ranked/louds/nonFixedQueue/results.csv"
+echo "" > $data_csv
 
 #!/bin/bash
 # ./runqueries-$file-bfs-sorted.sh > ../../../outputs/ranked/louds/nonFixedQueue/$file.txt
 # run tests for each type_fun and each size_queue
-for((type_fun = 0; type_fun < 2; type_fun +=1)); do
+for type_fun in {0..1}; do
   # echo type fun
-  echo type_fun,$type_fun >> ../../../outputs/ranked/louds/nonFixedQueue/results.csv
-  echo j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2>> ../../../outputs/ranked/louds/nonFixedQueue/results.csv
+  echo "type_fun;$type_fun" >> $data_csv
+  echo "j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
 
   for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
     # get the number of datasets for each query
-    line=$(awk 'NR==10 { print $2, $3, $4, $5 }' ./runqueries-$file-bfs-sorted.sh)
+    line=$(awk 'NR==10 { print $2; $3; $4; $5 }' ./runqueries-$file-bfs-sorted.sh)
     read t1 t2 t3 t4 <<< "$line"
 
     # Create priorities
@@ -31,12 +33,12 @@ for((type_fun = 0; type_fun < 2; type_fun +=1)); do
     ../../../../data/priorities/createRandomPriorities.sh $dataset4 "pri4"
 
     input_file="./runqueries-$file-bfs-sorted.sh"
-    output_file="./runqueries-$file-bfs-sorted-priority.sh"
+    output_file="./runqueries-$file-bfs-sorted-args.sh"
 
-    # Add priorities, type_fun and size_queue
+    # Add priorities; type_fun and size_queue
     # Iterate over each line of the input file
     while IFS= read -r line || [ -n "$line" ]; do
-      # Append priorities, type_fun and size_queue to the end of the line
+      # Append priorities; type_fun and size_queue to the end of the line
       modified_line=""
       # Check if the i-th argument is emtpy
       if [ -z "$t2" ]; then # 1 dataset
@@ -53,14 +55,14 @@ for((type_fun = 0; type_fun < 2; type_fun +=1)); do
 
     results_file="../../../outputs/ranked/louds/nonFixedQueue/$file-f$type_fun.txt"
 
-    chmod +x runqueries-$file-bfs-sorted-priority.sh
+    chmod +x $output_file
 
-    ./runqueries-$file-bfs-sorted-priority.sh >> $results_file
+    $output_file >> $results_file
 
     # Calculate mean using awk
     mean=$(awk '{ suma += $1 } END { print suma / NR }' "$results_file")
-    printf $mean, >> ../../../outputs/ranked/louds/nonFixedQueue/results.csv
+    printf "$mean;" >> $data_csv
 
-    echo "" >> ../../../outputs/ranked/louds/nonFixedQueue/results.csv
+    echo "" >> $data_csv
   done
 done

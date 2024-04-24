@@ -1,3 +1,6 @@
 number of results: 1
 number of results: 1
 2.37814
+number of results: 1
+number of results: 1
+6.81923

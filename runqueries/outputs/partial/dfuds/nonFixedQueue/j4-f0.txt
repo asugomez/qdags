@@ -1,0 +1,24 @@
+number of results: 1
+number of results: 2
+2.05469
+number of results: 1
+number of results: 2
+14.6914
+number of results: 1
+number of results: 2
+0.118971
+number of results: 1
+number of results: 12
+number of results: 2
+1.88031
+number of results: 24
+2.75689
+number of results: 1
+number of results: 2
+14.2094
+number of results: 1
+number of results: 2
+0.107038
+number of results: 12
+number of results: 24
+2.81112
