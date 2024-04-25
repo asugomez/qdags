@@ -1,6 +1,9 @@
 //
 // We will not use qdags, only quadtrees
 //
+
+#ifndef LQDAG
+#define LQDAG
 #include<bits/stdc++.h>
 #include "./qdags.hpp"
 
@@ -496,3 +499,5 @@ public:
         }
     }
 };
+
+#endif //LQDAG
