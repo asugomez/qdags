@@ -125,9 +125,6 @@ bool AND_ranked(
                     uint64_t end = priorities[j].size()-1;
                     uint64_t priority_ith_node = 0;
                     bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
-                    if(end > priorities[j].size()-1) {
-                        cout << "error get range: max_size = " << priorities[j].size()-1 << " end = " << end << endl;
-                    }
                     if(success){
                         bit_vector::size_type min_idx = rMq[j](init, end);
                         priority_ith_node = priorities[j][min_idx];
@@ -502,7 +499,7 @@ bool multiJoinRankedResultsBacktracking(
                             top_results);
 
     uint64_t size_queue_top = top_results.size();
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
 //        top_results.pop();
