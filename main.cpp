@@ -3,7 +3,7 @@
 // p --> caminos
 // s --> cuadrados
 // t --> triangulos
-#include <fstream>
+#include<fstream>
 #include<bits/stdc++.h>
 #include<ratio>
 #include<chrono>
@@ -220,14 +220,14 @@ int main(int argc, char **argv) {
     vector<uint16_t*> results_ranked_louds;
     priority_queue<qdagResults> results_ranked_louds_back;
 
-    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-    multiJoin(Q, true, 1000);
-    start = high_resolution_clock::now();
-    multiJoin(Q, true, 1000);
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+//    multiJoin(Q, true, 1000);
+//    start = high_resolution_clock::now();
+//    multiJoin(Q, true, 1000);
+//    stop = high_resolution_clock::now();
+//    time_span = duration_cast<microseconds>(stop - start);
+//    total_time = time_span.count();
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 
 //    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
@@ -312,29 +312,29 @@ int main(int argc, char **argv) {
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-    cout << "----- MULTI JOIN LQDAGS ------" << endl;
-
-    subQuadtreeChild* subQuadtreeChild_R = new subQuadtreeChild{&qdag_rel_R, 0,0};
-    subQuadtreeChild* subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
-
-    uint64_t res = 0;
-
-//    lqdag* test_and = new lqdag(FUNCTOR_AND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S));
-//    quadtree_formula* test_and_completion = test_and->completion(qdag_rel_R.getK(), 2, res, qdag_rel_R.getHeight());
-//    cout << "number of results and R S: " << res << endl;
-
-    res = 0;
-    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
-                                new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
-                                new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
-
-    start = high_resolution_clock::now();
-    quadtree_formula* test_join = join_r_s->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
-    cout << "number of results: " << res << endl;
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << "----- MULTI JOIN LQDAGS ------" << endl;
+//
+//    subQuadtreeChild* subQuadtreeChild_R = new subQuadtreeChild{&qdag_rel_R, 0,0};
+//    subQuadtreeChild* subQuadtreeChild_S = new subQuadtreeChild{&qdag_rel_S, 0,0};
+//
+//    uint64_t res = 0;
+//
+////    lqdag* test_and = new lqdag(FUNCTOR_AND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S));
+////    quadtree_formula* test_and_completion = test_and->completion(qdag_rel_R.getK(), 2, res, qdag_rel_R.getHeight());
+////    cout << "number of results and R S: " << res << endl;
+//
+//    res = 0;
+//    lqdag* join_r_s = new lqdag(FUNCTOR_AND,
+//                                new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R), att_A),
+//                                new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A));
+//
+//    start = high_resolution_clock::now();
+//    quadtree_formula* test_join = join_r_s->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
+//    stop = high_resolution_clock::now();
+//    time_span = duration_cast<microseconds>(stop - start);
+//    total_time = time_span.count();
+//    cout << "number of results: " << res << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 //    res = 0;
 //    lqdag* test = new lqdag(FUNCTOR_QTREE, subQuadtreeChild_R);

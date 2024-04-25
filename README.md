@@ -14,6 +14,8 @@ To run main
 ```
 ./main ./data/prop-direct-P197 ./data/prop-direct-P800 ./data/prop-direct-P1366 
 ```
+
+/usr/local/include --> divsufsort ,...
 See http://algo2.iti.kit.edu/gog/docs/html/index.html 
 
 # set the C++ standard

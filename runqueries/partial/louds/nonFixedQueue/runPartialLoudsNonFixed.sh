@@ -3,8 +3,8 @@ chmod a+x *.sh
 data_csv="../../../outputs/partial/louds/nonFixedQueue/results.csv"
 echo "" > $data_csv
 
-# ./runqueries-$file-bfs-sorted.sh type_fun size_queue > ../../../outputs/partial/louds/nonFixedQueue/$file.txt
-# run tests for each type_fun and each size_queue
+# ./runqueries-$file-bfs-sorted.sh type_fun  > ../../../outputs/partial/louds/nonFixedQueue/$file.txt
+# run tests for each type_fun
 for type_fun in {0..1}; do
   # echo type fun
   echo "type_fun;$type_fun" >> $data_csv
@@ -13,8 +13,8 @@ for type_fun in {0..1}; do
 
     input_file="./runqueries-$file-bfs-sorted.sh"
     output_file="./runqueries-$file-bfs-sorted-args.sh"
-    # run query with these arguments: datasets type_fun size_queue
-    # Add priorities; type_fun and size_queue
+    # run query with these arguments: datasets type_fun
+    # Add priorities; type_fun
     # Iterate over each line of the input file
     while IFS= read -r line || [ -n "$line" ]; do
       modified_line="$line $type_fun"
