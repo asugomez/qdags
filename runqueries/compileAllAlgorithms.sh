@@ -1,5 +1,6 @@
 #!/bin/bash
 script_dir=$(dirname "$BASH_SOURCE")
+echo script_dire is $script_dir
 # traditional join
 cd "$script_dir/all/"
 ./compileTraditionalJoin.sh
