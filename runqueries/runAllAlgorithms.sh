@@ -1,5 +1,5 @@
 #!/bin/bash
-script_dir=$(dirname "$BASH_SOURCE")
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # partial
 ## louds
