@@ -1,9 +1,7 @@
 #!/bin/bash
 script_dir=$(dirname "$BASH_SOURCE")
-echo script_dire is $script_dir
-# traditional join
-cd "$script_dir/all/"
-./compileTraditionalJoin.sh
+echo hello $0
+echo hi $script_dir
 
 # compile partial results
 # louds
@@ -28,3 +26,7 @@ cd "$script_dir/ranked/dfuds/nonFixedQueue/"
 ./compileRankedDfudsBacktracking.sh
 cd "$script_dir/ranked/dfuds/backtracking/"
 ./compileRankedDfudsNonFixedQueue.sh
+
+# traditional join
+cd "$script_dir/all/"
+./compileTraditionalJoin.sh
