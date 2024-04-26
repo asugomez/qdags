@@ -2,6 +2,8 @@
 script_dir=$(dirname "$BASH_SOURCE")
 echo hello $0
 echo hi $script_dir
+SCRIPT_DIR_2="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+echo "Script directory: $SCRIPT_DIR_2"
 
 # compile partial results
 # louds
