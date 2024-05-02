@@ -321,7 +321,6 @@ public:
                 lqdag *l = new lqdag(FUNCTOR_OR, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
                 return l;
             }
-            // TODO: case extend: save M like in qdags??
             case FUNCTOR_EXTEND: { // Extend quadtree to attributes att_set
                 // same mapping as in the extend function but only for this i. See extend in qdags.hpp
                 uint16_t dim = this->attribute_set_A.size(); // d
@@ -374,16 +373,17 @@ public:
         if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
             quadtree_formula* newNode = create_leaf(val_lqdag);
             if(val_lqdag == FULL_LEAF){
-                if(level < max_level)
-                    results += (max_level - level)*std::pow(k, dim);
-                else
+                if(level == max_level)
                     results++;
+                else if(level < max_level)
+                    results += std::pow(k, dim) * (max_level - level);
             }
 
             return newNode;
         }
-        double max_value = 0;   // 00000000
-        double min_value = 255; // 11111111
+
+        double max_value = 0;
+        double min_value = 1;
         vector<quadtree_formula*> Q_f_children;
         // if all quadtres are empty, return a 0 leaf.
         // C_i ← Completion(Child(L_F,i))
@@ -399,14 +399,15 @@ public:
             Q_f_children.clear(); // memory
             double val_leaf = (max_value == EMPTY_LEAF)? EMPTY_LEAF : FULL_LEAF;
             quadtree_formula* newNode = create_leaf(val_leaf);
-            if(val_leaf == FULL_LEAF){
-                if(level <= max_level)
-                    results += (max_level - level)*std::pow(k, dim);
-                else
+            if(val_lqdag == FULL_LEAF){
+                if(level == max_level)
                     results++;
+                else if(level < max_level)
+                    results += std::pow(k, dim) * (max_level - level);
             }
             return newNode;
-        } else {
+        }
+        else {
             // return an internal node with children
             quadtree_formula *quadtree = new quadtree_formula();
             quadtree->val_leaf = val_lqdag; //INTERNAL_NODE;

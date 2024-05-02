@@ -93,10 +93,6 @@ int main(int argc, char **argv) {
     att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z); att_A.push_back(AT_V);
 //    att_A.push_back(AT_X); att_A.push_back(AT_Y); att_A.push_back(AT_Z);
 
-    /*att_R.push_back(AT_Y); att_R.push_back(AT_X);
-    att_S.push_back(AT_Z); att_S.push_back(AT_X);
-    att_T.push_back(AT_X); att_T.push_back(AT_V);*/
-
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
 
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
@@ -107,8 +103,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
     std::vector<std::vector<uint64_t>>* rel_T_2 = read_relation(strRel_T, att_T.size());
 
-//    uint64_t grid_side = 52000000; // es como +infty para wikidata
-    uint64_t grid_side = 64;
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
+//    uint64_t grid_side = 32;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -117,13 +113,13 @@ int main(int argc, char **argv) {
     qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
     qdag_dfuds qdag_rel_T_dfuds(*rel_T_2, att_T, grid_side, 2, att_T.size());
 
-    // print the tree
-    cout << endl << "rel R" << endl;
-    qdag_rel_R.printBv();
-    cout << endl << "rel S" << endl;
-    qdag_rel_S.printBv();
-    cout << endl << "rel T" << endl;
-    qdag_rel_T.printBv();
+//     print the tree
+//    cout << endl << "rel R" << endl;
+//    qdag_rel_R.printBv();
+//    cout << endl << "rel S" << endl;
+//    qdag_rel_S.printBv();
+//    cout << endl << "rel T" << endl;
+//    qdag_rel_T.printBv();
 
 
     vector<qdag> Q(3);
@@ -139,7 +135,6 @@ int main(int argc, char **argv) {
     Q_dfuds[0] = qdag_rel_R_dfuds;
     Q_dfuds[1] = qdag_rel_S_dfuds;
     Q_dfuds[2] = qdag_rel_T_dfuds;
-    qdag_dfuds *Join_Result_dfuds;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;
@@ -213,8 +208,8 @@ int main(int argc, char **argv) {
     vector<uint16_t*> results_partial_louds_back;
     vector<uint16_t*> results_ranked_louds;
     priority_queue<qdagResults> results_ranked_louds_back;
-//
-    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+
+    cout << "----- MULTI JOIN TRADICIONAL R S T------" << endl;
 //    multiJoin(Q, true, 1000);
     start = high_resolution_clock::now();
     multiJoin(Q, true, 1000);
@@ -316,9 +311,17 @@ int main(int argc, char **argv) {
     lqdag* extend_s = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_S), att_A);
     lqdag* extend_t = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQuadtreeChild_T), att_A);
     lqdag* join_r_s = new lqdag(FUNCTOR_AND, extend_r, extend_s);
-    lqdag* join_s_t = new lqdag(FUNCTOR_AND, extend_s, extend_t);
+//    lqdag* join_s_t = new lqdag(FUNCTOR_AND, extend_s, extend_t);
     lqdag* join_r_s_t = new lqdag(FUNCTOR_AND, join_r_s, extend_t);
 //    lqdag* join_r_s_t = new lqdag(FUNCTOR_AND, extend_r, join_s_t);
+
+//    quadtree_formula* res_extend_r = extend_r->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
+//    res = 0;
+//    quadtree_formula* res_extend_s = extend_s->completion(qdag_rel_S.getK(), 4, res, qdag_rel_S.getHeight());
+//    res = 0;
+//    quadtree_formula* test_join_r_s = join_r_s->completion(qdag_rel_R.getK(), 4, res, qdag_rel_R.getHeight());
+//    res = 0;
+//    quadtree_formula* test_join_s_t = join_s_t->completion(qdag_rel_R.getK(), 4, res, qdag_rel_R.getHeight());
 
     res = 0;
     start = high_resolution_clock::now();
