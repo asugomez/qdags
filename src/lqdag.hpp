@@ -395,7 +395,7 @@ public:
             min_value = min(min_value, newNode->val_leaf);
         }
         // return a leaf
-        if(max_value == 0 || min_value == 1){ // return a leaf
+        if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){ // return a leaf
             Q_f_children.clear(); // memory
             double val_leaf = (max_value == EMPTY_LEAF)? EMPTY_LEAF : FULL_LEAF;
             quadtree_formula* newNode = create_leaf(val_leaf);

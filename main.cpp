@@ -114,8 +114,8 @@ int main(int argc, char **argv) {
     qdag_dfuds qdag_rel_T_dfuds(*rel_T_2, att_T, grid_side, 2, att_T.size());
 
 //     print the tree
-//    cout << endl << "rel R" << endl;
-//    qdag_rel_R.printBv();
+    cout << endl << "rel R" << endl;
+    qdag_rel_R.printBv();
 //    cout << endl << "rel S" << endl;
 //    qdag_rel_S.printBv();
 //    cout << endl << "rel T" << endl;
@@ -212,7 +212,7 @@ int main(int argc, char **argv) {
     cout << "----- MULTI JOIN TRADICIONAL R S T------" << endl;
 //    multiJoin(Q, true, 1000);
     start = high_resolution_clock::now();
-    multiJoin(Q, true, 1000);
+//    multiJoin(Q, true, 1000);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
@@ -325,7 +325,8 @@ int main(int argc, char **argv) {
 
     res = 0;
     start = high_resolution_clock::now();
-    quadtree_formula* test_join = join_r_s_t->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
+    // TODO: check height of R S and T
+    quadtree_formula* test_join = extend_r->completion(qdag_rel_R.getK(), att_A.size(), res, qdag_rel_R.getHeight());
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();

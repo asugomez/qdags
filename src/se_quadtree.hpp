@@ -735,6 +735,7 @@ public:
      * @return the index in the bv[level+1] of the ith-child of node. If the i-th child of the node doesn't exist, it returns the total the position where the level ends.
      * For the last level, return the position of the leaf.
      */
+     // TODO: debug here
     uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
         if(level == getHeight()-1){
             return node + ith_child;
@@ -750,10 +751,10 @@ public:
 
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
-        for (int i = 0; i < getHeight(); i++) {
+        for (int i = 0; i < 3; i++) {
             //cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
             this->getBv()[i].print(k_d);
-//            cout << endl;
+            cout << endl;
         }
     }
 
