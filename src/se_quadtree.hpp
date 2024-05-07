@@ -26,8 +26,8 @@
 #include <tuple>
 #include <fstream>
 #include <sdsl/bit_vectors.hpp>
-#include <sdsl/k2_tree_helper.hpp>
 #include <sdsl/int_vector_buffer.hpp>
+#include <sdsl/k2_tree_helper.hpp>
 #include "rank.hpp"
 
 
