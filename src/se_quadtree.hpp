@@ -751,7 +751,7 @@ public:
 
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < height; i++) {
             //cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
             this->getBv()[i].print(k_d);
             cout << endl;

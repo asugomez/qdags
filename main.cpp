@@ -103,8 +103,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
     std::vector<std::vector<uint64_t>>* rel_T_2 = read_relation(strRel_T, att_T.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
-//    uint64_t grid_side = 32;
+//    uint64_t grid_side = 52000000; // es como +infty para wikidata
+    uint64_t grid_side = 32;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -212,7 +212,7 @@ int main(int argc, char **argv) {
     cout << "----- MULTI JOIN TRADICIONAL R S T------" << endl;
 //    multiJoin(Q, true, 1000);
     start = high_resolution_clock::now();
-//    multiJoin(Q, true, 1000);
+    multiJoin(Q, true, 1000);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
