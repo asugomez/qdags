@@ -142,6 +142,8 @@ public:
      * @param node
      * @param k
      * @param k_d
+     * If level = 0 and node = 0, we are looking the root of the quadtree.
+     * TODO: check if we look for (level = 0, node > 0) --> WRONG CASE!!
      * @return whether is an EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
      */
     double is_leaf(uint16_t level, uint64_t node, uint8_t k){

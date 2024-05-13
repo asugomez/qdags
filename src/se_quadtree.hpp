@@ -346,14 +346,15 @@ public:
     }
 
     inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
-        if (k_d == 4)
+        if (k_d == 2)
+            return bv[level].get_2_bits(node);
+        else if(k_d == 4)
             return bv[level].get_4_bits(node);
         else
-            return bv[level].get_2_bits(node);
+            throw "error: k_d > 4";
     }
 
     /**
-     * TODO: como funciona
      * @param level
      * @param node
      * @param rank_array
