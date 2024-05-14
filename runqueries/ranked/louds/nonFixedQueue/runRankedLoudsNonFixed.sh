@@ -16,15 +16,15 @@ for type_fun in {0..1}; do
     read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
 
     # Create priorities
-    priority_file_1="../../../../data/priorities/pri1"
-    priority_file_2="../../../../data/priorities/pri2"
-    priority_file_3="../../../../data/priorities/pri3"
-    priority_file_4="../../../../data/priorities/pri4"
+    priority_file_1="../../../../data/priorities/pri1-louds-$type_fun-$file"
+    priority_file_2="../../../../data/priorities/pri2-louds-$type_fun-$file"
+    priority_file_3="../../../../data/priorities/pri3-louds-$type_fun-$file"
+    priority_file_4="../../../../data/priorities/pri4-louds-$type_fun-$file"
 
-    ../../../../data/priorities/createRandomPriorities.sh $t1 "pri1"
-    ../../../../data/priorities/createRandomPriorities.sh $t2 "pri2"
-    ../../../../data/priorities/createRandomPriorities.sh $t3 "pri3"
-    ../../../../data/priorities/createRandomPriorities.sh $t4 "pri4"
+    ../../../../data/priorities/createRandomPriorities.sh $t1 "pri1-louds-$type_fun-$file"
+    ../../../../data/priorities/createRandomPriorities.sh $t2 "pri2-louds-$type_fun-$file"
+    ../../../../data/priorities/createRandomPriorities.sh $t3 "pri3-louds-$type_fun-$file"
+    ../../../../data/priorities/createRandomPriorities.sh $t4 "pri4-louds-$type_fun-$file"
 
     input_file="./runqueries-$file-bfs-sorted.sh"
     output_file="./runqueries-$file-bfs-sorted-args.sh"
