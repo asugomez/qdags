@@ -48,5 +48,3 @@
 ./j3 ../../../../data/all/prop-direct-P1591 ../../../../data/all/prop-direct-P710 ../../../../data/all/prop-direct-normalized-P1015 ../../../../data/priorities/pri1 ../../../../data/priorities/pri2 ../../../../data/priorities/pri3 0
 ./j3 ../../../../data/all/prop-direct-P1347 ../../../../data/all/prop-direct-P607 ../../../../data/all/prop-direct-normalized-P1014 ../../../../data/priorities/pri1 ../../../../data/priorities/pri2 ../../../../data/priorities/pri3 0
 ./j3 ../../../../data/all/prop-direct-P530 ../../../../data/all/prop-direct-P205 ../../../../data/all/prop-direct-P2427 ../../../../data/priorities/pri1 ../../../../data/priorities/pri2 ../../../../data/priorities/pri3 0
- ../../../../data/priorities/pri1 ../../../../data/priorities/pri2 ../../../../data/priorities/pri3 0
- ../../../../data/priorities/pri1 ../../../../data/priorities/pri2 ../../../../data/priorities/pri3 0

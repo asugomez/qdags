@@ -1,0 +1,58 @@
+number of results: 3
+number of results: 3
+6.11826
+number of results: 3
+number of results: 3
+6.2721
+number of results: 3
+number of results: 3
+6.91468
+number of results: 52
+number of results: 52
+371.841
+number of results: 1
+number of results: 1
+2.17364
+number of results: 1000
+number of results: 1000
+15.6878
+number of results: 2
+number of results: 2
+2.42294
+number of results: 1
+number of results: 1
+4.36749
+number of results: 7
+number of results: 7
+27.3188
+number of results: 1000
+number of results: 1000
+3.28413
+number of results: 5
+number of results: 5
+33.6202
+number of results: 2
+number of results: 2
+44.0109
+number of results: 1
+number of results: 1
+0.041266
+number of results: 697
+number of results: 697
+171.277
+number of results: 141
+number of results: 141
+30.8818
+number of results: 6
+number of results: 6
+2.16732
+number of results: 5
+number of results: 5
+12.2549
+number of results: 2
+number of results: 2
+7.49378
+number of results: 6
+number of results: 6
+10.1064
+number of results: 1
