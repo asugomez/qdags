@@ -15,10 +15,6 @@ for type_fun in {0..1}; do
       # get the number of datasets for each query
       read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
 
-      echo "t1: $t1"
-      echo "t2: $t2"
-      echo "t3: $t3"
-      echo "t4: $t4"
       # Create priorities
       priority_file_1="../../../../data/priorities/pri1-louds-back-$type_fun-$file"
       priority_file_2="../../../../data/priorities/pri2-louds-back-$type_fun-$file"

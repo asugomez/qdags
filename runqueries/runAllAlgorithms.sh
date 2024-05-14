@@ -34,3 +34,8 @@ cd "$script_dir/ranked/dfuds/nonFixedQueue/"
 echo "Running ranked dfuds backtracking"
 cd "$script_dir/ranked/dfuds/backtracking/"
 ./runRankedDfudsBacktracking.sh
+
+## traditional
+echo "Running traditional join"
+cd "$script_dir/all/"
+./runTraditionalJoin.sh
