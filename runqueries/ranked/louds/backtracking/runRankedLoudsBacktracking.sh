@@ -6,34 +6,30 @@ echo "" > $data_csv
 # run tests for each type_fun and each size_queue
 for type_fun in {0..1}; do
   # echo type fun
+  echo "type_fun : $type_fun"
   echo "type_fun;$type_fun" >> $data_csv
   echo "size_queue;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
   for size_queue in 1 10 100 1000; do
     # echo size_queue
+    echo "size queue: $size_queue"
     printf "$size_queue;" >> $data_csv
-    for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
-      # get the number of datasets for each query
+    for file in j3; do # j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
+      #get the number of datasets for each query
+      echo "file: $file"
       read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
-
-      # Create priorities
-      priority_file_1="../../../../data/priorities/pri1-louds-back-$type_fun-$file"
-      priority_file_2="../../../../data/priorities/pri2-louds-back-$type_fun-$file"
-      priority_file_3="../../../../data/priorities/pri3-louds-back-$type_fun-$file"
-      priority_file_4="../../../../data/priorities/pri4-louds-back-$type_fun-$file"
-
-      ../../../../data/priorities/createRandomPriorities.sh $t1 "pri1-louds-back-$type_fun-$file"
-      ../../../../data/priorities/createRandomPriorities.sh $t2 "pri2-louds-back-$type_fun-$file"
-      ../../../../data/priorities/createRandomPriorities.sh $t3 "pri3-louds-back-$type_fun-$file"
-      ../../../../data/priorities/createRandomPriorities.sh $t4 "pri4-louds-back-$type_fun-$file"
 
       input_file="./runqueries-$file-bfs-sorted.sh"
       output_file="./runqueries-$file-bfs-sorted-args.sh"
 
       # Add priorities; type_fun and size_queue
       # Iterate over each line of the input file
+      count=1
       while IFS= read -r line || [ -n "$line" ]; do
-        echo "in while"
         # Append priorities; type_fun and size_queue to the end of the line
+        priority_file_1="../../../../data/priorities/$file/pri1-$count"
+        priority_file_2="../../../../data/priorities/$file/pri2-$count"
+        priority_file_3="../../../../data/priorities/$file/pri3-$count"
+        priority_file_4="../../../../data/priorities/$file/pri4-$count"
         modified_line=""
         # Check if the i-th argument is emtpy
         if [ -z "$t2" ]; then # 1 dataset
@@ -46,8 +42,8 @@ for type_fun in {0..1}; do
           modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $priority_file_4 $type_fun $size_queue"
         fi
         echo "$modified_line"
-      done < "$input_file"
-      #done < "$input_file" > "$output_file"
+        count=$(($count + 1))
+      done < "$input_file" > "$output_file"
 
       results_file="../../../outputs/ranked/louds/backtracking/$file-f$type_fun-s$size_queue.txt"
 
