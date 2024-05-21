@@ -103,11 +103,6 @@ int main(int argc, char** argv)
 
 
     // read priorities from file
-
-//    cout << "PRiorities: ."  << endl;
-//    printf("%s",*argv[4]);
-//    printf("%s",*argv[5]);
-//    printf("%s",*argv[6]);
     std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
     std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
     std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos

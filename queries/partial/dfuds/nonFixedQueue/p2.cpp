@@ -92,18 +92,18 @@ int main(int argc, char** argv)
     Q_dfuds[1] = qdag_dfuds_rel_S;
 
     uint8_t type_fun = argv[3] ? atoi(argv[3]) : 1;
-    
+    int64_t k = argv[4] ? atoi(argv[4]) : 1000;
     vector<uint16_t*> results_partial_dfuds;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds); // cache warmup
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds); // cache warmup
     
     start = high_resolution_clock::now();    
     
-    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds);
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(stop - start);

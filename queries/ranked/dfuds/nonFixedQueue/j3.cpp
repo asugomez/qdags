@@ -153,6 +153,8 @@ int main(int argc, char** argv)
     p.push_back(priorities_T);
 
     uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
+    int64_t k = argv[8] ? atoi(argv[8]) : 1000;
+
     vector<rmq_succinct_sct<false>> rMq;
     for(uint64_t i = 0; i < Q.size(); i++)
         rMq.push_back(rmq_succinct_sct<false>(&p[i]));
@@ -163,11 +165,11 @@ int main(int argc, char** argv)
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinRankedResultsDfuds(Q, true, 1000, type_fun, p, rMq, results_ranked_louds);  // warmup join -> activar el caché
+    multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds);  // warmup join -> activar el caché
  
     start = high_resolution_clock::now();
 
-    multiJoinRankedResultsDfuds(Q, true, 1000, type_fun, p, rMq, results_ranked_louds);
+    multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

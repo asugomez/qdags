@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# ./runqueries-$file-bfs-sorted.sh type_fun size_queue > ../../../outputs/partial/dfuds/backtracking/$file.txt
-# run tests for each type_fun and each size_queue
+# ./runqueries-$file-bfs-sorted.sh type_fun k > ../../../outputs/partial/dfuds/nonFixedQueue/$file.txt
+# run tests for each type_fun and each k
 for type_fun in {0..1}; do
   chmod a+x *.sh
-  data_csv="../../../outputs/partial/dfuds/backtracking/results-f$type_fun.csv"
+  data_csv="../../../outputs/partial/dfuds/nonFixedQueue/results-f$type_fun.csv"
   # echo type fun
   echo "type_fun : $type_fun"
   echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
-  #  echo >> ../../../outputs/partial/dfuds/backtracking/results.csv
   for k in 1 10 100 1000; do
     # echo k
     echo "k: $k"
@@ -18,14 +17,14 @@ for type_fun in {0..1}; do
       input_file="./runqueries-$file-bfs-sorted.sh"
       output_file="./runqueries-$file-bfs-sorted-args.sh"
       # run query with these arguments: datasets type_fun k
-      # Add priorities; type_fun and k
+      # Add ype_fun and k
       # Iterate over each line of the input file
       while IFS= read -r line || [ -n "$line" ]; do
         modified_line="$line $type_fun $k"
         echo "$modified_line"
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/partial/dfuds/backtracking/$file-f$type_fun-k$k.txt"
+      results_file="../../../outputs/partial/dfuds/nonFixedQueue/$file-f$type_fun-k$k.txt"
 
       chmod +x $output_file
 
@@ -36,4 +35,5 @@ for type_fun in {0..1}; do
     done
     echo "" >> $data_csv
   done
+
 done

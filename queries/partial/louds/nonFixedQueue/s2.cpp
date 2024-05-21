@@ -102,10 +102,11 @@ int main(int argc, char** argv)
     Q[3] = qdag_rel_U;
 
     uint8_t type_fun = argv[5] ? atoi(argv[5]) : 1;
-    
+    int64_t k = argv[6] ? atoi(argv[6]) : 1000;
+
     vector<uint16_t*> results_partial_louds;
 
-    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -113,7 +114,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
 
     //uint64_t ntuples = multiJoinCount(Q);
 

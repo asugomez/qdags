@@ -16,7 +16,7 @@ cd "$script_dir/partial/dfuds/backtracking/"
 ./runPartialDfudsBacktracking.sh
 echo "Running partial dfuds nonFixedQueue"
 cd "$script_dir/partial/dfuds/nonFixedQueue/"
-./runPartialDfudsNonFixedQueue.sh
+./runPartialDfudsNonFixed.sh
 
 # ranked
 ## louds
@@ -25,12 +25,12 @@ cd "$script_dir/ranked/louds/backtracking/"
 ./runRankedLoudsBacktracking.sh
 echo "Running ranked louds nonFixedQueue"
 cd "$script_dir/ranked/louds/nonFixedQueue/"
-./runRankedLoudsNonFixedQueue.sh
+./runRankedLoudsNonFixed.sh
 
 ## dfuds
 echo "Running ranked dfuds nonFixedQueue"
 cd "$script_dir/ranked/dfuds/nonFixedQueue/"
-./runRankedDfudsNonFixedQueue.sh
+./runRankedDfudsNonFixed.sh
 echo "Running ranked dfuds backtracking"
 cd "$script_dir/ranked/dfuds/backtracking/"
 ./runRankedDfudsBacktracking.sh

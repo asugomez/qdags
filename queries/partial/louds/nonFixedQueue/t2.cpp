@@ -89,18 +89,19 @@ int main(int argc, char** argv)
     Q[1] = qdag_rel_S;
 
     uint8_t type_fun = argv[3] ? atoi(argv[3]) : 1;
-    
+    int64_t k = argv[4] ? atoi(argv[4]) : 1000;
+
     vector<uint16_t*> results_partial_louds;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
    
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
