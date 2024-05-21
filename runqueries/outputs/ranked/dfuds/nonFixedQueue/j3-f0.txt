@@ -1,58 +1,50 @@
-number of results: 3
-number of results: 3
-6.11826
-number of results: 3
-number of results: 3
-6.2721
-number of results: 3
-number of results: 3
-6.91468
-number of results: 52
-number of results: 52
-371.841
-number of results: 1
-number of results: 1
-2.17364
-number of results: 1000
-number of results: 1000
-15.6878
-number of results: 2
-number of results: 2
-2.42294
-number of results: 1
-number of results: 1
-4.36749
-number of results: 7
-number of results: 7
-27.3188
-number of results: 1000
-number of results: 1000
-3.28413
-number of results: 5
-number of results: 5
-33.6202
-number of results: 2
-number of results: 2
-44.0109
-number of results: 1
-number of results: 1
-0.041266
-number of results: 697
-number of results: 697
-171.277
-number of results: 141
-number of results: 141
-30.8818
-number of results: 6
-number of results: 6
-2.16732
-number of results: 5
-number of results: 5
-12.2549
-number of results: 2
-number of results: 2
-7.49378
-number of results: 6
-number of results: 6
-10.1064
-number of results: 1
+23.2249
+939.599
+4.88816
+5.71506
+6.50765
+11.8644
+81.4519
+7.62183
+101.148
+102.149
+0.095201
+575.461
+69.8116
+5.24336
+29.3445
+20.8537
+29.827
+3237.81
+20.2014
+3.38932
+0.761614
+50.1685
+88.2808
+76.016
+3.85647
+4.45043
+27.8957
+3.49568
+757.643
+42.1323
+0.988093
+348.538
+1243
+0.477129
+8.29519
+1.66908
+4.6425
+40.9972
+380.291
+0.275462
+22.4816
+1.22326
+48.6869
+17.3094
+84.3425
+1652.32
+0.694662
+10.9859
+109.119
+40.5819
