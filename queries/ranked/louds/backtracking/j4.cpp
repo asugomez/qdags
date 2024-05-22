@@ -73,7 +73,10 @@ int main(int argc, char **argv) {
     att_U.push_back(AT_X);
     att_U.push_back(AT_V);
 
-    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]), strRel_U(argv[4]);
+    std::string strRel_R(argv[1]);
+    std::string strRel_S(argv[2]);
+    std::string strRel_T(argv[3]);
+    std::string strRel_U(argv[4]);
 
     std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>> *rel_S = read_relation(strRel_S, att_S.size());
@@ -106,10 +109,10 @@ int main(int argc, char **argv) {
     qdag *Join_Result;
 
     // read priorities from file
-    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
-    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
-    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
-    std::ifstream data_file_U(argv[7]); // Abrir el archivo de datos
+    std::ifstream data_file_R(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[6]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[7]); // Abrir el archivo de datos
+    std::ifstream data_file_U(argv[8]); // Abrir el archivo de datos
     if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open() || !data_file_U.is_open()) {
         std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
         return 1;

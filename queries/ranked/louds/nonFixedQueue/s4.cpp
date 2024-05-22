@@ -104,10 +104,10 @@ int main(int argc, char** argv)
     qdag *Join_Result;
 
     // read priorities from file
-    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
-    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
-    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
-    std::ifstream data_file_U(argv[7]); // Abrir el archivo de datos
+    std::ifstream data_file_R(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[6]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[7]); // Abrir el archivo de datos
+    std::ifstream data_file_U(argv[8]); // Abrir el archivo de datos
     if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open() || !data_file_U.is_open()) {
         std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
         return 1;
