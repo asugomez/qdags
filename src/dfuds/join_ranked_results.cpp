@@ -420,13 +420,22 @@ AND_ranked_dfuds_backtracking(
                     }
                 }
             }
-            orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
-            order_to_traverse.push(this_node); // add the tuple to the queue
+            // queue full --> compare priorities
+            if(top_results.size() >= size_queue ){
+                qdagResults minResult = top_results.top();
+                if(total_weight >= minResult.weight){ // if it has a higher priority, then we enter into this branch of the tree
+                    orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
+                    order_to_traverse.push(this_node); // add the tuple to the queue
+                }
+            }
+            else{
+                orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
+                order_to_traverse.push(this_node); // add the tuple to the queue
+            }
 
         }
         // recursive call in order according to the n_leaves
-        //while(!order_to_traverse.empty()){
-        for (i = 0; i < children_to_recurse_size; ++i) {
+        while(!order_to_traverse.empty()){
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
             AND_ranked_dfuds_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, type_priority_fun,
@@ -505,7 +514,7 @@ bool multiJoinRankedResultsDfudsBacktracking(
                             priorities, rMq,
                             top_results);
 
-    uint64_t size_queue_top = top_results.size();
+//    uint64_t size_queue_top = top_results.size();
 //    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
