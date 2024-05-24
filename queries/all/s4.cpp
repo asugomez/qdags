@@ -71,8 +71,10 @@ int main(int argc, char** argv)
     att_T.push_back(AT_X2); att_T.push_back(AT_X4); 
     att_U.push_back(AT_X3); att_U.push_back(AT_X4); 
     
-    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]), strRel_U(argv[4]); 
-    
+    std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]), strRel_U(argv[4]);
+
+    int64_t k = argv[5] ? atoi(argv[5]) : 1000;
+
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
@@ -101,7 +103,7 @@ int main(int argc, char** argv)
     
     qdag *Join_Result;
  
-    Join_Result = multiJoin(Q, true, 1000);  // cache warmup
+    Join_Result = multiJoin(Q, true, k);  // cache warmup
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
@@ -109,7 +111,7 @@ int main(int argc, char** argv)
     
     start = high_resolution_clock::now();    
     
-    Join_Result = multiJoin(Q, true, 1000);
+    Join_Result = multiJoin(Q, true, k);
    
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
