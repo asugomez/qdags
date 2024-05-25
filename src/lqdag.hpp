@@ -340,7 +340,7 @@ public:
      * @param k
      *
      */
-    quadtree_formula *completion(uint64_t p,
+    quadtree_formula* completion(uint64_t p,
                                  uint16_t max_level,
                                  uint16_t level,
                                  uint64_t UPPER_BOUND,

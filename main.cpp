@@ -301,14 +301,9 @@ int main(int argc, char **argv) {
 
     cout << "----- MULTI JOIN LQDAGS ------" << endl;
     uint64_t res = 0;
-    uint64_t p = std::pow(qdag_rel_R.getK(), att_A.size());
-    lqdag* join_r_s_t = lqdag_join(Q, true, k);
-
     start = high_resolution_clock::now();
-    quadtree_formula* test_join = join_r_s_t->completion(p,
-                                                         qdag_rel_R.getHeight(),
-                                                         0, k,
-                                                         res);
+    quadtree_formula* join_r_s_t = compute_lqdag_join(Q, k, res);
+
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();

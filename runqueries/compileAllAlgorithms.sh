@@ -38,3 +38,8 @@ cd "$script_dir/ranked/dfuds/backtracking/"
 echo "Compiling traditional join"
 cd "$script_dir/all/"
 ./compileTraditionalJoin.sh
+
+## lazy qdags
+echo "Compiling lazy join"
+cd "$script_dir/lqdags/"
+./compileLazyJoin.sh

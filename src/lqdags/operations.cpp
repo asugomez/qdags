@@ -7,7 +7,7 @@
 // ---------- FULL RELATIONAL ALGEBRA ---------- //
 
 // (JOIN, L1(A1), L2(A2)) = (AND, (EXTEND, L1, A1 ∪ A2), (EXTEND, L2, A1 ∪ A2))
-lqdag* lqdag_join(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
+lqdag* lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
@@ -62,6 +62,65 @@ lqdag* lqdag_join(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
 
     return join_result;
 }
+
+
+quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results) {
+    qdag::att_set A;
+    map<uint64_t, uint8_t> attr_map;
+
+    for (uint64_t i = 0; i < Q.size(); i++) {
+        uint64_t nAttr = Q[i].nAttr();
+        for (uint64_t j = 0; j < nAttr; j++)
+            attr_map[Q[i].getAttr(j)] = 1;
+    }
+
+    // set of attributs
+    for (map<uint64_t, uint8_t>::iterator it = attr_map.begin(); it != attr_map.end(); it++)
+        A.push_back(it->first);
+
+    subQuadtreeChild* subQ[Q.size()];
+    lqdag* extend_qdag[Q.size()];
+
+    for (uint64_t i = 0; i < Q.size(); i++) {
+        subQ[i] = new subQuadtreeChild{&Q[i], 0, 0};
+        extend_qdag[i] = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQ[i]), A);
+        if (A.size() == 3)
+            Q[i].createTableExtend3();
+        else if (A.size() == 4)
+            Q[i].createTableExtend4();
+        else if (A.size() == 5)
+            Q[i].createTableExtend5();
+        else {
+            cout << "Code only works for queries of up to 5 attributes..." << endl;
+            exit(1);
+        }
+    }
+
+    lqdag* join_result;
+    if (Q.size() == 3){
+        lqdag* join_r_s = new lqdag(FUNCTOR_AND, extend_qdag[0], extend_qdag[1]);
+        join_result = new lqdag(FUNCTOR_AND, join_r_s, extend_qdag[2]);
+    }
+    else if (Q.size() == 4){
+        lqdag* join_r_s = new lqdag(FUNCTOR_AND, extend_qdag[0], extend_qdag[1]);
+        lqdag* join_t_u = new lqdag(FUNCTOR_AND, extend_qdag[2], extend_qdag[3]);
+        join_result = new lqdag(FUNCTOR_AND, join_r_s, join_t_u);
+    }
+    else if (Q.size() == 5){
+        lqdag* join_r_s = new lqdag(FUNCTOR_AND, extend_qdag[0], extend_qdag[1]);
+        lqdag* join_t_u = new lqdag(FUNCTOR_AND, extend_qdag[2], extend_qdag[3]);
+        lqdag* join_r_s_t_u = new lqdag(FUNCTOR_AND, join_r_s, join_t_u);
+        join_result = new lqdag(FUNCTOR_AND, join_r_s_t_u, extend_qdag[4]);
+    }
+    else {
+        cout << "Code only works for queries of up to 5 attributes..." << endl;
+        exit(1);
+    }
+
+    uint64_t p = std::pow(Q[0].getK(), A.size());
+    return join_result->completion(p, Q[0].getHeight(), 0, UPPER_BOUND, results);
+}
+
 
 // (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
 lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {
