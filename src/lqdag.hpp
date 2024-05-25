@@ -32,7 +32,7 @@ struct quadtree_formula { // represents the output of the formula we are evaluat
 
 // represents a subtree of the quadtree
 struct subQuadtreeChild {
-    qdag *qdag;
+    ::qdag *qdag;
     uint16_t level; // the level of the quadtree_formula. 0 to start.
     uint64_t node; // absolute position in the bv[level] of the quadtree
     double value;// = NO_VALUE_LEAF;
@@ -129,12 +129,8 @@ public:
 
                 M[i] = i_prime; // = M[i_prime];
             }
-            this->M = M;
-        } else {
-            this->M = M;
         }
-
-
+        this->M = M;
     }
 
     /**

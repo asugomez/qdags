@@ -1,4 +1,4 @@
-#include "../../../../src/louds/join_partial_results.cpp"
+#include "../../../../src/dfuds/join_partial_results.cpp"
 
 #include <fstream>
 #include<bits/stdc++.h>
@@ -60,9 +60,9 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char** argv)
 {
-    qdag::att_set att_R;
-    qdag::att_set att_S;
-    qdag::att_set att_T;
+    qdag_dfuds::att_set att_R;
+    qdag_dfuds::att_set att_S;
+    qdag_dfuds::att_set att_T;
     
     att_R.push_back(AT_X1); att_R.push_back(AT_X2); 
     att_S.push_back(AT_X2); att_S.push_back(AT_X3); 
@@ -82,65 +82,30 @@ int main(int argc, char** argv)
     
     grid_side++;
 
-    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size());
-    qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
-    qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
+    qdag_dfuds qdag_dfuds_rel_R(*rel_R, att_R, grid_side, 2, att_R.size());
+    qdag_dfuds qdag_dfuds_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_dfuds qdag_dfuds_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
     
-    vector<qdag> Q(3);
+    vector<qdag_dfuds> Q_dfuds(3);
 
-    /*if (rel_R->size() < rel_S->size()) {
-        if (rel_S->size() < rel_T->size()) {
-	    Q[0] = qdag_rel_R;
-	    Q[1] = qdag_rel_S;
-	    Q[2] = qdag_rel_T;
-        }
-	else {
-	    if (rel_R->size() < rel_T->size()) {
-	        Q[0] = qdag_rel_R;
-		Q[2] = qdag_rel_S;
-	        Q[1] = qdag_rel_T;
-	    }
-	    else {
-	        Q[1] = qdag_rel_R;
-                Q[2] = qdag_rel_S;
-                Q[0] = qdag_rel_T;
-	    }
-	}
-    }
-    else {
-        if (rel_R->size() < rel_T->size()) {
-	    Q[1] = qdag_rel_R;
-            Q[0] = qdag_rel_S;
-            Q[2] = qdag_rel_T;
-	}
-        else {
-            if (rel_S->size() < rel_T->size()) {
-	        Q[2] = qdag_rel_R;
-		Q[0] = qdag_rel_S;
-		Q[1] = qdag_rel_T;
-	    }
-	    else {
-	        Q[2] = qdag_rel_R;
-		Q[1] = qdag_rel_S;
-		Q[0] = qdag_rel_T;
-	    }
-        }
-    }*/
-    Q[0] = qdag_rel_R;
-    Q[1] = qdag_rel_S;
-    Q[2] = qdag_rel_T;
-    
-    qdag *Join_Result;
+    Q_dfuds[0] = qdag_dfuds_rel_R;
+    Q_dfuds[1] = qdag_dfuds_rel_S;
+    Q_dfuds[2] = qdag_dfuds_rel_T;
+
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+    int64_t k = argv[5] ? atoi(argv[5]) : 1000;
+
+    vector<uint16_t*> results_partial_dfuds;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    Join_Result = parMultiJoin(Q, true, 1000);  // cache warmup
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds); // cache warmup
     
-    start = high_resolution_clock::now();    
-    
-    Join_Result = parMultiJoin(Q, true, 1000); 
+    start = high_resolution_clock::now();
+
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

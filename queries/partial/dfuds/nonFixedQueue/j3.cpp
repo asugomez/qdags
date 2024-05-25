@@ -1,4 +1,4 @@
-#include "../../../../src/louds/join_partial_results.cpp"
+#include "../../../../src/dfuds/join_partial_results.cpp"
 // cada una de las query tiene su codigo
 // j --> una forma q sale en el paper
 // p --> caminos
@@ -66,9 +66,9 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 int main(int argc, char** argv)
 {
     // 3 tablas R, S y T
-    qdag::att_set att_R; // R(Y,X)
-    qdag::att_set att_S; // S(Z,X)
-    qdag::att_set att_T; // T(X,V)
+    qdag_dfuds::att_set att_R; // R(Y,X)
+    qdag_dfuds::att_set att_S; // S(Z,X)
+    qdag_dfuds::att_set att_T; // T(X,V)
     
     att_R.push_back(AT_Y); att_R.push_back(AT_X); 
     att_S.push_back(AT_Z); att_S.push_back(AT_X); 
@@ -84,34 +84,34 @@ int main(int argc, char** argv)
     uint64_t grid_side = 52000000; // es como +infty para wikidata 
     
     //cout << "R" << endl;
-    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
+    qdag_dfuds qdag_dfuds_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdag_dfudss
     //cout << "S" << endl;
-    qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
+    qdag_dfuds qdag_dfuds_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
     //cout << "T" << endl;
-    qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
-
-    // cout << ((((float)qdag_rel_R.size()*8) + ((float)qdag_rel_S.size()*8) + ((float)qdag_rel_T.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2)) << "\t";
+    qdag_dfuds qdag_dfuds_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
 
 
-    vector<qdag> Q(3);
+    vector<qdag_dfuds> Q_dfuds(3);
 
-    Q[0] = qdag_rel_R;
-    Q[1] = qdag_rel_S;
-    Q[2] = qdag_rel_T;
-   
-    qdag *Join_Result;
-    
+    Q_dfuds[0] = qdag_dfuds_rel_R;
+    Q_dfuds[1] = qdag_dfuds_rel_S;
+    Q_dfuds[2] = qdag_dfuds_rel_T;
+
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+    int64_t k = argv[5] ? atoi(argv[5]) : 1000;
+
+    vector<uint16_t*> results_partial_dfuds;
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds); // warmup join -> activar el caché
  
     start = high_resolution_clock::now();    
     
-    Join_Result = multiJoin(Q, true, 1000);
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

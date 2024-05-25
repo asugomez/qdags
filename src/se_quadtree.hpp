@@ -26,9 +26,9 @@
 #include <tuple>
 #include <fstream>
 #include <sdsl/bit_vectors.hpp>
-#include <sdsl/k2_tree_helper.hpp>
 #include <sdsl/int_vector_buffer.hpp>
 #include "rank.hpp"
+#include <sdsl/k2_tree_helper.hpp>
 
 
 //! A k^2-tree
@@ -629,7 +629,7 @@ public:
         if(get_ith_bit(level, node) == 0){
             return 0;
         }
-        uint64_t siblings = rank(level,node);
+        uint64_t siblings = rank(level,node); // start position in the next level
         uint64_t n_children;
         uint64_t children_array[k_d];
         level++;
@@ -648,7 +648,7 @@ public:
      * @return the number of children of the i-th node.
      */
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t children, uint64_t siblings){
-        siblings = rank(level,siblings*k_d);
+        siblings = rank(level,siblings*k_d); // start position in the next level
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
             return children;
@@ -686,7 +686,7 @@ public:
      * @param end will be modified if the node is not the root.
      * @return false if the node is empty or if the node is not the root and it has no children.
      */
-    bool get_range_leaves(int16_t level, uint64_t node, uint64_t& init, uint64_t& end){
+    bool get_range_leaves(uint16_t level, uint64_t node, uint64_t& init, uint64_t& end){
         if(level == -1){
             return true; // dejar init y end como estaban (rango completo!)
         }
@@ -709,7 +709,7 @@ public:
         level++;
         get_children(level,siblings*k_d, children_array,n_children);
         if(level == getHeight()-1){
-            init = siblings;
+            init = rank(level,siblings*k_d);
             end = init + n_children - 1;
             return true;
         }
@@ -720,7 +720,8 @@ public:
         siblings = rank(level,siblings*k_d);
         children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
         if(level == getHeight()-2){
-            init = siblings;
+            // start position
+            init = rank(level+1,siblings*k_d);
             end = init + children - 1;
             return true;
         }

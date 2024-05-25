@@ -10,7 +10,7 @@
 #include "include/bp_support_sada_v2.hpp"
 #include <sdsl/bit_vectors.hpp>
 #include <sdsl/k2_tree_helper.hpp>
-//#include "rank.hpp"
+#include "rank.hpp"
 
 using namespace std;
 using namespace sdsl;

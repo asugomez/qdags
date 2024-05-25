@@ -1,5 +1,4 @@
 #include "../../../../src/louds/join_partial_results.cpp"
-#include "../../../../src/joins.cpp"
 // cada una de las query tiene su codigo
 // j --> una forma q sale en el paper
 // p --> caminos
@@ -99,22 +98,22 @@ int main(int argc, char** argv)
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
-   
-    qdag *Join_Result;
 
-    Join_Result = multiJoin(Q, true, 1000);
-    
+    uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
+    int64_t k = argv[5] ? atoi(argv[5]) : 1000;
+
+    vector<uint16_t*> results_partial_louds;
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
     // warmup join -> activar el caché
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
  
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

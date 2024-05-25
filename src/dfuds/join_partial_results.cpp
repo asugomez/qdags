@@ -206,7 +206,7 @@ bool multiJoinPartialResultsDfuds(
                       pq, results_points);
 
 
-    cout << "number of results: " << results_points.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
@@ -361,7 +361,7 @@ bool AND_partial_dfuds_backtracking(
                 }
             }
 
-            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
+            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES_DFUDS) // density estimator, otherwise it's the number of leaves (min of the tuple)
                 total_weight /= grid_size;
 
             orderJoinQdag this_node = {i, coordinatesTemp, total_weight} ;
@@ -447,7 +447,7 @@ bool multiJoinPartialResultsDfudsBacktracking(
                                    coordinates, size_queue,
                                    top_results);
 
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    uint64_t i=0;
 //    while(i < top_results.size()){
 //        uint16_t* coordinates = top_results[i];

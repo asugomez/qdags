@@ -8,6 +8,7 @@ fi
 
 # Nombre del archivo de datos
 data_file="$1"
+num=$2
 
 # Verificar si el archivo de datos existe
 if [ ! -f "$data_file" ]; then
@@ -19,7 +20,7 @@ fi
 line_count=$(wc -l < "$data_file")
 
 # Crear el archivo de prioridades
-priorities_file="priorities"
+priorities_file="p$num"
 rm -f "$priorities_file"  # Eliminar el archivo de prioridades si ya existe
 
 # Generar números aleatorios y escribirlos en el archivo de prioridades

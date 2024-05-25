@@ -110,6 +110,11 @@ int main(int argc, char** argv)
     int_vector<> priorities_R(number_of_lines_R,0);
     int_vector<> priorities_S(number_of_lines_S,0);
 
+    data_file_R.clear();
+    data_file_R.seekg(0, std::ios::beg);
+    data_file_S.clear();
+    data_file_S.seekg(0, std::ios::beg);
+
     // put the priorities in the int_vector
     int value;
     int i=0;
@@ -127,16 +132,22 @@ int main(int argc, char** argv)
     p.push_back(priorities_R);
     p.push_back(priorities_S);
 
+    uint8_t type_fun = argv[5] ? atoi(argv[5]) : 1;
+    int64_t k = argv[6] ? atoi(argv[6]) : 1000;
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    vector<uint16_t*> results_ranked_louds;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinRankedResults(Q, true, 1000, 1, -1, p);
+    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
  
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, -1, p);
+    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

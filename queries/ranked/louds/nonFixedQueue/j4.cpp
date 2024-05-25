@@ -106,10 +106,10 @@ int main(int argc, char **argv) {
     qdag *Join_Result;
 
     // read priorities from file
-    std::ifstream data_file_R(argv[4]); // Abrir el archivo de datos
-    std::ifstream data_file_S(argv[5]); // Abrir el archivo de datos
-    std::ifstream data_file_T(argv[6]); // Abrir el archivo de datos
-    std::ifstream data_file_U(argv[7]); // Abrir el archivo de datos
+    std::ifstream data_file_R(argv[5]); // Abrir el archivo de datos
+    std::ifstream data_file_S(argv[6]); // Abrir el archivo de datos
+    std::ifstream data_file_T(argv[7]); // Abrir el archivo de datos
+    std::ifstream data_file_U(argv[8]); // Abrir el archivo de datos
     if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open() || !data_file_U.is_open()) {
         std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
         return 1;
@@ -130,6 +130,15 @@ int main(int argc, char **argv) {
     int_vector<> priorities_S(number_of_lines_S,0);
     int_vector<> priorities_T(number_of_lines_T,0);
     int_vector<> priorities_U(number_of_lines_U,0);
+
+    data_file_R.clear();
+    data_file_R.seekg(0, std::ios::beg);
+    data_file_S.clear();
+    data_file_S.seekg(0, std::ios::beg);
+    data_file_T.clear();
+    data_file_T.seekg(0, std::ios::beg);
+    data_file_U.clear();
+    data_file_U.seekg(0, std::ios::beg);
 
     // put the priorities in the int_vector
     int value;
@@ -159,16 +168,23 @@ int main(int argc, char **argv) {
     p.push_back(priorities_T);
     p.push_back(priorities_U);
 
+    uint8_t type_fun = argv[9] ? atoi(argv[9]) : 1;
+    int64_t k = argv[10] ? atoi(argv[10]) : 1000;
+    vector<rmq_succinct_sct<false>> rMq;
+    for(uint64_t i = 0; i < Q.size(); i++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    vector<uint16_t*> results_ranked_louds;
+
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;
     duration<double> time_span;
 
-    multiJoinRankedResults(Q, true, 1000, 1, -1, p);
+    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
 
     start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, 1000, 1, -1, p);
+    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

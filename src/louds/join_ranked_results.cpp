@@ -123,7 +123,6 @@ bool AND_ranked(
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
-                    // TODO: see this: what to do when i-th bit is 0?
                     uint64_t priority_ith_node = 0;
                     bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
                     if(success){
@@ -223,7 +222,7 @@ bool multiJoinRankedResults(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
@@ -414,13 +413,21 @@ AND_ranked_backtracking(
                     }
                 }
             }
-            orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
-            order_to_traverse.push(this_node); // add the tuple to the queue
-
+            // queue full --> compare priorities
+            if(top_results.size() >= size_queue ){
+                qdagResults minResult = top_results.top();
+                if(total_weight >= minResult.weight){ // if it has a higher priority, then we enter into this branch of the tree
+                    orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
+                    order_to_traverse.push(this_node); // add the tuple to the queue
+                }
+            }
+            else{
+                orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
+                order_to_traverse.push(this_node); // add the tuple to the queue
+            }
         }
         // recursive call in order according to the n_leaves
-        //while(!order_to_traverse.empty()){
-        for (i = 0; i < children_to_recurse_size; ++i) {
+        while(!order_to_traverse.empty()){
             orderJoinQdag order = order_to_traverse.top();
             order_to_traverse.pop();
             AND_ranked_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, type_priority_fun,
@@ -500,7 +507,7 @@ bool multiJoinRankedResultsBacktracking(
                             top_results);
 
     uint64_t size_queue_top = top_results.size();
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
 //        top_results.pop();

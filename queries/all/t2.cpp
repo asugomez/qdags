@@ -8,7 +8,7 @@
 using namespace std::chrono;
 
 
-#include "../src/joins.cpp"
+#include "../../src/joins.cpp"
 
 high_resolution_clock::time_point start_select, stop_select;
 double total_time_select = 0.0;       
@@ -66,7 +66,8 @@ int main(int argc, char** argv)
     att_R.push_back(AT_X); att_R.push_back(AT_Y); 
     att_S.push_back(AT_X); att_S.push_back(AT_Z); 
     
-    std::string strRel_R(argv[1]), strRel_S(argv[2]); 
+    std::string strRel_R(argv[1]), strRel_S(argv[2]);
+    int64_t k = argv[3] ? atoi(argv[3]) : 1000;
     
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size());
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
@@ -94,11 +95,11 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
  
-    Join_Result = parMultiJoin(Q, true, 1000);  // cache warmup
+    Join_Result = multiJoin(Q, true, k);  // cache warmup
    
     start = high_resolution_clock::now();    
     
-    Join_Result = parMultiJoin(Q, true, 1000); 
+    Join_Result = multiJoin(Q, true, k);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

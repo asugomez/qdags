@@ -1,0 +1,39 @@
+#!/bin/bash
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# compile partial results
+# louds
+echo "Compiling partial louds backtracking"
+cd "$script_dir/partial/louds/backtracking/"
+./compilePartialLoudsBacktrackingM1.sh
+echo "Compiling partial louds nonFixedQueue"
+cd "$script_dir/partial/louds/nonFixedQueue/"
+./compilePartialLoudsNonFixedQueueM1.sh
+# dfuds
+echo "Compiling partial dfuds backtracking"
+cd "$script_dir/partial/dfuds/backtracking/"
+./compilePartialDfudsBacktrackingM1.sh
+echo "Compiling partial dfuds nonFixedQueue"
+cd "$script_dir/partial/dfuds/nonFixedQueue/"
+./compilePartialDfudsNonFixedQueueM1.sh
+
+# compile ranked results
+# louds
+echo "Compiling ranked louds backtracking"
+cd "$script_dir/ranked/louds/backtracking/"
+./compileRankedLoudsBacktrackingM1.sh
+echo "Compiling ranked louds nonFixedQueue"
+cd "$script_dir/ranked/louds/nonFixedQueue/"
+./compileRankedLoudsNonFixedQueueM1.sh
+# dfuds
+echo "Compiling ranked dfuds nonFixedQueue"
+cd "$script_dir/ranked/dfuds/nonFixedQueue/"
+./compileRankedDfudsBacktrackingM1.sh
+echo "Compiling ranked dfuds backtracking"
+cd "$script_dir/ranked/dfuds/backtracking/"
+./compileRankedDfudsNonFixedQueueM1.sh
+
+# traditional join
+echo "Compiling traditional join"
+cd "$script_dir/all/"
+./compileTraditionalJoinM1.sh

@@ -100,18 +100,21 @@ int main(int argc, char** argv)
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
     Q[3] = qdag_rel_U;
-    
-    qdag *Join_Result;
+
+    uint8_t type_fun = argv[5] ? atoi(argv[5]) : 1;
+    int64_t k = argv[6] ? atoi(argv[6]) : 1000;
+
+    vector<uint16_t*> results_partial_louds;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
     
     start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, 1000, 0, 0, -1);
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

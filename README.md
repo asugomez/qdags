@@ -14,6 +14,8 @@ To run main
 ```
 ./main ./data/prop-direct-P197 ./data/prop-direct-P800 ./data/prop-direct-P1366 
 ```
+
+/usr/local/include --> divsufsort ,...
 See http://algo2.iti.kit.edu/gog/docs/html/index.html 
 
 # set the C++ standard
@@ -111,10 +113,26 @@ The script files to run the tests are in the runqueries folder. On each subfolde
 - Run script: it runs all the queries and put the outputs in the respective output folder.
 - All the run queries to be tested with different data. The files are named as runqueries-[type of query]-bfs-sorted.sh
 
-## To run the tests
+## To run a particular test
 1. First go to the runqueries folder and choose the subfolder you want to test. For example
 ` cd runqueries/partial/dfuds/fixedQueue`
-2. Run the compile script
-`./compilePartialDfudsFixedQueue.sh`
+2. Run the compile script (the firs)
+
+    For GNU CC: `./compilePartialDfudsFixedQueue.sh`
+
+    For Clang: `./compilePartialDfudsFixedQueueM1.sh`
+
 3. Run the run script
 `./runPartialDfudsFixed.sh`
+
+## To run all the tests
+1. Go to the runqueries folder
+`cd runqueries`
+2. Run the compile script
+
+    For GNU CC `./compileAllAlgorithms.sh`
+
+    For Clang `./compileAllAlgorithmsM1.sh`
+
+3. Run all scripts
+`./runAllAlgorithms.sh`
