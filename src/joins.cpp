@@ -174,7 +174,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
          vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
          bool bounded_result, uint64_t UPPER_BOUND) {
     // number of children of the qdag (extended)
-    uint64_t p = Q[0]->nChildren(); // TODO: pregunta asumo que todos tienen la misma aridad?
+    uint64_t p = Q[0]->nChildren();
     bool result = false;
     //uint64_t root_temp[nQ];
     bool just_zeroes = true;
@@ -252,7 +252,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
             // bajar por aquellos hijos q esten presentes en TODOS los qdags!!!!
         }
         // en children estan aquellos 1 por aquellos hijos por donde necesitamos descender --> estamos buscando la interseccion rapida
-        // TODO: pregunta como se que signfician esos 1s? pues están en distinto orden en cada qdag
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
         i = 0;

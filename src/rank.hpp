@@ -52,6 +52,10 @@ public:
         return block[i >> 6] + bits::cnt(seq[i >> 6] & ~(0xffffffffffffffff << (i & 0x3f)));
     }
 
+    inline uint8_t get_2_bits(uint64_t start_pos) {
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
+    }
+
     // los 4 bits que definen un nodo
     /**
      * Get the 4 bits that define a quadtree_formula
@@ -63,15 +67,16 @@ public:
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
     }
 
-    inline uint8_t get_2_bits(uint64_t start_pos) {
-        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
-    }
 
     inline uint8_t get_8_bits(uint64_t start_pos) {
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
     }
 
-    inline uint8_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
+    inline uint16_t get_16_bits(uint64_t start_pos) {
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffff);
+    }
+
+    inline uint16_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
         switch(k_d){
             case 2:
                 return get_2_bits(start_pos);
@@ -79,8 +84,10 @@ public:
                 return get_4_bits(start_pos);
             case 8:
                 return get_8_bits(start_pos);
+            case 16:
+                return get_16_bits(start_pos);
             default:
-                cout << "error k_d > 8" << endl;
+                cout << "error k_d > 16" << endl;
                 return 0;
         }
     }
@@ -123,16 +130,8 @@ public:
         return u;
     }
 
-    inline void set_size(uint64_t new_u) {
-        this->u = new_u;
-    }
-
     inline uint64_t n_ones() {
         return n;
-    }
-
-    inline void set_n_ones(uint64_t new_n) {
-        this->n = new_n;
     }
 
     inline uint64_t size_in_bytes() {
@@ -141,45 +140,6 @@ public:
                + 2 * sizeof(uint64_t);
     }
 
-    uint64_t get_seq() {
-        return *this->seq;
-    }
-
-    void set_seq(uint64_t *new_seq) {
-        this->seq = new_seq;
-    }
-
-    void apply_mask_seq(uint64_t mask) {
-        uint64_t new_seq = get_seq() & mask;
-        this->seq = &new_seq;
-    }
-
-    void set_block(uint32_t *new_block) {
-        this->block = new_block;
-    }
-
-    uint32_t* get_block() {
-        return this->block;
-    }
-
-
-    /**
-     *
-     * @return
-     * @example 00000000 00000000 00000000 00010000 will be 27
-     */
-    uint64_t first_one(){
-        return __builtin_clz(get_seq());
-    }
-
-    /**
-     *
-     * @return
-     * @example 00000000 00000000 00000000 00010000 will be 4
-     */
-    uint64_t last_one(){
-        return __builtin_ctz(get_seq());
-    }
 
     /**
      *
@@ -190,10 +150,13 @@ public:
      */
     bool get_bit(uint64_t parent, uint64_t child, uint64_t k_d){
         uint8_t x;
-        if(k_d == 4) {
-            x = get_4_bits(parent*k_d);
-        } else {
+        if(k_d == 2) {
             x = get_2_bits(parent*k_d);
+        } else if(k_d == 4){
+            x = get_4_bits(parent*k_d);
+        } else{
+            cout << "k_d not supported";
+            return false;
         }
         return (x & (1 << child)) != 0;
 
@@ -207,18 +170,26 @@ public:
      */
     bool get_ith_bit(uint64_t node, uint64_t k_d){
         uint8_t x;
-        if(k_d == 4) {
-            x = get_4_bits(node);
-        } else {
+        if(k_d == 2) {
             x = get_2_bits(node);
+        } else if(k_d == 4){
+            x = get_4_bits(node);
+        } else if(k_d == 8){
+            x = get_8_bits(node);
+        } else if(k_d == 16){
+            x = get_16_bits(node);
+        } else{
+            cout << "k_d not supported";
+            return false;
         }
         return x&1;
     }
 
-    void print_8_bits(uint64_t start_pos) {
-        uint8_t x = get_8_bits(start_pos);
 
-        for (int i = 0; i < 8; i++) {
+    void print_2_bits(uint64_t start_pos) {
+        uint8_t x =  ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
+
+        for (int i = 0; i < 2; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";
@@ -236,10 +207,19 @@ public:
         cout << " ";
     }
 
-    void print_2_bits(uint64_t start_pos) {
-        uint8_t x =  ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
+    void print_8_bits(uint64_t start_pos) {
+        uint8_t x = get_8_bits(start_pos);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 8; i++) {
+            cout << ((x & (1 << i)) ? "1" : "0");
+        }
+        cout << " ";
+    }
+
+    void print_16_bits(uint64_t start_pos) {
+        uint16_t x =  get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+
+        for (int i = 0; i < 16; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";
@@ -248,16 +228,20 @@ public:
     void print(uint64_t k_d) {
         uint64_t i = 0;
         while (i < u) {
-            if(k_d == 4){
-                print_4_bits(i);
-                i = i + 4;
-            } else if(k_d == 2){
+            if(k_d == 2){
                 print_2_bits(i);
                 i = i + 2;
+            } else if(k_d == 4){
+                print_4_bits(i);
+                i = i + 4;
             } else if(k_d == 8){
                 print_8_bits(i);
                 i = i + 8;
-            } else{
+            } else if(k_d == 16){
+                print_16_bits(i);
+                i = i + 16;
+            }
+            else{
                 cout << "k_d not supported";
                 break;
             }

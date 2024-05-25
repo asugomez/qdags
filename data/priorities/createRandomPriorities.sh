@@ -22,7 +22,7 @@ file_length=$(wc -l < "$data_file")
 seed=$(od -An -N2 -i /dev/random | awk '{print $1}')
 
 # Crear el archivo de prioridades
-priorities_file="priorities"
+priorities_file="pri3"
 rm -f "$priorities_file"  # Eliminar el archivo de prioridades si ya existe
 
 # Establecer la semilla para el generador de números aleatorios

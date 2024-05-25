@@ -298,9 +298,10 @@ public:
         // given a vector of ints that indicates the position of the 1s in the bitvector, modify the vector to a bitvector
         bit_vector _bv(n_chunks*k_d);
         for(uint64_t i : _bv_int){
+//            _bv.set_int(i,1,1);
             _bv[i] = 1;
-            total_ones[level]++;
         }
+        total_ones[level] = _bv_int.size();
         return rank_bv_64(_bv);
 
     }
@@ -345,14 +346,15 @@ public:
     }
 
     inline uint8_t get_node_last_level(uint16_t level, uint64_t node) {
-        if (k_d == 4)
+        if (k_d == 2)
+            return bv[level].get_2_bits(node);
+        else if(k_d == 4)
             return bv[level].get_4_bits(node);
         else
-            return bv[level].get_2_bits(node);
+            throw "error: k_d > 4";
     }
 
     /**
-     * TODO: como funciona
      * @param level
      * @param node
      * @param rank_array
@@ -734,6 +736,7 @@ public:
      * @return the index in the bv[level+1] of the ith-child of node. If the i-th child of the node doesn't exist, it returns the total the position where the level ends.
      * For the last level, return the position of the leaf.
      */
+     // TODO: debug here
     uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
         if(level == getHeight()-1){
             return node + ith_child;
@@ -749,10 +752,10 @@ public:
 
     void printBv() {
         //cout << "call to se_quadtree --> printBv. Size path = " << path->size() << endl;
-        for (int i = 0; i < getHeight(); i++) {
+        for (int i = 0; i < height; i++) {
             //cout << "size path[" << i << "]=" << bv[i].size() << " and n_ones = " << bv[i].n_ones() << endl;
             this->getBv()[i].print(k_d);
-            //cout << endl;
+            cout << endl;
         }
     }
 
