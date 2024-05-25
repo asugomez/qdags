@@ -230,17 +230,17 @@ int main(int argc, char **argv) {
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 
-//    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
-//    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds);
-//    results_partial_dfuds.clear();
-//    start = high_resolution_clock::now();
-//    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds);
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//
-//
+    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds);
+    results_partial_dfuds.clear();
+    start = high_resolution_clock::now();
+    multiJoinPartialResultsDfuds(Q_dfuds, true, 1000, grid_side, type_fun, results_partial_dfuds);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+
     cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING DFUDS------" << endl;
     multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);
     results_partial_dfuds_back.clear();
@@ -250,18 +250,18 @@ int main(int argc, char **argv) {
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//
-//
-//    cout << "----- MULTI JOIN RANKED RESULTS DFUDS------" << endl;
-//    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, type_fun, p, rMq_louds, results_ranked_dfuds);
-//    start = high_resolution_clock::now();
-//    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, type_fun, p, rMq_louds, results_ranked_dfuds);
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//
-//
+
+
+    cout << "----- MULTI JOIN RANKED RESULTS DFUDS------" << endl;
+    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, type_fun, p, rMq_louds, results_ranked_dfuds);
+    start = high_resolution_clock::now();
+    multiJoinRankedResultsDfuds(Q_dfuds,true, 1000, type_fun, p, rMq_louds, results_ranked_dfuds);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING DFUDS------" << endl;
     multiJoinRankedResultsDfudsBacktracking(Q_dfuds, type_fun, size_queue,  p, rMq_louds, results_ranked_dfuds_back);
     results_ranked_dfuds_back = priority_queue<qdagResults>();
@@ -271,18 +271,18 @@ int main(int argc, char **argv) {
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//
-//
-//    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
-//    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
-//    results_partial_louds.clear();
-//    start = high_resolution_clock::now();
-//    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//
+
+
+    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
+    results_partial_louds.clear();
+    start = high_resolution_clock::now();
+    multiJoinPartialResults(Q, true, 1000, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
     cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
     results_partial_louds_back.clear();
@@ -293,14 +293,14 @@ int main(int argc, char **argv) {
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-//    cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
-//    multiJoinRankedResults(Q, true, 1000, type_fun, p, rMq_louds, results_ranked_louds); // warmup join -> activar el caché
-//    start = high_resolution_clock::now();
-//    multiJoinRankedResults(Q, true, 1000, type_fun, p, rMq_louds, results_ranked_louds); // warmup join -> activar el caché
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+    cout << "----- MULTI JOIN RANKED RESULTS ------" << endl;
+    multiJoinRankedResults(Q, true, 1000, type_fun, p, rMq_louds, results_ranked_louds); // warmup join -> activar el caché
+    start = high_resolution_clock::now();
+    multiJoinRankedResults(Q, true, 1000, type_fun, p, rMq_louds, results_ranked_louds); // warmup join -> activar el caché
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     cout << "----- MULTI JOIN RANKED RESULTS BACKTRACKING------" << endl;
     multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq_louds, results_ranked_louds_back); // warmup join -> activar el caché
