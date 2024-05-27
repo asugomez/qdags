@@ -181,7 +181,7 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
     multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
-
+    results_ranked_louds.clear();
     start = high_resolution_clock::now();
 
     multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);

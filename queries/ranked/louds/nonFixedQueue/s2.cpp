@@ -180,7 +180,7 @@ int main(int argc, char** argv)
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
-    
+    results_ranked_louds.clear();
     start = high_resolution_clock::now();
 
     multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);

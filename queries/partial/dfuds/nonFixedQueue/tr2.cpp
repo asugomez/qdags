@@ -105,7 +105,7 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
     multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds); // warmup join
-     
+    results_partial_dfuds.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);

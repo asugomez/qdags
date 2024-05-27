@@ -108,7 +108,7 @@ int main(int argc, char** argv)
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
-    
+    results_partial_louds_back.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);

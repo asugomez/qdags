@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
     multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
-
+    results_partial_louds.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);

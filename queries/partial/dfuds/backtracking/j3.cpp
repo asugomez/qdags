@@ -108,7 +108,7 @@ int main(int argc, char** argv)
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
     multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back); // warmup join -> activar el caché
- 
+    results_partial_dfuds_back.clear();
     start = high_resolution_clock::now();    
     
     multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);
