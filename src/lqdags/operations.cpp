@@ -118,6 +118,8 @@ quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint
     }
 
     uint64_t p = std::pow(Q[0].getK(), A.size());
+
+    // join result is the formula
     return join_result->completion(p, Q[0].getHeight(), 0, UPPER_BOUND, results);
 }
 
@@ -130,12 +132,25 @@ lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {
     return diff;
 }
 
-// is a virtual lqdag on A whose cells are exactly those that satisfy the predicate θ .
-void pred(){
+quadtree_formula* compute_lqdag_diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND,uint64_t &results){
+    subQuadtreeChild* subQ1 = new subQuadtreeChild{&q1, 0, 0};
+    subQuadtreeChild* subQ2 = new subQuadtreeChild{&q2, 0, 0};
+    lqdag* diff = new lqdag(FUNCTOR_AND, new lqdag(FUNCTOR_QTREE, subQ1), new lqdag(FUNCTOR_NOT, subQ2));
+    uint64_t p = std::pow(q1.getK(), q1.nAttr());
+    return diff->completion(p, q1.getHeight(), 0, UPPER_BOUND, results);
+}
+
+/**
+ * Is a virtual lqdag on A whose cells are exactly those that satisfy the predicate θ.
+ */
+lqdag* pred(){
 
 }
 
-void selection(){
+/**
+ * Takes a subexpression F and a predicate θ, which is a logical expression on the attributes of F.
+ */
+lqdag* selection(){
 
 }
 
