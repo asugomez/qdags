@@ -166,7 +166,7 @@ int main(int argc, char** argv)
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
     multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds);  // warmup join -> activar el caché
- 
+    results_ranked_louds.clear();
     start = high_resolution_clock::now();
 
     multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds);

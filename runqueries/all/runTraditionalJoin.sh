@@ -14,7 +14,7 @@ for k in 1 10 100 1000; do
     results_file="../outputs/all/$file-k$k.txt"
 
     while IFS= read -r line || [ -n "$line" ]; do
-      modified_line="$line $k"
+      modified_line="$line$k"
       echo "$modified_line"
     done < "$input_file" > "$output_file"
 

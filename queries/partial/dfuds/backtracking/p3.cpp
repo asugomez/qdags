@@ -102,7 +102,7 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
     multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back); // cache warmup
-    
+    results_partial_dfuds_back.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);

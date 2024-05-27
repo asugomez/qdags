@@ -110,7 +110,8 @@ int main(int argc, char** argv)
 
     // warmup join -> activar el caché
     multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
- 
+    results_partial_louds.clear();
+
     start = high_resolution_clock::now();
 
     multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);

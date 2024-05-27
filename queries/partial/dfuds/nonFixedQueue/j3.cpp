@@ -108,7 +108,7 @@ int main(int argc, char** argv)
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
     multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds); // warmup join -> activar el caché
- 
+    results_partial_dfuds.clear();
     start = high_resolution_clock::now();    
     
     multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);

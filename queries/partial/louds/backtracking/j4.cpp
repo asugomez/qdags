@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
     duration<double> time_span;
 
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
-
+    results_partial_louds_back.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
