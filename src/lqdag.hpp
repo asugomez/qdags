@@ -78,8 +78,6 @@ public:
                     if(quadrant_side == 1){
                         return min_att_1 == min_att_2;
                     }
-                    if(min_att_1 == min_att_2 && max_att_1 == max_att_2)
-                        return 1;
                     else if(min_att_1 == min_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2 || max_att_1 == max_att_2)
                         return 0.5;
                     else
@@ -88,8 +86,6 @@ public:
                     if(quadrant_side == 1){
                         return min_att_1 != min_att_2;
                     }
-                    if(min_att_1 == min_att_2 && max_att_1 == max_att_2)
-                        return 0;
                     else if(min_att_1 == min_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2 || max_att_1 == max_att_2)
                         return 0.5;
                     else
@@ -617,7 +613,7 @@ public:
                 if(cur_level == max_level)
                     results++;
                 else if(cur_level < max_level)
-                    results += p * (max_level - cur_level);
+                    results += pow(p, (max_level - cur_level));
             }
             return newNode;
         }
@@ -642,7 +638,7 @@ public:
                 if(cur_level == max_level)
                     results++;
                 else if(cur_level < max_level)
-                    results += p * (max_level - cur_level);
+                    results += pow(p, (max_level - cur_level));
             }
             return newNode;
         }
@@ -719,7 +715,7 @@ public:
                     if(cur_level == max_level)
                         results++;
                     else if(cur_level < max_level)
-                        results += p * (max_level - cur_level);
+                        results += pow(p ,(max_level - cur_level));
                 }
                 return newNode;
             }
