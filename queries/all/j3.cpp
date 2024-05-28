@@ -76,6 +76,7 @@ int main(int argc, char** argv)
     att_T.push_back(AT_X); att_T.push_back(AT_V);
     
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
+    int64_t k = argv[4] ? atoi(argv[4]) : 1000;
     
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
     std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion 
@@ -108,11 +109,11 @@ int main(int argc, char** argv)
     duration<double> time_span;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    Join_Result = multiJoin(Q, true, 1000); // warmup join -> activar el caché
+    Join_Result = multiJoin(Q, true, k); // warmup join -> activar el caché
  
     start = high_resolution_clock::now();    
     
-    Join_Result = multiJoin(Q, true, 1000);
+    Join_Result = multiJoin(Q, true, k);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
