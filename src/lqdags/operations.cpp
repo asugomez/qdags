@@ -69,6 +69,13 @@ lqdag* lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND) {
     return join_result;
 }
 
+/**
+ * Completion for the join operation
+ * @param Q
+ * @param UPPER_BOUND
+ * @param results
+ * @return
+ */
 quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -129,7 +136,7 @@ quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint
 }
 
 /**
- * Logical disjunction
+ * Logical disjunction (formula)
  * @param Q
  * @return
  */
@@ -166,7 +173,23 @@ lqdag* lqdag_or(vector<qdag> &Q) {
     return or_result;
 }
 
+lqdag* lqdag_and(vector<qdag> &Q){
+    // TODO
+}
 
+lqdag* lqdag_not(vector<qdag> &Q){
+    // TODO
+}
+
+
+/**
+ * Completion of a predicate over a qdag
+ * @param Q
+ * @param UPPER_BOUND
+ * @param results
+ * @param pred
+ * @return
+ */
 quadtree_formula* compute_pred_formula(qdag Q, uint64_t UPPER_BOUND, uint64_t &results, predicate* pred){
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -192,6 +215,7 @@ quadtree_formula* compute_pred_formula(qdag Q, uint64_t UPPER_BOUND, uint64_t &r
 }
 
 
+// TODO: completion pred over a more complex formula (two or more relations) R(A,B) and S(B,C) and pred : A=C
 
 // (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
 lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {
@@ -210,40 +234,26 @@ quadtree_formula* compute_lqdag_diff(qdag q1, qdag q2, bool bounded_result, uint
 }
 
 
-
-/**
- * Is a virtual lqdag on A whose cells are exactly those that satisfy the predicate θ.
- * Lo que entiendo:
- * creamos un qdag virtual sobre Q_θ. Partimos como de una grilla llena y luego vamos eliminando las celdas que no cumplen con la condición.
- *  without building an actual quadtree Qθ on
- */
-
-
-
-/**
- * Takes a formula F and a predicate θ, which is a logical expression on the attributes of F and returns
- * - 0 if θ does not hold for any cell in the current subgrid;
- * - 1 if θ holds for all cells in the current subgrid;
- * - 1/2 otherwise
- * @param l1
- * @param pred
- * @return 0, 1 or 1/2.
- */
-double value_quadtree_pred(lqdag* l1, predicate* pred){
-    if(l1->getFunctor() == FUNCTOR_QTREE) {
-        uint64_t nAtt = l1->getAttributeSet().size();
-        uint16_t cur_level = l1->getSubQuadtree()->level;
-        uint64_t cur_node = l1->getSubQuadtree()->node;
-        qdag* qdag = l1->getSubQuadtree()->qdag;
-    }
-}
-
-
-
 /**
  * Takes a subexpression F and a predicate θ, which is a logical expression on the attributes of F.
  */
 lqdag* selection(){
+    // TODO
+}
+
+lqdag* projection(){
+    // TODO
+}
+
+lqdag* semijoin(){
+
+}
+
+lqdag* antijoin(){
+
+}
+
+lqdag* division(){
 
 }
 
