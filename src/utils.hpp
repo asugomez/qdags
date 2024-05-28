@@ -61,12 +61,19 @@ void getCoordinates(uint64_t path, uint16_t nAtt, uint64_t height, uint16_t *poi
     }
 }
 
+/**
+ * Transform the i-th child into a coordinate according to the Morton code.
+ * @param coordinates
+ * @param nAtt
+ * @param diff_level
+ * @param child
+ */
 void transformCoordinates(uint16_t* coordinates, uint16_t nAtt, uint64_t diff_level, uint16_t child){
     uint16_t n_ones = sdsl::bits::cnt(child);
     uint64_t msb;
     for(uint16_t i=0; i < n_ones; i++){
         msb = __builtin_clz(child);
-        coordinates[(msb+1)%nAtt] += 1 << diff_level;
+        coordinates[(msb+1)%nAtt] += 1 << diff_level; // the last bits correspond to the initial coordinates : [....,z,w,y,x]
         child &= ((0xffffffff) >> (msb + 1));
     }
 

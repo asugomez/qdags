@@ -2,11 +2,17 @@
 // Created by Asunción Gómez on 19-04-24.
 //
 
-#include "../lqdag.hpp"
+//#include "../lqdag.hpp"
 
 // ---------- FULL RELATIONAL ALGEBRA ---------- //
 
 // (JOIN, L1(A1), L2(A2)) = (AND, (EXTEND, L1, A1 ∪ A2), (EXTEND, L2, A1 ∪ A2))
+/**
+ * Formula for the join operation
+ * @param Q
+ * @param UPPER_BOUND
+ * @return
+ */
 lqdag* lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -62,7 +68,6 @@ lqdag* lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND) {
 
     return join_result;
 }
-
 
 quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results) {
     qdag::att_set A;
@@ -123,6 +128,70 @@ quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint
     return join_result->completion(p, Q[0].getHeight(), 0, UPPER_BOUND, results);
 }
 
+/**
+ * Logical disjunction
+ * @param Q
+ * @return
+ */
+lqdag* lqdag_or(vector<qdag> &Q) {
+    subQuadtreeChild* subQ[Q.size()];
+    lqdag* or_qdag[Q.size()];
+
+    for (uint64_t i = 0; i < Q.size(); i++) {
+        subQ[i] = new subQuadtreeChild{&Q[i], 0, 0};
+        or_qdag[i] = new lqdag(FUNCTOR_QTREE, subQ[i]);
+    }
+
+    lqdag* or_result;
+    if (Q.size() == 3){
+        lqdag* or_r_s = new lqdag(FUNCTOR_OR, or_qdag[0], or_qdag[1]);
+        or_result = new lqdag(FUNCTOR_OR, or_r_s, or_qdag[2]);
+    }
+    else if (Q.size() == 4){
+        lqdag* or_r_s = new lqdag(FUNCTOR_OR, or_qdag[0], or_qdag[1]);
+        lqdag* or_t_u = new lqdag(FUNCTOR_OR, or_qdag[2], or_qdag[3]);
+        or_result = new lqdag(FUNCTOR_OR, or_r_s, or_t_u);
+    }
+    else if (Q.size() == 5){
+        lqdag* or_r_s = new lqdag(FUNCTOR_OR, or_qdag[0], or_qdag[1]);
+        lqdag* or_t_u = new lqdag(FUNCTOR_OR, or_qdag[2], or_qdag[3]);
+        lqdag* or_r_s_t_u = new lqdag(FUNCTOR_OR, or_r_s, or_t_u);
+        or_result = new lqdag(FUNCTOR_OR, or_r_s_t_u, or_qdag[4]);
+    }
+    else {
+        cout << "Code only works for queries of up to 5 attributes..." << endl;
+        exit(1);
+    }
+
+    return or_result;
+}
+
+
+quadtree_formula* compute_pred_formula(qdag Q, uint64_t UPPER_BOUND, uint64_t &results, predicate* pred){
+    qdag::att_set A;
+    map<uint64_t, uint8_t> attr_map;
+
+    uint64_t nAttr = Q.nAttr();
+    for (uint64_t j = 0; j < nAttr; j++)
+        attr_map[Q.getAttr(j)] = 1;
+
+    // set of attributs
+    for (map<uint64_t, uint8_t>::iterator it = attr_map.begin(); it != attr_map.end(); it++)
+        A.push_back(it->first);
+
+    uint64_t p = std::pow(Q.getK(), A.size());
+
+    subQuadtreeChild* subQ = new subQuadtreeChild{&Q, 0, 0};
+    lqdag* lqdag_formula = new lqdag(FUNCTOR_QTREE, subQ);
+
+    uint16_t coordinates[A.size()];
+    for(uint16_t i = 0; i < A.size(); i++)
+        coordinates[i] = 0;
+
+    return lqdag_formula->completion_with_pred(p,Q.getHeight(),0,0,UPPER_BOUND,results,pred,coordinates);
+}
+
+
 
 // (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
 lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {
@@ -140,12 +209,36 @@ quadtree_formula* compute_lqdag_diff(qdag q1, qdag q2, bool bounded_result, uint
     return diff->completion(p, q1.getHeight(), 0, UPPER_BOUND, results);
 }
 
+
+
 /**
  * Is a virtual lqdag on A whose cells are exactly those that satisfy the predicate θ.
+ * Lo que entiendo:
+ * creamos un qdag virtual sobre Q_θ. Partimos como de una grilla llena y luego vamos eliminando las celdas que no cumplen con la condición.
+ *  without building an actual quadtree Qθ on
  */
-lqdag* pred(){
 
+
+
+/**
+ * Takes a formula F and a predicate θ, which is a logical expression on the attributes of F and returns
+ * - 0 if θ does not hold for any cell in the current subgrid;
+ * - 1 if θ holds for all cells in the current subgrid;
+ * - 1/2 otherwise
+ * @param l1
+ * @param pred
+ * @return 0, 1 or 1/2.
+ */
+double value_quadtree_pred(lqdag* l1, predicate* pred){
+    if(l1->getFunctor() == FUNCTOR_QTREE) {
+        uint64_t nAtt = l1->getAttributeSet().size();
+        uint16_t cur_level = l1->getSubQuadtree()->level;
+        uint64_t cur_node = l1->getSubQuadtree()->node;
+        qdag* qdag = l1->getSubQuadtree()->qdag;
+    }
 }
+
+
 
 /**
  * Takes a subexpression F and a predicate θ, which is a logical expression on the attributes of F.

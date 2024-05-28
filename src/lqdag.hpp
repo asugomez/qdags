@@ -23,6 +23,13 @@ const double INTERNAL_NODE = 0.5;
 // This indicates that one cannot determine the value of the quadtree_formula without computing the values of its children.
 const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the values of its children
 
+#define OP_EQUAL 0
+#define OP_UNEQUAL 1
+#define OP_LESS_EQUAL 2
+#define OP_GREATER_EQUAL 3
+#define OP_LESS 4
+#define OP_GREATER 5
+
 struct quadtree_formula { // represents the output of the formula we are evaluating
     double val_leaf; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE
     vector<quadtree_formula*> children;
@@ -39,11 +46,244 @@ struct subQuadtreeChild {
     // can only be a number from the original quadtree (not extended)
 };
 
+/**
+ * represents a predicate in the query
+ * can be:
+ * - att_1 op att_2 (0)
+ * - att_1 op val_const (1)
+ * - att_2 op val_const (2)
+ */
+struct predicate {
+    uint64_t att_1;
+    uint64_t att_2;
+    double val_const;
+    uint8_t op; // can be OP_EQUAL, OP_UNEQUAL, OP_LESS_EQUAL, OP_GREATER_EQUAL, OP_LESS, OP_GREATER
+    uint8_t type_pred; // can be 0, 1, 2
+};
+
 // lqdag as a syntax tree
 class lqdag {
 
 public:
     typedef vector<uint64_t> att_set;
+
+    static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side) {
+        uint64_t min_att_1 = coordinates[0]; // [min, max]
+        uint64_t max_att_1 = coordinates[0] + quadrant_side - 1;
+        uint64_t min_att_2 = coordinates[1];
+        uint64_t max_att_2 = coordinates[1] + quadrant_side - 1;
+        if(pred->type_pred == 0){ // att1 op att2
+            switch (pred->op){
+                case OP_EQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_1 == min_att_2;
+                    }
+                    if(min_att_1 == min_att_2 && max_att_1 == max_att_2)
+                        return 1;
+                    else if(min_att_1 == min_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2 || max_att_1 == max_att_2)
+                        return 0.5;
+                    else
+                        return 0;
+                case OP_UNEQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_1 != min_att_2;
+                    }
+                    if(min_att_1 == min_att_2 && max_att_1 == max_att_2)
+                        return 0;
+                    else if(min_att_1 == min_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2 || max_att_1 == max_att_2)
+                        return 0.5;
+                    else
+                        return 1;
+                case OP_LESS_EQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_1 <= min_att_2;
+                    }
+                    if(max_att_1 <= min_att_2 && min_att_1 <= max_att_2)
+                        return 1;
+                    else if(min_att_1 <= max_att_2 && max_att_1 >= min_att_2) // a part of the quadrant is inside the limits
+                        return 0.5;
+                    else
+                        return 0;
+                case OP_LESS:
+                    if(quadrant_side == 1){
+                        return min_att_1 < min_att_2;
+                    }
+                    if(max_att_1 < min_att_2 && min_att_1 < max_att_2)
+                        return 1;
+                    else if(min_att_1 < max_att_2 && max_att_1 > min_att_2) // a part of the quadrant is inside the limits
+                        return 0.5;
+                    else
+                        return 0;
+                case OP_GREATER_EQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_1 >= min_att_2;
+                    }
+                    if(min_att_1 >= max_att_2 && max_att_1 >= min_att_2)
+                        return 1;
+                    else if(max_att_1 >= min_att_2 &&  min_att_1 <= max_att_2) // a part of the quadrant is inside the limits
+                        return 0.5;
+                    else
+                        return 0;
+                case OP_GREATER:
+                    if(quadrant_side == 1){
+                        return min_att_1 > min_att_2;
+                    }
+                    if(min_att_1 > max_att_2 && max_att_1 > min_att_2)
+                        return 1;
+                    else if(max_att_1 > min_att_2 &&  min_att_1 < max_att_2) // a part of the quadrant is inside the limits
+                        return 0.5;
+                    else
+                        return 0;
+                default:
+                    throw "error: eval_pred default att1 op att2";
+            }
+        }
+        else if(pred->type_pred == 1){ // att1 op val_const
+            switch (pred->op) {
+                case OP_EQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_1 == pred->val_const;
+                    } else{
+                        if(min_att_1<= pred->val_const && pred->val_const <= max_att_1)
+                            return 0.5;
+                        else
+                            return 0;
+                    }
+                case OP_UNEQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_1 != pred->val_const;
+                    } else{
+                        if(min_att_1<= pred->val_const && pred->val_const <= max_att_1)
+                            return 0.5;
+                        else
+                            return 1;
+                    }
+                case OP_LESS_EQUAL: // att1 <= val_const
+                    if(quadrant_side == 1){
+                        return min_att_1 <= pred->val_const;
+                    }
+                    if(max_att_1 <= pred->val_const)
+                        return 1;
+                    else if(min_att_1 <= pred->val_const && pred->val_const < max_att_1)
+                        return 0.5;
+                    else if(min_att_1 > pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_LESS_EQUAL"; // no debiese llegar aqui
+                case OP_LESS: // att1 < val_const
+                    if(quadrant_side == 1){
+                        return min_att_1 < pred->val_const;
+                    }
+                    if(max_att_1 < pred->val_const)
+                        return 1;
+                    else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1)
+                        return 0.5;
+                    else if(min_att_1 > pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_LESS";
+                case OP_GREATER_EQUAL: // att1 >= val_const
+                    if(quadrant_side == 1){
+                        return min_att_1 >= pred->val_const;
+                    }
+                    if(min_att_1 >= pred->val_const)
+                        return 1;
+                    else if(min_att_1 < pred->val_const && pred->val_const <= max_att_1)
+                        return 0.5;
+                    else if(max_att_1 < pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_GREATER_EQUAL";
+                case OP_GREATER: // att1 > val_const
+                    if(quadrant_side == 1){
+                        return min_att_1 > pred->val_const;
+                    }
+                    if(min_att_1 > pred->val_const)
+                        return 1;
+                    else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1)
+                        return 0.5;
+                    else if(max_att_1 < pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_GREATER";
+                default:
+                    throw "error: eval_pred default att1 op val_const";
+            }
+        }
+        else{ // att2 op val_const
+            switch (pred->op) {
+                case OP_EQUAL:
+                    if(quadrant_side == 1){
+                        return min_att_2 == pred->val_const;
+                    } else{
+                        if(min_att_2<= pred->val_const && pred->val_const <= max_att_2)
+                            return 0.5;
+                        else
+                            return 0;
+                    }
+                case OP_UNEQUAL:
+                    if(quadrant_side == 1){ // TODO: como funciona? min o max?
+                        return min_att_2 != pred->val_const;
+                    } else{
+                        if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
+                            return 0.5;
+                        else
+                            return 1;
+                    }
+                case OP_LESS_EQUAL: // att2 <= val_const
+                    if(quadrant_side == 1){
+                        return min_att_2 <= pred->val_const;
+                    }
+                    if(max_att_2 <= pred->val_const)
+                        return 1;
+                    else if(min_att_2 <= pred->val_const && pred->val_const < max_att_2)
+                        return 0.5;
+                    else if(min_att_2 > pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_LESS_EQUAL"; // no debiese llegar aqui
+                case OP_LESS: // att2 < val_const
+                    if(quadrant_side == 1){
+                        return min_att_2 < pred->val_const;
+                    }
+                    if(max_att_2 < pred->val_const)
+                        return 1;
+                    else if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
+                        return 0.5;
+                    else if(min_att_2 > pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_LESS";
+                case OP_GREATER_EQUAL: // att2 >= val_const
+                    if(quadrant_side == 1){
+                        return min_att_2 >= pred->val_const;
+                    }
+                    if(min_att_2 >= pred->val_const)
+                        return 1;
+                    else if(min_att_2 < pred->val_const && pred->val_const <= max_att_2)
+                        return 0.5;
+                    else if(max_att_2 < pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_GREATER_EQUAL";
+                case OP_GREATER: // att2 > val_const
+                    if(quadrant_side == 1){
+                        return min_att_2 > pred->val_const;
+                    }
+                    if(min_att_2 > pred->val_const)
+                        return 1;
+                    else if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
+                        return 0.5;
+                    else if(max_att_2 < pred->val_const)
+                        return 0;
+                    else
+                        throw "error: eval_pred OP_GREATER";
+                default:
+                    throw "error: eval_pred default att2 op val_const";
+            }
+        }
+
+    }
 
 private:
     // lqdag L=(f,o), where f is a functor.
@@ -132,6 +372,24 @@ public:
         }
         this->M = M;
     }
+
+    uint8_t getFunctor(){
+        return this->functor;
+    }
+
+    att_set getAttributeSet(){
+        return this->attribute_set_A;
+    }
+
+    type_mapping_M* getM(){
+        return this->M;
+    }
+
+    subQuadtreeChild* getSubQuadtree(){
+        return this->subQuadtree;
+    }
+
+
 
     /**
      * Algorithm 1 Value(Q), adapted for lqdag
@@ -338,11 +596,11 @@ public:
      * Algorithm 9 of paper.
      * The completion Q_f is the quadtree representing the output of the formula F, represented as an lqdag.
      * @param k
-     *
+     * There is a diff between this algorithm and the original join. When cur_level is 0, we are considering all the grid. That's why max_level = height (and not height - 1)
      */
     quadtree_formula* completion(uint64_t p,
                                  uint16_t max_level,
-                                 uint16_t level,
+                                 uint16_t cur_level,
                                  uint64_t UPPER_BOUND,
                                  uint64_t &results) {
 
@@ -356,12 +614,11 @@ public:
         if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
             quadtree_formula* newNode = create_leaf(val_lqdag);
             if(val_lqdag == FULL_LEAF){
-                if(level == max_level)
+                if(cur_level == max_level)
                     results++;
-                else if(level < max_level)
-                    results += p * (max_level - level);
+                else if(cur_level < max_level)
+                    results += p * (max_level - cur_level);
             }
-
             return newNode;
         }
 
@@ -371,7 +628,7 @@ public:
         // if all quadtres are empty, return a 0 leaf.
         // C_i ← Completion(Child(L_F,i))
         for(uint64_t i = 0; i < p; i++){
-            quadtree_formula* newNode = this->get_child_lqdag(i)->completion(p, max_level, level + 1, UPPER_BOUND, results);
+            quadtree_formula* newNode = this->get_child_lqdag(i)->completion(p, max_level, cur_level + 1, UPPER_BOUND, results);
             Q_f_children.push_back(newNode);
             max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
             min_value = min(min_value, newNode->val_leaf);
@@ -381,11 +638,11 @@ public:
             Q_f_children.clear(); // memory
             double val_leaf = (max_value == EMPTY_LEAF)? EMPTY_LEAF : FULL_LEAF;
             quadtree_formula* newNode = create_leaf(val_leaf);
-            if(val_lqdag == FULL_LEAF){
-                if(level == max_level)
+            if(val_leaf == FULL_LEAF){
+                if(cur_level == max_level)
                     results++;
-                else if(level < max_level)
-                    results += p * (max_level - level);
+                else if(cur_level < max_level)
+                    results += p * (max_level - cur_level);
             }
             return newNode;
         }
@@ -401,73 +658,83 @@ public:
     }
 
 
-    void print(int depth = 0) {
-        switch (this->functor) {
-            case FUNCTOR_QTREE: {
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                cout << " QTREE" << endl;
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                cout << " " << this->subQuadtree->level << " " << this->subQuadtree->node << endl;
-                break;
+    /**
+     *
+     * @param p
+     * @param max_level
+     * @param child
+     * @param cur_level
+     * @param UPPER_BOUND
+     * @param results
+     * @param pred
+     * @param coordinates
+     * @param checkPred once we have evaluated the predicate and if this evaluation returns 1, we do not have to evaluate it again for its children.
+     * @return
+     */
+    quadtree_formula* completion_with_pred( uint64_t p,
+                                            uint16_t max_level,
+                                            uint16_t cur_level,
+                                            uint16_t child,
+                                            uint64_t UPPER_BOUND,
+                                            uint64_t &results,
+                                            predicate* pred,
+                                            uint16_t* coordinates) {
+
+        if(results >= UPPER_BOUND){ // top k results only
+            quadtree_formula* newNode = create_leaf(EMPTY_LEAF);
+            return newNode;
+        }
+        // if results < UPPER_BOUND
+        uint64_t quadrant_side = this->subQuadtree->qdag->getGridSide()/pow(this->subQuadtree->qdag->getK(),cur_level);
+        double val_eval_pred = eval_pred(pred, coordinates, quadrant_side);
+        if(val_eval_pred == 0){
+            quadtree_formula* newNode = create_leaf(EMPTY_LEAF);
+            return newNode;
+        } else if(val_eval_pred == 1){
+            return this->completion(p, max_level, cur_level, UPPER_BOUND, results);
+        } else {
+            double max_value = 0;
+            double min_value = 1;
+            vector<quadtree_formula*> Q_f_children;
+            // if all quadtres are empty, return a 0 leaf.
+            // C_i ← Completion(Child(L_F,i))
+            for(uint64_t i = 0; i < p; i++){
+                uint16_t diff_level = max_level-cur_level-1;
+                uint16_t l = (uint16_t) log2(p);
+                uint16_t* coordinatesTemp = new uint16_t[l];
+                for(uint16_t k = 0; k < l; k++)
+                    coordinatesTemp[k] = coordinates[k];
+                transformCoordinates(coordinatesTemp, l, diff_level, i);
+                quadtree_formula* newNode = this->get_child_lqdag(i)->completion_with_pred(p, max_level, cur_level+1, i,UPPER_BOUND, results, pred, coordinatesTemp);
+                Q_f_children.push_back(newNode);
+                max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
+                min_value = min(min_value, newNode->val_leaf);
             }
-            case FUNCTOR_NOT: {
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
+            // return a leaf
+            if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){ // return a leaf
+                Q_f_children.clear(); // memory
+                double val_leaf = (max_value == EMPTY_LEAF)? EMPTY_LEAF : FULL_LEAF;
+                quadtree_formula* newNode = create_leaf(val_leaf);
+                if(val_leaf == FULL_LEAF){
+                    if(cur_level == max_level)
+                        results++;
+                    else if(cur_level < max_level)
+                        results += p * (max_level - cur_level);
                 }
-                cout << " NOT" << endl;
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                this->lqdag1->print(depth + 1);
-                break;
+                return newNode;
             }
-            case FUNCTOR_AND: {
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                cout << " AND" << endl;
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                this->lqdag1->print(depth + 1);
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                this->lqdag2->print(depth + 1);
-                break;
+            else {
+                // return an internal node with children
+                quadtree_formula *quadtree = new quadtree_formula();
+                quadtree->val_leaf = INTERNAL_NODE;
+                quadtree->children = Q_f_children;
+                quadtree->k = 0;
+                quadtree->d = 0;
+                return quadtree;
             }
-            case FUNCTOR_OR: {
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                cout << " OR" << endl;
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                this->lqdag1->print(depth + 1);
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                this->lqdag2->print(depth + 1);
-                break;
-            }
-            case FUNCTOR_EXTEND: {
-                for (int i = 0; i < depth; ++i) {
-                    std::cout << ">";
-                }
-                cout << " EXTEND";
-                cout << " att_a: " << this->attribute_set_A << endl;
-                this->lqdag1->print(depth + 1);
-                break;
-            }
-            default:
-                throw "error: value_lqdag non valid functor";
 
         }
+
     }
 };
 

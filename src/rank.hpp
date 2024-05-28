@@ -67,7 +67,6 @@ public:
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
     }
 
-
     inline uint8_t get_8_bits(uint64_t start_pos) {
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
     }
@@ -76,7 +75,11 @@ public:
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffff);
     }
 
-    inline uint16_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
+    inline uint32_t get_32_bits(uint64_t start_pos){
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffffffff);
+    }
+
+    inline uint32_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
         switch(k_d){
             case 2:
                 return get_2_bits(start_pos);
@@ -86,6 +89,8 @@ public:
                 return get_8_bits(start_pos);
             case 16:
                 return get_16_bits(start_pos);
+            case 32:
+                return get_32_bits(start_pos);
             default:
                 cout << "error k_d > 16" << endl;
                 return 0;
@@ -178,7 +183,9 @@ public:
             x = get_8_bits(node);
         } else if(k_d == 16){
             x = get_16_bits(node);
-        } else{
+        } else if(k_d==32){
+            x = get_32_bits(node);
+        }else{
             cout << "k_d not supported";
             return false;
         }
@@ -197,7 +204,6 @@ public:
 
     void print_4_bits(uint64_t start_pos) {
         uint8_t x = get_4_bits(start_pos);
-
         // bit most significant first
         // otherwise do: i=0; i<4; i++
         //for (int i = 3; i > -1; i--) { // bit most significant first
@@ -217,9 +223,18 @@ public:
     }
 
     void print_16_bits(uint64_t start_pos) {
-        uint16_t x =  get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+        uint16_t x = get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
 
         for (int i = 0; i < 16; i++) {
+            cout << ((x & (1 << i)) ? "1" : "0");
+        }
+        cout << " ";
+    }
+
+    void print_32_bits(uint64_t start_pos){
+        uint32_t x = get_32_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+
+        for (int i = 0; i < 32; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";
@@ -240,6 +255,9 @@ public:
             } else if(k_d == 16){
                 print_16_bits(i);
                 i = i + 16;
+            } else if(k_d == 32){
+                print_32_bits(i);
+                i = i+32;
             }
             else{
                 cout << "k_d not supported";

@@ -269,12 +269,9 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
-            uint64_t leaves;
             for (uint64_t j = 0; j < nQ; j++) {
-                leaves = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
                 uint16_t cur_node_test = Q[j]->getM(child);
                 std::bitset<64> ith_node(cur_node_test);
-                uint16_t this_level = max_level-cur_level;
                 // the quadtree_formula in the j-th quadtree where we are moving
                 // it's like a mapping between the get_child_se_quadtree in the output and which quadtree_formula in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
@@ -568,7 +565,6 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
 }
 */
 
-// TODO: pregunta asumo q todos tienen la misma altura (los qdags), pero no así k^d, cómo es posible?
 /**
  * Multi join between the qdags in Q.
  * @param Q a vector of qdags. Every qdag has the same height.
