@@ -338,6 +338,8 @@ int main(int argc, char **argv) {
     res = 0;
     quadtree_formula* test_pred3 = compute_pred_formula(qdag_rel_R, k, res, &pred3);
     cout << "number of results test 3: " << res << endl;
+
+    // TODO: testear una diagonal A = B
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
