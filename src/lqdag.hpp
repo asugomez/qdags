@@ -6,6 +6,7 @@
 
 #include<bits/stdc++.h>
 #include "./qdags.hpp"
+#include "./utils.hpp"
 
 const uint8_t FUNCTOR_QTREE = 0; // leaf
 const uint8_t FUNCTOR_NOT = 1; // leaf
@@ -396,13 +397,11 @@ public:
      * @return EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE.
      */
     double value_quadtree(){
-        if(this->functor == FUNCTOR_QTREE) {
-            uint64_t nAtt = this->attribute_set_A.size();
+        if(this->functor == FUNCTOR_QTREE) { // only is called
             uint16_t cur_level = this->subQuadtree->level;
             uint64_t cur_node = this->subQuadtree->node;
-
-            this->subQuadtree->value = is_leaf(cur_level, cur_node, this->subQuadtree->qdag->getK());
-            return this->subQuadtree->value;
+//            this->subQuadtree->value = is_leaf(cur_level, cur_node);
+            return is_leaf(cur_level, cur_node); // this->subQuadtree->value;
 
         } else {
             //cout << "error: value_quadtree called on non-quadtree" << endl;
@@ -417,45 +416,46 @@ public:
      * @param k
      * @param k_d
      * If level = 0 and node = 0, we are looking the root of the quadtree.
-     * TODO: check if we look for (level = 0, node > 0) --> WRONG CASE!!
+     * If level > max_level, we are looking for the bit representing a point in the grid.
      * @return whether is an EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
      */
-    double is_leaf(uint16_t level, uint64_t node, uint8_t k){
+    double is_leaf(uint16_t level, uint64_t node){
         uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
-//        this->subQuadtree->qdag->get_ith_bit(level, node);
-        if(level > max_level){ // level + 1 == max_level
-            return this->subQuadtree->qdag->get_ith_bit(level-1, node);//(node_description & 255) == 255;
+//        if(level > max_level)
+//            cout << "heree is leaf level > max_level" << endl;
+        if(level > max_level){
+            return this->subQuadtree->qdag->get_ith_bit(max_level, node);
         }
         uint8_t node_description = this->subQuadtree->qdag->get_node_last_level(level, node);
         if((node_description | 0) == 0)
             return EMPTY_LEAF;
-        uint16_t val_full_ones;
-        uint64_t k_d = this->subQuadtree->qdag->getKD();
-        switch (k_d) {
-            case 2:
-                val_full_ones = 3;
-                break;
-            case 4:
-                val_full_ones = 15;
-                break;
-            case 8:
-                val_full_ones = 255;
-                break;
-            case 16:
-                val_full_ones = 65535;
-            default:
-                throw "error: invalid k_d";
-        }
-        if((node_description & val_full_ones) == val_full_ones){ // check the children
-            if(level == max_level)
-                return FULL_LEAF;
-            uint64_t siblings = this->subQuadtree->qdag->rank(level,node);
-            for(uint8_t i = 0; i < k_d; i++){
-                if(is_leaf(level+1, siblings*k_d + i, k) != 1)
-                    return INTERNAL_NODE;
-            }
-            return FULL_LEAF;
-        }
+//        uint16_t val_full_ones;
+//        uint64_t k_d = this->subQuadtree->qdag->getKD();
+//        switch (k_d) {
+//            case 2:
+//                val_full_ones = 3;
+//                break;
+//            case 4:
+//                val_full_ones = 15;
+//                break;
+//            case 8:
+//                val_full_ones = 255;
+//                break;
+//            case 16:
+//                val_full_ones = 65535;
+//            default:
+//                throw "error: invalid k_d";
+//        }
+//        if((node_description & val_full_ones) == val_full_ones){ // check the children
+//            if(level == max_level)
+//                return FULL_LEAF;
+//            uint64_t siblings = this->subQuadtree->qdag->rank(level,node);
+//            for(uint64_t i = 0; i < k_d; i++){
+//                if(is_leaf(level+1, (siblings+i)*k_d) != 1)
+//                    return INTERNAL_NODE;
+//            }
+//            return FULL_LEAF;
+//        }
         return INTERNAL_NODE;
     }
 
@@ -468,14 +468,16 @@ public:
     double value_lqdag(){
         switch(this->functor){
             case FUNCTOR_QTREE: {
-                if(this->subQuadtree->value == NO_VALUE_LEAF)
-                    this->subQuadtree->value = this->value_quadtree();
-                return this->subQuadtree->value;
+//                this->subQuadtree->value = this->value_quadtree();
+                return this->value_quadtree();
+//                if(this->subQuadtree->value == NO_VALUE_LEAF)
+//                    this->subQuadtree->value = this->value_quadtree();
+//                return this->subQuadtree->value;
             }
             case FUNCTOR_NOT: {
-                if(this->subQuadtree->value == NO_VALUE_LEAF)
-                    this->subQuadtree->value= this->value_quadtree();
-                return 1 - this->subQuadtree->value;
+//                if(this->subQuadtree->value == NO_VALUE_LEAF)
+//                    this->subQuadtree->value= this->value_quadtree();
+                return 1 - this->value_quadtree(); // this->subQuadtree->value;
             }
             case FUNCTOR_AND: {
                 if(this->val_lqdag1 == NO_VALUE_LEAF)
@@ -536,11 +538,11 @@ public:
                 uint16_t cur_level = this->subQuadtree->level;
                 uint16_t cur_node = this->subQuadtree->node;
                 bool node_exists = true;
+                // ith_child: start position of the ith child of cur_node in the next level (cur_level + 1)
                 uint64_t ith_child = this->subQuadtree->qdag->get_child(cur_level, cur_node, i, node_exists);
                 cur_level++;
                 double value = node_exists ? NO_VALUE_LEAF : EMPTY_LEAF;
                 subQuadtreeChild *subQuadtree = new subQuadtreeChild{this->subQuadtree->qdag, cur_level, ith_child, value};
-//                this->get_child_quadtree(i,subQuadtree);
                 lqdag *l = new lqdag(this->functor, subQuadtree);
                 return l;
             }
@@ -565,6 +567,7 @@ public:
                 return l;
             }
             case FUNCTOR_EXTEND: { // Extend quadtree to attributes att_set
+                // i --> i' (hago el mapeo)
                 lqdag *l = new lqdag(FUNCTOR_EXTEND, this->lqdag1->get_child_lqdag(this->M[i]), this->attribute_set_A, this->M);
                 return l;
             }
@@ -591,8 +594,13 @@ public:
     /**
      * Algorithm 9 of paper.
      * The completion Q_f is the quadtree representing the output of the formula F, represented as an lqdag.
-     * @param k
-     * There is a diff between this algorithm and the original join. When cur_level is 0, we are considering all the grid. That's why max_level = height (and not height - 1)
+     *
+     * @param p
+     * @param max_level
+     * @param cur_level the current level of the quadtree. If cur_level = max_level + 1, we are looking for the bit representing the point in the grid.
+     * @param UPPER_BOUND
+     * @param results
+     * @return
      */
     quadtree_formula* completion(uint64_t p,
                                  uint16_t max_level,
@@ -607,13 +615,14 @@ public:
         // if results < UPPER_BOUND
         double val_lqdag = this->value_lqdag();
         // return a leaf
+
         if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
             quadtree_formula* newNode = create_leaf(val_lqdag);
             if(val_lqdag == FULL_LEAF){
-                if(cur_level == max_level)
+                if(cur_level > max_level)
                     results++;
-                else if(cur_level < max_level)
-                    results += pow(p, (max_level - cur_level));
+                else// if(cur_level <= max_level)
+                    results += pow(p, (max_level - cur_level + 1));
             }
             return newNode;
         }
@@ -624,7 +633,7 @@ public:
         // if all quadtres are empty, return a 0 leaf.
         // C_i ← Completion(Child(L_F,i))
         for(uint64_t i = 0; i < p; i++){
-            quadtree_formula* newNode = this->get_child_lqdag(i)->completion(p, max_level, cur_level + 1, UPPER_BOUND, results);
+            quadtree_formula* newNode = this->get_child_lqdag(i)->completion(p, max_level, cur_level+1, UPPER_BOUND, results);
             Q_f_children.push_back(newNode);
             max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
             min_value = min(min_value, newNode->val_leaf);
@@ -634,12 +643,12 @@ public:
             Q_f_children.clear(); // memory
             double val_leaf = (max_value == EMPTY_LEAF)? EMPTY_LEAF : FULL_LEAF;
             quadtree_formula* newNode = create_leaf(val_leaf);
-            if(val_leaf == FULL_LEAF){
-                if(cur_level == max_level)
-                    results++;
-                else if(cur_level < max_level)
-                    results += pow(p, (max_level - cur_level));
-            }
+//            if(val_leaf == FULL_LEAF){
+//                if(cur_level > max_level)
+//                    results++;
+//                else// if(cur_level <= max_level)
+//                    results += pow(p, (max_level - cur_level + 1));
+//            }
             return newNode;
         }
         else {
@@ -658,7 +667,6 @@ public:
      *
      * @param p
      * @param max_level
-     * @param child
      * @param cur_level
      * @param UPPER_BOUND
      * @param results
@@ -667,22 +675,17 @@ public:
      * @param checkPred once we have evaluated the predicate and if this evaluation returns 1, we do not have to evaluate it again for its children.
      * @return
      */
-    quadtree_formula* completion_with_pred( uint64_t p,
-                                            uint16_t max_level,
-                                            uint16_t cur_level,
-                                            uint16_t child,
-                                            uint64_t UPPER_BOUND,
-                                            uint64_t &results,
-                                            predicate* pred,
-                                            uint16_t* coordinates) {
+    quadtree_formula *
+    completion_with_pred(uint64_t p, uint16_t max_level, uint16_t cur_level, uint64_t grid_side, uint8_t k, uint64_t UPPER_BOUND, uint64_t &results,
+                         predicate *pred, uint16_t *coordinates) {
 
         if(results >= UPPER_BOUND){ // top k results only
             quadtree_formula* newNode = create_leaf(EMPTY_LEAF);
             return newNode;
         }
         // if results < UPPER_BOUND
-        uint64_t quadrant_side = this->subQuadtree->qdag->getGridSide()/pow(this->subQuadtree->qdag->getK(),cur_level);
-        double val_eval_pred = eval_pred(pred, coordinates, quadrant_side);
+        uint64_t quadrant_side = grid_side/pow(k,cur_level);
+        double val_eval_pred = eval_pred(pred, coordinates, quadrant_side); // TODO: para eval_pred de 2 o mas relaciones, ver como pasar coordinates
         if(val_eval_pred == 0){
             quadtree_formula* newNode = create_leaf(EMPTY_LEAF);
             return newNode;
@@ -698,10 +701,13 @@ public:
                 uint16_t diff_level = max_level-cur_level-1;
                 uint16_t l = (uint16_t) log2(p);
                 uint16_t* coordinatesTemp = new uint16_t[l];
-                for(uint16_t k = 0; k < l; k++)
-                    coordinatesTemp[k] = coordinates[k];
+                for(uint16_t j = 0; j < l; j++)
+                    coordinatesTemp[j] = coordinates[j];
                 transformCoordinates(coordinatesTemp, l, diff_level, i);
-                quadtree_formula* newNode = this->get_child_lqdag(i)->completion_with_pred(p, max_level, cur_level+1, i,UPPER_BOUND, results, pred, coordinatesTemp);
+                quadtree_formula* newNode = this->get_child_lqdag(i)->completion_with_pred(p, max_level, cur_level + 1,
+                                                                                           grid_side, k,
+                                                                                           UPPER_BOUND, results, pred,
+                                                                                           coordinatesTemp);
                 Q_f_children.push_back(newNode);
                 max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
                 min_value = min(min_value, newNode->val_leaf);

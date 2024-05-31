@@ -169,12 +169,12 @@ public:
 
     /**
      *
-     * @param level of the quadtree_formula
-     * @param node the quadtree_formula-th position of the level.
-     * @return 0 or 1 if the quadtree_formula is empty or not.
+     * @param level of the node
+     * @param node the node-th position of the level.
+     * @return 0 or 1 if the node is empty or not.
      */
     bool get_ith_bit(uint64_t node, uint64_t k_d){
-        uint8_t x;
+        uint32_t x;
         if(k_d == 2) {
             x = get_2_bits(node);
         } else if(k_d == 4){

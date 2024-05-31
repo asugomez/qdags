@@ -222,7 +222,7 @@ protected:
         k_t_.resize(t);
         bv[height - 1] = rank_bv_64(k_t_);
         total_ones[height - 1] = bv[height - 1].n_ones();
-
+        cout << total_ones[height - 1] << endl;
     }
 
 public:
@@ -284,6 +284,7 @@ public:
             bv_select[i] = sd_vector<>::select_1_type(path[i]);
             total_ones[i] = bv_rank[i].rank(path[i].size());
         }*/
+//        printBv();
 
     }
 
@@ -656,7 +657,7 @@ public:
         return get_num_leaves_aux(level+1, children, siblings);
     }
 
-    /** TODO: no la estoy usando esta para nada
+    /**
      *
      * @param level of the parent. -2 if it is the grandparent of the root. -1 if it is the parent of the root.
      * @param parent the i-th 1 of the level.
@@ -737,10 +738,9 @@ public:
      * @return the index in the bv[level+1] of the ith-child of node. If the i-th child of the node doesn't exist, it returns the total the position where the level ends.
      * For the last level, return the position of the leaf.
      */
-     // TODO: debug here
     uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
-        if(level == getHeight()-1){
-            return node + ith_child;
+        if(level == getHeight()-1){ // max level
+            return node + ith_child; 
         }
         if(!get_ith_bit(level, node + ith_child)){
             exists = false;
