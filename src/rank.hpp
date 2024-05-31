@@ -53,6 +53,8 @@ public:
     }
 
     inline uint8_t get_2_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
     }
 
@@ -64,18 +66,26 @@ public:
      * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 6 (=0110).
      */
     inline uint8_t get_4_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+           return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
     }
 
     inline uint8_t get_8_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
     }
 
     inline uint16_t get_16_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffff);
     }
 
     inline uint32_t get_32_bits(uint64_t start_pos){
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffffffff);
     }
 
