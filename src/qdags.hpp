@@ -487,21 +487,6 @@ public:
     void test_get_4_bits(){
         return Q->test_get_4_bits();
     }
-
-    /**
-     *
-     * @return 1 if the grid is a single point, 0 if the grid is empty, 0.5 otherwise
-     */
-    double value() {
-        switch (this->Q->total_ones_level(this->getHeight() - 1)){
-            case 0: // leaf
-                return 0;
-            case 1:
-                return 1;
-            default:
-                return 0.5;
-        }
-    }
     
 };
 

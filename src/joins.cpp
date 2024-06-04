@@ -269,12 +269,9 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
-            uint64_t leaves;
             for (uint64_t j = 0; j < nQ; j++) {
-                leaves = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
                 uint16_t cur_node_test = Q[j]->getM(child);
                 std::bitset<64> ith_node(cur_node_test);
-                uint16_t this_level = max_level-cur_level;
                 // the quadtree_formula in the j-th quadtree where we are moving
                 // it's like a mapping between the get_child_se_quadtree in the output and which quadtree_formula in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
@@ -317,10 +314,8 @@ bool parAND(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut, std::
     bool result = false;
     //uint64_t root_temp[nQ];
     bool just_zeroes = true;
-    // TODO: porq fijo 16?
     uint64_t k_d[16 /*nQ*/]; //CUIDADO, solo hasta 16 relaciones por query
 
-    // TODO: pq pone fijo 512? además es max 5 attr distintos
     uint16_t children_to_recurse[512 /*p*/]; // CUIDADO, solo hasta 9 atributos distintos por query
 
     uint64_t i;
@@ -568,7 +563,6 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
 }
 */
 
-// TODO: pregunta asumo q todos tienen la misma altura (los qdags), pero no así k^d, cómo es posible?
 /**
  * Multi join between the qdags in Q.
  * @param Q a vector of qdags. Every qdag has the same height.
@@ -597,7 +591,6 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
     for (uint64_t i = 0; i < Q.size(); i++){
         // preprocessing of the qdags
         // only for binary relations
-        // TODO: pregunta aqui siempre hago el mismo extend para cada tabla... como funciona? no debiese ser distinto?
         Q_star[i] = Q[i].extend(A);
         if (A.size() == 3)
             Q_star[i]->createTableExtend3();
