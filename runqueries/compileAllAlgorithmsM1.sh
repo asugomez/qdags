@@ -28,10 +28,10 @@ cd "$script_dir/ranked/louds/nonFixedQueue/"
 # dfuds
 echo "Compiling ranked dfuds nonFixedQueue"
 cd "$script_dir/ranked/dfuds/nonFixedQueue/"
-./compileRankedDfudsBacktrackingM1.sh
+./compileRankedDfudsNonFixedQueueM1.sh
 echo "Compiling ranked dfuds backtracking"
 cd "$script_dir/ranked/dfuds/backtracking/"
-./compileRankedDfudsNonFixedQueueM1.sh
+./compileRankedDfudsBacktrackingM1.sh
 
 # traditional join
 echo "Compiling traditional join"
