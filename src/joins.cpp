@@ -272,7 +272,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
             for (uint64_t j = 0; j < nQ; j++) {
                 uint16_t cur_node_test = Q[j]->getM(child);
                 std::bitset<64> ith_node(cur_node_test);
-                // the quadtree_formula in the j-th quadtree where we are moving
+                // the node in the j-th quadtree where we are moving
                 // it's like a mapping between the get_child_se_quadtree in the output and which quadtree_formula in the qdag we are moving
                 root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
             }

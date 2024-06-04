@@ -435,10 +435,10 @@ public:
      * 0101
      * 0100 1001
      * 1111 0001 1000
-     * get_num_leaves(-1,0) --> 6
-     * get_num_leaves(0,0) --> 0
-     * get_num_leaves(0,1) --> 4
-     * get_num_leaves(2,7) --> 1
+     * get_num_leaves(0,0) --> 6
+     * get_num_leaves(0,4) --> 0
+     * get_num_leaves(1,0) --> 4
+     * get_num_leaves(2,8) --> 1
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node) {
         return Q->get_num_leaves(level, node);

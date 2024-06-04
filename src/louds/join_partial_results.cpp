@@ -116,7 +116,7 @@ bool AND_partial(
                 for (uint64_t j = 0; j < nQ; j++) {
                     // we store the parent quadtree_formula that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level, Q[j]->getM(child));
+                    uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1, root_temp[j]);
                     //cout << "n_leaves_child_node: " << n_leaves_child_node << endl;
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
@@ -351,7 +351,7 @@ AND_partial_backtracking(
             double total_weight = DBL_MAX;
             for (uint64_t j = 0; j < nQ; j++) {
                 root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level,Q[j]->getM(child));
+                uint64_t n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1,root_temp[i][j]);
                 if (n_leaves_child_node < total_weight) {
                     total_weight = n_leaves_child_node;
                 }

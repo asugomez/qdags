@@ -119,17 +119,18 @@ bool AND_ranked(
                 double total_weight = 0;
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
-                    // we store the parent quadtree_formula that corresponds in the original quadtree of each qdag
+                    // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
                     uint64_t priority_ith_node = 0;
-                    bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+
+                    bool success = Q[j]->get_range_leaves(cur_level+1,root_temp[j],init,end);
                     if(success){
                         bit_vector::size_type min_idx = rMq[j](init, end);
                         priority_ith_node = priorities[j][min_idx];
                     } else {
-                        //cout << "error in get range leaves" << endl;
+                        cout << "error in get range leaves" << endl;
                     }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
@@ -396,14 +397,13 @@ AND_ranked_backtracking(
                 root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                 uint64_t init = 0;
                 uint64_t end = priorities[j].size()-1;
-                // TODO: see this: what to do when i-th bit is 0?
                 uint64_t priority_ith_node = 0;
-                bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+                bool success = Q[j]->get_range_leaves(cur_level+1,root_temp[i][j],init,end);
                 if(success){
                     bit_vector::size_type min_idx = rMq[j](init, end);
                     priority_ith_node = priorities[j][min_idx];
                 } else {
-                    //cout << "error in get range leaves" << endl;
+                    cout << "error in get range leaves back" << endl;
                 }
                 if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                     total_weight += priority_ith_node;

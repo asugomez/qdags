@@ -129,11 +129,9 @@ bool AND_ranked_dfuds(
                     root_temp[j] = (rank_vector[j][Q[j]->getM(child)]); // new roots
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
-                    // TODO: see this: what to do when i-th bit is 0?
                     uint64_t priority_ith_node = 0;
-                    bool success = true;//Q[j]->get_range_leaves(root_temp[j],init,end);
+                    bool success = Q[j]->get_range_leaves(root_temp[j],init,end);
                     if(success){
-                        // TODO: fix the index
                         bit_vector::size_type min_idx = rMq[j](init, end);
                         priority_ith_node = priorities[j][min_idx];
                     } else {
@@ -405,12 +403,12 @@ AND_ranked_dfuds_backtracking(
                 uint64_t end = priorities[j].size()-1;
                 // TODO: see this: what to do when i-th bit is 0?
                 uint64_t priority_ith_node = 0;
-                bool success = true;//Q[j]->get_range_leaves(root_temp[i][j],init,end);
+                bool success = Q[j]->get_range_leaves(root_temp[i][j],init,end);
                 if(success){
                     bit_vector::size_type min_idx = rMq[j](init, end);
                     priority_ith_node = priorities[j][min_idx];
                 } else {
-                    //cout << "error in get range leaves" << endl;
+                    cout << "error in get range leaves" << endl;
                 }
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
                     total_weight += priority_ith_node;
