@@ -39,7 +39,7 @@ bool AND_partial_dfuds(
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size;
     uint16_t cur_level;
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
     uint64_t results = 0;
     while(!pq.empty()){
         children = 0xffffffff;
@@ -116,10 +116,9 @@ bool AND_partial_dfuds(
                 double total_weight = DBL_MAX;
                 // calculate the weight of the tuple
                 for (uint64_t j = 0; j < nQ; j++) {
-                    // we store the parent quadtree_formula that corresponds in the original quadtree of each qdag
+                    // we store the parent node that corresponds in the original quadtree of each qdag
                     root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
                     uint64_t n_leaves_child_node = Q[j]->get_num_leaves(root_temp[j]);
-                    // TODO: debug check get num leaves
                     if (n_leaves_child_node < total_weight) {
                         total_weight = n_leaves_child_node;
                     }
@@ -263,8 +262,8 @@ bool AND_partial_dfuds_backtracking(
     uint16_t children_to_recurse[p];
     uint64_t i;
     uint64_t children_to_recurse_size = 0;
-    uint32_t children = 0xffffffff; // each bit represent a quadtree_formula (empty or not)
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+    uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
+    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
 
     // last level --> add result to the priority queue
     if (cur_level == max_level){

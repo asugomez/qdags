@@ -44,7 +44,7 @@ bool AND_ranked(
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size;
     uint16_t cur_level;
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
     uint64_t results = 0;
     while(!pq.empty()){
         children = 0xffffffff;
@@ -124,13 +124,12 @@ bool AND_ranked(
                     uint64_t init = 0;
                     uint64_t end = priorities[j].size()-1;
                     uint64_t priority_ith_node = 0;
-
                     bool success = Q[j]->get_range_leaves(cur_level+1,root_temp[j],init,end);
                     if(success){
                         bit_vector::size_type min_idx = rMq[j](init, end);
                         priority_ith_node = priorities[j][min_idx];
                     } else {
-                        cout << "error in get range leaves" << endl;
+                        cout << "error in get range leaves and_ranked (louds)" << endl;
                     }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
@@ -279,8 +278,8 @@ AND_ranked_backtracking(
     uint16_t children_to_recurse[p];
     uint64_t i;
     uint64_t children_to_recurse_size = 0;
-    uint32_t children = 0xffffffff; // each bit represent a quadtree_formula (empty or not)
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+    uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
+    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
 
     // last level --> add result to the priority queue
     if (cur_level == max_level){
@@ -403,7 +402,7 @@ AND_ranked_backtracking(
                     bit_vector::size_type min_idx = rMq[j](init, end);
                     priority_ith_node = priorities[j][min_idx];
                 } else {
-                    cout << "error in get range leaves back" << endl;
+                    cout << "error in get range leaves and_backtracking (louds)" << endl;
                 }
                 if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                     total_weight += priority_ith_node;

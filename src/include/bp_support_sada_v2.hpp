@@ -240,7 +240,7 @@ namespace asu
             size_type v    = m_med_inner_blocks + med_block_idx(i);
             // (3 a) go up the tree
             while (!is_root(v)) {
-                if (is_left_child(v)) { // if the quadtree_formula is a left child
+                if (is_left_child(v)) { // if the node is a left child
                     v = right_sibling(v); // choose right sibling
                     if (min_value(v) <= desired_excess and desired_excess <= max_value(v))  // found solution
                         break;
@@ -292,7 +292,7 @@ namespace asu
             size_type v    = m_med_inner_blocks + med_block_idx(i);
             // (3 a) go up the tree
             while (!is_root(v)) {
-                if (is_right_child(v)) { // if the quadtree_formula is a right child
+                if (is_right_child(v)) { // if the node is a right child
                     v = left_sibling(v); // choose left sibling
                     if (min_value(v) <= desired_excess and desired_excess <= max_value(v))  // found solution
                         break;
@@ -897,10 +897,10 @@ namespace asu
             }
         }
 
-        //! Returns the level ancestor of the quadtree_formula i.
-        /*! \param i The index of a parenthesis (i.e., a quadtree_formula).
-         *  \param d The level, i.e., which quadtree_formula to select on the path from the quadtree_formula i up to the root.
-         *           The level d = 0 will return the quadtree_formula itself, d = 1 will return its parent, and so on.
+        //! Returns the level ancestor of the node i.
+        /*! \param i The index of a parenthesis (i.e., a node).
+         *  \param d The level, i.e., which node to select on the path from the node i up to the root.
+         *           The level d = 0 will return the node itself, d = 1 will return its parent, and so on.
          */
         size_type level_anc(size_type i, size_type d)const
         {
@@ -1007,7 +1007,8 @@ namespace asu
          */
         size_type rank_zero_zero(size_type i)const
         {
-            assert(i < m_size);
+            if(i >= m_size)
+                i=m_size-1;
             // = B NOR (B<<1)
             size_type cur_bitvector = i / 64;
             uint64_t diff_shift = 63 - (i - 64 * cur_bitvector);
