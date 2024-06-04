@@ -187,15 +187,16 @@ public:
         uint32_t x;
         if(k_d == 2) {
             x = get_2_bits(node);
-        } else if(k_d == 4){
+        } else if(k_d == 4) {
             x = get_4_bits(node);
-        } else if(k_d == 8){
-            x = get_8_bits(node);
-        } else if(k_d == 16){
-            x = get_16_bits(node);
-        } else if(k_d==32){
-            x = get_32_bits(node);
-        }else{
+        }
+//        } else if(k_d == 8){
+//            x = get_8_bits(node);
+//        } else if(k_d == 16){
+//            x = get_16_bits(node);
+//        } else if(k_d==32){
+//            x = get_32_bits(node);
+        else{
             cout << "k_d not supported";
             return false;
         }

@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
     qdag::att_set att_U;
 
     att_R.push_back(AT_X1); att_R.push_back(AT_X2);
-    att_S.push_back(AT_X2); att_S.push_back(AT_X3);
+    att_S.push_back(AT_X1); att_S.push_back(AT_X3);
     att_T.push_back(AT_X3); att_T.push_back(AT_X4);
     att_U.push_back(AT_X4); att_U.push_back(AT_X5);
 
