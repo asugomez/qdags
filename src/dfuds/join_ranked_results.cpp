@@ -136,6 +136,7 @@ bool AND_ranked_dfuds(
                         priority_ith_node = priorities[j][min_idx];
                     } else {
                         cout << "error in get range leaves and_ranked dfuds" << endl;
+                        exit(1);
                     }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
                         total_weight += priority_ith_node;
@@ -227,7 +228,7 @@ bool multiJoinRankedResultsDfuds(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
@@ -326,8 +327,9 @@ AND_ranked_dfuds_backtracking(
             // priority
             double this_weight;
             uint64_t priority_ith_node;
+
             for (uint64_t j = 0; j < nQ; j++) {
-                bit_vector::size_type min_idx = rMq[j](child, child); // TODO: check que el child corresponda efectivamente al rango
+                uint64_t min_idx = Q[j]->get_index_pri(roots[j],Q[j]->getM(child));
                 priority_ith_node = priorities[j][min_idx];
 
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
@@ -341,7 +343,6 @@ AND_ranked_dfuds_backtracking(
             // queue full --> compare priorities
             if(top_results.size() >= size_queue ){
                 qdagResults minResult = top_results.top();
-                //cout << "fullqueue (this weight and min weight) " << this_weight << " " << minResult.weight << endl;
                 // add result if the priority is higher than the minimum priority in the queue
                 if(this_weight > minResult.weight){
                     top_results.pop();
@@ -349,7 +350,6 @@ AND_ranked_dfuds_backtracking(
                 }
             }
             else{
-                //cout << "push" << endl;
                 top_results.push({coordinatesTemp, this_weight});
                 just_zeroes = false;
             }
@@ -358,7 +358,6 @@ AND_ranked_dfuds_backtracking(
         // call recursively in DFS order
     else {
         uint64_t rank_vector[nQ][64];
-
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
@@ -401,7 +400,6 @@ AND_ranked_dfuds_backtracking(
                 root_temp[i][j] = (rank_vector[j][Q[j]->getM(child)]);
                 uint64_t init = 0;
                 uint64_t end = priorities[j].size()-1;
-                // TODO: see this: what to do when i-th bit is 0?
                 uint64_t priority_ith_node = 0;
                 bool success = Q[j]->get_range_leaves(root_temp[i][j],init,end);
                 if(success){
@@ -409,6 +407,7 @@ AND_ranked_dfuds_backtracking(
                     priority_ith_node = priorities[j][min_idx];
                 } else {
                     cout << "error in get range leaves and_ranked_backtracking dfuds" << endl;
+                    exit(1);
                 }
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
                     total_weight += priority_ith_node;
@@ -513,7 +512,7 @@ bool multiJoinRankedResultsDfudsBacktracking(
                             top_results);
 
 //    uint64_t size_queue_top = top_results.size();
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
 //        top_results.pop();

@@ -205,7 +205,7 @@ bool multiJoinPartialResultsDfuds(
                       pq, results_points);
 
 
-    cout << "number of results: " << results_points.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
@@ -252,7 +252,6 @@ bool AND_partial_dfuds_backtracking(
         vector<uint16_t *> &top_results) {
 
     if(top_results.size() >= size_queue){
-//        cout << "number of results up: " << top_results.size() << endl;
         return true;
     }
     // number of children of the qdag (extended)
@@ -446,7 +445,7 @@ bool multiJoinPartialResultsDfudsBacktracking(
                                    coordinates, size_queue,
                                    top_results);
 
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    uint64_t i=0;
 //    while(i < top_results.size()){
 //        uint16_t* coordinates = top_results[i];

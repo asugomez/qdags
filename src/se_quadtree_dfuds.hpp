@@ -371,16 +371,6 @@ public:
         return bp_b.find_close(bp_b.find_open(node_v-1) + 1) + 1;
     }
 
-//    // select_0(B,v)
-//    size_type_bv select_zero(size_type_bv node_v){
-//        return 0;// bp_b.select_zero(node_v); // TODO: select_zero(0) --> 3
-//    }
-
-//    // select_00(B,v)
-//    size_type_bv select_zero_zero(size_type_bv node_v) const{
-//        return bp_b.select_zero_zero(node_v);
-//    }
-
     // pred_0(B,v)
     size_type_bv pred_zero(size_type_bv node_v) const{
         // a partir de una posición, encontrar la posición de la anterior ocurrencia de 0
@@ -412,8 +402,9 @@ public:
     /**
      *
      * @param node_v
-     * @param t
+     * @param t the t-th child (first child should be t=1)
      * @return The t-th child of node v, if it exists
+     * Asuming t <= children(node_v)
      */
     size_type_bv child(size_type_bv node_v, size_type_bv t) const{
         return bp_b.find_close(succ_zero(node_v) - t) + 1;
@@ -438,15 +429,6 @@ public:
         return bp_b.rank_zero_zero(node_v);
     }
 
-//    /**
-//     *
-//     * @param node_v
-//     * @return The ith left-to-right leaf node in the tree-
-//     */
-//    size_type_bv leaf_select(size_type_bv node_v) const{
-//        return select_zero_zero(node_v) + 1;
-//    }
-
     /**
      *
      * @param node_v
@@ -461,10 +443,8 @@ public:
         return node_v - bp_b.rank(node_v);
     }
 
-
     size_type_bv first_child(size_type_bv node_v)const{
         assert(bp_b.is_open(node_v));
-        assert(bp_b.is_close(node_v-1)); // TODO: maybe?
         return succ_zero(node_v) + 1;
     }
 
@@ -479,8 +459,6 @@ public:
     }
 
     bool is_leaf(size_type_bv node_v)const{
-        //assert(bit_vector_b[node]==0); // check the node is a leaf
-        //assert(bit_vector_b[node-1]==0);
         return bit_vector_b->get_int(node_v-1,2) == 0;
     }
 
@@ -630,6 +608,17 @@ public:
         init = leaf_rank(node);
         end = leaf_rank(next_sibling(node)) - 1;
         return init <= end;
+    }
+
+    /**
+     *
+     * @param node
+     * @param t the position of the child
+     * @return the rank of the t-th child of node.
+     * If the node is 1001, and t = 3, the index will be 1
+     */
+    uint64_t get_rank_node_child(uint64_t node, uint64_t t){
+        return bp_b.rank(node+t) - bp_b.rank(node);
     }
 
 

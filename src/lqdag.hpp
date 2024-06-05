@@ -15,7 +15,6 @@ const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
 
 const uint8_t NOT_A_LEAF = 2;
 
-// TODO: when is 0.5 and when 2.0
 const double NO_VALUE_LEAF = 3;
 const double EMPTY_LEAF = 0;
 const double FULL_LEAF = 1;
@@ -163,7 +162,6 @@ public:
      * @param k
      * @param k_d
      * If level = 0 and node = 0, we are looking the root of the quadtree.
-     * TODO: check if we look for (level = 0, node > 0) --> WRONG CASE!!
      * @return whether is an EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
      */
     double is_leaf(uint16_t level, uint64_t node, uint8_t k){

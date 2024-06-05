@@ -33,9 +33,15 @@ duration<double> time_span_select;
 #define AT_X4 3
 #define AT_X5 4
 
+#define AT_X 0
+#define AT_Y 1
+#define AT_Z 2
+#define AT_V 3
+#define AT_U 4
+
 
 std::vector<std::vector<uint64_t>> *
-read_relation(const std::string filename, uint16_t n_Atts) // TODO: ver si hay una opcion mas optima
+read_relation(const std::string filename, uint16_t n_Atts)
 {
     std::ifstream input_stream(filename);
     uint64_t x;
@@ -81,10 +87,17 @@ int main(int argc, char **argv) {
     qdag::att_set att_T;
     qdag::att_set att_U;
 
+//    att_R.push_back(AT_Y);
+//    att_R.push_back(AT_X);
+//    att_S.push_back(AT_Z);
+//    att_S.push_back(AT_X);
+    att_T.push_back(AT_X);
+    att_T.push_back(AT_U);
+    att_U.push_back(AT_X);
+    att_U.push_back(AT_V);
+
     att_R.push_back(AT_X1); att_R.push_back(AT_X2);
     att_S.push_back(AT_X2); att_S.push_back(AT_X3);
-    att_T.push_back(AT_X3); att_T.push_back(AT_X4);
-    att_U.push_back(AT_X4); att_U.push_back(AT_X5);
 
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]), strRel_U(argv[4]);
 
@@ -99,8 +112,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
-//    uint64_t grid_side = 8;
+//    uint64_t grid_side = 52000000; // es como +infty para wikidata
+    uint64_t grid_side = 8;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -121,18 +134,18 @@ int main(int argc, char **argv) {
 
 
 //    vector<qdag> Q(4);
-    vector<qdag> Q(3);
+    vector<qdag> Q(2);
 //    vector<qdag_dfuds> Q_dfuds(4);
-    vector<qdag_dfuds> Q_dfuds(3);
+    vector<qdag_dfuds> Q_dfuds(2);
 
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
-    Q[2] = qdag_rel_T;
+//    Q[2] = qdag_rel_T;
 //    Q[3] = qdag_rel_U;
 
     Q_dfuds[0] = qdag_rel_R_dfuds;
     Q_dfuds[1] = qdag_rel_S_dfuds;
-    Q_dfuds[2] = qdag_rel_T_dfuds;
+//    Q_dfuds[2] = qdag_rel_T_dfuds;
 //    Q_dfuds[3] = qdag_rel_U_dfuds;
 
     high_resolution_clock::time_point start, stop;
@@ -201,7 +214,7 @@ int main(int argc, char **argv) {
     vector<int_vector<>> vector_pri;
     vector_pri.push_back(priorities_R);
     vector_pri.push_back(priorities_S);
-    vector_pri.push_back(priorities_T);
+//    vector_pri.push_back(priorities_T);
 //    vector_pri.push_back(priorities_U);
 
     // function type
@@ -318,16 +331,16 @@ int main(int argc, char **argv) {
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-    cout << "----- MULTI JOIN LQDAGS ------" << endl;
-    uint64_t res = 0;
-    start = high_resolution_clock::now();
-    quadtree_formula* join_r_s_t = compute_lqdag_join(Q, k, res);
-
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
-    cout << "number of results: " << res << endl;
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << "----- MULTI JOIN LQDAGS ------" << endl;
+//    uint64_t res = 0;
+//    start = high_resolution_clock::now();
+//    quadtree_formula* join_r_s_t = compute_lqdag_join(Q, k, res);
+//
+//    stop = high_resolution_clock::now();
+//    time_span = duration_cast<microseconds>(stop - start);
+//    total_time = time_span.count();
+//    cout << "number of results: " << res << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 

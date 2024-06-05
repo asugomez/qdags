@@ -24,7 +24,7 @@ duration<double> time_span_select;
 #define AT_V 3
 
 
-std::vector<std::vector<uint64_t>>* read_relation(const std::string filename, uint16_t n_Atts) // TODO: ver si hay una opcion mas optima
+std::vector<std::vector<uint64_t>>* read_relation(const std::string filename, uint16_t n_Atts)
 {
     std::ifstream input_stream(filename); 
     uint64_t x;

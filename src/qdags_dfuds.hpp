@@ -135,7 +135,6 @@ public:
         uint64_t mask;
         uint64_t i, i_prime;
 
-        // TODO: see if we have to change something (order DFS, idk)
         for (i = 0; i < p; ++i) {
             // todos los bits están en cero excepto el bit en la posición dim_prime - 1.
             mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
@@ -285,7 +284,6 @@ public:
     }
 
 
-    // TODO: see how the extend works in DFS!
     // we need the number of 1s of the level (until the node position)
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
         // get the number of 1s of that level
@@ -325,11 +323,6 @@ public:
         return Q->leaf_num(node);
     }
 
-    // TODO: only for testing
-    se_quadtree_dfuds *getQ() {
-        return Q;
-    }
-
     /**
      * Get the range of leaves in the last level of the tree that are descendants of the node.
      * Useful for the range Maximum query
@@ -340,6 +333,30 @@ public:
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         return Q->get_range_leaves(node, init, end);
     }
+
+    /**
+     *
+     * @param node
+     * @param t
+     * @return The t-th child of node , if it exists
+     */
+    uint64_t child(uint64_t node, uint64_t t) {
+        return Q->child(node, t);
+    }
+
+    /**
+     * @param node
+     * @return the index of the priority of that node.
+     * Assume the node is in the last level of the tree.
+     * If the node is 1001, and t = 3, the index will be 1
+     */
+    uint64_t get_index_pri(uint64_t node, uint64_t t){
+        // we add 1 to t, because the first child is 1 (not 0)
+        uint64_t ind = Q->get_rank_node_child(node, t);
+        return Q->leaf_rank(Q->child(node, ind+1)) - 1;
+    }
+
+
 
 };
 

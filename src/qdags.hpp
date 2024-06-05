@@ -375,7 +375,6 @@ public:
         }
     }
 
-    // TODO: y porqué de 32 bits?
     // materializa el nodo del qdag, uno llega a un nodo en el quadtree que existe, pero conceptualmente
     // corresponde a un qdags q no existe en realidad.
     // esta funcion materializa el nodo en el qdag (donde no existe)
@@ -478,6 +477,16 @@ public:
 
     uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
         return Q->get_child(level, node, ith_child, exists);
+    }
+
+    /**
+     *
+     * @param node
+     * @return the index of the priority of that node.
+     * Assume the node is in the last level of the tree.
+     */
+    inline uint64_t get_index_pri(uint64_t node){
+        return rank(getHeight()-1, node);
     }
 
     void test_rank(){

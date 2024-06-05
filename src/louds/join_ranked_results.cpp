@@ -111,6 +111,8 @@ bool AND_ranked(
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
                 delete[] root_temp;
+                // TODO: debug the priority
+                // TODO: also the root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                 results_points.push_back(coordinatesTemp);
                 if(bounded_result && ++results >= UPPER_BOUND)
                     return true;
@@ -130,6 +132,7 @@ bool AND_ranked(
                         priority_ith_node = priorities[j][min_idx];
                     } else {
                         cout << "error in get range leaves and_ranked (louds)" << endl;
+                        exit(1);
                     }
                     if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                         total_weight += priority_ith_node;
@@ -222,7 +225,7 @@ bool multiJoinRankedResults(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
@@ -322,7 +325,7 @@ AND_ranked_backtracking(
             double this_weight;
             uint64_t priority_ith_node;
             for (uint64_t j = 0; j < nQ; j++) {
-                bit_vector::size_type min_idx = rMq[j](child, child); // TODO: check que el child corresponda efectivamente al rango
+                uint64_t min_idx = Q[j]->get_index_pri(roots[j] + Q[j]->getM(child));
                 priority_ith_node = priorities[j][min_idx];
 
                 if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
@@ -336,7 +339,6 @@ AND_ranked_backtracking(
             // queue full --> compare priorities
             if(top_results.size() >= size_queue ){
                 qdagResults minResult = top_results.top();
-                //cout << "fullqueue (this weight and min weight) " << this_weight << " " << minResult.weight << endl;
                 // add result if the priority is higher than the minimum priority in the queue
                 if(this_weight > minResult.weight){
                     top_results.pop();
@@ -344,7 +346,6 @@ AND_ranked_backtracking(
                 }
             }
             else{
-                //cout << "push" << endl;
                 top_results.push({coordinatesTemp, this_weight});
                 just_zeroes = false;
             }
@@ -403,6 +404,7 @@ AND_ranked_backtracking(
                     priority_ith_node = priorities[j][min_idx];
                 } else {
                     cout << "error in get range leaves and_backtracking (louds)" << endl;
+                    exit(1);
                 }
                 if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                     total_weight += priority_ith_node;
@@ -505,8 +507,8 @@ bool multiJoinRankedResultsBacktracking(
                             priorities, rMq,
                             top_results);
 
-    uint64_t size_queue_top = top_results.size();
-    cout << "number of results: " << top_results.size() << endl;
+//    uint64_t size_queue_top = top_results.size();
+//    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
 //        top_results.pop();
