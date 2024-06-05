@@ -14,12 +14,11 @@ const uint8_t FUNCTOR_AND = 2; // internal quadtree_formula
 const uint8_t FUNCTOR_OR = 3; // internal quadtree_formula
 const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
 
-const double NO_VALUE_LEAF = 3;
-const double EMPTY_LEAF = 0;
-const double FULL_LEAF = 1;
-const double INTERNAL_NODE = 0.5;
-// This indicates that one cannot determine the value of the quadtree_formula without computing the values of its children.
-const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the values of its children
+const uint8_t EMPTY_LEAF = 0;
+const uint8_t FULL_LEAF = 1;
+const uint8_t INTERNAL_NODE = 2;
+const uint8_t LAST_LEVEL_LEAF = 3;
+const uint8_t NO_VALUE_SET = 4;
 
 #define OP_EQUAL 0
 #define OP_UNEQUAL 1
@@ -29,21 +28,26 @@ const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the val
 #define OP_GREATER 5
 
 struct quadtree_formula { // represents the output of the formula we are evaluating
-    double val_leaf; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE
-    uint64_t k_d;
+    uint8_t type_node; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE
+    uint32_t node_value; // in last level, the value of the node of the formula
     quadtree_formula** children;
 };
 
-// represents a subtree of the quadtree
-struct subQuadtreeChild {
-    ::qdag *qdag;
-    uint16_t level; // the level of the quadtree_formula. 0 to start.
-    uint64_t node; // absolute position in the bv[level] of the quadtree
-    double value;// = NO_VALUE_LEAF;
-    // Constructor sin inicializar node_description
-    subQuadtreeChild(::qdag* qdagPtr, uint16_t lvl, uint64_t nd, double val = NO_VALUE_LEAF)
-            : qdag(qdagPtr), level(lvl), node(nd), value(val) {}
+struct node_quadtree{
+    uint8_t type_node; // when type_node is INTERNAL_NODE, node_description does not have a meaning
+    uint32_t node_description;
 };
+
+//// represents a subtree of the quadtree
+//struct subQuadtreeChild {
+//    ::qdag *qdag;
+//    uint16_t level; // the level of the quadtree_formula. 0 to start.
+//    uint64_t node; // absolute position in the bv[level] of the quadtree
+//    double value;// = NO_VALUE_LEAF;
+//    // Constructor sin inicializar node_description
+//    subQuadtreeChild(::qdag* qdagPtr, uint16_t lvl, uint64_t nd, double val = NO_VALUE_LEAF)
+//            : qdag(qdagPtr), level(lvl), node(nd), value(val) {}
+//};
 
 /**
  * represents a predicate in the query
@@ -283,11 +287,12 @@ public:
 private:
     // lqdag L=(f,o), where f is a functor.
     uint8_t functor; // QTREE, NOT, AND, OR, EXTEND
-    subQuadtreeChild *subQuadtree;
-    lqdag *lqdag1;
-    lqdag *lqdag2;
-    double val_lqdag1 = NO_VALUE_LEAF;
-    double val_lqdag2 = NO_VALUE_LEAF;
+//    subQuadtreeChild *subQuadtree;
+    qdag *qdag;
+    lqdag *lqdag_left;
+    lqdag *lqdag_right;
+    uint8_t val_lqdag_left = NO_VALUE_SET;
+    uint8_t val_lqdag_right = NO_VALUE_SET;
     att_set attribute_set_A; // for extend functor
     type_mapping_M *M; // mapping for extend functor. Use it when we need to extend the subquadtree, Otherwise M[i] = i (case not extended).
 
@@ -295,53 +300,53 @@ public:
     lqdag() = default;
 
     // L = (QTREE, Q_r)
-    lqdag(subQuadtreeChild* subQuadtree) {
+    lqdag(::qdag *qdag) {
         this->functor = FUNCTOR_QTREE;
-        this->subQuadtree = subQuadtree;
-        this->lqdag1 = nullptr;
-        this->lqdag2 = nullptr;
-        for(uint64_t i = 0; i < subQuadtree->qdag->nAttr(); i++) // TODO: pass att set as param
-            this->attribute_set_A.push_back(subQuadtree->qdag->getAttr(i));
+        this->qdag = qdag;
+        this->lqdag_left = nullptr;
+        this->lqdag_right = nullptr;
+//        for(uint64_t i = 0; i < subQuadtree->qdag->nAttr(); i++) // TODO: pass att set as param
+//            this->attribute_set_A.push_back(subQuadtree->qdag->getAttr(i));
     }
 
     // L = (QTREE, Q_r) o L = (NOT, Q_r)
-    lqdag(uint8_t functor, subQuadtreeChild* subQuadtree) {
+    lqdag(uint8_t functor, ::qdag *qdag) {
         assert(functor == FUNCTOR_QTREE || functor == FUNCTOR_NOT);
         this->functor = functor;
-        this->subQuadtree = subQuadtree;
-        this->lqdag1 = nullptr;
-        this->lqdag2 = nullptr;
-        for(uint64_t i = 0; i < subQuadtree->qdag->nAttr(); i++) // TODO: pass att set as param
-            this->attribute_set_A.push_back(subQuadtree->qdag->getAttr(i));
+        this->qdag = qdag;
+        this->lqdag_left = nullptr;
+        this->lqdag_right = nullptr;
+//        for(uint64_t i = 0; i < subQuadtree->qdag->nAttr(); i++) // TODO: pass att set as param
+//            this->attribute_set_A.push_back(subQuadtree->qdag->getAttr(i));
     }
 
     // L = (AND, L1, L2) o L = (OR, L1, L2)
     lqdag(uint8_t functor, lqdag *l1, lqdag *l2) {
         assert(functor == FUNCTOR_AND || functor == FUNCTOR_OR);
         this->functor = functor;
-        this->lqdag1 = l1;
-        this->lqdag2 = l2;
-        this->subQuadtree = nullptr;
-        this->attribute_set_A = {};
+        this->qdag = nullptr;
+        this->lqdag_left = l1;
+        this->lqdag_right = l2;
+//        this->attribute_set_A = {};
     }
 
     // L = (EXTEND, L1, A)
     lqdag(uint8_t functor, lqdag* l, att_set &attribute_set_A, type_mapping_M *M = nullptr) {
         assert(functor == FUNCTOR_EXTEND);
         this->functor = functor;
-        this->lqdag1 = l; // has
+        this->qdag = nullptr;
+        this->lqdag_left = l; // has
+        this->lqdag_right = nullptr;
         this->attribute_set_A = attribute_set_A;
-        this->subQuadtree = nullptr;
-        this->lqdag2 = nullptr;
 
         if(M == nullptr) {
-            uint16_t msize = std::pow(this->lqdag1->subQuadtree->qdag->getK(),
-                                        this->lqdag1->subQuadtree->qdag->getD());
+            uint16_t msize = std::pow(this->lqdag_left->qdag->getK(),
+                                        this->lqdag_left->qdag->getD());
             this->M = new type_mapping_M[msize];
 
             uint16_t dim = this->attribute_set_A.size(); // d
-            uint16_t dim_prime = this->lqdag1->attribute_set_A.size(); // d'
-            uint64_t p = std::pow(this->lqdag1->subQuadtree->qdag->getK(), dim);
+            uint16_t dim_prime = this->lqdag_left->qdag->nAttr(); // d'
+            uint64_t p = std::pow(this->lqdag_left->qdag->getK(), dim);
 
             M = new type_mapping_M[p];
 
@@ -354,7 +359,7 @@ public:
                 i_prime = 0;
 
                 for (uint16_t j = 0; j < dim_prime; ++j) {
-                    if (i & (1 << (dim - this->lqdag1->attribute_set_A[j] - 1)))
+                    if (i & (1 << (dim - this->lqdag_left->qdag->getAttr(j) - 1)))
                         i_prime |= mask;
 
                     mask >>= 1;
@@ -378,8 +383,8 @@ public:
         return this->M;
     }
 
-    subQuadtreeChild* getSubQuadtree(){
-        return this->subQuadtree;
+    ::qdag* getQdag(){
+        return this->qdag;
     }
 
     // algorithm 8 child(L,i)
@@ -451,49 +456,45 @@ public:
      * We save the value in val_lqdag_1, val_lqdag_2 or subQuatree->value. If we've already computed the value, we return it.
      * @return the value of the root of the lqdag. Can be EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE or VALUE_NEED_CHILDREN.
      */
-    double value_lqdag(){
+    node_quadtree* value_lqdag(uint16_t cur_level, uint64_t cur_node, uint16_t max_level){
         switch(this->functor){
             case FUNCTOR_QTREE: {
-                return this->value_quadtree();
+                return this->value_quadtree(cur_level, cur_node, max_level);
             }
             case FUNCTOR_NOT: {
-                return 1 - this->value_quadtree();
+                node_quadtree* val_node = this->value_quadtree(cur_level,cur_node, max_level);
+                if(val_node->type_node != INTERNAL_NODE){
+                    val_node->node_description = ~val_node->node_description;
+                }
+                return val_node;
             }
             case FUNCTOR_AND: {
-                if(this->val_lqdag1 == NO_VALUE_LEAF)
-                    this->val_lqdag1 = this->lqdag1->value_lqdag();
-                if(this->val_lqdag1 == 0)
-                    return EMPTY_LEAF;
-
-                if(this->val_lqdag2 == NO_VALUE_LEAF)
-                    this->val_lqdag2 = this->lqdag2->value_lqdag();
-                if(this->val_lqdag2 == 0)
-                    return EMPTY_LEAF;
-
-                if (this->val_lqdag1 == 1)
-                    return this->val_lqdag2;
-                if (this->val_lqdag2 == 1)
-                    return this->val_lqdag1;
-
-                return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the AND between the children of Q1 and Q2 has been computed
+                node_quadtree* val_left = this->lqdag_left->value_lqdag(cur_level, cur_node, max_level);
+                node_quadtree* val_right = this->lqdag_right->value_lqdag(cur_level, cur_node, max_level);
+                if(val_left->type_node == FULL_LEAF)
+                    return val_right;
+                else if(val_right->type_node == FULL_LEAF)
+                    return val_left;
+                else if(val_left->type_node == EMPTY_LEAF || val_right->type_node == EMPTY_LEAF)
+                    return new node_quadtree{EMPTY_LEAF, 0};
+                else if(val_left->type_node == INTERNAL_NODE && val_right->type_node == INTERNAL_NODE)
+                    return val_left; // or right, is the same {INTERNAL_NODE,0}
+                else // both are LAST_LEVEL_LEAF
+                    return new node_quadtree{LAST_LEVEL_LEAF, val_left->node_description & val_right->node_description};
             }
             case FUNCTOR_OR: {
-                if(this->val_lqdag1 == NO_VALUE_LEAF)
-                    this->val_lqdag1 = this->lqdag1->value_lqdag();
-                if(this->val_lqdag1 == 1)
-                    return FULL_LEAF;
-
-                if(this->val_lqdag2 == NO_VALUE_LEAF)
-                    this->val_lqdag2 = this->lqdag2->value_lqdag();
-                if(this->val_lqdag2 == 1)
-                    return FULL_LEAF;
-
-                if (this->val_lqdag1 == 0)
-                    return this->val_lqdag2;
-                if (this->val_lqdag2 == 0)
-                    return this->val_lqdag1;
-
-                return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the OR between the children of Q1 and Q2 has been computed
+                node_quadtree* val_left = this->lqdag_left->value_lqdag(cur_level, cur_node, max_level);
+                node_quadtree* val_right = this->lqdag_right->value_lqdag(cur_level, cur_node, max_level);
+                if(val_left->type_node == EMPTY_LEAF)
+                    return val_right;
+                else if(val_right->type_node == EMPTY_LEAF)
+                    return val_left;
+                else if(val_left->type_node == FULL_LEAF || val_right->type_node == FULL_LEAF)
+                    return new node_quadtree{FULL_LEAF,0xffffffff}
+                else if(val_left->type_node == INTERNAL_NODE && val_right->type_node == INTERNAL_NODE)
+                    return val_left; // or right, is the same {INTERNAL_NODE,0}
+                else // both are LAST_LEVEL_LEAF
+                    return new node_quadtree{LAST_LEVEL_LEAF, val_left->node_description & val_right->node_description};
             }
             case FUNCTOR_EXTEND: {
                 if (this->val_lqdag1 == NO_VALUE_LEAF)
@@ -513,18 +514,17 @@ public:
      * FULL_LEAF if the qdag represents a full single cell, EMPTY_LEAF if it is an empty leaf, INTERNAL_NODE if is an internal quadtree_formula.
      * @return EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE.
      */
-    double value_quadtree(){
-        if(this->functor == FUNCTOR_QTREE) { // only is called
-            uint16_t cur_level = this->subQuadtree->level;
-            uint64_t cur_node = this->subQuadtree->node;
-            if(this->subQuadtree->value == NO_VALUE_LEAF)
-                this->subQuadtree->value = is_leaf(cur_level, cur_node);
-            return this->subQuadtree->value;
-
-        } else {
-            //cout << "error: value_quadtree called on non-quadtree" << endl;
-            throw "error: value_quadtree called on non-quadtree";
-        }
+    node_quadtree* value_quadtree(uint16_t cur_level, uint64_t cur_node, uint16_t max_level){
+        assert(this->functor == FUNCTOR_QTREE || this->functor == FUNCTOR_NOT);
+        uint8_t val_node = get_type_node(cur_level, cur_node);
+        if(val_node == FULL_LEAF)
+            return new node_quadtree{FULL_LEAF, 255}; // TODO: see memory manage
+        else if (val_node == EMPTY_LEAF)
+            return new node_quadtree{EMPTY_LEAF,0};
+        else if(cur_level == max_level)
+            return new node_quadtree{LAST_LEVEL_LEAF, this->qdag->get_node_last_level(cur_level, cur_node)};
+        else
+            return new node_quadtree{INTERNAL_NODE, 0};
     }
 
     /**
@@ -537,7 +537,7 @@ public:
      * If level > max_level, we are looking for the bit representing a point in the grid.
      * @return whether is an EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
      */
-    double is_leaf(uint16_t level, uint64_t node){
+    uint8_t get_type_node(uint16_t level, uint64_t node){
         uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
         if(level > max_level){
             return this->subQuadtree->qdag->get_ith_bit(max_level, node);
