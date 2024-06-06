@@ -335,7 +335,7 @@ public:
         this->lqdag2 = nullptr;
 
         if(M == nullptr) {
-            uint16_t msize = std::pow(this->lqdag1->subQuadtree->qdag->getK(),
+            uint64_t msize = std::pow(this->lqdag1->subQuadtree->qdag->getK(),
                                         this->lqdag1->subQuadtree->qdag->getD());
             this->M = new type_mapping_M[msize];
 
@@ -393,7 +393,7 @@ public:
         switch (this->functor) {
             case FUNCTOR_QTREE: case FUNCTOR_NOT: {
                 uint16_t cur_level = this->subQuadtree->level;
-                uint16_t cur_node = this->subQuadtree->node;
+                uint64_t cur_node = this->subQuadtree->node;
                 uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
                 bool node_exists = true;
                 uint64_t ith_child;
