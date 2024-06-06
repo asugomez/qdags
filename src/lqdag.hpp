@@ -28,6 +28,10 @@ const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the val
 #define OP_LESS 4
 #define OP_GREATER 5
 
+const uint8_t TYPE_ATT1_ATT2 = 0;
+const uint8_t TYPE_ATT1_CONST = 1;
+const uint8_t TYPE_ATT2_CONST = 2;
+
 struct quadtree_formula { // represents the output of the formula we are evaluating
     double val_leaf; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE
     uint64_t k_d;
@@ -48,9 +52,9 @@ struct subQuadtreeChild {
 /**
  * represents a predicate in the query
  * can be:
- * - att_1 op att_2 (0)
- * - att_1 op val_const (1)
- * - att_2 op val_const (2)
+ * - att_1 op att_2 (0) TYPE_ATT1_ATT2
+ * - att_1 op val_const (1) TYPE_ATT1_CONST
+ * - att_2 op val_const (2) TYPE_ATT2_CONST
  */
 struct predicate {
     uint64_t att_1; // TODO: use it for A >B
@@ -71,7 +75,7 @@ public:
         uint64_t max_att_1 = coordinates[0] + quadrant_side - 1;
         uint64_t min_att_2 = coordinates[1];
         uint64_t max_att_2 = coordinates[1] + quadrant_side - 1;
-        if(pred->type_pred == 0){ // att1 op att2
+        if(pred->type_pred == TYPE_ATT1_ATT2){ // att1 op att2
             switch (pred->op){
                 case OP_EQUAL:
                     if(quadrant_side == 1){
@@ -133,7 +137,7 @@ public:
                     throw "error: eval_pred default att1 op att2";
             }
         }
-        else if(pred->type_pred == 1){ // att1 op val_const
+        else if(pred->type_pred == TYPE_ATT1_CONST){ // att1 op val_const
             switch (pred->op) {
                 case OP_EQUAL:
                     if(quadrant_side == 1){
@@ -205,7 +209,7 @@ public:
                     throw "error: eval_pred default att1 op val_const";
             }
         }
-        else{ // att2 op val_const
+        else{ // att2 op val_const TYPE_ATT2_CONST
             switch (pred->op) {
                 case OP_EQUAL:
                     if(quadrant_side == 1){
@@ -623,10 +627,6 @@ public:
         // C_i ← Completion(Child(L_F,i))
         for(uint64_t i = 0; i < p; i++){
             Q_f_children[i] = this->get_child_lqdag(i)->completion(p, max_level, cur_level+1, UPPER_BOUND, results);
-//            if(Q_f_children[i]->val_leaf!= EMPTY_LEAF)
-//                max_value = Q_f_children[i]->val_leaf;
-//            if(Q_f_children[i]->val_leaf!= FULL_LEAF)
-//                min_value = Q_f_children[i]->val_leaf;
             max_value = max(max_value, Q_f_children[i]->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
             min_value = min(min_value, Q_f_children[i]->val_leaf);
         }
@@ -712,8 +712,9 @@ public:
                 // return an internal node with children
                 quadtree_formula* quadtree = new quadtree_formula;
                 quadtree->val_leaf = INTERNAL_NODE; //INTERNAL_NODE;
-                for(uint64_t i = 0; i < p; i++)
-                    quadtree->children[i] = Q_f_children[i];
+                quadtree->children = Q_f_children;
+//                for(uint64_t i = 0; i < p; i++)
+//                    quadtree->children[i] = Q_f_children[i];
                 return quadtree;
             }
 
