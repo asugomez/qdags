@@ -199,16 +199,16 @@ bool multiJoinPartialResults(
                 max_level, grid_size, type_order_fun,
                 pq, results_points);
 
-//    cout << "number of results: " << results_points.size() << endl;
-//    uint64_t i=0;
-//    while(i < results_points.size()){
-//        uint16_t* coordinates = results_points[i];
-//        for(uint64_t j = 0; j< A.size(); j++){
-//            cout << coordinates[j] << " ";
-//        }
-//        cout << endl;
-//        i++;
-//    }
+    cout << "number of results: " << results_points.size() << endl;
+    uint64_t i=0;
+    while(i < results_points.size()){
+        uint16_t* coordinates = results_points[i];
+        for(uint64_t j = 0; j< A.size(); j++){
+            cout << coordinates[j] << " ";
+        }
+        cout << endl;
+        i++;
+    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
