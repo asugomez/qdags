@@ -740,7 +740,6 @@ public:
      */
     uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
         if(level == getHeight()-1){ // max level
-            cout << "aqui no debiesemos estar" << endl;
             return node + ith_child;
         }
         if(!get_ith_bit(level, node + ith_child)){

@@ -60,10 +60,10 @@ public:
 
     // los 4 bits que definen un nodo
     /**
-     * Get the 4 bits that define a quadtree_formula
+     * Get the 4 bits that define a node
      * @param start_pos the position in the level
      * @return the 4 bits from the start position
-     * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 6 (=0110).
+     * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 3 (=0011).
      */
     inline uint8_t get_4_bits(uint64_t start_pos) {
         if(seq == nullptr)

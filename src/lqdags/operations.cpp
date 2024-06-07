@@ -44,7 +44,7 @@ quadtree_formula* compute_pred_quadtree(qdag Q, uint64_t UPPER_BOUND, uint64_t &
     for(uint16_t i = 0; i < A.size(); i++)
         coordinates[i] = 0;
 
-    return lqdag_formula->completion_with_pred(p, Q.getHeight()-1, 0, grid_side, k, UPPER_BOUND, results, pred, coordinates);
+    return lqdag_formula->completion_with_pred(p, Q.getHeight()-1, 0, grid_side, k, UPPER_BOUND, results, pred, coordinates, A.size());
 }
 
 // ---------- JOIN ---------- //
@@ -76,16 +76,6 @@ lqdag* lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND) {
     for (uint64_t i = 0; i < Q.size(); i++) {
         subQ[i] = new subQuadtreeChild{&Q[i], 0, 0};
         extend_qdag[i] = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQ[i]), A);
-        if (A.size() == 3)
-            Q[i].createTableExtend3();
-        else if (A.size() == 4)
-            Q[i].createTableExtend4();
-        else if (A.size() == 5)
-            Q[i].createTableExtend5();
-        else {
-            cout << "Code only works for queries of up to 5 attributes..." << endl;
-            exit(1);
-        }
     }
 
     lqdag* join_result;
@@ -142,16 +132,6 @@ quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint
     for (uint64_t i = 0; i < Q.size(); i++) {
         subQ[i] = new subQuadtreeChild{&Q[i], 0, 0};
         extend_qdag[i] = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQ[i]), A);
-        if (A.size() == 3)
-            Q[i].createTableExtend3();
-        else if (A.size() == 4)
-            Q[i].createTableExtend4();
-        else if (A.size() == 5)
-            Q[i].createTableExtend5();
-        else {
-            cout << "Code only works for queries of up to 5 attributes..." << endl;
-            exit(1);
-        }
     }
 
     lqdag* join_result;
@@ -205,16 +185,6 @@ quadtree_formula* compute_pred_lqdag_join(vector<qdag>&Q, uint64_t UPPER_BOUND, 
     for (uint64_t i = 0; i < Q.size(); i++) {
         subQ[i] = new subQuadtreeChild{&Q[i], 0, 0};
         extend_qdag[i] = new lqdag(FUNCTOR_EXTEND, new lqdag(FUNCTOR_QTREE, subQ[i]), A);
-        if (A.size() == 3)
-            Q[i].createTableExtend3();
-        else if (A.size() == 4)
-            Q[i].createTableExtend4();
-        else if (A.size() == 5)
-            Q[i].createTableExtend5();
-        else {
-            cout << "Code only works for queries of up to 5 attributes..." << endl;
-            exit(1);
-        }
     }
 
     lqdag* join_result;
@@ -237,6 +207,7 @@ quadtree_formula* compute_pred_lqdag_join(vector<qdag>&Q, uint64_t UPPER_BOUND, 
         join_result = new lqdag(FUNCTOR_AND, join_r_s_t_u, extend_qdag[4]);
     }
     else {
+        // TODO: fix this
         cout << "Code only implemented for a maximum of 5 qdags..." << endl;
         exit(1);
     }
@@ -249,7 +220,7 @@ quadtree_formula* compute_pred_lqdag_join(vector<qdag>&Q, uint64_t UPPER_BOUND, 
         coordinates[i] = 0;
 
     // join result is the formula
-    return join_result->completion_with_pred(p, Q[0].getHeight()-1, 0, grid_side, k, UPPER_BOUND, results, pred, coordinates);
+    return join_result->completion_with_pred(p, Q[0].getHeight()-1, 0, grid_side, k, UPPER_BOUND, results, pred, coordinates, A.size());
 }
 
 

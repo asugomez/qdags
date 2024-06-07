@@ -70,18 +70,33 @@ class lqdag {
 public:
     typedef vector<uint64_t> att_set;
 
-    static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side) {
-        uint64_t min_att_1 = coordinates[0]; // [min, max]
-        uint64_t max_att_1 = coordinates[0] + quadrant_side - 1;
-        uint64_t min_att_2 = coordinates[1];
-        uint64_t max_att_2 = coordinates[1] + quadrant_side - 1;
+    /**
+     *
+     * @param pred
+     * @param coordinates the initial position x,y,z,... of the quadrant
+     * @param quadrant_side
+     * @return
+     */
+    static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side, uint64_t nAttr) {
+        vector<uint64_t> min_att;
+        vector<uint64_t> max_att;
+        for(uint16_t i = 0; i < nAttr; i++){
+            min_att.push_back(coordinates[i]);
+            max_att.push_back(coordinates[i] + quadrant_side - 1);
+        }
+
+        uint64_t min_att_1, max_att_1, min_att_2, max_att_2;
         if(pred->type_pred == TYPE_ATT1_ATT2){ // att1 op att2
+            min_att_1 = min_att[pred->att_1];
+            max_att_1 = max_att[pred->att_1];
+            min_att_2 = min_att[pred->att_2];
+            max_att_2 = max_att[pred->att_2];
             switch (pred->op){
                 case OP_EQUAL:
                     if(quadrant_side == 1){
                         return min_att_1 == min_att_2;
                     }
-                    else if(min_att_1 == min_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2 || max_att_1 == max_att_2)
+                    else if(min_att_1 == min_att_2 || max_att_1 == max_att_2) // || min_att_1 == max_att_2 || max_att_1 == min_att_2)
                         return 0.5;
                     else
                         return 0;
@@ -138,6 +153,8 @@ public:
             }
         }
         else if(pred->type_pred == TYPE_ATT1_CONST){ // att1 op val_const
+            min_att_1 = min_att[pred->att_1];
+            max_att_1 = max_att[pred->att_1];
             switch (pred->op) {
                 case OP_EQUAL:
                     if(quadrant_side == 1){
@@ -182,10 +199,9 @@ public:
                     else
                         throw "error: eval_pred OP_LESS";
                 case OP_GREATER_EQUAL: // att1 >= val_const
-                    if(quadrant_side == 1){
+                    if(quadrant_side == 1)
                         return min_att_1 >= pred->val_const;
-                    }
-                    if(min_att_1 >= pred->val_const)
+                    else if(min_att_1 >= pred->val_const)
                         return 1;
                     else if(min_att_1 < pred->val_const && pred->val_const <= max_att_1)
                         return 0.5;
@@ -199,7 +215,7 @@ public:
                     }
                     if(min_att_1 > pred->val_const)
                         return 1;
-                    else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1)
+                    else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1) // TPDO: ver estas
                         return 0.5;
                     else if(max_att_1 < pred->val_const)
                         return 0;
@@ -211,6 +227,8 @@ public:
         }
         else{ // att2 op val_const TYPE_ATT2_CONST
             switch (pred->op) {
+                min_att_2 = min_att[pred->att_2];
+                max_att_2 = max_att[pred->att_2];
                 case OP_EQUAL:
                     if(quadrant_side == 1){
                         return min_att_2 == pred->val_const;
@@ -330,6 +348,7 @@ public:
     }
 
     // L = (EXTEND, L1, A)
+    // TODO: puedo asumir q dps delextend viene un subquadtreE?
     lqdag(uint8_t functor, lqdag* l, att_set &attribute_set_A, type_mapping_M *M = nullptr) {
         assert(functor == FUNCTOR_EXTEND);
         this->functor = functor;
@@ -368,6 +387,17 @@ public:
             }
         }
         this->M = M;
+
+        if (attribute_set_A.size() == 3)
+            this->lqdag1->subQuadtree->qdag->createTableExtend3();
+        else if (attribute_set_A.size() == 4)
+            this->lqdag1->subQuadtree->qdag->createTableExtend4();
+        else if (attribute_set_A.size() == 5)
+            this->lqdag1->subQuadtree->qdag->createTableExtend5();
+        else {
+            cout << "EXTEND only works for queries of up to 5 attributes..." << endl;
+            exit(1);
+        }
     }
 
     uint8_t getFunctor(){
@@ -658,13 +688,13 @@ public:
      * @param UPPER_BOUND
      * @param results
      * @param pred
-     * @param coordinates
+     * @param coordinates an array of nAtt coordinates of the node representing the quadrant.
      * @param checkPred once we have evaluated the predicate and if this evaluation returns 1, we do not have to evaluate it again for its children.
      * @return
      */
     quadtree_formula *
     completion_with_pred(uint64_t p, uint16_t max_level, uint16_t cur_level, uint64_t grid_side, uint8_t k, uint64_t UPPER_BOUND, uint64_t &results,
-                         predicate *pred, uint16_t *coordinates) {
+                         predicate *pred, uint16_t *coordinates, uint64_t nAttr) {
 
         if(results >= UPPER_BOUND){ // top k results only
             quadtree_formula* newNode = create_leaf(EMPTY_LEAF,p);
@@ -672,7 +702,7 @@ public:
         }
         // if results < UPPER_BOUND
         uint64_t quadrant_side = grid_side/pow(k,cur_level);
-        double val_eval_pred = eval_pred(pred, coordinates, quadrant_side); // TODO: para eval_pred de 2 o mas relaciones, ver como pasar coordinates
+        double val_eval_pred = eval_pred(pred, coordinates, quadrant_side, nAttr); // TODO: para eval_pred de 2 o mas relaciones, ver como pasar coordinates
         if(val_eval_pred == 0){
             quadtree_formula* newNode = create_leaf(EMPTY_LEAF,p);
             return newNode;
@@ -685,7 +715,7 @@ public:
             // if all quadtres are empty, return a 0 leaf.
             // C_i ← Completion(Child(L_F,i))
             for(uint64_t i = 0; i < p; i++){
-                uint16_t diff_level = max_level-cur_level-1;
+                uint16_t diff_level = max_level-cur_level;
                 uint16_t l = (uint16_t) log2(p);
                 uint16_t* coordinatesTemp = new uint16_t[l];
                 for(uint16_t j = 0; j < l; j++)
@@ -694,7 +724,7 @@ public:
                 quadtree_formula* newNode = this->get_child_lqdag(i)->completion_with_pred(p, max_level, cur_level + 1,
                                                                                            grid_side, k,
                                                                                            UPPER_BOUND, results, pred,
-                                                                                           coordinatesTemp);
+                                                                                           coordinatesTemp, nAttr);
                 Q_f_children[i] = newNode;
                 max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
                 min_value = min(min_value, newNode->val_leaf);
