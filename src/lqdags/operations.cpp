@@ -224,8 +224,6 @@ quadtree_formula* compute_pred_lqdag_join(vector<qdag>&Q, uint64_t UPPER_BOUND, 
 }
 
 
-// TODO: completion pred over a more complex formula (two or more relations) R(A,B) and S(B,C) and pred : A=C
-
 // (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
 lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {
     subQuadtreeChild* subQ1 = new subQuadtreeChild{&q1, 0, 0};
@@ -255,14 +253,14 @@ lqdag* projection(){
 }
 
 lqdag* semijoin(){
-
+    // TODO
 }
 
 lqdag* antijoin(){
-
+    // TODO
 }
 
 lqdag* division(){
-
+    // TODO
 }
 

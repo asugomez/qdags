@@ -7,7 +7,8 @@
 
 using namespace std::chrono;
 
-
+#include "../../src/qdags.hpp"
+#include "../../src/lqdag.hpp"
 #include "../../src/lqdags/operations.cpp"
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -102,8 +103,6 @@ int main(int argc, char** argv)
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
     Q[3] = qdag_rel_U;
-    
-    qdag *Join_Result;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       

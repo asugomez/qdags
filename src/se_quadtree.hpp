@@ -66,8 +66,6 @@ private:
 
 protected:
 
-    // TODO: no entiendo el offset
-
 
     /*! Get the chunk index ([0, k^d[) of a submatrix point. (in a N order: left-bottom, left-top, right-bottom, right-top)
     *
@@ -222,7 +220,7 @@ protected:
         k_t_.resize(t);
         bv[height - 1] = rank_bv_64(k_t_);
         total_ones[height - 1] = bv[height - 1].n_ones();
-        cout << total_ones[height - 1] << endl;
+//        cout << total_ones[height - 1] << endl;
     }
 
 public:

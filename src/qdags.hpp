@@ -163,7 +163,7 @@ public:
         //}
 
         // TODO: OFT print!
-        printBv();
+//        printBv();
 
     }
 

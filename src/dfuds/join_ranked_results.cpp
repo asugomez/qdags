@@ -229,7 +229,7 @@ bool multiJoinRankedResultsDfuds(
                pq, type_priority_fun,
                priorities, rMq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
@@ -515,7 +515,7 @@ bool multiJoinRankedResultsDfudsBacktracking(
                             top_results);
 
 //    uint64_t size_queue_top = top_results.size();
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    for(uint64_t i=0; i<size_queue_top; i++){
 //        qdagResults res = top_results.top();
 //        top_results.pop();
