@@ -613,30 +613,21 @@ public:
      * 0101
      * 0100 1001
      * 1111 0001 1000
-     * get_num_leaves(-1,0) --> 6
-     * get_num_leaves(0,0) --> 0
-     * get_num_leaves(0,1) --> 4
-     * get_num_leaves(2,7) --> 1
+     * get_num_leaves(0,0) --> 6
+     * get_num_leaves(0,4) --> 0
+     * get_num_leaves(1,0) --> 4
+     * get_num_leaves(2,8) --> 1
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node){
-//        if(level == -1){
-//            return total_ones_level(getHeight()-1);
-//        }
-        if(level == getHeight()-1){ // leaf
-            return get_ith_bit(level, node);
-        }
-        if(get_ith_bit(level, node) == 0){
-            return 0;
-        }
-        uint64_t siblings = rank(level,node); // start position in the next level
         uint64_t n_children;
         uint64_t children_array[k_d];
-        level++;
-        get_children(level,siblings*k_d, children_array,n_children);
-        if(level == getHeight()-1){
+        get_children(level,node, children_array,n_children);
+        if(level == getHeight()-1){;
             return n_children;
         }
-        return get_num_leaves_aux(level, n_children, siblings); // siblings*k_d es mi start position en el siguiente nivel
+        uint64_t start_pos_next_level = rank(level,node); // start position in the next level
+        level++;
+        return get_num_leaves_aux(level, start_pos_next_level, n_children);
     }
 
     /**
@@ -646,13 +637,14 @@ public:
      * @param siblings number of left siblings. It's useful to have as a starting position.
      * @return the number of children of the i-th node.
      */
-    uint64_t get_num_leaves_aux(uint16_t level, uint64_t children, uint64_t siblings){
-        siblings = rank(level,siblings*k_d); // start position in the next level
-        children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
-        if(level == getHeight()-2){
-            return children;
+    uint64_t get_num_leaves_aux(uint16_t level, uint64_t start_pos_next_level, uint64_t n_children){
+        if(level == getHeight()-1){
+            return rank(level,(n_children + start_pos_next_level)*k_d) - rank(level,start_pos_next_level*k_d);
         }
-        return get_num_leaves_aux(level+1, children, siblings);
+        n_children = rank(level,(n_children + start_pos_next_level)*k_d) - rank(level,start_pos_next_level*k_d);
+        start_pos_next_level = rank(level,start_pos_next_level*k_d);
+        level++;
+        return get_num_leaves_aux(level, start_pos_next_level, n_children);
     }
 
     /**
@@ -667,9 +659,9 @@ public:
         if(level == -2)
             return get_num_leaves(-1,0);
         //parent is the root
-        if(level == -1){
-            return get_num_leaves(0, child);
-        }
+//        if(level == -1){
+//            return get_num_leaves(0, child);
+//        }
         // check there is enought nodes in the level
         if(total_ones_level(level) <= parent)
             return 0;
@@ -684,48 +676,38 @@ public:
      * @param init will be modified if the node is not the root.
      * @param end will be modified if the node is not the root.
      * @return false if the node is empty or if the node is not the root and it has no children.
+     * @example
+     * 1011
+     * 1111 0010 1001
+     * get_range_leaves(0,0) --> init = 0, end=5, return true
+     * get_range_leaves(0,4) --> return false
+     * get_range_leaves(0,2) --> init = 4, end = 4, return true
+     *
      */
     bool get_range_leaves(uint16_t level, uint64_t node, uint64_t& init, uint64_t& end){
-//        if(level == -1){
-//            return true; // dejar init y end como estaban (rango completo!)
-//        }
-        if(level == getHeight()-1){ // leaf
-            if(get_ith_bit(level, node)){
-                init = rank(level,node);
-                end = init;
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        if(get_ith_bit(level, node) == 0){
-            return false;
-        }
-        uint64_t siblings = rank(level,node); // start position in the next level
         uint64_t n_children;
         uint64_t children_array[k_d];
-        level++;
-        get_children(level,siblings*k_d, children_array,n_children);
+        get_children(level,node, children_array,n_children);
         if(level == getHeight()-1){
-            init = rank(level,siblings*k_d);
+            init = rank(level,node);
             end = init + n_children - 1;
-            return true;
+            return init<=end;
         }
-        return get_range_leaves_aux(level, n_children, siblings, init, end);
+        uint64_t start_pos_next_level = rank(level,node); // start position in the next level
+        level++;
+        return get_range_leaves_aux(level, start_pos_next_level, n_children, init, end);
     }
 
-    bool get_range_leaves_aux(int16_t level, uint64_t children, uint64_t siblings, uint64_t& init, uint64_t& end){
-        siblings = rank(level,siblings*k_d);
-        children = rank(level+1,(children + siblings)*k_d) - rank(level+1,siblings*k_d);
-        if(level == getHeight()-2){
-            // start position
-            init = rank(level+1,siblings*k_d);
-            end = init + children - 1;
-            return true;
+    bool get_range_leaves_aux(int16_t level, uint64_t start_pos_next_level, uint64_t n_children, uint64_t &init, uint64_t &end) {
+        if(level == getHeight()-1){
+            init = rank(level,start_pos_next_level*k_d);
+            end = rank(level,(n_children + start_pos_next_level)*k_d) - 1;
+            return init<=end;
         }
+        n_children = rank(level,(n_children + start_pos_next_level)*k_d) - rank(level,start_pos_next_level*k_d);
+        start_pos_next_level = rank(level,start_pos_next_level*k_d);
         level++;
-        return get_range_leaves_aux(level, children, siblings, init, end);
+        return get_range_leaves_aux(level, start_pos_next_level, n_children, init, end);
     }
 
     /**

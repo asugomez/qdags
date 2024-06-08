@@ -39,7 +39,7 @@ private:
 
     uint64_t grid_side;
 
-    uint16_t Msize;  // number of children of every qdag quadtree_formula, k^d
+    uint16_t Msize;  // number of children of every qdag node, k^d
 
     bool is_extended_qdag;
 
@@ -135,7 +135,6 @@ public:
         uint64_t mask;
         uint64_t i, i_prime;
 
-        // TODO: see if we have to change something (order DFS, idk)
         for (i = 0; i < p; ++i) {
             // todos los bits están en cero excepto el bit en la posición dim_prime - 1.
             mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
@@ -211,7 +210,7 @@ public:
         return M[i];
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
     // son tablas precomputadas para materializar los nodos
     void createTableExtend5()  // para join con 5 atributos, se constuyen al momento del join
     {
@@ -236,7 +235,7 @@ public:
         }
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
     void createTableExtend4() // para join con 4 atributos
     {
         uint64_t i, j;
@@ -260,7 +259,7 @@ public:
         }
     }
 
-    // This is for a binary relation, i.e., a k^2-tree with 4 children per quadtree_formula
+    // This is for a binary relation, i.e., a k^2-tree with 4 children per node
     void createTableExtend3() // para join con 3 atributos
     {
         uint64_t i, j;
@@ -285,8 +284,7 @@ public:
     }
 
 
-    // TODO: see how the extend works in DFS!
-    // we need the number of 1s of the level (until the quadtree_formula position)
+    // we need the number of 1s of the level (until the node position)
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
         // get the number of 1s of that level
         return tab_extend_3[Q->get_node(node, rank_vector)];
@@ -325,21 +323,40 @@ public:
         return Q->leaf_num(node);
     }
 
-    // TODO: only for testing
-    se_quadtree_dfuds *getQ() {
-        return Q;
-    }
-
     /**
-     * Get the range of leaves in the last level of the tree that are descendants of the quadtree_formula.
+     * Get the range of leaves in the last level of the tree that are descendants of the node.
      * Useful for the range Maximum query
      * @param node
-     * @param init will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
-     * @param fin will be modified if the quadtree_formula is not the root. -1 if the quadtree_formula is empty.
+     * @param init will be modified if the node is not the root. -1 if the node is empty.
+     * @param fin will be modified if the node is not the root. -1 if the node is empty.
      */
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         return Q->get_range_leaves(node, init, end);
     }
+
+    /**
+     *
+     * @param node
+     * @param t
+     * @return The t-th child of node , if it exists
+     */
+    uint64_t child(uint64_t node, uint64_t t) {
+        return Q->child(node, t);
+    }
+
+    /**
+     * @param node
+     * @return the index of the priority of that node.
+     * Assume the node is in the last level of the tree.
+     * If the node is 1001, and t = 3, the index will be 1
+     */
+    uint64_t get_index_pri(uint64_t node, uint64_t t){
+        // we add 1 to t, because the first child is 1 (not 0)
+        uint64_t ind = Q->get_rank_node_child(node, t);
+        return Q->leaf_rank(Q->child(node, ind+1)) - 1;
+    }
+
+
 
 };
 

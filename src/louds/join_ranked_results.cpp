@@ -44,7 +44,7 @@ bool AND_ranked(
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size;
     uint16_t cur_level;
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
     uint64_t results = 0;
     while(!pq.empty()){
         children = 0xffffffff;
@@ -52,97 +52,120 @@ bool AND_ranked(
         pq.pop();
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
-        uint64_t rank_vector[nQ][64];
-        for (uint64_t i = 0; i < nQ && children; ++i){
-            k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
-            if (nAtt == 3) {
-                if (cur_level == max_level) {
-                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
-                } else {
-                    children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                }
-            }
-            else if (nAtt == 4) {
-                if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
-                }
-                else {
-                    children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                }
-            }
-            else if (nAtt == 5) {
-                if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
-                }
-                else {
-                    children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                }
-            }
-            else {
-                cout << "Code only works for queries of up to 5 attributes..." << endl;
-                return false;
-            }
+        if(cur_level > max_level){
+            results_points.push_back(tupleQdags.coordinates);
+            if(bounded_result && ++results >= UPPER_BOUND)
+                return true;
         }
-
-        // in children we have the actual non empty nodes
-        // in children_to_recurse we store the index of these non emtpy nodes
-        children_to_recurse_size = bits::cnt((uint64_t) children);
-        uint64_t i = 0;
-        uint64_t msb; // most significant bit
-        while (i < children_to_recurse_size) {
-            msb = __builtin_clz(children);
-            children_to_recurse[i] = msb;
-            ++i;
-            children &= (((uint32_t) 0xffffffff) >> (msb + 1));
-        }
-
-        uint16_t child;
-        uint16_t diff_level = max_level-cur_level;
-        uint16_t next_level = cur_level + 1;
-        for (i = 0; i < children_to_recurse_size; ++i) {
-            uint64_t* root_temp= new uint64_t[nQ];
-            uint16_t* coordinatesTemp = new uint16_t[l];
-            child = children_to_recurse[i];
-
-            for(uint16_t k = 0; k < l; k++)
-                coordinatesTemp[k] = tupleQdags.coordinates[k];
-            transformCoordinates(coordinatesTemp, l, diff_level, child);
-
-            // compute the coordinates if it's a leaf
-            if(cur_level == max_level){
-                delete[] root_temp;
-                results_points.push_back(coordinatesTemp);
-                if(bounded_result && ++results >= UPPER_BOUND)
-                    return true;
-            } else{
-                // compute the weight of the tuple (ONLY if it's not a leaf)
-                double total_weight = 0;
-                // calculate the weight of the tuple
-                for (uint64_t j = 0; j < nQ; j++) {
-                    // we store the parent quadtree_formula that corresponds in the original quadtree of each qdag
-                    root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-                    uint64_t init = 0;
-                    uint64_t end = priorities[j].size()-1;
-                    uint64_t priority_ith_node = 0;
-                    bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
-                    if(success){
-                        bit_vector::size_type min_idx = rMq[j](init, end);
-                        priority_ith_node = priorities[j][min_idx];
+        else{
+            uint64_t rank_vector[nQ][64];
+            for (uint64_t i = 0; i < nQ && children; ++i){
+                k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
+                if (nAtt == 3) {
+                    if (cur_level == max_level) {
+                        children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
                     } else {
-                        //cout << "error in get range leaves" << endl;
+                        children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
                     }
-                    if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
-                        total_weight += priority_ith_node;
-                    else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
-                        if (total_weight < priority_ith_node) {
-                            total_weight = priority_ith_node;
+                }
+                else if (nAtt == 4) {
+                    if(cur_level == max_level){
+                        children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
+                    }
+                    else {
+                        children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
+                    }
+                }
+                else if (nAtt == 5) {
+                    if(cur_level == max_level){
+                        children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
+                    }
+                    else {
+                        children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
+                    }
+                }
+                else {
+                    cout << "Code only works for queries of up to 5 attributes..." << endl;
+                    return false;
+                }
+            }
+
+            // in children we have the actual non empty nodes
+            // in children_to_recurse we store the index of these non emtpy nodes
+            children_to_recurse_size = bits::cnt((uint64_t) children);
+            uint64_t i = 0;
+            uint64_t msb; // most significant bit
+            while (i < children_to_recurse_size) {
+                msb = __builtin_clz(children);
+                children_to_recurse[i] = msb;
+                ++i;
+                children &= (((uint32_t) 0xffffffff) >> (msb + 1));
+            }
+
+            uint16_t child;
+            uint16_t diff_level = max_level-cur_level;
+            uint16_t next_level = cur_level + 1;
+
+            for (i = 0; i < children_to_recurse_size; ++i) {
+                uint16_t* coordinatesTemp = new uint16_t[l];
+                child = children_to_recurse[i];
+                double total_weight = 0;
+
+                for(uint16_t k = 0; k < l; k++)
+                    coordinatesTemp[k] = tupleQdags.coordinates[k];
+                transformCoordinates(coordinatesTemp, l, diff_level, child);
+
+                // compute the coordinates if it's a leaf
+                if(cur_level == max_level){
+                    // priority
+                    uint64_t priority_ith_node;
+                    for (uint64_t j = 0; j < nQ; j++) {
+                        uint64_t min_idx = Q[j]->get_index_pri(tupleQdags.roots[j] + Q[j]->getM(child));
+                        priority_ith_node = priorities[j][min_idx];
+
+                        if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
+                            total_weight += priority_ith_node;
+                        else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
+                            if (total_weight < priority_ith_node) {
+                                total_weight = priority_ith_node;
+                            }
                         }
                     }
+                    // insert the last level node
+                    qdagWeight this_node = {next_level, nullptr, total_weight, coordinatesTemp} ;
+                    pq.push(this_node); // add the tuple to the queue
+                } else{
+                    uint64_t* root_temp= new uint64_t[nQ];
+                    // compute the weight of the tuple (ONLY if it's not a leaf)
+                    // calculate the weight of the tuple
+                    for (uint64_t j = 0; j < nQ; j++) {
+                        // we store the parent node that corresponds in the original quadtree of each qdag
+                        root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+                        uint64_t init = 0;
+                        uint64_t end = priorities[j].size()-1;
+                        uint64_t priority_ith_node = 0;
+                        bool success = Q[j]->get_range_leaves(cur_level+1,root_temp[j],init,end);
+                        if(success){
+                            bit_vector::size_type min_idx = rMq[j](init, end);
+                            priority_ith_node = priorities[j][min_idx];
+                        } else {
+                            cout << "error in get range leaves and_ranked (louds)" << endl;
+                            exit(1);
+                        }
+                        if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
+                            total_weight += priority_ith_node;
+                        else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
+                            if (total_weight < priority_ith_node) {
+                                total_weight = priority_ith_node;
+                            }
+                        }
+                    }
+                    // insert the tuple
+                    qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
+                    pq.push(this_node); // add the tuple to the queue
                 }
-                // insert the tuple
-                qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
-                pq.push(this_node); // add the tuple to the queue
             }
+
         }
 
     }
@@ -278,8 +301,8 @@ AND_ranked_backtracking(
     uint16_t children_to_recurse[p];
     uint64_t i;
     uint64_t children_to_recurse_size = 0;
-    uint32_t children = 0xffffffff; // each bit represent a quadtree_formula (empty or not)
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+    uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
+    uint16_t l = (uint16_t) log2(p); // bits number to define the node's children
 
     // last level --> add result to the priority queue
     if (cur_level == max_level){
@@ -319,10 +342,10 @@ AND_ranked_backtracking(
             transformCoordinates(coordinatesTemp, l, diff_level, child);
 
             // priority
-            double this_weight;
+            double this_weight = 0;
             uint64_t priority_ith_node;
             for (uint64_t j = 0; j < nQ; j++) {
-                bit_vector::size_type min_idx = rMq[j](child, child); // TODO: check que el child corresponda efectivamente al rango
+                uint64_t min_idx = Q[j]->get_index_pri(roots[j] + Q[j]->getM(child));
                 priority_ith_node = priorities[j][min_idx];
 
                 if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
@@ -336,7 +359,6 @@ AND_ranked_backtracking(
             // queue full --> compare priorities
             if(top_results.size() >= size_queue ){
                 qdagResults minResult = top_results.top();
-                //cout << "fullqueue (this weight and min weight) " << this_weight << " " << minResult.weight << endl;
                 // add result if the priority is higher than the minimum priority in the queue
                 if(this_weight > minResult.weight){
                     top_results.pop();
@@ -344,7 +366,6 @@ AND_ranked_backtracking(
                 }
             }
             else{
-                //cout << "push" << endl;
                 top_results.push({coordinatesTemp, this_weight});
                 just_zeroes = false;
             }
@@ -396,14 +417,14 @@ AND_ranked_backtracking(
                 root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
                 uint64_t init = 0;
                 uint64_t end = priorities[j].size()-1;
-                // TODO: see this: what to do when i-th bit is 0?
                 uint64_t priority_ith_node = 0;
-                bool success = Q[j]->get_range_leaves(cur_level,Q[j]->getM(child),init,end);
+                bool success = Q[j]->get_range_leaves(cur_level+1,root_temp[i][j],init,end);
                 if(success){
                     bit_vector::size_type min_idx = rMq[j](init, end);
                     priority_ith_node = priorities[j][min_idx];
                 } else {
-                    //cout << "error in get range leaves" << endl;
+                    cout << "error in get range leaves and_backtracking (louds)" << endl;
+                    exit(1);
                 }
                 if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
                     total_weight += priority_ith_node;

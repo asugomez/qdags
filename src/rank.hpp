@@ -44,7 +44,6 @@ public:
     }
 
     // number of 1s in B[0,i-1]
-    // TODO: understand que pasa si rank(i) >  MAX_UINT64_T ?
     inline uint64_t rank(uint64_t i) {
         // 0x3f = 00111111
         // i >> 6 : dividir por 64 (tamaño bloque)
@@ -105,39 +104,6 @@ public:
                 cout << "error k_d > 16" << endl;
                 return 0;
         }
-    }
-
-    /**
-     * TODO: esto esta en la funcion get_children
-     * Count the number of 1s
-     * @param start_pos
-     * @return
-     */
-    inline uint64_t n_ones_4_bits(uint64_t start_pos) {
-        // TODO: replace it by
-        //uint64_t counter = bits::cnt(start_pos); // contar nro de reusltados
-        uint8_t x = get_4_bits(start_pos);
-        uint64_t counter = 0;
-        for (int i = 0; i < 4; i++) {
-            if (x & (1 << i)) {
-                counter += 1;
-            }
-        }
-        return counter;
-    }
-
-    inline uint64_t n_ones_2_bits(uint64_t start_pos) {
-        // TODO: replace it by
-        //bits::cnt((uint64_t) children);
-        //uint64_t counter = bits::cnt(start_pos); // contar nro de reusltados
-        uint8_t x = get_2_bits(start_pos);
-        uint64_t counter = 0;
-        for (int i = 0; i < 2; i++) {
-            if (x & (1 << i)) {
-                counter += 1;
-            }
-        }
-        return counter;
     }
 
     // number of bits in the path
