@@ -487,7 +487,6 @@ public:
     void test_get_4_bits(){
         return Q->test_get_4_bits();
     }
-    
 };
 
 #endif

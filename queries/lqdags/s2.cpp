@@ -1,4 +1,3 @@
-
 #include <fstream>
 #include<bits/stdc++.h>
 #include<ratio>
@@ -7,7 +6,8 @@
 
 using namespace std::chrono;
 
-
+#include "../../src/qdags.hpp"
+#include "../../src/lqdag.hpp"
 #include "../../src/lqdags/operations.cpp"
 
 high_resolution_clock::time_point start_select, stop_select;

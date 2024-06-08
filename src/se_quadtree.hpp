@@ -66,8 +66,6 @@ private:
 
 protected:
 
-    // TODO: no entiendo el offset
-
 
     /*! Get the chunk index ([0, k^d[) of a submatrix point. (in a N order: left-bottom, left-top, right-bottom, right-top)
     *
@@ -222,7 +220,7 @@ protected:
         k_t_.resize(t);
         bv[height - 1] = rank_bv_64(k_t_);
         total_ones[height - 1] = bv[height - 1].n_ones();
-
+//        cout << total_ones[height - 1] << endl;
     }
 
 public:
@@ -284,6 +282,7 @@ public:
             bv_select[i] = sd_vector<>::select_1_type(path[i]);
             total_ones[i] = bv_rank[i].rank(path[i].size());
         }*/
+//        printBv();
 
     }
 
@@ -620,9 +619,9 @@ public:
      * get_num_leaves(2,7) --> 1
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node){
-        if(level == -1){
-            return total_ones_level(getHeight()-1);
-        }
+//        if(level == -1){
+//            return total_ones_level(getHeight()-1);
+//        }
         if(level == getHeight()-1){ // leaf
             return get_ith_bit(level, node);
         }
@@ -656,7 +655,7 @@ public:
         return get_num_leaves_aux(level+1, children, siblings);
     }
 
-    /** TODO: no la estoy usando esta para nada
+    /**
      *
      * @param level of the parent. -2 if it is the grandparent of the root. -1 if it is the parent of the root.
      * @param parent the i-th 1 of the level.
@@ -687,9 +686,9 @@ public:
      * @return false if the node is empty or if the node is not the root and it has no children.
      */
     bool get_range_leaves(uint16_t level, uint64_t node, uint64_t& init, uint64_t& end){
-        if(level == -1){
-            return true; // dejar init y end como estaban (rango completo!)
-        }
+//        if(level == -1){
+//            return true; // dejar init y end como estaban (rango completo!)
+//        }
         if(level == getHeight()-1){ // leaf
             if(get_ith_bit(level, node)){
                 init = rank(level,node);
@@ -737,9 +736,8 @@ public:
      * @return the index in the bv[level+1] of the ith-child of node. If the i-th child of the node doesn't exist, it returns the total the position where the level ends.
      * For the last level, return the position of the leaf.
      */
-     // TODO: debug here
     uint64_t get_child(uint16_t level, uint64_t node, uint64_t ith_child, bool &exists){
-        if(level == getHeight()-1){
+        if(level == getHeight()-1){ // max level
             return node + ith_child;
         }
         if(!get_ith_bit(level, node + ith_child)){

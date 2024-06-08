@@ -33,9 +33,14 @@ duration<double> time_span_select;
 #define AT_X4 3
 #define AT_X5 4
 
+#define AT_X 0
+#define AT_Y 1
+#define AT_Z 2
+#define AT_V 3
+#define AT_U 4
 
 std::vector<std::vector<uint64_t>> *
-read_relation(const std::string filename, uint16_t n_Atts) // TODO: ver si hay una opcion mas optima
+read_relation(const std::string filename, uint16_t n_Atts)
 {
     std::ifstream input_stream(filename);
     uint64_t x;
@@ -81,6 +86,19 @@ int main(int argc, char **argv) {
     qdag::att_set att_T;
     qdag::att_set att_U;
 
+//    att_R.push_back(AT_X2); att_R.push_back(AT_X1);
+//    att_S.push_back(AT_X3); att_S.push_back(AT_X2);
+
+//    att_R.push_back(AT_Y);
+//    att_R.push_back(AT_X);
+//    att_S.push_back(AT_Z);
+//    att_S.push_back(AT_X);
+//    att_T.push_back(AT_X);
+//    att_T.push_back(AT_U);
+//    att_U.push_back(AT_X);
+//    att_U.push_back(AT_V);
+
+
     att_R.push_back(AT_X1); att_R.push_back(AT_X2);
     att_S.push_back(AT_X2); att_S.push_back(AT_X3);
     att_T.push_back(AT_X3); att_T.push_back(AT_X4);
@@ -100,7 +118,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
     uint64_t grid_side = 52000000; // es como +infty para wikidata
-//    uint64_t grid_side = 32;
+//    uint64_t grid_side = 8;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -118,6 +136,8 @@ int main(int argc, char **argv) {
 //    qdag_rel_S.printBv();
 //    cout << endl << "rel T" << endl;
 //    qdag_rel_T.printBv();
+//    cout << endl << "rel U" << endl;
+//    qdag_rel_U.printBv();
 
 
     vector<qdag> Q(4);
@@ -319,15 +339,105 @@ int main(int argc, char **argv) {
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     cout << "----- MULTI JOIN LQDAGS ------" << endl;
-    uint64_t res = 0;
+
+    uint64_t res = 0; //x1,x2,x3
+    predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER,TYPE_ATT1_ATT2};
+    predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL,TYPE_ATT1_ATT2};
+    predicate pred3 = {AT_X1, AT_X3, 3, OP_EQUAL,TYPE_ATT1_ATT2};
+    predicate pred4 = {AT_X2, AT_X3, 3, OP_GREATER,TYPE_ATT1_CONST};
+    predicate pred5 = {AT_X3, AT_X3, 3, OP_GREATER,TYPE_ATT1_CONST};
+    predicate pred6 = {AT_X3, AT_X3, 0, OP_EQUAL,TYPE_ATT1_CONST};
+    predicate pred7 = {AT_X3, AT_X3, 1, OP_EQUAL,TYPE_ATT1_CONST};
+    predicate pred12 = {AT_X1, AT_X3, 0, OP_LESS_EQUAL,TYPE_ATT1_ATT2};
     start = high_resolution_clock::now();
+
     quadtree_formula* join_r_s_t = compute_lqdag_join(Q, k, res);
+    cout << "number of results join: " << res << endl;
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
-    cout << "number of results: " << res << endl;
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+
+    res = 0;
+    uint64_t p = std::pow(Q[0].getK(), 3);
+    quadtree_formula result{};
+    lqdag* join_r_s_lqdag = lqdag_join(Q, k);
+    lqdag* child_0 = join_r_s_lqdag->lazy_child_completion(p,0,result);
+    lqdag* child_0_0 = child_0->lazy_child_completion(p,0,*result.children[0]);
+    lqdag* test_fin = join_r_s_lqdag->lazy_child_completion(p,0,*join_r_s_t);
+
+
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred1);
+    cout << "number of results join x1 > x3: " << res << endl;
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred2);
+    cout << "number of results join x1 >= x3: " << res << endl;
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred3);
+    cout << "number of results join x1 = x3: " << res << endl;
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred4);
+    cout << "number of results join x2 > 4: " << res << endl;
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred5);
+    cout << "number of results join x3 > 4: " << res << endl;
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred6);
+    cout << "number of results join x3 = 0: " << res << endl;
+
+    res = 0;
+    compute_pred_lqdag_join(Q,k,res,&pred7);
+    cout << "number of results join x3 = 1: " << res << endl;
+
+    res = 0;
+    quadtree_formula* test_pred_1 = compute_pred_quadtree(qdag_rel_R, k, res, &pred1);
+    cout << "number of results join A=B: " << res << endl;
+
+    res = 0;
+    quadtree_formula* test_pred_2 = compute_pred_quadtree(qdag_rel_R, k, res, &pred2);
+    cout << "number of results join A >= 3: " << res << endl;
+
+    res = 0;
+    quadtree_formula* test_pred_3 = compute_pred_quadtree(qdag_rel_R, k, res, &pred3);
+    cout << "number of results join A>3: " << res << endl;
+
+    res = 0;
+    quadtree_formula* test_pred_4 = compute_pred_quadtree(qdag_rel_R, k, res, &pred4);
+    cout << "number of results join B>3: " << res << endl;
+
+    res = 0;
+    quadtree_formula* compute_rel_R = compute_quadtree(qdag_rel_R, k, res);
+    cout << "number of results compute R: " << res << endl;
+
+    res = 0;
+    quadtree_formula* compute_rel_S = compute_quadtree(qdag_rel_S, k, res);
+    cout << "number of results compute S: " << res << endl;
+
+    res = 0;
+    quadtree_formula* compute_rel_T = compute_quadtree(qdag_rel_T, k, res);
+    cout << "number of results compute T: " << res << endl;
+
+    res = 0;
+    quadtree_formula* compute_rel_U = compute_quadtree(qdag_rel_U, k, res);
+    cout << "number of results compute U: " << res << endl;
+
+//    res = 0;
+//    quadtree_formula* pred_a_c = compute_pred_lqdag_join(Q,k,res,&pred12);
+//    cout << "number of results pred a_c: " << res << endl;
+
+
+
+
+
 
     return 0;
 

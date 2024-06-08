@@ -12,6 +12,8 @@
 using namespace std::chrono;
 
 
+#include "../../src/qdags.hpp"
+#include "../../src/lqdag.hpp"
 #include "../../src/lqdags/operations.cpp" // incluir al joins incluye al resto
 
 high_resolution_clock::time_point start_select, stop_select;
@@ -100,8 +102,6 @@ int main(int argc, char** argv)
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
-   
-    qdag *Join_Result;
     
  
     high_resolution_clock::time_point start, stop;

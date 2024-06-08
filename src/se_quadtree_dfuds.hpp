@@ -324,7 +324,7 @@ public:
         return height;
     }
 
-    inline uint8_t get_node_bits(uint64_t start_pos) {
+    inline uint32_t get_node_bits(uint64_t start_pos) {
         return bv_s.get_kd_bits(start_pos, k_d);
     }
 

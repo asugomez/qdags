@@ -53,30 +53,43 @@ public:
     }
 
     inline uint8_t get_2_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x03);
     }
 
     // los 4 bits que definen un nodo
     /**
-     * Get the 4 bits that define a quadtree_formula
+     * Get the 4 bits that define a node
      * @param start_pos the position in the level
      * @return the 4 bits from the start position
-     * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 6 (=0110).
+     * @example if the level 1 is: 0010 0110, the start_pos is 3, the result will be 3 (=0011).
      */
     inline uint8_t get_4_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+           return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0x0f);
     }
 
-
     inline uint8_t get_8_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
     }
 
     inline uint16_t get_16_bits(uint64_t start_pos) {
+        if(seq == nullptr)
+            return 0;
         return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffff);
     }
 
-    inline uint16_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
+    inline uint32_t get_32_bits(uint64_t start_pos){
+        if(seq == nullptr)
+            return 0;
+        return ((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xffffffff);
+    }
+
+    inline uint32_t get_kd_bits(uint64_t start_pos, uint64_t k_d) {
         switch(k_d){
             case 2:
                 return get_2_bits(start_pos);
@@ -86,6 +99,8 @@ public:
                 return get_8_bits(start_pos);
             case 16:
                 return get_16_bits(start_pos);
+            case 32:
+                return get_32_bits(start_pos);
             default:
                 cout << "error k_d > 16" << endl;
                 return 0;
@@ -164,21 +179,24 @@ public:
 
     /**
      *
-     * @param level of the quadtree_formula
-     * @param node the quadtree_formula-th position of the level.
-     * @return 0 or 1 if the quadtree_formula is empty or not.
+     * @param level of the node
+     * @param node the node-th position of the level.
+     * @return 0 or 1 if the node is empty or not.
      */
     bool get_ith_bit(uint64_t node, uint64_t k_d){
-        uint8_t x;
+        uint32_t x;
         if(k_d == 2) {
             x = get_2_bits(node);
-        } else if(k_d == 4){
+        } else if(k_d == 4) {
             x = get_4_bits(node);
-        } else if(k_d == 8){
-            x = get_8_bits(node);
-        } else if(k_d == 16){
-            x = get_16_bits(node);
-        } else{
+        }
+//        } else if(k_d == 8){
+//            x = get_8_bits(node);
+//        } else if(k_d == 16){
+//            x = get_16_bits(node);
+//        } else if(k_d==32){
+//            x = get_32_bits(node);
+        else{
             cout << "k_d not supported";
             return false;
         }
@@ -197,7 +215,6 @@ public:
 
     void print_4_bits(uint64_t start_pos) {
         uint8_t x = get_4_bits(start_pos);
-
         // bit most significant first
         // otherwise do: i=0; i<4; i++
         //for (int i = 3; i > -1; i--) { // bit most significant first
@@ -217,9 +234,18 @@ public:
     }
 
     void print_16_bits(uint64_t start_pos) {
-        uint16_t x =  get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+        uint16_t x = get_16_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
 
         for (int i = 0; i < 16; i++) {
+            cout << ((x & (1 << i)) ? "1" : "0");
+        }
+        cout << " ";
+    }
+
+    void print_32_bits(uint64_t start_pos){
+        uint32_t x = get_32_bits(start_pos); //((seq[start_pos >> 6] >> (start_pos & 0x3f)) & 0xff);
+
+        for (int i = 0; i < 32; i++) {
             cout << ((x & (1 << i)) ? "1" : "0");
         }
         cout << " ";
@@ -240,6 +266,9 @@ public:
             } else if(k_d == 16){
                 print_16_bits(i);
                 i = i + 16;
+            } else if(k_d == 32){
+                print_32_bits(i);
+                i = i+32;
             }
             else{
                 cout << "k_d not supported";
