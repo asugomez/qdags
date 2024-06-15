@@ -39,3 +39,9 @@ rm *
 echo "rm traditional join"
 cd "$script_dir/outputs/all/"
 rm *
+
+
+## lazy qdags
+echo "rm lazy qdags join"
+cd "$script_dir/outputs/lqdags/"
+rm *
