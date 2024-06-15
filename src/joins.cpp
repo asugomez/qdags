@@ -292,6 +292,8 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 bv[cur_level].push_back(last_pos[cur_level]++); // we write the current result in the output bitvector
                 just_zeroes = false;
             } else {
+                if (bounded_result && bv[max_level].size() >= UPPER_BOUND) // finish the build of the quadtree
+                    bv[cur_level].push_back(last_pos[cur_level]++); // we write the current result in the output bitvector
                 if (cur_level < max_level)
                     last_pos[cur_level + 1] -= p; // me devuelvo lo q habia avanzado
                 last_pos[cur_level]++;
