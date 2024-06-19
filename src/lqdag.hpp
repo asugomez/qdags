@@ -7,6 +7,7 @@
 #include<bits/stdc++.h>
 #include "./qdags.hpp"
 #include "./utils.hpp"
+#include "./lqdags/utils_lqdags.hpp"
 
 const uint8_t FUNCTOR_QTREE = 0; // leaf
 const uint8_t FUNCTOR_NOT = 1; // leaf
@@ -21,47 +22,6 @@ const double INTERNAL_NODE = 0.5;
 // This indicates that one cannot determine the value of the quadtree_formula without computing the values of its children.
 const double VALUE_NEED_CHILDREN = 2; // it indicates we need to compute the values of its children
 
-#define OP_EQUAL 0
-#define OP_UNEQUAL 1
-#define OP_LESS_EQUAL 2
-#define OP_GREATER_EQUAL 3
-#define OP_LESS 4
-#define OP_GREATER 5
-
-const uint8_t TYPE_ATT1_ATT2 = 0;
-const uint8_t TYPE_ATT1_CONST = 1;
-const uint8_t TYPE_ATT2_CONST = 2;
-
-struct quadtree_formula { // represents the output of the formula we are evaluating
-    double val_leaf = NO_VALUE_LEAF; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
-    quadtree_formula** children = nullptr;
-};
-
-// represents a subtree of the quadtree
-struct subQuadtreeChild {
-    ::qdag *qdag;
-    uint16_t level; // the level of the quadtree_formula. 0 to start.
-    uint64_t node; // absolute position in the bv[level] of the quadtree
-    double value;// = NO_VALUE_LEAF;
-    // Constructor sin inicializar node_description
-    subQuadtreeChild(::qdag* qdagPtr, uint16_t lvl, uint64_t nd, double val = NO_VALUE_LEAF)
-            : qdag(qdagPtr), level(lvl), node(nd), value(val) {}
-};
-
-/**
- * represents a predicate in the query
- * can be:
- * - att_1 op att_2 (0) TYPE_ATT1_ATT2
- * - att_1 op val_const (1) TYPE_ATT1_CONST
- * - att_2 op val_const (2) TYPE_ATT2_CONST
- */
-struct predicate {
-    uint64_t att_1;
-    uint64_t att_2;
-    double val_const;
-    uint8_t op; // can be OP_EQUAL, OP_UNEQUAL, OP_LESS_EQUAL, OP_GREATER_EQUAL, OP_LESS, OP_GREATER
-    uint8_t type_pred; // can be 0, 1, 2
-};
 
 // lqdag as a syntax tree
 class lqdag {
@@ -69,237 +29,10 @@ class lqdag {
 public:
     typedef vector<uint64_t> att_set;
 
-    /**
-     *
-     * @param pred
-     * @param coordinates the initial position x,y,z,... of the quadrant
-     * @param quadrant_side
-     * @return
-     */
-    static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side, uint64_t nAttr) {
-        vector<uint64_t> min_att;
-        vector<uint64_t> max_att;
-        for(uint16_t i = 0; i < nAttr; i++){
-            min_att.push_back(coordinates[i]);
-            max_att.push_back(coordinates[i] + quadrant_side - 1);
-        }
-
-        uint64_t min_att_1, max_att_1, min_att_2, max_att_2;
-        if(pred->type_pred == TYPE_ATT1_ATT2){ // att1 op att2
-            min_att_1 = min_att[pred->att_1];
-            max_att_1 = max_att[pred->att_1];
-            min_att_2 = min_att[pred->att_2];
-            max_att_2 = max_att[pred->att_2];
-            switch (pred->op){
-                case OP_EQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_1 == min_att_2;
-                    }
-                    else if(min_att_1 == min_att_2 || max_att_1 == max_att_2) // || min_att_1 == max_att_2 || max_att_1 == min_att_2)
-                        return 0.5;
-                    else
-                        return 0;
-                case OP_UNEQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_1 != min_att_2;
-                    }
-                    else if(min_att_1 == min_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2 || max_att_1 == max_att_2)
-                        return 0.5;
-                    else
-                        return 1;
-                case OP_LESS_EQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_1 <= min_att_2;
-                    }
-                    if(max_att_1 <= min_att_2 && min_att_1 <= max_att_2)
-                        return 1;
-                    else if(min_att_1 <= max_att_2 && max_att_1 >= min_att_2) // a part of the quadrant is inside the limits
-                        return 0.5;
-                    else
-                        return 0;
-                case OP_LESS:
-                    if(quadrant_side == 1){
-                        return min_att_1 < min_att_2;
-                    }
-                    if(max_att_1 < min_att_2 && min_att_1 < max_att_2)
-                        return 1;
-                    else if(min_att_1 < max_att_2 && max_att_1 > min_att_2) // a part of the quadrant is inside the limits
-                        return 0.5;
-                    else
-                        return 0;
-                case OP_GREATER_EQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_1 >= min_att_2;
-                    }
-                    if(min_att_1 >= max_att_2 && max_att_1 >= min_att_2)
-                        return 1;
-                    else if(max_att_1 >= min_att_2 &&  min_att_1 <= max_att_2) // a part of the quadrant is inside the limits
-                        return 0.5;
-                    else
-                        return 0;
-                case OP_GREATER:
-                    if(quadrant_side == 1){
-                        return min_att_1 > min_att_2;
-                    }
-                    if(min_att_1 > max_att_2 && max_att_1 > min_att_2)
-                        return 1;
-                    else if(max_att_1 > min_att_2 &&  min_att_1 < max_att_2) // a part of the quadrant is inside the limits
-                        return 0.5;
-                    else
-                        return 0;
-                default:
-                    throw "error: eval_pred default att1 op att2";
-            }
-        }
-        else if(pred->type_pred == TYPE_ATT1_CONST){ // att1 op val_const
-            min_att_1 = min_att[pred->att_1];
-            max_att_1 = max_att[pred->att_1];
-            switch (pred->op) {
-                case OP_EQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_1 == pred->val_const;
-                    } else{
-                        if(min_att_1<= pred->val_const && pred->val_const <= max_att_1)
-                            return 0.5;
-                        else
-                            return 0;
-                    }
-                case OP_UNEQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_1 != pred->val_const;
-                    } else{
-                        if(min_att_1<= pred->val_const && pred->val_const <= max_att_1)
-                            return 0.5;
-                        else
-                            return 1;
-                    }
-                case OP_LESS_EQUAL: // att1 <= val_const
-                    if(quadrant_side == 1){
-                        return min_att_1 <= pred->val_const;
-                    }
-                    if(max_att_1 <= pred->val_const)
-                        return 1;
-                    else if(min_att_1 <= pred->val_const && pred->val_const < max_att_1)
-                        return 0.5;
-                    else if(min_att_1 > pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_LESS_EQUAL"; // no debiese llegar aqui
-                case OP_LESS: // att1 < val_const
-                    if(quadrant_side == 1){
-                        return min_att_1 < pred->val_const;
-                    }
-                    if(max_att_1 < pred->val_const)
-                        return 1;
-                    else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1)
-                        return 0.5;
-                    else if(min_att_1 > pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_LESS";
-                case OP_GREATER_EQUAL: // att1 >= val_const
-                    if(quadrant_side == 1)
-                        return min_att_1 >= pred->val_const;
-                    else if(min_att_1 >= pred->val_const)
-                        return 1;
-                    else if(min_att_1 < pred->val_const && pred->val_const <= max_att_1)
-                        return 0.5;
-                    else if(max_att_1 < pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_GREATER_EQUAL";
-                case OP_GREATER: // att1 > val_const
-                    if(quadrant_side == 1){
-                        return min_att_1 > pred->val_const;
-                    }
-                    if(min_att_1 > pred->val_const)
-                        return 1;
-                    else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1) // TPDO: ver estas
-                        return 0.5;
-                    else if(max_att_1 < pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_GREATER";
-                default:
-                    throw "error: eval_pred default att1 op val_const";
-            }
-        }
-        else{ // att2 op val_const TYPE_ATT2_CONST
-            switch (pred->op) {
-                min_att_2 = min_att[pred->att_2];
-                max_att_2 = max_att[pred->att_2];
-                case OP_EQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_2 == pred->val_const;
-                    } else{
-                        if(min_att_2<= pred->val_const && pred->val_const <= max_att_2)
-                            return 0.5;
-                        else
-                            return 0;
-                    }
-                case OP_UNEQUAL:
-                    if(quadrant_side == 1){
-                        return min_att_2 != pred->val_const;
-                    } else{
-                        if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
-                            return 0.5;
-                        else
-                            return 1;
-                    }
-                case OP_LESS_EQUAL: // att2 <= val_const
-                    if(quadrant_side == 1){
-                        return min_att_2 <= pred->val_const;
-                    }
-                    if(max_att_2 <= pred->val_const)
-                        return 1;
-                    else if(min_att_2 <= pred->val_const && pred->val_const < max_att_2)
-                        return 0.5;
-                    else if(min_att_2 > pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_LESS_EQUAL"; // no debiese llegar aqui
-                case OP_LESS: // att2 < val_const
-                    if(quadrant_side == 1){
-                        return min_att_2 < pred->val_const;
-                    }
-                    if(max_att_2 < pred->val_const)
-                        return 1;
-                    else if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
-                        return 0.5;
-                    else if(min_att_2 > pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_LESS";
-                case OP_GREATER_EQUAL: // att2 >= val_const
-                    if(quadrant_side == 1){
-                        return min_att_2 >= pred->val_const;
-                    }
-                    if(min_att_2 >= pred->val_const)
-                        return 1;
-                    else if(min_att_2 < pred->val_const && pred->val_const <= max_att_2)
-                        return 0.5;
-                    else if(max_att_2 < pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_GREATER_EQUAL";
-                case OP_GREATER: // att2 > val_const
-                    if(quadrant_side == 1){
-                        return min_att_2 > pred->val_const;
-                    }
-                    if(min_att_2 > pred->val_const)
-                        return 1;
-                    else if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
-                        return 0.5;
-                    else if(max_att_2 < pred->val_const)
-                        return 0;
-                    else
-                        throw "error: eval_pred OP_GREATER";
-                default:
-                    throw "error: eval_pred default att2 op val_const";
-            }
-        }
-
-    }
+    struct output_lqdag_pred{
+        lqdag* lqdag;
+        quadtree_pred* quadtree_pred;
+    };
 
 private:
     // lqdag L=(f,o), where f is a functor.
@@ -601,8 +334,6 @@ public:
         return INTERNAL_NODE;
     }
 
-
-
     /**
      * Create an empty or full leaf.
      * @param val can be EMPTY_LEAF or FULL_LEAF.
@@ -613,6 +344,22 @@ public:
         newNode->val_leaf = val;
         newNode->children = nullptr;
         return newNode;
+    }
+
+    /**
+     * Compute the value of a node of the quadtree_formula Q_f of the lqdag.
+     * @return
+     */
+    quadtree_formula* compute_quadtree_formula_node(uint64_t p){
+        double val_lqdag = this->value_lqdag();
+        if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
+            return create_leaf(val_lqdag);
+        } else{
+            quadtree_formula* newNode = new quadtree_formula;
+            newNode->val_leaf = val_lqdag;
+            newNode->children = new quadtree_formula*[p];
+            return newNode;
+        }
     }
 
     /**
@@ -783,21 +530,35 @@ public:
         }
     }
 
-    /**
-     * Compute the value of a node of the quadtree_formula Q_f of the lqdag.
-     * @return
-     */
-    quadtree_formula* compute_quadtree_formula_node(uint64_t p){
-        double val_lqdag = this->value_lqdag();
-        if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
-            return create_leaf(val_lqdag);
-        } else{
-            quadtree_formula* newNode = new quadtree_formula;
-            newNode->val_leaf = val_lqdag;
-            newNode->children = new quadtree_formula*[p];
-            return newNode;
+    lqdag* lazy_child_completion_with_pred(uint64_t p,
+                                           uint64_t child,
+                                           quadtree_formula& Q_f,
+                                           quadtree_pred* qf_pred){
+        if(Q_f.val_leaf == EMPTY_LEAF || Q_f.val_leaf == FULL_LEAF){
+            return this;
         }
+        else if(Q_f.val_leaf == INTERNAL_NODE || Q_f.val_leaf == VALUE_NEED_CHILDREN){
+            uint64_t quadrant_side = qf_pred->grid_side/pow(qf_pred->k,qf_pred->cur_level);
+            double val_eval_pred = eval_pred(qf_pred->pred, qf_pred->coordinates, quadrant_side, qf_pred->nAttr);
+            if(val_eval_pred == 0 || val_eval_pred == 1){
+                Q_f.children[child] = create_leaf(val_eval_pred); // EMPTY_LEAF OR FUL_LEAF
+            } else{
+                lqdag* lqdag_child = this->get_child_lqdag(child);
+                if(!Q_f.children[child]){ // allocate memory for the child
+                    Q_f.children[child] = new quadtree_formula{};
+                } // if it's not computed
+                if(Q_f.children[child]->val_leaf == NO_VALUE_LEAF){
+                    quadtree_formula* qf_no_value = lqdag_child->compute_quadtree_formula_node(p);
+                    Q_f.children[child]->val_leaf = qf_no_value->val_leaf;
+                    Q_f.children[child]->children = qf_no_value->children;
+                } // else: it's already computed
+            }
+
+
+        }
+
     }
+
 };
 
 #endif

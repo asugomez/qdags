@@ -154,6 +154,7 @@ quadtree_formula* compute_lqdag_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint
         join_result = new lqdag(FUNCTOR_AND, join_r_s_t_u, extend_qdag[4]);
     }
     else {
+        // TODO: implement it for more than 5 qdags
         cout << "Code only implemented for a maximum of 5 qdags..." << endl;
         exit(1);
     }
@@ -245,6 +246,10 @@ quadtree_formula* compute_lqdag_diff(qdag q1, qdag q2, bool bounded_result, uint
  * Takes a subexpression F and a predicate θ, which is a logical expression on the attributes of F.
  */
 lqdag* selection(lqdag* F, predicate* pred){
+    subQuadtreeChild* subQ = new subQuadtreeChild{nullptr, 0, 0};
+}
+
+quadtree_formula* compute_lqdag_selection(lqdag* F, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
     // TODO
 }
 
