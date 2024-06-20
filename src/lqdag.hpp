@@ -530,19 +530,28 @@ public:
         }
     }
 
-    lqdag* lazy_child_completion_with_pred(uint64_t p,
+    output_lqdag_pred* lazy_child_completion_with_pred(uint64_t p,
                                            uint64_t child,
                                            quadtree_formula& Q_f,
                                            quadtree_pred* qf_pred){
-        if(Q_f.val_leaf == EMPTY_LEAF || Q_f.val_leaf == FULL_LEAF){
-            return this;
+        if(Q_f.val_leaf == EMPTY_LEAF || Q_f.val_leaf == FULL_LEAF){ // no need to calculate its child
+            return new output_lqdag_pred{this, qf_pred};
         }
         else if(Q_f.val_leaf == INTERNAL_NODE || Q_f.val_leaf == VALUE_NEED_CHILDREN){
+            // calculate coordinates
+            uint16_t diff_level = qf_pred->max_level-qf_pred->cur_level;
+            uint16_t l = (uint16_t) log2(p);
+            uint16_t* coordinatesTemp = new uint16_t[l];
+            for(uint16_t j = 0; j < l; j++)
+                coordinatesTemp[j] = qf_pred->coordinates[j];
+            transformCoordinates(coordinatesTemp, l, diff_level, child);
+            qf_pred->coordinates = coordinatesTemp;
+            qf_pred->cur_level += 1;
+            // value predicate
             uint64_t quadrant_side = qf_pred->grid_side/pow(qf_pred->k,qf_pred->cur_level);
             double val_eval_pred = eval_pred(qf_pred->pred, qf_pred->coordinates, quadrant_side, qf_pred->nAttr);
-            if(val_eval_pred == 0 || val_eval_pred == 1){
-                Q_f.children[child] = create_leaf(val_eval_pred); // EMPTY_LEAF OR FUL_LEAF
-            } else{
+
+            if(val_eval_pred == 0.5  || val_eval_pred == 1){
                 lqdag* lqdag_child = this->get_child_lqdag(child);
                 if(!Q_f.children[child]){ // allocate memory for the child
                     Q_f.children[child] = new quadtree_formula{};
@@ -552,9 +561,19 @@ public:
                     Q_f.children[child]->val_leaf = qf_no_value->val_leaf;
                     Q_f.children[child]->children = qf_no_value->children;
                 } // else: it's already computed
+                return new output_lqdag_pred{lqdag_child, qf_pred};
+            } else{
+                Q_f.children[child] = create_leaf(EMPTY_LEAF);
+                return new output_lqdag_pred{nullptr, qf_pred};
             }
 
 
+        }
+        else{ // NO_VALUE --> compute the root and then, the child
+            quadtree_formula* qf_no_value = this->compute_quadtree_formula_node(p);
+            Q_f.val_leaf = qf_no_value->val_leaf;
+            Q_f.children = qf_no_value->children;
+            return new output_lqdag_pred{this->lazy_child_completion(p, child, Q_f), qf_pred};
         }
 
     }

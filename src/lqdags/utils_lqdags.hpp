@@ -290,6 +290,7 @@ struct quadtree_pred{
     ::predicate *pred;
     uint16_t *coordinates;
     uint16_t cur_level;
+    uint16_t max_level;
     uint64_t grid_side;
     uint8_t k;
     uint64_t nAttr;
