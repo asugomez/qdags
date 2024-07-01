@@ -270,6 +270,7 @@ public:
         // cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;
 
         // OJO con lo que sigue, tengo que hacer este constructor de buena manera
+        // build the quadtree
         uint64_t size;
         for (uint16_t i = 0; i < height; i++) {
             total_ones[i] = 0;

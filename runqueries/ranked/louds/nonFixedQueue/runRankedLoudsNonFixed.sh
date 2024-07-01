@@ -1,7 +1,7 @@
 #!/bin/bash
 # ./runqueries-$file-bfs-sorted.sh > ../../../outputs/ranked/louds/nonFixedQueue/$file.txt
 # run tests for each type_fun and each size_queue
-for type_fun in {0..1}; do
+for type_fun in 0; do
   chmod a+x *.sh
   data_csv="../../../outputs/ranked/louds/nonFixedQueue/results-f$type_fun.csv"
   # echo type fun
