@@ -6,6 +6,11 @@
 
 // ---------- QUADTREE  ---------- //
 
+lqdag* create_lqdag_leaf(qdag Q){
+	subQuadtreeChild* subQ = new subQuadtreeChild{&Q, 0, 0};
+	return new lqdag(FUNCTOR_QTREE, subQ);
+}
+
 quadtree_formula* compute_quadtree(qdag Q, uint64_t UPPER_BOUND, uint64_t &results){
     subQuadtreeChild* subQ = new subQuadtreeChild{&Q, 0, 0};
     lqdag* lqdag_formula = new lqdag(FUNCTOR_QTREE, subQ);
@@ -245,12 +250,9 @@ quadtree_formula* compute_lqdag_diff(qdag q1, qdag q2, bool bounded_result, uint
 /**
  * Takes a subexpression F and a predicate θ, which is a logical expression on the attributes of F.
  */
-lqdag* selection(lqdag* F, predicate* pred){
-    subQuadtreeChild* subQ = new subQuadtreeChild{nullptr, 0, 0};
-}
-
-quadtree_formula* compute_lqdag_selection(lqdag* F, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
-    // TODO
+quadtree_formula* compute_lqdag_selection(lqdag* lqdag, predicate* pred, uint64_t p, uint16_t max_level, uint64_t grid_side, uint64_t UPPER_BOUND, uint64_t &results, quadtree_formula& Q_f){
+	// TODO
+	//    return lqdag->completion_with_pred
 }
 
 lqdag* projection(){
