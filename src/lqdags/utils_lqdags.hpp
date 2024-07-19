@@ -58,7 +58,7 @@ struct predicate {
      * @param pred
      * @param coordinates the initial position x,y,z,... of the quadrant
      * @param quadrant_side
-     * @return
+     * @return 0 if the quadrant do not satisfy the predicate, 1 if it satisfies the predicate, 0.5 if it is partially inside the limits
      */
 static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side, uint64_t nAttr) {
     vector<uint64_t> min_att;

@@ -88,7 +88,7 @@ public:
         if(M == nullptr) {
             uint64_t msize = std::pow(this->lqdag1->subQuadtree->qdag->getK(),
                                         this->lqdag1->subQuadtree->qdag->getD());
-			
+
             uint16_t dim = this->attribute_set_A.size(); // d
             uint16_t dim_prime = this->lqdag1->subQuadtree->qdag->nAttr(); // d'
             uint64_t p = std::pow(this->lqdag1->subQuadtree->qdag->getK(), dim);
@@ -533,12 +533,12 @@ public:
 	 * @param qf_pred
 	 * @return
 	 */
-	lqdag* lazy_child_completion_with_pred(uint64_t p,
+	output_lqdag_pred* lazy_child_completion_with_pred(uint64_t p,
                                            uint64_t child,
                                            quadtree_formula& Q_f,
                                            quadtree_pred* qf_pred){
         if(Q_f.val_leaf == EMPTY_LEAF || Q_f.val_leaf == FULL_LEAF){ // no need to calculate its child
-            return this;// new output_lqdag_pred{this, qf_pred};
+            return new output_lqdag_pred{this, qf_pred};
         }
         else if(Q_f.val_leaf == INTERNAL_NODE || Q_f.val_leaf == VALUE_NEED_CHILDREN){
             // calculate coordinates
@@ -564,12 +564,12 @@ public:
                     Q_f.children[child]->val_leaf = qf_no_value->val_leaf;
                     Q_f.children[child]->children = qf_no_value->children;
                 } // else: it's already computed
-				return lqdag_child;
-//                return new output_lqdag_pred{lqdag_child, qf_pred};
+//				return lqdag_child;
+                return new output_lqdag_pred{lqdag_child, qf_pred};
             } else{
                 Q_f.children[child] = create_leaf(EMPTY_LEAF);
 				return nullptr;
-//                return new output_lqdag_pred{nullptr, qf_pred};
+                return new output_lqdag_pred{nullptr, qf_pred};
             }
 
 
@@ -578,8 +578,8 @@ public:
             quadtree_formula* qf_no_value = this->compute_quadtree_formula_node(p);
             Q_f.val_leaf = qf_no_value->val_leaf;
             Q_f.children = qf_no_value->children;
-			return this->lazy_child_completion_with_pred(p, child, Q_f, qf_pred);
-//            return new output_lqdag_pred{this->lazy_child_completion(p, child, Q_f), qf_pred};
+//			return this->lazy_child_completion_with_pred(p, child, Q_f, qf_pred);
+            return new output_lqdag_pred{this->lazy_child_completion(p, child, Q_f), qf_pred};
         }
 
     }
