@@ -13,9 +13,9 @@ import tikzplotlib
 # In[3]:
 
 
-alg_label = ["Gradual LOUDS Backtracking",
-             "Gradual LOUDS Optimal Order",
-             "Gradual DFUDS Backtracking"]#,
+alg_label = ["G. LOUDS Backtracking",
+             "G. LOUDS Optimal Order",
+             "G. DFUDS Backtracking"]#,
              # "Gradual DFUDS Optimal Order",
              # "Ranked LOUDS Backtracking",
              # "Ranked LOUDS Optimal Order",
@@ -29,7 +29,7 @@ j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2 = [],[],[],[],[],[],[],[
 data = [j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2]
 datasets =[[],[],[],[],[],[],[],[]]
 for i,type_fun in enumerate([0]):#,1]):
-    file = f"results-f{type_fun}.csv"
+    file = f"results-f{type_fun}-v2.csv"
     print(file)
     partialLoudsBack = pd.read_csv(f'../partial/louds/backtracking/{file}', delimiter=';')
     partialLoudsNon = pd.read_csv(f'../partial/louds/nonFixedQueue/{file}', delimiter=';')
@@ -123,7 +123,7 @@ for i,query in enumerate([j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr
         query.axes.get_xaxis().set_visible(False)
 
 handles, labels = j3.get_legend_handles_labels()
-color_legend.legend(handles, labels, loc='center', fontsize='x-small')
+color_legend.legend(handles, labels, loc='center', fontsize='11')
 
 
 plt.savefig('/Users/asugomez/Desktop/Magister/Tesis/tesisQdags/imagenes/all_queries_k_1_10_100_1000.pdf')
