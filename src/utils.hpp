@@ -40,29 +40,30 @@ struct orderJoinQdag{
         return weight < ojq.weight; // max heap
     }
 };
-
-/**
- * Get the coordinates of a point in the grid given the path from the root to the leaf in the quadtree.
- * This function is O(m), with m the number of 1s in the path.
- * @param path see the paper for the definition (page 5).
- * @param l number of bits to define a child on each level
- * @param height height of the quadtree
- * @param pointCoord the coordinates of the point in the grid. We are going to write on this array.
- */
-void getCoordinates(uint64_t path, uint16_t nAtt, uint64_t height, uint16_t *pointCoord) {
-    uint64_t n_ones = sdsl::bits::cnt(path);
-    uint64_t msb, level;
-    // we only pass across the 1s to update the coordinates.
-    for (uint64_t k = 0; k < n_ones; k++) {
-        msb = __builtin_clz(path);
-        level = (31-msb)/nAtt;
-        pointCoord[(msb+1)%nAtt] += 1 << level;
-        path &= ((0xffffffff) >> (msb + 1)); // delete the msb of children
-    }
-}
+//
+///**
+// * Get the coordinates of a point in the grid given the path from the root to the leaf in the quadtree.
+// * This function is O(m), with m the number of 1s in the path.
+// * @param path see the paper for the definition (page 5).
+// * @param l number of bits to define a child on each level
+// * @param height height of the quadtree
+// * @param pointCoord the coordinates of the point in the grid. We are going to write on this array.
+// */
+//void getCoordinates(uint64_t path, uint16_t nAtt, uint64_t height, uint16_t *pointCoord) {
+//    uint64_t n_ones = sdsl::bits::cnt(path);
+//    uint64_t msb, level;
+//    // we only pass across the 1s to update the coordinates.
+//    for (uint64_t k = 0; k < n_ones; k++) {
+//        msb = __builtin_clz(path);
+//        level = (31-msb)/nAtt;
+//        pointCoord[(msb+1)%nAtt] += 1 << level;
+//        path &= ((0xffffffff) >> (msb + 1)); // delete the msb of children
+//    }
+//}
 
 /**
  * Transform the i-th child into a coordinate according to the Morton code.
+ * When we descend a level, we compute the new coordinates of the point.
  * @param coordinates
  * @param nAtt
  * @param diff_level
