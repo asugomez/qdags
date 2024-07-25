@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# coding: utf-8
 
-# In[3]:
-
+# plot all algorithms for each query vs k (k=1,10,100,1000)
+# toma el archivo results.csv para hacer las estadisticas
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -14,10 +13,14 @@ import tikzplotlib
 # In[3]:
 
 
-alg_label = ["Gradual LOUDS Backtracking", "Gradual LOUDS Optimal Order", 
-                "Gradual DFUDS Backtracking", "Gradual DFUDS Optimal Order",
-                "Ranked LOUDS Backtracking", "Ranked LOUDS Optimal Order",
-                "Ranked DFUDS Backtracking", "Ranked DFUDS Optimal Order"]
+alg_label = ["Gradual LOUDS Backtracking",
+             "Gradual LOUDS Optimal Order",
+             "Gradual DFUDS Backtracking"]#,
+             # "Gradual DFUDS Optimal Order",
+             # "Ranked LOUDS Backtracking",
+             # "Ranked LOUDS Optimal Order",
+             # "Ranked DFUDS Backtracking",
+             # "Ranked DFUDS Optimal Order"]
 queries_label = ["j3","j4","p2","p3","p4","s1","s2","s3","s4","t2","t3","t4","ti2","ti3","ti4","tr1","tr2"]
 queries_title = ["J3","J4","P2","P3","P4","S1","S2","S3","S4","T2","T3","T4","Ti2","Ti3","Ti4","Tr1","Tr2"]
 
@@ -31,25 +34,32 @@ for i,type_fun in enumerate([0]):#,1]):
     partialLoudsBack = pd.read_csv(f'../partial/louds/backtracking/{file}', delimiter=';')
     partialLoudsNon = pd.read_csv(f'../partial/louds/nonFixedQueue/{file}', delimiter=';')
     partialDfudsBack = pd.read_csv(f'../partial/dfuds/backtracking/{file}', delimiter=';')
-    partialDfudsNon = pd.read_csv(f'../partial/dfuds/nonFixedQueue/{file}', delimiter=';')
+    # partialDfudsNon = pd.read_csv(f'../partial/dfuds/nonFixedQueue/{file}', delimiter=';')
 
-    rankedLoudsBack = pd.read_csv(f'../ranked/louds/backtracking/{file}', delimiter=';')
-    rankedLoudsNon = pd.read_csv(f'../ranked/louds/nonFixedQueue/{file}', delimiter=';')
-    rankedDfudsBack = pd.read_csv(f'../ranked/dfuds/backtracking/{file}', delimiter=';')
-    rankedDfudsNon = pd.read_csv(f'../ranked/dfuds/nonFixedQueue/{file}', delimiter=';')
+    # rankedLoudsBack = pd.read_csv(f'../ranked/louds/backtracking/{file}', delimiter=';')
+    # rankedLoudsNon = pd.read_csv(f'../ranked/louds/nonFixedQueue/{file}', delimiter=';')
+    # rankedDfudsBack = pd.read_csv(f'../ranked/dfuds/backtracking/{file}', delimiter=';')
+    # rankedDfudsNon = pd.read_csv(f'../ranked/dfuds/nonFixedQueue/{file}', delimiter=';')
     
-    datasets[i] = [partialLoudsBack, partialLoudsNon, partialDfudsBack, partialDfudsNon,
-                     rankedLoudsBack,rankedLoudsNon, rankedDfudsBack, rankedDfudsNon]
+    datasets[i] = [partialLoudsBack,
+                   partialLoudsNon,
+                   partialDfudsBack]#,
+                   # partialDfudsNon,
+                   # rankedLoudsBack,
+                   # rankedLoudsNon,
+                   # rankedDfudsBack,
+                   # rankedDfudsNon]
     #traditional = pd.read_csv(f'../all/results.csv',delimiter=';')
-    print(i)
+    # print(i)
     for j,query in enumerate(queries_label):
-        data[j] = [partialLoudsBack[query], partialLoudsNon[query], partialDfudsBack[query], partialDfudsNon[query], rankedLoudsBack[query], rankedLoudsNon[query], rankedDfudsBack[query], rankedDfudsNon[query]]
+        data[j] = [partialLoudsBack[query], partialLoudsNon[query], partialDfudsBack[query]]#, partialDfudsNon[query], rankedLoudsBack[query], rankedLoudsNon[query], rankedDfudsBack[query], rankedDfudsNon[query]]
 
 
 variables = datasets[0][0].columns[1:]  # Excluir la columna 'k'
 
 
-colors = ['maroon', 'red', 'lightsalmon', 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
+#colors = ['maroon', 'red', 'lightsalmon']#, 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
+colors = ['red', 'peru','lightsalmon']#, 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
 
 #fig, (j3,j4,p2,p3,p4) = plt.subplots(1,5, sharey=True)
 #fig, ((j3,j4,p2,p3,p4),(s1,s2,s3,s4,t2,t3),(t4,ti2,ti3,ti4,tr1,tr2)) = plt.subplots(3, 6, layout='constrained', sharey=True)
@@ -85,20 +95,32 @@ tr2 = fig.add_subplot(gs[2, 5], sharex=j3, sharey=j3)
 
 j3.set_ylabel('Time (ms)')
 s1.set_ylabel('Time (ms)')
-#s3.set_ylabel('Time (ms)')
 t4.set_ylabel('Time (ms)')
-#tr1.set_ylabel('Time (ms)')
-# plot type_fun = 0
-type_fun=0
+
+t4.set_xlabel('k results')
+ti2.set_xlabel('k results')
+ti3.set_xlabel('k results')
+ti4.set_xlabel('k results')
+tr1.set_xlabel('k results')
+tr2.set_xlabel('k results')
+
+#type_fun=0
 
 
 
 for i,query in enumerate([j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2]):
     for j, alg in enumerate(alg_label):
         query.plot(datasets[0][0]['k'], data[i][j], marker='', color=colors[j], label=alg_label[j])
-        query.set_xscale('log')
-        query.set_yscale('log')
+    query.set_xscale('log')
+    query.set_yscale('log')
     query.set_title(queries_title[i])
+    query.axvline(x=10, color='gray', linestyle='--', linewidth=0.7)
+    query.axvline(x=100, color='gray', linestyle='--', linewidth=0.7)
+    # query.axvline(x=1000, color='gray', linestyle='--', linewidth=0.7)
+    if(query != j3 and query != s1 and query != t4):
+        query.axes.get_yaxis().set_visible(False)
+    if(query != t4 and query != ti2 and query != ti3 and query != ti4 and query != tr1 and query != tr2):
+        query.axes.get_xaxis().set_visible(False)
 
 handles, labels = j3.get_legend_handles_labels()
 color_legend.legend(handles, labels, loc='center', fontsize='x-small')

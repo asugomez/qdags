@@ -4,8 +4,8 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # partial
 ## louds
 echo "Running partial louds backtracking"
-#cd "$script_dir/partial/louds/backtracking/"
-#./runPartialLoudsBacktracking.sh
+cd "$script_dir/partial/louds/backtracking/"
+./runPartialLoudsBacktracking.sh
 echo "Running partial louds nonFixedQueue"
 cd "$script_dir/partial/louds/nonFixedQueue/"
 ./runPartialLoudsNonFixed.sh

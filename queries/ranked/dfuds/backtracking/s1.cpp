@@ -93,7 +93,7 @@ int main(int argc, char** argv)
     qdag_dfuds qdag_dfuds_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
     qdag_dfuds qdag_dfuds_rel_U(*rel_U, att_U, grid_side, 2, att_U.size());
 
-    cout << ((((float)qdag_dfuds_rel_R.size()*8) + ((float)qdag_dfuds_rel_S.size()*8) + ((float)qdag_dfuds_rel_T.size()*8) + ((float)qdag_dfuds_rel_U.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2 + rel_U->size()*2)) << "\t";
+//    cout << ((((float)qdag_dfuds_rel_R.size()*8) + ((float)qdag_dfuds_rel_S.size()*8) + ((float)qdag_dfuds_rel_T.size()*8) + ((float)qdag_dfuds_rel_U.size()*8) )/(rel_R->size()*2 + rel_S->size()*2 + rel_T->size()*2 + rel_U->size()*2)) << "\t";
     
     vector<qdag_dfuds> Q(4);
 
