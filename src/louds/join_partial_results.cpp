@@ -38,6 +38,7 @@ bool AND_partial(
     uint16_t children_to_recurse[p];
     uint64_t children_to_recurse_size;
     uint16_t cur_level;
+	// TOOD: maybe delete l and replace it by nAttr
     uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
     uint64_t results = 0;
     while(!pq.empty()){

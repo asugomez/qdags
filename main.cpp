@@ -304,15 +304,15 @@ int main(int argc, char **argv) {
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
 //
-//    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
-//    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
-//    results_partial_louds.clear();
-//    start = high_resolution_clock::now();
-//    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+    cout << "----- MULTI JOIN PARTIAL RESULTS ------" << endl;
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
+    results_partial_louds.clear();
+    start = high_resolution_clock::now();
+    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds); // warmup join -> activar el caché
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
 //    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
 //    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);

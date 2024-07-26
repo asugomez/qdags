@@ -27,51 +27,39 @@ const uint8_t TYPE_ATT2_CONST = 2;
  */
 struct position{
 	uint16_t level;
-	uint16_t max_level; // TODO: see if we can remove this
 	uint16_t* coordinates; // coordinates to that point/subquadrant of the grid
-
 	// default constructor
-	position() : level(0), max_level(0), coordinates(nullptr) {}
+	position() : level(0), /*max_level(0),*/ coordinates(nullptr) {}
+	position(uint16_t l, uint16_t* c) : level(l), coordinates(c) {}
 };
 
+// children computed of the lqdag
 struct completion_node_lqdag{
 	double val_leaf = NO_VALUE_LEAF_UTILS; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
+	uint64_t n_children; // number of children
 	completion_node_lqdag** children = nullptr;
 
 	// default constructor
-	completion_node_lqdag() : val_leaf(NO_VALUE_LEAF_UTILS), children(nullptr) {}
-
-	// constructor with value
-	completion_node_lqdag(double val) : val_leaf(val), children(nullptr) {}
-
-	completion_node_lqdag(double val, completion_node_lqdag** children)
-		: val_leaf(val), children(children) {}
-
+	completion_node_lqdag() : val_leaf(NO_VALUE_LEAF_UTILS), n_children(0), children(nullptr) {}
+	// constructor with value and p children
+	completion_node_lqdag(double val, uint64_t p) : val_leaf(val), n_children(p), children(new completion_node_lqdag*[p]) {}
+	completion_node_lqdag(double val, uint64_t p, completion_node_lqdag** children)
+		: val_leaf(val), n_children(p), children(children) {}
 	// destructor
 	~completion_node_lqdag(){
 		if(children != nullptr){
 			delete[] children;
 		}
 	}
-
-
 };
 
-struct quadtree_formula { // represents the output of the formula we are evaluating
-    double val_leaf = NO_VALUE_LEAF_UTILS; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
-    quadtree_formula** children = nullptr;
-};
+//struct quadtree_formula { // represents the output of the formula we are evaluating
+//    double val_leaf = NO_VALUE_LEAF_UTILS; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
+//    quadtree_formula** children = nullptr;
+//};
 
 // represents a subtree of the quadtree
-struct subQuadtreeChild {
-    ::qdag *qdag;
-    uint16_t level; // the level of the quadtree_formula. 0 to start.
-    uint64_t node; // absolute position in the bv[level] of the quadtree
-    double value;// = NO_VALUE_LEAF;
-    // Constructor sin inicializar node_description
-    subQuadtreeChild(::qdag* qdagPtr, uint16_t lvl, uint64_t nd, double val = NO_VALUE_LEAF_UTILS)
-            : qdag(qdagPtr), level(lvl), node(nd), value(val) {}
-};
+
 
 /**
  * represents a predicate in the query
@@ -95,10 +83,10 @@ struct predicate {
      * @param quadrant_side
      * @return 0 if the quadrant do not satisfy the predicate, 1 if it satisfies the predicate, 0.5 if it is partially inside the limits
      */
-static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side, uint64_t nAttr) {
+static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side, uint16_t nAtt) {
     vector<uint64_t> min_att;
     vector<uint64_t> max_att;
-    for(uint16_t i = 0; i < nAttr; i++){
+    for(uint16_t i = 0; i < nAtt; i++){
         min_att.push_back(coordinates[i]);
         max_att.push_back(coordinates[i] + quadrant_side - 1);
     }
@@ -328,7 +316,7 @@ struct quadtree_pred{
     uint16_t max_level;
     uint64_t grid_side;
     uint8_t k;
-    uint64_t nAttr;
+    uint16_t nAttr;
 };
 
 
