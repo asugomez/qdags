@@ -15,8 +15,8 @@ import tikzplotlib
 
 alg_label = ["G. LOUDS Backtracking",
              "G. LOUDS Optimal Order",
-             "G. DFUDS Backtracking"]#,
-             # "Gradual DFUDS Optimal Order",
+             "G. DFUDS Backtracking",
+              "Gradual DFUDS Optimal Order"]#,
              # "Ranked LOUDS Backtracking",
              # "Ranked LOUDS Optimal Order",
              # "Ranked DFUDS Backtracking",
@@ -34,7 +34,7 @@ for i,type_fun in enumerate([0]):#,1]):
     partialLoudsBack = pd.read_csv(f'../partial/louds/backtracking/{file}', delimiter=';')
     partialLoudsNon = pd.read_csv(f'../partial/louds/nonFixedQueue/{file}', delimiter=';')
     partialDfudsBack = pd.read_csv(f'../partial/dfuds/backtracking/{file}', delimiter=';')
-    # partialDfudsNon = pd.read_csv(f'../partial/dfuds/nonFixedQueue/{file}', delimiter=';')
+    partialDfudsNon = pd.read_csv(f'../partial/dfuds/nonFixedQueue/{file}', delimiter=';')
 
     # rankedLoudsBack = pd.read_csv(f'../ranked/louds/backtracking/{file}', delimiter=';')
     # rankedLoudsNon = pd.read_csv(f'../ranked/louds/nonFixedQueue/{file}', delimiter=';')
@@ -43,8 +43,8 @@ for i,type_fun in enumerate([0]):#,1]):
     
     datasets[i] = [partialLoudsBack,
                    partialLoudsNon,
-                   partialDfudsBack]#,
-                   # partialDfudsNon,
+                   partialDfudsBack,
+                   partialDfudsNon]#,
                    # rankedLoudsBack,
                    # rankedLoudsNon,
                    # rankedDfudsBack,
@@ -52,14 +52,14 @@ for i,type_fun in enumerate([0]):#,1]):
     #traditional = pd.read_csv(f'../all/results.csv',delimiter=';')
     # print(i)
     for j,query in enumerate(queries_label):
-        data[j] = [partialLoudsBack[query], partialLoudsNon[query], partialDfudsBack[query]]#, partialDfudsNon[query], rankedLoudsBack[query], rankedLoudsNon[query], rankedDfudsBack[query], rankedDfudsNon[query]]
+        data[j] = [partialLoudsBack[query], partialLoudsNon[query], partialDfudsBack[query], partialDfudsNon[query] ]#, rankedLoudsBack[query], rankedLoudsNon[query], rankedDfudsBack[query], rankedDfudsNon[query]]
 
 
 variables = datasets[0][0].columns[1:]  # Excluir la columna 'k'
 
 
 #colors = ['maroon', 'red', 'lightsalmon']#, 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
-colors = ['red', 'peru','lightsalmon']#, 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
+colors = ['red', 'peru','lightsalmon', 'gold']#, 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
 
 #fig, (j3,j4,p2,p3,p4) = plt.subplots(1,5, sharey=True)
 #fig, ((j3,j4,p2,p3,p4),(s1,s2,s3,s4,t2,t3),(t4,ti2,ti3,ti4,tr1,tr2)) = plt.subplots(3, 6, layout='constrained', sharey=True)

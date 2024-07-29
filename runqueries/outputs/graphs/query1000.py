@@ -10,8 +10,8 @@ import seaborn as sns
 
 alg_label = ["G. LOUDS Backtrack.",
              "G. LOUDS Op. Order",
-             "G. DFUDS Backtrack."]#,
-            #"G. DFUDS Op. Order",
+             "G. DFUDS Backtrack.",
+             "G. DFUDS Op. Order"]#,
             #  "R. LOUDS Backtrack.", "R. LOUDS Op. Order",
             # "R. DFUDS Backtrack.", "R. DFUDS Op. Order"]
 queries_label = ["j3","j4","p2","p3","p4","s1","s2","s3","s4","t2","t3","t4","ti2","ti3","ti4","tr1","tr2"]
@@ -19,14 +19,8 @@ queries_title = ["J3","J4","P2","P3","P4","S1","S2","S3","S4","T2","T3","T4","Ti
 
 # box plots for each query
 data = []
-rows, cols = 17, 9
-row_template = [0] * cols
-data = [row_template[:] for _ in range(rows)]
-# box plots for each query
-# TDO hacer un for para cada query y función y tamaño k
-data = []
 # Replication with *
-rows, cols = 17, 3 #9 TODO: change this
+rows, cols = 17, 4 #9 TODO: change this
 row_template = [0] * cols
 data = [row_template[:] for _ in range(rows)]
 
@@ -34,11 +28,11 @@ for type_fun in [0]:#,1]:
     for k in [1000]: # TODO: maybe only k=1000 ?
         for i,query in enumerate(queries_label): #[j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr2]:
             file = f"{query}-f{type_fun}-k{k}.txt"
-            print(file)
+            # print(file)
             partialLoudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)
             partialLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)# np.loadtxt(f'../partial/louds/nonFixedQueue/{file}', dtype=float)
             partialDfudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/backtracking/{file}', dtype=float)
-            #partialDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/nonFixedQueue/{file}', dtype=float)
+            partialDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/nonFixedQueue/{file}', dtype=float)
 
             #rankedLoudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/backtracking/{file}', dtype=float)
             #rankedLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/nonFixedQueue/{file}', dtype=float)
@@ -47,15 +41,10 @@ for type_fun in [0]:#,1]:
 
             #traditional = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../all/{query}.txt',dtype=float)
 
-            # Convertir a floats explícitamente (aunque np.loadtxt ya debería cargar como float)
-            partialLoudsBack = partialLoudsBack.astype(float)
-            partialLoudsNon = partialLoudsNon.astype(float)
-            partialDfudsBack = partialDfudsBack.astype(float)
 
-            data[i] = [partialLoudsBack, partialLoudsNon, partialDfudsBack]#,
+            data[i] = [partialLoudsBack, partialLoudsNon, partialDfudsBack, partialDfudsNon]#,
             #[traditional,
-            #           partialLoudsBack, partialLoudsNon, partialDfudsBack]#,
-            #partialDfudsNon, rankedLoudsBack, rankedLoudsNon, rankedDfudsBack, rankedDfudsNon]
+            #, rankedLoudsBack, rankedLoudsNon, rankedDfudsBack, rankedDfudsNon]
 
             #for j,alg in enumerate(data[i]):
             #   if len(alg) < 50: # Rellenar con NaN si hay menos elementos
@@ -65,7 +54,7 @@ for type_fun in [0]:#,1]:
 # colors:
 # https://matplotlib.org/stable/gallery/color/named_colors.html
 #colors = ['hotpink','red','peru']#, 'lightsalmon', 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
-colors = ['red', 'peru','lightsalmon']#, 'gold', 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
+colors = ['red', 'peru','lightsalmon', 'gold']#, 'dodgerblue', 'darkturquoise', 'mediumspringgreen', 'lime']
 # Crear la figura
 fig = plt.figure(figsize=(14,10))
 
