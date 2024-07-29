@@ -16,10 +16,6 @@ const uint8_t FUNCTOR_AND = 2; // internal quadtree_formula
 const uint8_t FUNCTOR_OR = 3; // internal quadtree_formula
 const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
 
-const double NO_VALUE_LEAF = 3;
-const double EMPTY_LEAF = 0;
-const double FULL_LEAF = 1;
-const double INTERNAL_NODE = 0.5;
 
 class formula_lqdag{
 
@@ -42,7 +38,6 @@ private:
 	uint16_t nAtt;
 	uint16_t max_level;
 	uint64_t grid_side;
-
 	type_mapping_M *M; // mapping for extend functor. Use it when we need to extend the subquadtree, Otherwise M[i] = i (case not extended).
 
 public:
@@ -176,12 +171,22 @@ public:
 		return this->functor;
 	}
 
-	double get_val_lqdag1() const {
-		return this->val_lqdag1;
+	formula_lqdag* get_formula_lqdag1() const {
+		return this->formula_lqdag1;
 	}
 
-	double get_val_lqdag2() const {
-		return this->val_lqdag2;
+	formula_lqdag* get_formula_lqdag2() const {
+		return this->formula_lqdag2;
+	}
+
+	qdag* get_qdag() const {
+		if(is_qdag())
+			return formula_leaf_qdag;
+	}
+
+	lqdag* get_lqdag() const {
+		if(is_lqdag())
+			return this->formula_leaf_lqdag;
 	}
 
 	uint8_t getK() const {
@@ -200,16 +205,22 @@ public:
 		return this->grid_side;
 	}
 
-	qdag* get_qdag() const {
-		if(is_qdag())
-			return formula_leaf_qdag;
+	double get_val_lqdag1() const {
+		return this->val_lqdag1;
 	}
 
-	lqdag* get_lqdag() const {
-		if(is_lqdag())
-			return this->formula_leaf_lqdag;
+
+	double get_val_lqdag2() const {
+		return this->val_lqdag2;
 	}
 
+	void set_val_lqdag1(double newVal) {
+		this->val_lqdag1 = newVal;
+	}
+
+	void set_val_lqdag2(double newVal){
+		this->val_lqdag2 = newVal;
+	}
 
 	bool is_qdag() const { // Or functor is FUNCTOR_QTREE
 		return functor == FUNCTOR_QTREE;
@@ -219,6 +230,7 @@ public:
 		return functor == FUNCTOR_LQDAG;
 //		return std::holds_alternative<lqdag*>(this->formula_leaf);
 	}
+
 
 	// TODO change it to void
 	/**
@@ -249,11 +261,68 @@ public:
 		}
 	}
 
-	double value_qdag(){
-		if(functor == FUNCTOR_QTREE){
+	// algorithm 8 child(L,i)
+	/**
+	 * Can only be invoked when value is 1/2 or VALUE_NEED_CHILDREN.
+	 * The formula will remain the same (we use a pointer to the original formula)
+	 * @param i
+	 * @return
+	 */
+	formula_lqdag* get_formula_child_lqdag(uint64_t i){
+		// case base
+		switch (this->get_functor()) {
+			case FUNCTOR_QTREE: case FUNCTOR_NOT: {
+				uint16_t cur_level = this->subQuadtree->level;
+				uint64_t cur_node = this->subQuadtree->node;
+				uint16_t max_level = this->subQuadtree->qdag->getHeight() - 1;
+				bool node_exists = true;
+				uint64_t ith_child;
+				double value;
+				if(cur_level == max_level) {
+					ith_child = cur_node + i;
+					node_exists = this->subQuadtree->qdag->get_ith_bit(cur_level, cur_node + i);
+					value = node_exists ? FULL_LEAF : EMPTY_LEAF;
+				} else{
+					// ith_child: start position of the ith child of cur_node in the next level (cur_level + 1)
+					ith_child = this->subQuadtree->qdag->get_child(cur_level, cur_node, i, node_exists);
+					value = node_exists ? NO_VALUE_LEAF : EMPTY_LEAF; // if node exists, we will have to compute its value after
+				}
+				cur_level++;
+				subQuadtreeChild *subQuadtree = new subQuadtreeChild{this->subQuadtree->qdag, cur_level, ith_child, value};
+				lqdag *l = new lqdag(this->form_lqdag, subQuadtree);
+				return l;
+			}
+			case FUNCTOR_AND: {
+				double val_l1 = this->val_lqdag1 != NO_VALUE_LEAF ? this->val_lqdag1 : this->lqdag1->value_lqdag();
+				if (val_l1== 1)
+					return lqdag2->get_child_lqdag(i);
+				double val_l2 = this->val_lqdag2 != NO_VALUE_LEAF ? this->val_lqdag2 : this->lqdag2->value_lqdag();
+				if (val_l2 == 1)
+					return lqdag1->get_child_lqdag(i);
+				lqdag *l = new lqdag(this->form_lqdag, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
+				return l;
+			}
+			case FUNCTOR_OR: {
+				double val_l1 = this->val_lqdag1 != NO_VALUE_LEAF ? this->val_lqdag1 : this->lqdag1->value_lqdag();
+				if (val_l1 == 0)
+					return lqdag2->get_child_lqdag(i);
+				double val_l2 = this->val_lqdag2 != NO_VALUE_LEAF ? this->val_lqdag2 : this->lqdag2->value_lqdag();
+				if (val_l2 == 0)
+					return lqdag1->get_child_lqdag(i);
+				lqdag *l = new lqdag(this->form_lqdag, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
+				return l;
+			}
+			case FUNCTOR_EXTEND: { // Extend quadtree to attributes att_set
+				// i --> i' (hago el mapeo)
+				return new lqdag(this->form_lqdag, this->get_child_pos_qdags(M[i]));
+			}
+			default:
+				throw "error: value_lqdag non valid functor";
 
 		}
 	}
+
+
 
 };
 

@@ -9,7 +9,11 @@
 #include "../qdags.hpp"
 #include "../lqdag.hpp"
 
-const double NO_VALUE_LEAF_UTILS = 3;
+//const double NO_VALUE_LEAF_UTILS = 3;
+const double NO_VALUE_LEAF = 3;
+const double EMPTY_LEAF = 0;
+const double FULL_LEAF = 1;
+const double INTERNAL_NODE = 0.5;
 
 #define OP_EQUAL 0
 #define OP_UNEQUAL 1
@@ -27,26 +31,27 @@ const uint8_t TYPE_ATT2_CONST = 2;
  */
 struct position{
 	uint16_t level;
+	uint64_t cur_node;
 	uint16_t* coordinates; // coordinates to that point/subquadrant of the grid
 	// default constructor
-	position() : level(0), /*max_level(0),*/ coordinates(nullptr) {}
-	position(uint16_t l, uint16_t* c) : level(l), coordinates(c) {}
+	position() : level(0), cur_node(0), coordinates(nullptr) {}
+	position(uint16_t l, uint64_t n, uint16_t* c) : level(l), cur_node(n), coordinates(c) {}
 };
 
 // children computed of the lqdag
-struct completion_node_lqdag{
-	double val_leaf = NO_VALUE_LEAF_UTILS; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
+struct node_completion{
+	double val_leaf = NO_VALUE_LEAF; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
 	uint64_t n_children; // number of children
-	completion_node_lqdag** children = nullptr;
+	node_completion** children = nullptr;
 
 	// default constructor
-	completion_node_lqdag() : val_leaf(NO_VALUE_LEAF_UTILS), n_children(0), children(nullptr) {}
+	node_completion() : val_leaf(NO_VALUE_LEAF), n_children(0), children(nullptr) {}
 	// constructor with value and p children
-	completion_node_lqdag(double val, uint64_t p) : val_leaf(val), n_children(p), children(new completion_node_lqdag*[p]) {}
-	completion_node_lqdag(double val, uint64_t p, completion_node_lqdag** children)
+	node_completion(double val, uint64_t p) : val_leaf(val), n_children(p), children(new node_completion*[p]) {}
+	node_completion(double val, uint64_t p, node_completion** children)
 		: val_leaf(val), n_children(p), children(children) {}
 	// destructor
-	~completion_node_lqdag(){
+	~node_completion(){
 		if(children != nullptr){
 			delete[] children;
 		}
