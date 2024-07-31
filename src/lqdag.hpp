@@ -599,3 +599,4 @@ public:
 };
 
 #endif
+// TODO: see diff with a not!! we have to push dow  the operand
