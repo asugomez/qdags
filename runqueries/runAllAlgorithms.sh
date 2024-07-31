@@ -3,20 +3,20 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # partial
 ## louds
-echo "Running partial louds backtracking"
-cd "$script_dir/partial/louds/backtracking/"
-./runPartialLoudsBacktracking.sh
-echo "Running partial louds nonFixedQueue"
-cd "$script_dir/partial/louds/nonFixedQueue/"
-./runPartialLoudsNonFixed.sh
-
-## dfuds
-echo "Running partial dfuds backtracking"
-cd "$script_dir/partial/dfuds/backtracking/"
-./runPartialDfudsBacktracking.sh
-echo "Running partial dfuds nonFixedQueue"
-cd "$script_dir/partial/dfuds/nonFixedQueue/"
-./runPartialDfudsNonFixed.sh
+#echo "Running partial louds backtracking"
+#cd "$script_dir/partial/louds/backtracking/"
+#./runPartialLoudsBacktracking.sh
+#echo "Running partial louds nonFixedQueue"
+#cd "$script_dir/partial/louds/nonFixedQueue/"
+#./runPartialLoudsNonFixed.sh
+#
+### dfuds
+#echo "Running partial dfuds backtracking"
+#cd "$script_dir/partial/dfuds/backtracking/"
+#./runPartialDfudsBacktracking.sh
+#echo "Running partial dfuds nonFixedQueue"
+#cd "$script_dir/partial/dfuds/nonFixedQueue/"
+#./runPartialDfudsNonFixed.sh
 
 # ranked
 ## louds
