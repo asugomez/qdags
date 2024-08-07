@@ -6,12 +6,12 @@ for type_fun in 0; do
   data_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun.csv"
   # echo type fun
   echo "type_fun : $type_fun"
-  echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
-  for k in 1 10 100 1000; do
+  #echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
+  for k in 10 100 1000; do # TODO: le saque 1!
     # echo k
     echo "size queue: $k"
     printf "$k;" >> $data_csv
-    for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
+    for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3; do # ti4 tr1 tr2; do
       #get the number of datasets for each query
       echo "file: $file"
       read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
