@@ -99,23 +99,22 @@ public:
 	/**
 	 * Compute the value of the i_qdag-th qdag to the current level and current node of the i-th qdag.
 	 * And it returns true if the curr_node has a child in the i-th position.
-	 * @param i_qdag the position in the pos_qdags vector.
 	 * @param i_child the i-th child of the current node.
 	 * @param pos_i_child the position of the i-th child in the next level.
 	 * Return value of the i-th child: FULL_LEAF, EMPTY_LEAF, NO_VALUE_LEAF
 	 */
-	double val_child_qdag(uint64_t i_qdag, uint64_t i_child, uint64_t& pos_i_child){
-		uint16_t cur_level = (*this->pos_qdags)[i_qdag].level;
-		uint64_t cur_node = (*this->pos_qdags)[i_qdag].cur_node;
+	double get_child_qdag(uint64_t i_child, uint64_t& pos_i_child){
+		uint16_t cur_level = (*this->pos_qdags)[this->get_index()].level;
+		uint64_t cur_node = (*this->pos_qdags)[this->get_index()].cur_node;
 		uint16_t max_level = this->form_lqdag->getMaxLevel();
 		bool node_exists = true;
 		if(cur_level == max_level) {
 			pos_i_child = cur_node + i_child;
-			node_exists = this->arr_qdags[i_qdag]->get_ith_bit(cur_level, pos_i_child);
+			node_exists = this->arr_qdags[this->get_index()]->get_ith_bit(cur_level, pos_i_child);
 			return node_exists ? FULL_LEAF : EMPTY_LEAF;
 		} else{
 			// ith_child: start position of the ith child of cur_node in the next level (cur_level + 1)
-			pos_i_child = this->arr_qdags[i_qdag]->get_child(cur_level, cur_node, i_child, node_exists);
+			pos_i_child = this->arr_qdags[this->get_index()]->get_child(cur_level, cur_node, i_child, node_exists);
 			return node_exists ? NO_VALUE_LEAF : EMPTY_LEAF; // if node exists, we will have to compute its value after
 		}
 	}
@@ -154,7 +153,56 @@ public:
      * @param i
      * @return
      */
-    lqdag* get_child_lqdag(formula_lqdag* formula_pos, uint64_t ith_child, uint64_t jth_qdag, position_qdags& m_pos_qdag, double& val_qdag){
+	lqdag* get_child_lqdag(formula_lqdag* formula_pos, uint64_t ith_child){
+		// case base
+		switch (formula_pos->get_functor()) {
+			case FUNCTOR_QTREE: case FUNCTOR_NOT: {
+				uint16_t cur_level = (*this->pos_qdags)[this->get_index()].level;
+				uint64_t jth_child;
+				double value = get_child_qdag(ith_child, jth_child);
+				// TODO: ver que devolver, y q cambiar del actual lqdag
+				// devolver un lqdag con lqdag() this->form_lqdag
+				cur_level++;
+				position_qdags* new_pos_qdags = new position_qdags{};
+				subQuadtreeChild *subQuadtree = new subQuadtreeChild{this->subQuadtree->qdag, cur_level, ith_child, value};
+				lqdag *l = new lqdag(this->arr_qdags, formula_pos->get_functor(), subQuadtree);
+				return l;
+			}
+			case FUNCTOR_AND: {
+				double val_l1 = this->val_lqdag1() != NO_VALUE_LEAF ? this->val_lqdag1() : this->;
+				position* pos_qdag_and = new position{};
+				if (val_l1== 1)
+					return get_child_lqdag(this->form_lqdag->get_formula_lqdag2(), ith_child);
+				double val_l2 = this->val_lqdag2() != NO_VALUE_LEAF ? this->val_lqdag2() : this->form_lqdag->get_formula_lqdag2()->value_lqdag();
+				if (val_l2 == 1)
+					return get_child_lqdag(this->form_lqdag->get_formula_lqdag1(), ith_child);
+//                lqdag *l = new lqdag(this->arr_qdags, this->form_lqdag, get_child_lqdag(this->form_lqdag->get_formula_lqdag1(), i, count_qdag), get_child_lqdag(this->form_lqdag->get_formula_lqdag2(), i, count_qdag+1));
+				return l;
+			}
+			case FUNCTOR_OR: {
+				double val_l1 = this->val_lqdag1() != NO_VALUE_LEAF ? this->val_lqdag1() : this->lqdag1->value_lqdag();
+				if (val_l1 == 0)
+					return lqdag2->get_child_lqdag(i);
+				double val_l2 = this->val_lqdag2 != NO_VALUE_LEAF ? this->val_lqdag2 : this->lqdag2->value_lqdag();
+				if (val_l2 == 0)
+					return lqdag1->get_child_lqdag(i);
+				lqdag* l = new lqdag(this->form_lqdag, this->lqdag1->get_child_lqdag(i), this->lqdag2->get_child_lqdag(i));
+				return l;
+			}
+			case FUNCTOR_EXTEND: { // Extend quadtree to attributes att_set
+				// i --> i' (hago el mapeo)
+				return new lqdag(this->form_lqdag, this->get_child_pos_qdags(M[i]));
+			}
+			case FUNCTOR_LQDAG:{
+
+			}
+			default:
+				throw "error: value_lqdag non valid functor";
+
+		}
+	}
+
+	lqdag* get_child_lqdag_v2(formula_lqdag* formula_pos, uint64_t ith_child, uint64_t jth_qdag, position_qdags& m_pos_qdag, double& val_qdag){
         // case base
         switch (this->get_functor()) {
             case FUNCTOR_QTREE: case FUNCTOR_NOT: {
@@ -380,8 +428,8 @@ public:
         // C_i ← Completion(Child(L_F,i))
         for(uint64_t i = 0; i < p; i++){
             Q_f_children[i] = this->get_child_lqdag(i)->completion(p, max_level, cur_level+1, UPPER_BOUND, results);
-            max_value = max(max_value, Q_f_children[i]->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
-            min_value = min(min_value, Q_f_children[i]->val_leaf);
+            max_value = max(max_value, Q_f_children[i]->val_node); // val_node can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
+            min_value = min(min_value, Q_f_children[i]->val_node);
         }
         // return a leaf
         if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){ // return a leaf
@@ -395,7 +443,7 @@ public:
         else {
             // return an internal node with children
             quadtree_formula* quadtree = new quadtree_formula();
-            quadtree->val_leaf = val_lqdag; //INTERNAL_NODE;
+            quadtree->val_node = val_lqdag; //INTERNAL_NODE;
             quadtree->children = Q_f_children;
             return quadtree;
         }
@@ -448,8 +496,8 @@ public:
                                                                                            UPPER_BOUND, results, pred,
                                                                                            coordinatesTemp, nAttr);
                 Q_f_children[i] = newNode;
-                max_value = max(max_value, newNode->val_leaf); // val_leaf can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
-                min_value = min(min_value, newNode->val_leaf);
+                max_value = max(max_value, newNode->val_node); // val_node can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
+                min_value = min(min_value, newNode->val_node);
             }
             // return a leaf
             if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){ // return a leaf
@@ -463,7 +511,7 @@ public:
             else {
                 // return an internal node with children
                 quadtree_formula* quadtree = new quadtree_formula;
-                quadtree->val_leaf = INTERNAL_NODE;
+                quadtree->val_node = INTERNAL_NODE;
                 quadtree->children = Q_f_children;
                 return quadtree;
             }
@@ -488,24 +536,24 @@ public:
     lqdag* lazy_child_completion(uint64_t p,
                                    uint64_t child,
                                    quadtree_formula& Q_f){
-        if(Q_f.val_leaf == EMPTY_LEAF || Q_f.val_leaf == FULL_LEAF){
+        if(Q_f.val_node == EMPTY_LEAF || Q_f.val_node == FULL_LEAF){
             return this; // child is 0 or 1 and the quadtree is already computed
         }
-        else if(Q_f.val_leaf == INTERNAL_NODE || Q_f.val_leaf == VALUE_NEED_CHILDREN){
+        else if(Q_f.val_node == INTERNAL_NODE || Q_f.val_node == VALUE_NEED_CHILDREN){
             lqdag* lqdag_child = this->get_child_lqdag(child);
             if(!Q_f.children[child]){ // allocate memory for the child
                 Q_f.children[child] = new quadtree_formula{};
             } // if it's not computed
-            if(Q_f.children[child]->val_leaf == NO_VALUE_LEAF){
+            if(Q_f.children[child]->val_node == NO_VALUE_LEAF){
                 quadtree_formula* qf_no_value = lqdag_child->compute_quadtree_formula_node(p);
-                Q_f.children[child]->val_leaf = qf_no_value->val_leaf;
+                Q_f.children[child]->val_node = qf_no_value->val_node;
                 Q_f.children[child]->children = qf_no_value->children;
             } // else: it's already computed
             return lqdag_child;
         }
         else{ // NO_VALUE --> compute the root and then, the child
             quadtree_formula* qf_no_value = this->compute_quadtree_formula_node(p);
-            Q_f.val_leaf = qf_no_value->val_leaf;
+            Q_f.val_node = qf_no_value->val_node;
             Q_f.children = qf_no_value->children;
             return this->lazy_child_completion(p, child, Q_f);
         }
@@ -523,10 +571,10 @@ public:
                                            uint64_t child,
                                            quadtree_formula& Q_f,
                                            quadtree_pred* qf_pred){
-        if(Q_f.val_leaf == EMPTY_LEAF || Q_f.val_leaf == FULL_LEAF){ // no need to calculate its child
+        if(Q_f.val_node == EMPTY_LEAF || Q_f.val_node == FULL_LEAF){ // no need to calculate its child
             return new output_lqdag_pred{this, qf_pred};
         }
-        else if(Q_f.val_leaf == INTERNAL_NODE || Q_f.val_leaf == VALUE_NEED_CHILDREN){
+        else if(Q_f.val_node == INTERNAL_NODE || Q_f.val_node == VALUE_NEED_CHILDREN){
             // calculate coordinates
             uint16_t diff_level = qf_pred->max_level-qf_pred->cur_level;
             uint16_t l = (uint16_t) log2(p);
@@ -545,9 +593,9 @@ public:
                 if(!Q_f.children[child]){ // allocate memory for the child
                     Q_f.children[child] = new quadtree_formula{};
                 } // if it's not computed
-                if(Q_f.children[child]->val_leaf == NO_VALUE_LEAF){
+                if(Q_f.children[child]->val_node == NO_VALUE_LEAF){
                     quadtree_formula* qf_no_value = lqdag_child->compute_quadtree_formula_node(p);
-                    Q_f.children[child]->val_leaf = qf_no_value->val_leaf;
+                    Q_f.children[child]->val_node = qf_no_value->val_node;
                     Q_f.children[child]->children = qf_no_value->children;
                 } // else: it's already computed
 //				return lqdag_child;
@@ -562,7 +610,7 @@ public:
         }
         else{ // NO_VALUE --> compute the root and then, the child
             quadtree_formula* qf_no_value = this->compute_quadtree_formula_node(p);
-            Q_f.val_leaf = qf_no_value->val_leaf;
+            Q_f.val_node = qf_no_value->val_node;
             Q_f.children = qf_no_value->children;
 //			return this->lazy_child_completion_with_pred(p, child, Q_f, qf_pred);
             return new output_lqdag_pred{this->lazy_child_completion(p, child, Q_f), qf_pred};
