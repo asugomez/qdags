@@ -14,6 +14,7 @@ const double NO_VALUE_LEAF = 3;
 const double EMPTY_LEAF = 0;
 const double FULL_LEAF = 1;
 const double INTERNAL_NODE = 0.5;
+const double VALUE_NEED_CHILDREN = 2; // internal node of the syntax tree
 
 #define OP_EQUAL 0
 #define OP_UNEQUAL 1

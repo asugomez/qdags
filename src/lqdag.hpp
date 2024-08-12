@@ -48,6 +48,10 @@ public:
 		this->node_completion_lqdag = completion_children_lqdag;
 	}
 
+	uint64_t get_index(){
+		return this->form_lqdag->get_index();
+	}
+
 	uint8_t get_functor(){
 		return this->form_lqdag->get_functor();
 	}
@@ -141,45 +145,6 @@ public:
 		return new_child_pos_nodes_qdags;
 	}
 
-	// TODO: check child is a uint16_t and not uint64_t
-	/**
-	 * Return the child of the lqdag.
-	 * This will have the same formula as the parent, but with a different position and children.
-	 * We assume that the parent is not empty
-	 * @param i
-	 * @return
-	 */
-	 // MALOOO debo ver si es OR
-	lqdag* compute_child_lqdag(uint16_t i){
-		bool child_exist = true;
-		// get index of each child: cur_pos_nodes_qdags has n_qdags() elements
-		vector<uint16_t> cur_pos_nodes_qdags(n_qdags()); // cur_pos_nodes_qdags[j] is the i-th child of the j-th qdag
-		this->form_lqdag->get_index_i(i, cur_pos_nodes_qdags);
-		// check value of position
-		// compute the i-th child for each qdag to check if there is a possible child.
-		vector<uint64_t> pos_ith_child(n_qdags());
-		double val_qdag_j;
-		for(uint64_t j = 0; j < n_qdags(); j++){
-			val_qdag_j = this->val_child_qdag(j, cur_pos_nodes_qdags[j], pos_ith_child[j]);
-			if(val_qdag_j == EMPTY_LEAF){
-				child_exist = false;
-				break;
-			}
-		}
-
-		if(!child_exist){
-			cur_pos_nodes_qdags.clear();
-			pos_ith_child.clear();
-			return new lqdag(this->arr_qdags, this->form_lqdag, nullptr, new node_completion{EMPTY_LEAF,0});
-		}
-
-		// call to transform coordinates with the position (level, coordinates
-		position_qdags* new_pos_qdags = this->get_child_pos_qdags(i);
-		node_completion* new_completion_children_lqdag = new node_completion(NO_VALUE_LEAF, this->node_completion_lqdag->n_children);
-		lqdag* child_lqdag = new lqdag(this->arr_qdags, this->form_lqdag, new_pos_qdags, new_completion_children_lqdag);
-		return child_lqdag;
-	}
-
 
     // algorithm 8 child(L,i)
     /**
@@ -252,52 +217,61 @@ public:
     double value_lqdag(){
         switch(this->get_functor()){
             case FUNCTOR_QTREE: {
-                return this->value_quadtree();
+				if(this->val_lqdag1() == NO_VALUE_LEAF)
+					this->set_val_lqdag1(this->value_qdag());
+                return this->val_lqdag1();
             }
             case FUNCTOR_NOT: {
-                return 1 - this->value_quadtree();
+				if(this->val_lqdag1() == NO_VALUE_LEAF)
+					this->set_val_lqdag1(1-this->value_qdag());
+                return 1 - this->val_lqdag1();
             }
             case FUNCTOR_AND: {
-                if(this->val_lqdag1 == NO_VALUE_LEAF)
-                    this->val_lqdag1 = this->lqdag1->value_lqdag();
-                if(this->val_lqdag1 == 0)
+                if(this->val_lqdag1() == NO_VALUE_LEAF)
+                    this->set_val_lqdag1(this->val_lqdag1());
+                if(this->val_lqdag1() == 0)
                     return EMPTY_LEAF;
 
-                if(this->val_lqdag2 == NO_VALUE_LEAF)
-                    this->val_lqdag2 = this->lqdag2->value_lqdag();
-                if(this->val_lqdag2 == 0)
+                if(this->val_lqdag2() == NO_VALUE_LEAF)
+                    this->set_val_lqdag2(this->val_lqdag2());
+                if(this->val_lqdag2() == 0)
                     return EMPTY_LEAF;
 
-                if (this->val_lqdag1 == 1)
-                    return this->val_lqdag2;
-                if (this->val_lqdag2 == 1)
-                    return this->val_lqdag1;
+                if (this->val_lqdag1() == 1)
+                    return this->val_lqdag2();
+                if (this->val_lqdag2() == 1)
+                    return this->val_lqdag1();
 
                 return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the AND between the children of Q1 and Q2 has been computed
             }
             case FUNCTOR_OR: {
-                if(this->val_lqdag1 == NO_VALUE_LEAF)
-                    this->val_lqdag1 = this->lqdag1->value_lqdag();
-                if(this->val_lqdag1 == 1)
+                if(this->val_lqdag1() == NO_VALUE_LEAF)
+                    this->set_val_lqdag1(this->val_lqdag1());
+                if(this->val_lqdag1() == 1)
                     return FULL_LEAF;
 
-                if(this->val_lqdag2 == NO_VALUE_LEAF)
-                    this->val_lqdag2 = this->lqdag2->value_lqdag();
-                if(this->val_lqdag2 == 1)
+                if(this->val_lqdag2() == NO_VALUE_LEAF)
+                    this->set_val_lqdag2(this->val_lqdag2());
+                if(this->val_lqdag2() == 1)
                     return FULL_LEAF;
 
-                if (this->val_lqdag1 == 0)
-                    return this->val_lqdag2;
-                if (this->val_lqdag2 == 0)
-                    return this->val_lqdag1;
+                if (this->val_lqdag1() == 0)
+                    return this->val_lqdag2();
+                if (this->val_lqdag2() == 0)
+                    return this->val_lqdag1();
 
                 return VALUE_NEED_CHILDREN; // if both roots have Value 1⁄2, one cannot be sure of the Value of the resulting root until the OR between the children of Q1 and Q2 has been computed
             }
             case FUNCTOR_EXTEND: {
-                if (this->val_lqdag1 == NO_VALUE_LEAF)
-                    this->val_lqdag1 = this->lqdag1->value_lqdag();
-                return this->val_lqdag1;
+                if (this->val_lqdag1() == NO_VALUE_LEAF)
+                    this->set_val_lqdag1(this->val_lqdag1());
+                return this->val_lqdag1();
             }
+			case FUNCTOR_LQDAG:{ // TODO: check this
+				if (this->val_lqdag1() == NO_VALUE_LEAF)
+					this->set_val_lqdag1(this->val_lqdag1());
+				return this->val_lqdag1();
+			}
             default:
                 throw "error: value_lqdag non valid functor";
         }
@@ -312,12 +286,12 @@ public:
      * @return EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE.
      */
     double value_qdag(){
-        if(this->get_functor() == FUNCTOR_QTREE) { // only is called
-            uint16_t cur_level = this->pos_qdags->level;
-            uint64_t cur_node = this->subQuadtree->node;
-            if(this->subQuadtree->value == NO_VALUE_LEAF)
-                this->subQuadtree->value = is_a_qdag_leaf(cur_level, cur_node);
-            return this->subQuadtree->value;
+        if(this->get_functor() == FUNCTOR_QTREE || this->get_functor() == FUNCTOR_NOT) { // only is called
+			uint16_t cur_level = (*this->pos_qdags)[this->get_index()].level;
+            uint64_t cur_node = (*this->pos_qdags)[this->get_index()].cur_node;
+            if(this->val_lqdag1() == NO_VALUE_LEAF)
+                return is_a_qdag_leaf(cur_level, cur_node);
+            return this->val_lqdag1();
 
         } else {
             //cout << "error: value_quadtree called on non-quadtree" << endl;

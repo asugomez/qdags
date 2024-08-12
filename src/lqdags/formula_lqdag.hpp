@@ -25,8 +25,9 @@ public:
 
 private:
 	// lqdag L=(f,o), where f is a functor.
+	uint64_t index; // position for the QTREE, or LQDAG
 	uint8_t functor; // QTREE, NOT, AND, OR, EXTEND, LQDAG
-	formula_lqdag *formula_lqdag1;
+	formula_lqdag *formula_lqdag1; // we save value of the left lqdag and also of the leaves (QTREE, NOT and LQDAG)
 	formula_lqdag *formula_lqdag2;
 	qdag* formula_leaf_qdag;
 //	lqdags::lqdag* formula_leaf_lqdag;
@@ -165,6 +166,10 @@ public:
 		else{
 			// TODO: ver el extend para LQDAG como hoja
 		}
+	}
+
+	uint64_t get_index(){
+		return this->index;
 	}
 
 	uint8_t get_functor() const {
