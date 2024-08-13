@@ -38,7 +38,7 @@ public:
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
 		this->pos_qdags = pos_qdags;
-		this->node_completion_lqdag = new node_completion{};
+		this->node_completion_lqdag = new node_completion{NO_VALUE_LEAF, pos_qdags->size()};
 	}
 
 	lqdag(qdag** arr_qdags, formula_lqdag *form_lqdag, position_qdags* pos_qdags, node_completion* completion_children_lqdag) {
@@ -119,31 +119,59 @@ public:
 		}
 	}
 
-
 	/**
-	 * Get the new positions for each qdags of its children.
-	 * @param i the i-th children
+	 * Update the coordiantes for a lqdag.position_qdags
+	 * @param ith_child
 	 * @return
 	 */
-	position_qdags* get_child_pos_qdags(uint16_t i){
-		// vector of the children positions for each branch (qdags at the end, leaves)
-		vector<uint16_t> cur_pos_nodes_qdags; // cur_pos_nodes_qdags[j] is the i-th child of the j-th qdag
-		this->form_lqdag->get_index_i(i, cur_pos_nodes_qdags); // get the index i that corresponds to each qdag
-		// new vector with the children coordinates and level
-		position_qdags* new_child_pos_nodes_qdags;
-		for(uint64_t j = 0; j < this->pos_qdags->size(); j++){ // for each qdag
-			// copy this->pos_qdags[j].coordinates
-			uint16_t* copy_curr_coordinates = new uint16_t[this->nAttr()];
-			uint16_t diff_level = getMaxLevel()-(*pos_qdags)[j].level;
-			for(uint16_t k = 0; k < this->nAttr(); k++)
-				copy_curr_coordinates[k] = (*pos_qdags)[j].coordinates[k];
-			// compute the children coordinates path
-			transformCoordinates(copy_curr_coordinates, nAttr(), diff_level, cur_pos_nodes_qdags[j]);
-			new_child_pos_nodes_qdags->push_back(position((*pos_qdags)[j].level, copy_curr_coordinates));
-		}
-		return new_child_pos_nodes_qdags;
+	position* get_position_data(uint64_t index_qdag, uint64_t ith_child, uint64_t curr_node){
+		uint16_t* copy_curr_coordinates = new uint16_t[this->nAttr()];
+		uint16_t curr_level = (*pos_qdags)[index_qdag].level;
+		uint16_t diff_level = getMaxLevel()- curr_level;
+		for(uint16_t k = 0; k < this->nAttr(); k++)
+			copy_curr_coordinates[k] = (*pos_qdags)[index_qdag].coordinates[k];
+		vector<uint16_t> cur_pos_nodes_qdags;
+		transformCoordinates(copy_curr_coordinates, nAttr(), diff_level, cur_pos_nodes_qdags[index_qdag]);
+		return new position{curr_level++, curr_node, copy_curr_coordinates};
 	}
 
+
+//	/**
+//	 * Get the new positions for each qdags of its children.
+//	 * @param i the i-th children
+//	 * @return
+//	 */
+//	position_qdags* get_child_pos_qdags(uint16_t i){
+//		// vector of the children positions for each branch (qdags at the end, leaves)
+//		vector<uint16_t> cur_pos_nodes_qdags; // cur_pos_nodes_qdags[j] is the i-th child of the j-th qdag
+////		this->form_lqdag->get_index_i(i, cur_pos_nodes_qdags); // get the index i that corresponds to each qdag
+//		// new vector with the children coordinates and level
+//		position_qdags* new_child_pos_nodes_qdags;
+//		for(uint64_t j = 0; j < this->pos_qdags->size(); j++){ // for each qdag
+//			// copy this->pos_qdags[j].coordinates
+//			uint16_t* copy_curr_coordinates = new uint16_t[this->nAttr()];
+//			uint16_t diff_level = getMaxLevel()-(*pos_qdags)[j].level;
+//			for(uint16_t k = 0; k < this->nAttr(); k++)
+//				copy_curr_coordinates[k] = (*pos_qdags)[j].coordinates[k];
+//			// compute the children coordinates path
+//			transformCoordinates(copy_curr_coordinates, nAttr(), diff_level, cur_pos_nodes_qdags[j]);
+//			new_child_pos_nodes_qdags->push_back(position((*pos_qdags)[j].level, copy_curr_coordinates));
+//		}
+//		return new_child_pos_nodes_qdags;
+//	}
+
+	lqdag* get_child_lqdag(formula_lqdag* formula_pos, uint64_t ith_child){
+		position_qdags* new_pos_qdags = new position_qdags{};
+		double val_node = NO_VALUE_LEAF;
+		get_child_lqdag_aux(this->form_lqdag, ith_child, *new_pos_qdags, val_node);
+		lqdag* child_lqdag = new lqdag(this->arr_qdags, this->get_formula(),new_pos_qdags);
+		// TODO: checkear que el arr de lqdags no sea null (pedir espacio)
+		// update val
+		this->node_completion_lqdag->val_node = val_node;
+		this->node_completion_lqdag->lqdag_children[ith_child] = child_lqdag;
+		return child_lqdag;
+
+	}
 
     // algorithm 8 child(L,i)
     /**
@@ -153,26 +181,29 @@ public:
      * @param i
      * @return
      */
-	lqdag* get_child_lqdag(formula_lqdag* formula_pos, uint64_t ith_child){
+	void get_child_lqdag_aux(formula_lqdag* formula_pos, uint64_t ith_child, position_qdags& m_pos_qdag, double& val_node){
 		// case base
 		switch (formula_pos->get_functor()) {
-			case FUNCTOR_QTREE: case FUNCTOR_NOT: {
+			case FUNCTOR_QTREE: {
 				uint16_t cur_level = (*this->pos_qdags)[this->get_index()].level;
 				uint64_t jth_child;
-				double value = get_child_qdag(ith_child, jth_child);
-				// TODO: ver que devolver, y q cambiar del actual lqdag
-				// devolver un lqdag con lqdag() this->form_lqdag
-				cur_level++;
-				position_qdags* new_pos_qdags = new position_qdags{};
-				subQuadtreeChild *subQuadtree = new subQuadtreeChild{this->subQuadtree->qdag, cur_level, ith_child, value};
-				lqdag *l = new lqdag(this->arr_qdags, formula_pos->get_functor(), subQuadtree);
-				return l;
+				val_node = get_child_qdag(ith_child, jth_child);
+				formula_pos->set_val_lqdag1(val_node);
+				m_pos_qdag.push_back(*get_position_data(this->form_lqdag->get_index(), ith_child, jth_child));
+			}
+			case FUNCTOR_NOT: {
+				uint16_t cur_level = (*this->pos_qdags)[this->get_index()].level;
+				uint64_t jth_child;
+				val_node = get_child_qdag(ith_child, jth_child);
+				if(val_node!=NO_VALUE_LEAF)
+					val_node = 1 - val_node;
+				formula_pos->set_val_lqdag1(val_node);
+				m_pos_qdag.push_back(*get_position_data(this->form_lqdag->get_index(), ith_child, jth_child));
 			}
 			case FUNCTOR_AND: {
-				double val_l1 = this->val_lqdag1() != NO_VALUE_LEAF ? this->val_lqdag1() : this->;
-				position* pos_qdag_and = new position{};
+				double val_l1 = this->val_lqdag1() != NO_VALUE_LEAF ? this->val_lqdag1() : this->get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag, val_node);
 				if (val_l1== 1)
-					return get_child_lqdag(this->form_lqdag->get_formula_lqdag2(), ith_child);
+					get_child_lqdag(this->form_lqdag->get_formula_lqdag2(), ith_child);
 				double val_l2 = this->val_lqdag2() != NO_VALUE_LEAF ? this->val_lqdag2() : this->form_lqdag->get_formula_lqdag2()->value_lqdag();
 				if (val_l2 == 1)
 					return get_child_lqdag(this->form_lqdag->get_formula_lqdag1(), ith_child);
@@ -263,6 +294,9 @@ public:
      * @return the value of the root of the lqdag. Can be EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE or VALUE_NEED_CHILDREN.
      */
     double value_lqdag(){
+		if(this->node_completion_lqdag->val_node != NO_VALUE_LEAF)
+			return this->node_completion_lqdag->val_node;
+
         switch(this->get_functor()){
             case FUNCTOR_QTREE: {
 				if(this->val_lqdag1() == NO_VALUE_LEAF)
