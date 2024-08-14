@@ -19,7 +19,7 @@ using namespace std::chrono;
 #include "src/louds/join_ranked_results.cpp"
 #include "src/dfuds/join_partial_results.cpp"
 #include "src/dfuds/join_ranked_results.cpp"
-#include "src/lqdag.hpp"
+//#include "src/lqdag.hpp"
 #include "src/lqdags/operations.cpp"
 
 
@@ -357,72 +357,7 @@ int main(int argc, char **argv) {
 	start = high_resolution_clock::now();
 
 	cout << " tests join" << endl;
-	// test join
-	uint64_t res = 0; //x1,x2,x3
-	quadtree_formula *join_r_s_t = compute_lqdag_join(Q, k, res);
-	cout << "number of results join: " << res << endl;
-
-	// test join with predicate
-	res = 0; //x1,x2,x3
-	predicate pred_x1_3 = {AT_X1, AT_X3, 3, OP_LESS, TYPE_ATT1_CONST};
-	quadtree_formula *join_r_s_t_pred_x1 = compute_lqdag_join_with_pred(Q, k, res, &pred_x1_3);
-	cout << "number of results join x1 < 3: " << res << endl;
-
-	res = 0; //x1,x2,x3
-	predicate pred_x2_3 = {AT_X2, AT_X3, 3, OP_LESS, TYPE_ATT1_CONST};
-	quadtree_formula *join_r_s_t_pred_x2 = compute_lqdag_join_with_pred(Q, k, res, &pred_x2_3);
-	cout << "number of results join x2 < 3: " << res << endl;
-
-	res = 0; //x1,x2,x3
-	predicate pred_x3_3 = {AT_X3, AT_X3, 3, OP_LESS, TYPE_ATT1_CONST};
-	quadtree_formula *join_r_s_t_pred_x3 = compute_lqdag_join_with_pred(Q, k, res, &pred_x3_3);
-	cout << "number of results join x3 < 3: " << res << endl;
-
-	cout << "tests R" << endl;
-	// test R: x1 < 3
-	uint64_t res_R = 0;
-	predicate pred_r_x1_3 = {AT_X1, AT_X3, 3, OP_LESS, TYPE_ATT1_CONST};
-	quadtree_formula *pred_r_q = compute_pred_quadtree(qdag_rel_R, 10000, res_R, &pred_r_x1_3);
-	cout << "number of results R x1 < 3 (answer: 6): " << res_R << endl;
-
-
-	// check before q_f.children != null
-
-    res = 0;
-    uint64_t p;
-    quadtree_formula q_f{};
-    lqdag* join_r_s_lqdag = lqdag_join(Q, p);
-    lqdag* child_0 = compute_lazy_child_completion(join_r_s_lqdag,p, 0,q_f);
-    lqdag* child_0_0 = compute_lazy_child_completion(child_0,p,0,*q_f.children[0]);
-	lqdag* child_4 = compute_lazy_child_completion(join_r_s_lqdag,p,4,q_f);
-	lqdag* child_4_0 = compute_lazy_child_completion(child_4,p,0,*q_f.children[4]);
-	lqdag* child_4_0_0 = compute_lazy_child_completion(child_4_0,p,0,*q_f.children[4]->children[0]);
-//	lqdag* child_4_0_0_0 = compute_lazy_child_completion(child_4_0_0,p,0,*q_f.children[4]->children[0]->children[0]);
-
-	lqdag* child_4_4 = compute_lazy_child_completion(child_4,p,4,*q_f.children[4]);
-	lqdag* child_4_4_4 = compute_lazy_child_completion(child_4_4,p,4,*q_f.children[4]->children[4]);
-	lqdag* child_4_4_0 = compute_lazy_child_completion(child_4_4,p,0,*q_f.children[4]->children[4]);
-	lqdag* child_4_4_1 = compute_lazy_child_completion(child_4_4,p,1,*q_f.children[4]->children[4]);
-	lqdag* child_4_4_4_4 = compute_lazy_child_completion(child_4_4_4,p,4,*q_f.children[4]->children[4]->children[4]);
-	lqdag* child_4_4_4_0 = compute_lazy_child_completion(child_4_4_4,p,0,*q_f.children[4]->children[4]->children[4]);
-	lqdag* child_4_4_4_1 = compute_lazy_child_completion(child_4_4_4,p,1,*q_f.children[4]->children[4]->children[4]);
-
-	lqdag* child_5 = compute_lazy_child_completion(join_r_s_lqdag,p,5,q_f);
-	lqdag* child_5_0 = compute_lazy_child_completion(child_5,p,0,*q_f.children[5]);
-	lqdag* child_5_4 = compute_lazy_child_completion(child_5,p,4,*q_f.children[5]);
-
-
-	//  test lazy_child_completion_with_pred
-
-
-//	res = 0;
-////	uint64_t p;
-//	quadtree_formula q_f_pred{};
-////	lqdag* join_r_s_lqdag = lqdag_join(Q, p);
-//	lqdag* join_x1_3 = compute_lazy_child_completion_with_pred(join_r_s_lqdag, p, 0, q_f_pred, &pred_x1_3);
-
-
-
+	
 
 //
 //

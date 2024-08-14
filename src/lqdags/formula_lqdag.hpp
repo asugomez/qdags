@@ -46,7 +46,7 @@ public:
 	formula_lqdag() = default;
 
 	// F = (QTREE, Q_r)
-	formula_lqdag(qdag *qdag) {
+	formula_lqdag(qdag *qdag, uint64_t index = 0) {
 		this->functor = FUNCTOR_QTREE;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
@@ -55,10 +55,11 @@ public:
 		this->nAtt = qdag->nAttr();
 		this->max_level = qdag->getHeight()-1;
 		this->grid_side = qdag->getGridSide();
+		this->index = index;
 	}
 
 	// F = (QTREE, Q_r) o F = (NOT, Q_r)
-	formula_lqdag(uint8_t functor, qdag *qdag) {
+	formula_lqdag(uint8_t functor, qdag *qdag, uint64_t index = 0) {
 		assert(functor == FUNCTOR_QTREE || functor == FUNCTOR_NOT);
 		this->functor = functor;
 		this->formula_lqdag1 = nullptr;
@@ -68,6 +69,7 @@ public:
 		this->nAtt = qdag->nAttr();
 		this->max_level = qdag->getHeight()-1;
 		this->grid_side = qdag->getGridSide();
+		this->index = index;
 	}
 
 	// F = (LQDAG, L_q)
@@ -176,6 +178,10 @@ public:
 		return this->functor;
 	}
 
+	uint16_t getM(uint16_t i) {
+		return M[i];
+	}
+
 	formula_lqdag* get_formula_lqdag1() const {
 		return this->formula_lqdag1;
 	}
@@ -235,7 +241,7 @@ public:
 		return functor == FUNCTOR_LQDAG;
 //		return std::holds_alternative<lqdag*>(this->formula_leaf);
 	}
-	
+
 
 };
 

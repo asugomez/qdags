@@ -23,7 +23,7 @@ formula_lqdag create_formula_lqdag_leaf(lqdag* L){
  * @param Q vector with the qdags to join
  * @return
  */
-lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
+lqdag* lqdag_join(vector<qdag> Q/* uint64_t &p*/) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
@@ -46,8 +46,8 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
 
     formula_lqdag* extend_formula_lqdag[Q.size()];
 
-    for (uint64_t i = 0; i < Q.size(); i++) {
-        extend_formula_lqdag[i] = new formula_lqdag(FUNCTOR_EXTEND, new formula_lqdag(&Q[i]),k, A.size(), max_level, grid_side);
+    for (uint64_t i = 0; i < Q.size(); i++) { // EXTEND((Q_TREE, index) , A)
+        extend_formula_lqdag[i] = new formula_lqdag(FUNCTOR_EXTEND, new formula_lqdag(&Q[i], i),k, A.size(), max_level, grid_side);
     }
 
 	formula_lqdag* join_formula;
@@ -76,11 +76,7 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     }
 
 
-	position_qdags pos = position_qdags(Q.size());
-//	for(uint64_t i = 0; i < Q.size(); i++)
-//		pos.push_back({0,0});
-
-    return new lqdag(join_formula, pos);
+    return new lqdag{Q, join_formula};
 }
 
 
@@ -132,13 +128,13 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
  * @param Q_f
  * @return a pointer to the child of lqdag and the quadtree formula updated.
  */
-lqdag* compute_lazy_child_completion(lqdag* lqdag, uint64_t p, uint64_t child, quadtree_formula& Q_f){
-	return lqdag->lazy_child_completion(p, child, Q_f);
-}
-
-lqdag* compute_lazy_child_completion_with_pred(lqdag* lqdag, uint64_t p, uint64_t child, quadtree_formula& Q_f, quadtree_pred* qf_pred){
-	return lqdag->lazy_child_completion_with_pred(p, child, Q_f, qf_pred);
-}
+//lqdag* compute_lazy_child_completion(lqdag* lqdag, uint64_t p, uint64_t child, quadtree_formula& Q_f){
+//	return lqdag->lazy_child_completion(p, child, Q_f);
+//}
+//
+//lqdag* compute_lazy_child_completion_with_pred(lqdag* lqdag, uint64_t p, uint64_t child, quadtree_formula& Q_f, quadtree_pred* qf_pred){
+//	return lqdag->lazy_child_completion_with_pred(p, child, Q_f, qf_pred);
+//}
 
 
 lqdag* projection(){

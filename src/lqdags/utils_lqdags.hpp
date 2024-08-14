@@ -6,8 +6,8 @@
 #define QDAGS_UTILS_LQDAGS_HPP
 
 #include<bits/stdc++.h>
-#include "../qdags.hpp"
 #include "../lqdag.hpp"
+#include "../qdags.hpp"
 
 //const double NO_VALUE_LEAF_UTILS = 3;
 const double NO_VALUE_LEAF = 3;
