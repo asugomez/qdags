@@ -17,6 +17,23 @@ class lqdag {
 public:
 	typedef vector<position> position_qdags;
 
+	struct node_completion{
+		double val_node = NO_VALUE_LEAF; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
+		uint64_t n_children; // number of children
+		lqdag** lqdag_children = nullptr;
+
+		// default constructor
+		node_completion() : val_node(NO_VALUE_LEAF), n_children(0), lqdag_children(nullptr) {}
+		// constructor with value and p children
+		node_completion(double val, uint64_t p) : val_node(val), n_children(p), lqdag_children(new lqdag*[p]) {}
+		// destructor
+		~node_completion(){
+			if(lqdag_children != nullptr){
+				delete[] lqdag_children;
+			}
+		}
+	};
+
 
 private:
 	vector<qdag> arr_qdags; // array of qdags
@@ -147,6 +164,9 @@ public:
 	 * @return a new lqdag that corresponds to the ith-child of the current lqdag.
 	 */
 	lqdag* get_child_lqdag(uint64_t ith_child){
+		if (this->node_completion_lqdag->lqdag_children != nullptr) {
+			return this->node_completion_lqdag->lqdag_children[ith_child];
+		}
 		position_qdags* new_pos_qdags;
 		for(uint64_t i = 0; i < arr_qdags.size(); i++)
 			new_pos_qdags->push_back(position{});
@@ -156,9 +176,9 @@ public:
 		// update val
 		this->node_completion_lqdag->val_node = val_node;
 		// Ensure lqdag_children is allocated
-		if (this->node_completion_lqdag->lqdag_children == nullptr) {
-			this->node_completion_lqdag->lqdag_children = new lqdag{};
-		}
+//		if (this->node_completion_lqdag->lqdag_children == nullptr) {
+//			this->node_completion_lqdag->lqdag_children = new lqdag{};
+//		}
 		this->node_completion_lqdag->lqdag_children[ith_child] = child_lqdag;
 		return child_lqdag;
 

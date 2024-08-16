@@ -19,7 +19,7 @@ using namespace std::chrono;
 #include "src/louds/join_ranked_results.cpp"
 #include "src/dfuds/join_partial_results.cpp"
 #include "src/dfuds/join_ranked_results.cpp"
-//#include "src/lqdag.hpp"
+#include "src/lqdag.hpp"
 #include "src/lqdags/operations.cpp"
 
 
@@ -357,7 +357,9 @@ int main(int argc, char **argv) {
 	start = high_resolution_clock::now();
 
 	cout << " tests join" << endl;
-	
+
+	lqdag* join_test_lqdag = lqdag_join(Q);
+
 
 //
 //

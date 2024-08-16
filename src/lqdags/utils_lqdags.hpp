@@ -39,23 +39,23 @@ struct position{
 	position(uint16_t l, uint64_t n, uint16_t* c) : level(l), cur_node(n), coordinates(c) {}
 };
 
-// children computed of the lqdag
-struct node_completion{
-	double val_node = NO_VALUE_LEAF; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
-	uint64_t n_children; // number of children
-	lqdag** lqdag_children = nullptr;
-
-	// default constructor
-	node_completion() : val_node(NO_VALUE_LEAF), n_children(0), lqdag_children(nullptr) {}
-	// constructor with value and p children
-	node_completion(double val, uint64_t p) : val_node(val), n_children(p), lqdag_children(new lqdag*[p]) {}
-	// destructor
-	~node_completion(){
-		if(lqdag_children != nullptr){
-			delete[] lqdag_children;
-		}
-	}
-};
+//// children computed of the lqdag
+//struct node_completion{
+//	double val_node = NO_VALUE_LEAF; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
+//	uint64_t n_children; // number of children
+//	lqdag** lqdag_children = nullptr;
+//
+//	// default constructor
+//	node_completion() : val_node(NO_VALUE_LEAF), n_children(0), lqdag_children(nullptr) {}
+//	// constructor with value and p children
+//	node_completion(double val, uint64_t p) : val_node(val), n_children(p), lqdag_children(new lqdag*[p]) {}
+//	// destructor
+//	~node_completion(){
+//		if(lqdag_children != nullptr){
+//			delete[] lqdag_children;
+//		}
+//	}
+//};
 
 //struct quadtree_formula { // represents the output of the formula we are evaluating
 //    double val_node = NO_VALUE_LEAF_UTILS; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF

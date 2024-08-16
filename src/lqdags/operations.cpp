@@ -3,6 +3,7 @@
 //
 
 #include "../lqdag.hpp"
+#include "formula_lqdag.hpp"
 
 // ---------- QUADTREE  ---------- //
 
