@@ -6,8 +6,9 @@
 #define QDAGS_FORMULA_HPP
 
 #include<bits/stdc++.h>
-//#include "../qdags.hpp"
-#include "../lqdag.hpp"
+#include "../qdags.hpp"
+//#include "../lqdag.hpp"
+//#include "leaf_lqdag.hpp"
 
 const uint8_t FUNCTOR_QTREE = 0; // leaf
 const uint8_t FUNCTOR_LQDAG = 5; // leaf
@@ -16,6 +17,7 @@ const uint8_t FUNCTOR_AND = 2; // internal quadtree_formula
 const uint8_t FUNCTOR_OR = 3; // internal quadtree_formula
 const uint8_t FUNCTOR_EXTEND = 4; // internal quadtree_formula
 
+class lqdag;
 
 class formula_lqdag{
 
@@ -30,8 +32,8 @@ private:
 	formula_lqdag *formula_lqdag1; // we save value of the left lqdag and also of the leaves (QTREE, NOT and LQDAG)
 	formula_lqdag *formula_lqdag2;
 	qdag* formula_leaf_qdag;
-//	lqdags::lqdag* formula_leaf_lqdag;
 	lqdag* formula_leaf_lqdag;
+//	leaf_lqdag* formula_leaf_lqdag;
 //	std::variant<qdag*, lqdag*> formula_leaf;
 	double val_lqdag1 = NO_VALUE_LEAF;
 	double val_lqdag2 = NO_VALUE_LEAF;
@@ -73,29 +75,28 @@ public:
 	}
 
 	// F = (LQDAG, L_q)
-	formula_lqdag(lqdag *lqdag) {
+	formula_lqdag(lqdag *lqdag, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
 		this->functor = FUNCTOR_LQDAG;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
 		this->formula_leaf_lqdag = lqdag;
-
-		this->k = formula_leaf_lqdag->get_formula().getK();
-		this->nAtt = formula_leaf_lqdag->get_formula().nAttr();
-		this->max_level = formula_leaf_lqdag->get_formula().getHeight() - 1;
-		this->grid_side = formula_leaf_lqdag->get_formula().getGridSide();
+		this->k = k;
+		this->nAtt = nAtt; // d
+		this->max_level = max_level;
+		this->grid_side = grid_side;
 	}
 
 	// F = (LQDAG, L_q)
-	formula_lqdag(uint8_t functor, lqdag *lqdag) {
+	formula_lqdag(uint8_t functor, lqdag *lqdag, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
 		assert(functor == FUNCTOR_LQDAG);
 		this->functor = functor;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
 		this->formula_leaf_lqdag = lqdag;
-		this->k = formula_leaf_lqdag->get_formula().getK();
-		this->nAtt = formula_leaf_lqdag->get_formula().nAttr();
-		this->max_level = formula_leaf_lqdag->get_formula().getHeight() - 1;
-		this->grid_side = formula_leaf_lqdag->get_formula().getGridSide();
+		this->k = k;
+		this->nAtt = nAtt; // d
+		this->max_level = max_level;
+		this->grid_side = grid_side;
 	}
 
 	// F = (AND, F1, F2) o F = (OR, F1, F2)

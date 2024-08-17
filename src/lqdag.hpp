@@ -47,24 +47,21 @@ public:
 	lqdag(vector<qdag> arr_qdags, formula_lqdag *form_lqdag) {
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
-		for(uint64_t i = 0; i < arr_qdags.size(); i++)
-			this->pos_qdags->push_back(position{});
+		this->pos_qdags = new position_qdags(arr_qdags.size(), position());
 		this->node_completion_lqdag = new node_completion{};
 	}
 
     lqdag(vector<qdag> arr_qdags, formula_lqdag *form_lqdag, position_qdags* pos_qdags) {
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
-		for(uint64_t i = 0; i < arr_qdags.size(); i++)
-			this->pos_qdags->push_back(position{});
+		this->pos_qdags = pos_qdags;
 		this->node_completion_lqdag = new node_completion{NO_VALUE_LEAF, pos_qdags->size()};
 	}
 
 	lqdag(vector<qdag> arr_qdags, formula_lqdag *form_lqdag, position_qdags* pos_qdags, node_completion* completion_children_lqdag) {
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
-		for(uint64_t i = 0; i < arr_qdags.size(); i++)
-			this->pos_qdags->push_back(position{});
+		this->pos_qdags = pos_qdags;
 		this->node_completion_lqdag = completion_children_lqdag;
 	}
 
