@@ -144,6 +144,7 @@ public:
 	 */
 	position* get_position_data(uint64_t index_qdag, uint64_t ith_child, uint64_t curr_node){
 		uint16_t* copy_curr_coordinates = new uint16_t[this->nAttr()];
+//		vector<uint16_t> copy_curr_coordinates(this->nAttr());// = new uint16_t[this->nAttr()];
 		uint16_t curr_level = (*pos_qdags)[index_qdag].level;
 		uint16_t diff_level = getMaxLevel()- curr_level;
 		for(uint16_t k = 0; k < this->nAttr(); k++)
@@ -164,12 +165,12 @@ public:
 		if (this->node_completion_lqdag->lqdag_children != nullptr) {
 			return this->node_completion_lqdag->lqdag_children[ith_child];
 		}
-		position_qdags* new_pos_qdags;
-		for(uint64_t i = 0; i < arr_qdags.size(); i++)
-			new_pos_qdags->push_back(position{});
+		position_qdags* new_pos_qdags = new position_qdags[arr_qdags.size()];
+		// copy the vector position of the current lqdag for the new lqdag
+		new_pos_qdags[0] = this->pos_qdags[0];
 		double val_node = NO_VALUE_LEAF;
 		get_child_lqdag_aux(this->form_lqdag, ith_child, *new_pos_qdags, val_node);
-		lqdag* child_lqdag = new lqdag(this->arr_qdags, this->get_formula(),new_pos_qdags);
+		lqdag* child_lqdag = new lqdag(this->arr_qdags, this->get_formula(), new_pos_qdags);
 		// update val
 		this->node_completion_lqdag->val_node = val_node;
 		// Ensure lqdag_children is allocated
@@ -213,15 +214,17 @@ public:
 			case FUNCTOR_AND: {
 				if(formula_pos->get_val_lqdag1() == FULL_LEAF){
 					// update values of pos_qdags
-					for(uint64_t i = 0; i < arr_qdags.size(); i++)
-						m_pos_qdag = this->pos_qdags[i];
+//					for(uint64_t i = 0; i < arr_qdags.size(); i++)
+//						m_pos_qdag = this->pos_qdags[i];
 					uint64_t last_qdag = get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag, val_node);
+					return last_qdag;
 				}
 				if(formula_pos->get_val_lqdag2() == FULL_LEAF){
 					uint64_t last_qdag = get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag, val_node);
 					// update values of pos_qdags
-					for(uint64_t i = ++last_qdag; i < arr_qdags.size(); i++)
-						m_pos_qdag = this->pos_qdags[i];
+//					for(uint64_t i = ++last_qdag; i < arr_qdags.size(); i++)
+//						m_pos_qdag = this->pos_qdags[i];
+					return last_qdag;
 				} else{
 					get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag, val_node);
 					return get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag, val_node);
@@ -230,15 +233,17 @@ public:
 			case FUNCTOR_OR: {
 				if(formula_pos->get_val_lqdag1() == EMPTY_LEAF){
 					// update values of pos_qdags
-					for(uint64_t i = 0; i < arr_qdags.size(); i++)
-						m_pos_qdag = this->pos_qdags[i];
+//					for(uint64_t i = 0; i < arr_qdags.size(); i++)
+//						m_pos_qdag = this->pos_qdags[i];
 					uint64_t last_qdag = get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag, val_node);
+					return last_qdag;
 				}
 				if(formula_pos->get_val_lqdag2() == EMPTY_LEAF){
 					uint64_t last_qdag = get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag, val_node);
 					// update values of pos_qdags
-					for(uint64_t i = ++last_qdag; i < arr_qdags.size(); i++)
-						m_pos_qdag = this->pos_qdags[i];
+//					for(uint64_t i = ++last_qdag; i < arr_qdags.size(); i++)
+//						m_pos_qdag = this->pos_qdags[i];
+					return last_qdag;
 				} else{
 					get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag, val_node);
 					return get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag, val_node);

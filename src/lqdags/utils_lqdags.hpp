@@ -33,10 +33,65 @@ const uint8_t TYPE_ATT2_CONST = 2;
 struct position{
 	uint16_t level;
 	uint64_t cur_node;
-	uint16_t* coordinates; // coordinates to that point/subquadrant of the grid
+//	uint64_t n_children;
+	uint16_t* coordinates;
+//	vector<uint16_t> coordinates; // coordinates to that point/subquadrant of the grid
 	// default constructor
 	position() : level(0), cur_node(0), coordinates(nullptr) {}
-	position(uint16_t l, uint64_t n, uint16_t* c) : level(l), cur_node(n), coordinates(c) {}
+//	position(uint16_t l, uint64_t n, uint16_t* c) : level(l), cur_node(n), coordinates(c) {}
+
+//	position(position* p) : level(p->level), cur_node(p->cur_node), coordinates(p->coordinates) {}
+//	position(uint16_t l, uint64_t n, std::vector<uint16_t> c) : level(l), cur_node(n), coordinates(std::move(c)) {}
+//	position(const position& p) : level(p.level), cur_node(p.cur_node), coordinates(p.coordinates) {}
+// Parameterized constructor
+	position(uint16_t l, uint64_t n, uint16_t* c)
+			: level(l), cur_node(n), coordinates(nullptr) {
+		if (c != nullptr) {
+			// Assuming coordinates point to a single value; adjust if it's an array
+			coordinates = new uint16_t(*c);
+		}
+	}
+
+	// Copy constructor (deep copy)
+	position(const position& p)
+			: level(p.level), cur_node(p.cur_node), coordinates(nullptr) {
+		if (p.coordinates != nullptr) {
+			coordinates = new uint16_t(*p.coordinates);
+		}
+	}
+
+	// Copy assignment operator (deep copy)
+	position& operator=(const position& p) {
+		if (this != &p) {  // Avoid self-assignment
+			level = p.level;
+			cur_node = p.cur_node;
+
+			// Clean up existing coordinates
+			delete[] coordinates;
+
+			// Perform deep copy of coordinates
+			if (p.coordinates != nullptr) {
+				coordinates = new uint16_t(*p.coordinates);
+			} else {
+				coordinates = nullptr;
+			}
+		}
+		return *this;
+	}
+
+
+//	position operator=(const position p){
+//		level = p.level;
+//		cur_node = p.cur_node;
+//		coordinates = (p.coordinates != nullptr) ? new uint16_t(*p.coordinates) : nullptr;
+//		return *this;
+//	}
+
+	// Destructor
+	~position() {
+		delete coordinates;
+	}
+
 };
 
 //// children computed of the lqdag

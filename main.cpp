@@ -360,6 +360,11 @@ int main(int argc, char **argv) {
 
 	lqdag* join_test_lqdag = lqdag_join(Q);
 
+//	double val1 = join_test_lqdag->value_lqdag(join_test_lqdag->get_formula());
+
+	lqdag* child_0 = join_test_lqdag->get_child_lqdag(0);
+	lqdag* child_4 = join_test_lqdag->get_child_lqdag(4);
+
 
 //
 //
