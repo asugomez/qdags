@@ -24,7 +24,7 @@ formula_lqdag create_formula_lqdag_leaf(lqdag* L){
  * @param Q vector with the qdags to join
  * @return
  */
-lqdag* lqdag_join(vector<qdag> Q/* uint64_t &p*/) {
+lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 

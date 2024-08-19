@@ -38,6 +38,12 @@ struct position{
 //	vector<uint16_t> coordinates; // coordinates to that point/subquadrant of the grid
 	// default constructor
 	position() : level(0), cur_node(0), coordinates(nullptr) {}
+	position(uint64_t n_children) : level(0), cur_node(0) {
+		coordinates = new uint16_t[n_children];
+	}
+	position(uint16_t l, uint64_t n, uint64_t n_children): level(l), cur_node(n) {
+		coordinates = new uint16_t[n_children];
+	}
 //	position(uint16_t l, uint64_t n, uint16_t* c) : level(l), cur_node(n), coordinates(c) {}
 
 //	position(position* p) : level(p->level), cur_node(p->cur_node), coordinates(p->coordinates) {}
