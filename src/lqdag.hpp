@@ -19,20 +19,22 @@ public:
 
 	struct node_completion{
 		double val_node = NO_VALUE_LEAF; // EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE, NO_VALUE_LEAF
+		uint16_t level;
+		uint16_t* coordinates;
 		uint64_t n_children; // number of children
 		lqdag** lqdag_children = nullptr;
-
 		// default constructor
-		node_completion() : val_node(NO_VALUE_LEAF), n_children(0), lqdag_children(nullptr) {}
+		node_completion() : val_node(NO_VALUE_LEAF), level(0),  coordinates(nullptr),n_children(0), lqdag_children(nullptr) {}
 		// constructor with p children
-		node_completion(uint64_t p) : val_node(NO_VALUE_LEAF), n_children(p), lqdag_children(new lqdag*[p]) {}
+		node_completion(uint64_t p) : val_node(NO_VALUE_LEAF), level(0), coordinates(new uint16_t[p]), n_children(p), lqdag_children(new lqdag*[p]) {}
 		// constructor with value and p children
-		node_completion(double val, uint64_t p) : val_node(val), n_children(p), lqdag_children(new lqdag*[p]) {}
+		node_completion(double val, uint64_t p) : val_node(val),  level(0), coordinates(new uint16_t[p]),n_children(p), lqdag_children(new lqdag*[p]) {}
 		// destructor
 		~node_completion(){
 			if(lqdag_children != nullptr){
 				delete[] lqdag_children;
 			}
+			delete coordinates;
 		}
 	};
 
@@ -46,18 +48,26 @@ private:
 public:
     lqdag() = default;
 
+	/**
+	 *
+	 * @param arr_qdags array of qdags (the leaves)
+	 * @param form_lqdag syntax tree
+	 * @param p k^d number of children
+	 */
 	lqdag(vector<qdag> arr_qdags, formula_lqdag *form_lqdag) {
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
 		this->pos_qdags = new position_qdags(arr_qdags.size(), position(arr_qdags.size()));
-		this->node_completion_lqdag = new node_completion(arr_qdags.size());
+		uint16_t p = std::pow(getK(), nAttr());
+		this->node_completion_lqdag = new node_completion(p);
 	}
 
     lqdag(vector<qdag> arr_qdags, formula_lqdag *form_lqdag, position_qdags* pos_qdags) {
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
 		this->pos_qdags = pos_qdags;
-		this->node_completion_lqdag = new node_completion{NO_VALUE_LEAF, pos_qdags->size()};
+		uint16_t p = std::pow(getK(), nAttr());
+		this->node_completion_lqdag = new node_completion{NO_VALUE_LEAF, p};
 	}
 
 	lqdag(vector<qdag> arr_qdags, formula_lqdag *form_lqdag, position_qdags* pos_qdags, node_completion* completion_children_lqdag) {
@@ -107,12 +117,20 @@ public:
 		return this->form_lqdag->getMaxLevel();
 	}
 
+	uint16_t getCurLevel() const { // TODO: check this, i think it's ok, because all qdags have the same grid side (domaine)
+		return this->node_completion_lqdag->level;
+	}
+
 	uint64_t getGridSide() const {
 		return this->form_lqdag->getGridSide();
 	}
 
 	uint64_t n_qdags(){
 		return this->pos_qdags->size(); // number of qdags
+	}
+
+	uint64_t nChildren(){
+		return this->node_completion_lqdag->n_children;
 	}
 
 	// ------------------ CHILD FUNCTION ------------------ //
@@ -150,14 +168,15 @@ public:
 	 * @return
 	 */
 	position* get_position_data(uint64_t index_qdag, uint64_t ith_child, uint64_t curr_node){
-		uint16_t* copy_curr_coordinates = new uint16_t[this->nAttr()];
-//		vector<uint16_t> copy_curr_coordinates(this->nAttr());// = new uint16_t[this->nAttr()];
+		uint64_t nAttr_qdag = this->arr_qdags[index_qdag].nAttr();
+		uint16_t* copy_curr_coordinates = new uint16_t[nAttr_qdag];
 		uint16_t curr_level = (*pos_qdags)[index_qdag].level;
-		uint16_t diff_level = getMaxLevel()- curr_level;
-		for(uint16_t k = 0; k < this->nAttr(); k++)
-			copy_curr_coordinates[k] = (*pos_qdags)[index_qdag].coordinates[k];
-//		vector<uint16_t> cur_pos_nodes_qdags;
-		transformCoordinates(copy_curr_coordinates, nAttr(), diff_level, ith_child);
+		uint16_t diff_level = getMaxLevel() - curr_level;
+
+		copy_curr_coordinates[0] = (*pos_qdags)[index_qdag].coordinates[0];
+//		for(uint16_t k = 0; k < nAttr_qdag; k++) // TODO: see if we can copy like copy_curr_coordinates[0] = ....[0] ( as in get_child_lqdag)
+//			copy_curr_coordinates[k] = (*pos_qdags)[index_qdag].coordinates[k];
+		transformCoordinates(copy_curr_coordinates, nAttr_qdag, diff_level, ith_child);
 		return new position{++curr_level, curr_node, copy_curr_coordinates};
 	}
 
@@ -169,21 +188,28 @@ public:
 	 * @return a new lqdag that corresponds to the ith-child of the current lqdag.
 	 */
 	lqdag* get_child_lqdag(uint64_t ith_child){
-		if (this->node_completion_lqdag->lqdag_children != nullptr && this->node_completion_lqdag->lqdag_children[ith_child] !=
-																			  nullptr) {
+		if (this->node_completion_lqdag->lqdag_children != nullptr
+				&& this->node_completion_lqdag->lqdag_children[ith_child] != nullptr) {
 			return this->node_completion_lqdag->lqdag_children[ith_child];
 		}
 		position_qdags* new_pos_qdags = new position_qdags[arr_qdags.size()];
 		// copy the vector position of the current lqdag for the new lqdag
-		new_pos_qdags[0] = this->pos_qdags[0]; // TODO: ver si copia todas las posiciones, y si es así, eliminar el for en get_position_data
+		new_pos_qdags[0] = this->pos_qdags[0];
 		double val_node = get_child_lqdag_aux(this->form_lqdag, ith_child, *new_pos_qdags);
 
 		lqdag* child_lqdag = new lqdag(this->arr_qdags, this->get_formula(), new_pos_qdags);
 		child_lqdag->node_completion_lqdag->val_node = val_node;
-		// Ensure lqdag_children is allocated
-//		if (this->node_completion_lqdag->lqdag_children == nullptr) {
-//			this->node_completion_lqdag->lqdag_children = new lqdag{};
-//		}
+		child_lqdag->node_completion_lqdag->level = this->node_completion_lqdag->level +1;
+		// TODO: compute the coordinates
+		if(val_node != EMPTY_LEAF){
+			uint16_t* copy_curr_coordinates = new uint16_t[nAttr()];
+			copy_curr_coordinates[0] = this->node_completion_lqdag->coordinates[0]; // TODO check this, and try to modify it
+			uint16_t diff_level = getMaxLevel() - getCurLevel();
+			transformCoordinates(copy_curr_coordinates, nAttr(), diff_level, ith_child);
+			// TODO: how to compute coordinates when FULL_LEAF? --> i think it's the same, but how can we descend (for selection
+			child_lqdag->node_completion_lqdag->coordinates = copy_curr_coordinates;
+		}
+
 		this->node_completion_lqdag->lqdag_children[ith_child] = child_lqdag;
 		return child_lqdag;
 
@@ -206,7 +232,7 @@ public:
 				formula_pos->set_val_lqdag1(my_val);
 				if(my_val!=EMPTY_LEAF)
 					m_pos_qdag[formula_pos->get_index()] = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
-				return my_val;//formula_pos->get_index();
+				return my_val;
 			}
 			case FUNCTOR_NOT: {
 				uint64_t jth_child;
@@ -216,33 +242,21 @@ public:
 				formula_pos->set_val_lqdag1(my_val);
 				if(my_val!=EMPTY_LEAF)
 					m_pos_qdag[formula_pos->get_index()] = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
-				return my_val;//formula_pos->get_index();
+				return my_val;
 			}
 			case FUNCTOR_AND: {
 				if(formula_pos->get_val_lqdag1() == EMPTY_LEAF || formula_pos->get_val_lqdag2() == EMPTY_LEAF)
 					return EMPTY_LEAF;
 				if(formula_pos->get_val_lqdag1() == FULL_LEAF){
-					// update values of pos_qdags
-//					for(uint64_t i = 0; i < arr_qdags.size(); i++)
-//						m_pos_qdag = this->pos_qdags[i];
 					double val_l2 =  get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag2(val_l2);
 					return val_l2;
-//					return last_qdag;
 				}
 				if(formula_pos->get_val_lqdag2() == FULL_LEAF){
 					double val_l1 = get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag1(val_l1);
 					return val_l1;
-					// update values of pos_qdags
-//					for(uint64_t i = ++last_qdag; i < arr_qdags.size(); i++)
-//						m_pos_qdag = this->pos_qdags[i];
-//					return last_qdag;
 				} else{
 					double val_l1 = get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag1(val_l1);
 					double val_l2 = get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag2(val_l2);
 					if(!val_l1 || ! val_l2)
 						return EMPTY_LEAF;
 					else if(val_l1 == FULL_LEAF && val_l2 == FULL_LEAF)
@@ -255,27 +269,15 @@ public:
 				if(formula_pos->get_val_lqdag1() == FULL_LEAF || formula_pos->get_val_lqdag2() == FULL_LEAF)
 					return FULL_LEAF;
 				if(formula_pos->get_val_lqdag1() == EMPTY_LEAF){
-					// update values of pos_qdags
-//					for(uint64_t i = 0; i < arr_qdags.size(); i++)
-//						m_pos_qdag = this->pos_qdags[i];
 					double val_l2 =  get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag2(val_l2);
 					return val_l2;
-//					return last_qdag;
 				}
 				if(formula_pos->get_val_lqdag2() == EMPTY_LEAF){
 					double val_l1 = get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag1(val_l1);
 					return val_l1;
-					// update values of pos_qdags
-//					for(uint64_t i = ++last_qdag; i < arr_qdags.size(); i++)
-//						m_pos_qdag = this->pos_qdags[i];
-//					return last_qdag;
 				} else{
 					double val_l1 = get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag1(val_l1);
 					double val_l2 = get_child_lqdag_aux(formula_pos->get_formula_lqdag2(), ith_child, m_pos_qdag);
-					formula_pos->set_val_lqdag2(val_l2);
 					if(val_l1 == FULL_LEAF || val_l2 == FULL_LEAF)
 						return FULL_LEAF;
 					else if(!val_l1 && !val_l2)
@@ -305,7 +307,7 @@ public:
      * We save the value in val_lqdag_1, val_lqdag_2 or subQuatree->value. If we've already computed the value, we return it.
      * @return the value of the root of the lqdag. Can be EMPTY_LEAF, FULL_LEAF, INTERNAL_NODE or VALUE_NEED_CHILDREN.
      */
-    double value_lqdag(formula_lqdag* formula_pos){
+    double value_lqdag(formula_lqdag* formula_pos){ // TODO: check if we save the value, i dont think so
 		if(this->node_completion_lqdag->val_node != NO_VALUE_LEAF)
 			return this->node_completion_lqdag->val_node;
 
@@ -418,65 +420,161 @@ public:
         return INTERNAL_NODE;
     }
 
-//
-//    /**
-//     * Algorithm 9 of paper.
-//     * The completion Q_f is the quadtree representing the output of the formula F, represented as an lqdag.
-//     *
-//     * @param p
-//     * @param max_level
-//     * @param cur_level the current level of the quadtree. If cur_level = max_level + 1, we are looking for the bit representing the point in the grid.
-//     * @param UPPER_BOUND
-//     * @param results
-//     * @return
-//     */
-//    quadtree_formula* completion(uint64_t p,
-//                                 uint16_t max_level,
-//                                 uint16_t cur_level,
-//                                 uint64_t UPPER_BOUND,
-//                                 uint64_t &results) {
-//
-//        if(results >= UPPER_BOUND){ // top k results only
-//            quadtree_formula* newNode = create_leaf(NO_VALUE_LEAF);
-//            return newNode;
-//        }
-//        double val_lqdag = this->value_lqdag();
-//        if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
-//            quadtree_formula* newNode = create_leaf(val_lqdag);
-//            if(val_lqdag == FULL_LEAF){
-//                results += (cur_level > max_level) ? 1 :  pow(p, (max_level - cur_level + 1));
-//            }
-//            return newNode;
-//        }
-//
-//        double max_value = 0;
-//        double min_value = 1;
-//        quadtree_formula **Q_f_children = new quadtree_formula*[p];
-//        // if all quadtres are empty, return a 0 leaf.
-//        // C_i ← Completion(Child(L_F,i))
-//        for(uint64_t i = 0; i < p; i++){
-//            Q_f_children[i] = this->get_child_lqdag(i)->completion(p, max_level, cur_level+1, UPPER_BOUND, results);
-//            max_value = max(max_value, Q_f_children[i]->val_node); // val_node can be EMPTY_LEAF, FULL_LEAF or INTERNAL_NODE
-//            min_value = min(min_value, Q_f_children[i]->val_node);
-//        }
-//        // return a leaf
-//        if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){ // return a leaf
-//            for(uint64_t i = 0; i < p; i++)
-//                delete Q_f_children[i];
-//            delete[] Q_f_children;
-//            double val_leaf = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
-//            quadtree_formula* newNode = create_leaf(val_leaf);
-//            return newNode;
-//        }
-//        else {
-//            // return an internal node with children
-//            quadtree_formula* quadtree = new quadtree_formula();
-//            quadtree->val_node = val_lqdag; //INTERNAL_NODE;
-//            quadtree->children = Q_f_children;
-//            return quadtree;
-//        }
-//    }
-//
+	/**
+	 * Algorithm 9 of the paper.
+	 * We compute the completion of the lqdag and store the values in the node_completion_lqdag.
+	 * @param p
+	 * @param max_level
+	 * @param cur_level the current level of the quadtree. If cur_level = max_level + 1, we are looking for the bit representing the point in the grid.
+	 * @param UPPER_BOUND
+	 * @param results
+	 * @return
+	 * PD: we could delete max_level and cur_level, but it's more simple to visualize it this way
+	 */
+	lqdag* completion_dfs(uint16_t max_level,
+						  uint16_t cur_level,
+						  uint64_t UPPER_BOUND,
+						  uint64_t &results){
+		if(results >= UPPER_BOUND){
+			return this;
+		}
+		double val_lqdag = this->value_lqdag(this->form_lqdag);
+		this->node_completion_lqdag->val_node = val_lqdag;
+		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
+			if(val_lqdag == FULL_LEAF){
+				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
+			}
+			return this;
+		}
+
+		double max_value = 0;
+		double min_value = 1;
+		for(uint64_t i = 0; i < nChildren(); i++){
+			// compute the child and store it in node_completion->lqdag_children[i]
+			lqdag* child_lqdag = this->get_child_lqdag(i);
+			// recursive call
+			child_lqdag->completion_dfs(max_level, cur_level+1, UPPER_BOUND, results);
+			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
+			min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
+		}
+		// pruning step --> return a leaf
+		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
+			delete[] this->node_completion_lqdag->lqdag_children;
+			this->node_completion_lqdag->lqdag_children = nullptr;
+			double val_leaf = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
+			this->node_completion_lqdag->val_node = val_leaf;
+		}
+		return this;
+
+	}
+
+	/**
+	 * Lazy evaluation of the predicate
+	 * @param ith_child the i-th child we want to check if it satisfies the predicate.
+	 * @param pred
+	 * @return The i-th child if it satisfies the predicates. Otherwise, return an empty leaf.
+	 */
+	lqdag* get_child_selection(uint64_t ith_child, predicate *pred){
+		if(this->node_completion_lqdag->val_node == EMPTY_LEAF || (this->node_completion_lqdag->lqdag_children[ith_child] && this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->val_node == EMPTY_LEAF)){
+			return this;
+		}
+
+		uint16_t diff_level = this->getMaxLevel() - this->getCurLevel();
+		uint16_t* coordinatesTemp = new uint16_t[this->nAttr()];
+		coordinatesTemp[0] = this->node_completion_lqdag->coordinates[0];
+		// update the current coordinates to be the path to the ith_child
+		transformCoordinates(coordinatesTemp, nAttr(), diff_level, ith_child);
+
+		uint64_t quadrant_side = this->getGridSide() /
+								 pow(this->getK(),this->getCurLevel()+1);
+
+		// we evaluate the predicate first (with the coordinates and the quadrant)
+		double val_eval_pred = eval_pred(pred, coordinatesTemp, quadrant_side, this->nAttr());
+		if(val_eval_pred == 0){
+			if(this->node_completion_lqdag->lqdag_children && this->node_completion_lqdag->lqdag_children[ith_child]){
+				delete[] this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->lqdag_children;
+				this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->lqdag_children = nullptr;
+				this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->val_node = EMPTY_LEAF;
+			}
+			return this;
+		} else if(val_eval_pred == 1){ // if it passes the predicate, we compute the child
+			lqdag* child_lqdag = this->get_child_lqdag(ith_child);
+			return child_lqdag;
+		}
+		else { // value = 0.5
+			lqdag* child_lqdag = this->get_child_lqdag(ith_child);
+			// update the value of the child (because the value is 0.5, if the original ith-child were 1, after the condition will be 0.5
+			if(child_lqdag->node_completion_lqdag->val_node == FULL_LEAF){
+				child_lqdag->node_completion_lqdag->val_node = VALUE_NEED_CHILDREN;
+				this->node_completion_lqdag->val_node = VALUE_NEED_CHILDREN;
+			}
+			return child_lqdag;
+		}
+
+
+	}
+
+	lqdag* selection(uint16_t cur_level,
+					 uint64_t UPPER_BOUND,
+					 uint64_t &results,
+					 predicate *pred,
+					 uint16_t *coordinates){
+		// create a new lqdag that satisfies the predicate (copy)
+		// TODO: check if we modify a value of copy_lqdag, we do not modify value of this
+		// TOOD: create a copy before the call
+//		lqdag* copy_lqdag = new lqdag(this->arr_qdags, this->form_lqdag, this->pos_qdags, this->node_completion_lqdag);
+//		copy_lqdag->node_completion_lqdag->val_node = 0; // OFT!!
+
+		if(results >= UPPER_BOUND){
+			return this;
+		}
+
+		uint64_t quadrant_side = this->getGridSide() /
+									pow(this->getK(),cur_level);
+
+		// TODO: check when pred is from two diff attributes of diff relations
+		double val_eval_pred = eval_pred(pred, coordinates, quadrant_side, this->nAttr());
+
+		if(val_eval_pred == 0){ //
+			delete[] this->node_completion_lqdag->lqdag_children;
+			this->node_completion_lqdag->lqdag_children = nullptr;
+			this->node_completion_lqdag->val_node = EMPTY_LEAF;
+		} else if(val_eval_pred == 1){ // it satisfies the condition (predicate) --> compute the completion
+			// TODO: check if it saves correctly
+			this->completion_dfs(this->getMaxLevel(), cur_level, UPPER_BOUND, results);
+		} else{
+			double max_value = 0;
+			double min_value = 1;
+			// if all quadtres are empty, return a 0 leaf.
+			for(uint64_t i = 0; i < this->nChildren(); i++){
+				uint16_t diff_level = this->getMaxLevel()-cur_level;
+				// TODO: creo q esto es lo mismo q nAttr? see if we can replace it by nAttr
+				uint16_t l = (uint16_t) log2(nChildren());
+				uint16_t* coordinatesTemp = new uint16_t[l];
+				for(uint16_t j = 0; j < l; j++)
+                    coordinatesTemp[j] = coordinates[j];
+				transformCoordinates(coordinatesTemp, l, diff_level, i);
+				lqdag* child_lqdag = this->get_child_lqdag(i);
+				child_lqdag->selection(cur_level+1,UPPER_BOUND, results, pred, coordinatesTemp);
+				max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
+				min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
+			}
+			// pruning step
+			if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
+				delete[] this->node_completion_lqdag->lqdag_children;
+				this->node_completion_lqdag->lqdag_children = nullptr;
+				double val_leaf = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
+				this->node_completion_lqdag->val_node = val_leaf;
+				return this;
+			} else{
+				this->node_completion_lqdag->val_node = INTERNAL_NODE;
+				return this;
+			}
+		}
+
+
+	}
+
 //
 //    /**
 //     *
@@ -498,7 +596,7 @@ public:
 //            quadtree_formula* newNode = create_leaf(EMPTY_LEAF);
 //            return newNode;
 //        }
-//        // if results < UPPER_BOUND
+//        // if results < UPPER_()BOUND
 //        uint64_t quadrant_side = grid_side/pow(k,cur_level);
 //        double val_eval_pred = eval_pred(pred, coordinates, quadrant_side, nAttr);
 //        if(val_eval_pred == 0){
@@ -549,43 +647,7 @@ public:
 //    }
 //
 //
-//    /**
-//     * It builds the quadtree_formula Q_f of the lqdag L_F, as we ask for a particular node.
-//     * @param p
-//     * @param max_level
-//     * @param cur_level
-//     * @param UPPER_BOUND
-//     * @param results
-//     * @param level
-//     * @param child the i-th child of the current node
-//     * @param Q_f the quadtree_formula built so far.
-//     * @return a pointer to the child of the lqdag
-//     */
-//    lqdag* lazy_child_completion(uint64_t p,
-//                                   uint64_t child,
-//                                   quadtree_formula& Q_f){
-//        if(Q_f.val_node == EMPTY_LEAF || Q_f.val_node == FULL_LEAF){
-//            return this; // child is 0 or 1 and the quadtree is already computed
-//        }
-//        else if(Q_f.val_node == INTERNAL_NODE || Q_f.val_node == VALUE_NEED_CHILDREN){
-//            lqdag* lqdag_child = this->get_child_lqdag(child);
-//            if(!Q_f.children[child]){ // allocate memory for the child
-//                Q_f.children[child] = new quadtree_formula{};
-//            } // if it's not computed
-//            if(Q_f.children[child]->val_node == NO_VALUE_LEAF){
-//                quadtree_formula* qf_no_value = lqdag_child->compute_quadtree_formula_node(p);
-//                Q_f.children[child]->val_node = qf_no_value->val_node;
-//                Q_f.children[child]->children = qf_no_value->children;
-//            } // else: it's already computed
-//            return lqdag_child;
-//        }
-//        else{ // NO_VALUE --> compute the root and then, the child
-//            quadtree_formula* qf_no_value = this->compute_quadtree_formula_node(p);
-//            Q_f.val_node = qf_no_value->val_node;
-//            Q_f.children = qf_no_value->children;
-//            return this->lazy_child_completion(p, child, Q_f);
-//        }
-//    }
+
 //
 //	/**
 //	 * Lazy completion with the selection operation in relational algebra

@@ -142,12 +142,12 @@ struct predicate {
 };
 
 /**
-     * Value of the predicate
-     * @param pred
-     * @param coordinates the initial position x,y,z,... of the quadrant
-     * @param quadrant_side
-     * @return 0 if the quadrant do not satisfy the predicate, 1 if it satisfies the predicate, 0.5 if it is partially inside the limits
-     */
+ * Value of the predicate
+ * @param pred
+ * @param coordinates the initial position x,y,z,... of the quadrant
+ * @param quadrant_side
+ * @return 0 if the quadrant do not satisfy the predicate, 1 if it satisfies the predicate, 0.5 if it is partially inside the limits
+ */
 static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadrant_side, uint16_t nAtt) {
     vector<uint64_t> min_att;
     vector<uint64_t> max_att;
@@ -246,26 +246,24 @@ static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadran
                         return 1;
                 }
             case OP_LESS_EQUAL: // att1 <= val_const
-                if(quadrant_side == 1){
+                if(quadrant_side == 1)
                     return min_att_1 <= pred->val_const;
-                }
                 if(max_att_1 <= pred->val_const)
                     return 1;
-                else if(min_att_1 <= pred->val_const && pred->val_const < max_att_1)
+                else if(min_att_1 <= pred->val_const)
                     return 0.5;
                 else if(min_att_1 > pred->val_const)
                     return 0;
                 else
                     throw "error: eval_pred OP_LESS_EQUAL"; // no debiese llegar aqui
             case OP_LESS: // att1 < val_const
-                if(quadrant_side == 1){
+                if(quadrant_side == 1)
                     return min_att_1 < pred->val_const;
-                }
                 if(max_att_1 < pred->val_const)
                     return 1;
-                else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1)
+                else if(min_att_1 < pred->val_const)
                     return 0.5;
-                else if(min_att_1 > pred->val_const)
+                else if(min_att_1 >= pred->val_const)
                     return 0;
                 else
                     throw "error: eval_pred OP_LESS";
@@ -319,26 +317,24 @@ static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadran
                         return 1;
                 }
             case OP_LESS_EQUAL: // att2 <= val_const
-                if(quadrant_side == 1){
+                if(quadrant_side == 1)
                     return min_att_2 <= pred->val_const;
-                }
                 if(max_att_2 <= pred->val_const)
                     return 1;
-                else if(min_att_2 <= pred->val_const && pred->val_const < max_att_2)
+                else if(min_att_2 <= pred->val_const)
                     return 0.5;
                 else if(min_att_2 > pred->val_const)
                     return 0;
                 else
                     throw "error: eval_pred OP_LESS_EQUAL"; // no debiese llegar aqui
             case OP_LESS: // att2 < val_const
-                if(quadrant_side == 1){
+                if(quadrant_side == 1)
                     return min_att_2 < pred->val_const;
-                }
                 if(max_att_2 < pred->val_const)
                     return 1;
-                else if(min_att_2 <= pred->val_const && pred->val_const <= max_att_2)
+                else if(min_att_2 < pred->val_const)
                     return 0.5;
-                else if(min_att_2 > pred->val_const)
+                else if(min_att_2 >= pred->val_const)
                     return 0;
                 else
                     throw "error: eval_pred OP_LESS";

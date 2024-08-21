@@ -38,7 +38,7 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     for (map<uint64_t, uint8_t>::iterator it = attr_map.begin(); it != attr_map.end(); it++)
         A.push_back(it->first);
 
-//	p=std::pow(Q[0].getK(), A.size());
+//	uint16_t p = std::pow(Q[0].getK(), A.size());
 
     uint8_t k = Q[0].getK();
 	uint16_t max_level = Q[0].getHeight()-1;
@@ -79,6 +79,17 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
 
     return new lqdag{Q, join_formula};
 }
+
+
+lqdag* compute_dfs_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results){
+	lqdag* join = lqdag_join(Q);
+	return join->completion_dfs(join->getMaxLevel(),0,UPPER_BOUND,results);
+}
+
+lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
+	return l->completion_dfs(l->getMaxLevel(),0,UPPER_BOUND,results);
+}
+
 
 
 
