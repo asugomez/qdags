@@ -345,6 +345,16 @@ int main(int argc, char **argv) {
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 	cout << "----- MULTI JOIN LQDAGS ------" << endl;
+	uint64_t res = 0;
+	start = high_resolution_clock::now();
+	lqdag* join_res = compute_dfs_join(Q, k , res);
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
+	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+	cout << "nro res: " << res << endl;
+
+
 
 	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
 	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
@@ -356,47 +366,44 @@ int main(int argc, char **argv) {
 	predicate pred6 = {AT_X3, AT_X3, 0, OP_EQUAL, TYPE_ATT1_CONST};
 	predicate pred7 = {AT_X3, AT_X3, 1, OP_EQUAL, TYPE_ATT1_CONST};
 	predicate pred12 = {AT_X1, AT_X3, 0, OP_LESS_EQUAL, TYPE_ATT1_ATT2};
-	start = high_resolution_clock::now();
+//
+//	lqdag* join_test_lqdag = lqdag_join(Q);
+//
+////	double val1 = join_test_lqdag->value_lqdag(join_test_lqdag->get_formula());
+//
+//	lqdag* child_0 = join_test_lqdag->get_child_lqdag(0);
+//	lqdag* child_5 = join_test_lqdag->get_child_lqdag(5);
+//	lqdag* child_5_4 = child_5->get_child_lqdag(4);
+//	lqdag* child_5_4_0 = child_5_4->get_child_lqdag(0); // TODO: see what happens here
+//	lqdag* child_5_4_1 = child_5_4->get_child_lqdag(1); // TODO: see what happens here
+//
+//
+//	lqdag* child_5_5 = child_5->get_child_lqdag(5);
+//	lqdag* child_4 = join_test_lqdag->get_child_lqdag(4);
+//	lqdag* child_4_4 = child_4->get_child_lqdag(4);
+//	lqdag* child_4_44 = child_4->get_child_lqdag(4);
 
-	cout << " tests join" << endl;
 
-	lqdag* join_test_lqdag = lqdag_join(Q);
-
-//	double val1 = join_test_lqdag->value_lqdag(join_test_lqdag->get_formula());
-
-	lqdag* child_0 = join_test_lqdag->get_child_lqdag(0);
-	lqdag* child_5 = join_test_lqdag->get_child_lqdag(5);
-	lqdag* child_5_4 = child_5->get_child_lqdag(4);
-	lqdag* child_5_4_0 = child_5_4->get_child_lqdag(0); // TODO: see what happens here
-	lqdag* child_5_4_1 = child_5_4->get_child_lqdag(1); // TODO: see what happens here
-
-
-	lqdag* child_5_5 = child_5->get_child_lqdag(5);
-	lqdag* child_4 = join_test_lqdag->get_child_lqdag(4);
-	lqdag* child_4_4 = child_4->get_child_lqdag(4);
-	lqdag* child_4_44 = child_4->get_child_lqdag(4);
-
-	uint64_t res = 0;
 //	lqdag* completion_join = compute_dfs(join_test_lqdag, 1000, res);
 //	lqdag* completion_dfs = compute_dfs_join(Q, 1000, res);
 
-    res = 0;
-	// TODO: copy the original lqdag, and oeprate over the copy.
-	// TODO: check that the operations over the copy dont affect the original lqdag.
-	lqdag* select_join_pred_4_0_child_1 = join_test_lqdag->get_child_selection(4,&pred4_0);
-	lqdag* select_join_pred_4_0_child_4_test = join_test_lqdag->get_child_selection(4,&pred4_0);
-	lqdag* select_join_pred_4_1_child_1 = join_test_lqdag->get_child_selection(1,&pred4_1);
-	lqdag* select_join_pred_4_2_child_1 = join_test_lqdag->get_child_selection(1,&pred4_2);
-
-	lqdag* select_join_pred_4_0_child_4 = join_test_lqdag->get_child_selection(4,&pred4_0);
-	lqdag* select_join_pred_4_1_child_4 = join_test_lqdag->get_child_selection(4,&pred4_1);
-	lqdag* select_join_pred_4_2_child_4 = join_test_lqdag->get_child_selection(4,&pred4_2);
-
-
-	lqdag* select_join_pred_4_child_1 = join_test_lqdag->get_child_selection(1,&pred4_0);
-	lqdag* select_join_pred_4_child_4 = join_test_lqdag->get_child_selection(4,&pred4_0);
-	lqdag* select_child_4_pred_4_child_4 = child_4->get_child_selection(4,&pred4_0);
-    cout << "number of results join x1 > x3: " << res << endl;
+//    res = 0;
+//	// TODO: copy the original lqdag, and oeprate over the copy.
+//	// TODO: check that the operations over the copy dont affect the original lqdag.
+//	lqdag* select_join_pred_4_0_child_1 = join_test_lqdag->get_child_selection(4,&pred4_0);
+//	lqdag* select_join_pred_4_0_child_4_test = join_test_lqdag->get_child_selection(4,&pred4_0);
+//	lqdag* select_join_pred_4_1_child_1 = join_test_lqdag->get_child_selection(1,&pred4_1);
+//	lqdag* select_join_pred_4_2_child_1 = join_test_lqdag->get_child_selection(1,&pred4_2);
+//
+//	lqdag* select_join_pred_4_0_child_4 = join_test_lqdag->get_child_selection(4,&pred4_0);
+//	lqdag* select_join_pred_4_1_child_4 = join_test_lqdag->get_child_selection(4,&pred4_1);
+//	lqdag* select_join_pred_4_2_child_4 = join_test_lqdag->get_child_selection(4,&pred4_2);
+//
+//
+//	lqdag* select_join_pred_4_child_1 = join_test_lqdag->get_child_selection(1,&pred4_0);
+//	lqdag* select_join_pred_4_child_4 = join_test_lqdag->get_child_selection(4,&pred4_0);
+//	lqdag* select_child_4_pred_4_child_4 = child_4->get_child_selection(4,&pred4_0);
+//    cout << "number of results join x1 > x3: " << res << endl;
 //
 //    res = 0;
 //    compute_pred_lqdag_join(Q,k,res,&pred2);

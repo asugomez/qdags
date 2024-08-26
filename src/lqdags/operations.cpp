@@ -80,19 +80,13 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     return new lqdag{Q, join_formula};
 }
 
-
-lqdag* compute_dfs_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results){
-	lqdag* join = lqdag_join(Q);
-	return join->completion_dfs(join->getMaxLevel(),0,UPPER_BOUND,results);
-}
-
 lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
 	return l->completion_dfs(l->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
-lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
+lqdag* compute_dfs_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results){
 	lqdag* join = lqdag_join(Q);
-	return join->completion_selection_dfs(pred,join->getMaxLevel(),0,UPPER_BOUND,results);
+	return compute_dfs(join,UPPER_BOUND,results);
 }
 
 lqdag* compute_dfs_selection(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
@@ -102,6 +96,13 @@ lqdag* compute_dfs_selection(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, ui
 	// TODO: check original lqdag l didn't change
 	return copy_lqdag->completion_selection_dfs(pred,l->getMaxLevel(),0,UPPER_BOUND,results);
 }
+
+lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
+	lqdag* join = lqdag_join(Q);
+	return join->completion_selection_dfs(pred,join->getMaxLevel(),0,UPPER_BOUND,results);
+}
+
+
 
 lqdag* projection(){
     // TODO

@@ -34,7 +34,7 @@ public:
 			if(lqdag_children != nullptr){
 				delete[] lqdag_children;
 			}
-			delete coordinates;
+			delete[] coordinates;
 		}
 		// copy assignment operator (deep copy)
 		node_completion& operator=(const node_completion& n){
@@ -53,6 +53,7 @@ public:
 				for(uint64_t i = 0; i < n.n_children; i++)
 					this->lqdag_children[i] = n.lqdag_children[i];
 			}
+			return *this;
 		}
 	};
 
@@ -491,7 +492,7 @@ public:
 		double min_value = 1;
 		for(uint64_t i = 0; i < nChildren(); i++){
 			// compute the child and store it in node_completion->lqdag_children[i]
-			lqdag* child_lqdag = this->get_child_lqdag(i);
+			lqdag* child_lqdag = this->get_child_lqdag(i); // TODO: pb en el quinto hijo
 			// recursive call
 			child_lqdag->completion_dfs(max_level, cur_level+1, UPPER_BOUND, results);
 			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);

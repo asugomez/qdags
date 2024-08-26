@@ -153,7 +153,7 @@ public:
 					M[i] = i_prime; // = M[i_prime];
 				}
 			}
-			this->M = M;
+//			this->M = M;
 
 			if (nAtt == 3)
 				this->formula_lqdag1->get_qdag()->createTableExtend3();
@@ -194,11 +194,13 @@ public:
 	qdag* get_qdag() const {
 		if(is_qdag())
 			return formula_leaf_qdag;
+		return nullptr;
 	}
 
 	lqdag* get_lqdag() const {
 		if(is_lqdag())
 			return this->formula_leaf_lqdag;
+		return nullptr;
 	}
 
 	uint8_t getK() const {
