@@ -90,72 +90,18 @@ lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
 	return l->completion_dfs(l->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
-lqdag* compute_selection_dfs(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
+lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
+	lqdag* join = lqdag_join(Q);
+	return join->completion_selection_dfs(pred,join->getMaxLevel(),0,UPPER_BOUND,results);
+}
+
+lqdag* compute_dfs_selection(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
 	lqdag* copy_lqdag = new lqdag(l->get_arr_qdags(), l->get_formula(), l->get_position_qdags(), l->get_node_completion_lqdag());
 	// TODO: OFT
 	copy_lqdag->get_node_completion_lqdag()->val_node = 5;
 	// TODO: check original lqdag l didn't change
 	return copy_lqdag->completion_selection_dfs(pred,l->getMaxLevel(),0,UPPER_BOUND,results);
 }
-
-
-
-
-///**
-// * Selection of a join
-// * Compute the completion quadtree (all the results) of the join with a given predicate.
-// * Call to completion_with_pred
-// * @param Q
-// * @param UPPER_BOUND
-// * @param results
-// * @param pred
-// * @return
-// */
-//quadtree_formula* compute_lqdag_join_with_pred(vector<qdag>&Q, uint64_t UPPER_BOUND, uint64_t &results, predicate* pred) {
-//    qdag::att_set A;
-//    map<uint64_t, uint8_t> attr_map;
-//
-//    for (uint64_t i = 0; i < Q.size(); i++) {
-//        uint64_t nAttr = Q[i].nAttr();
-//        for (uint64_t j = 0; j < nAttr; j++)
-//            attr_map[Q[i].getAttr(j)] = 1;
-//    }
-//
-//    // set of attributs
-//    for (map<uint64_t, uint8_t>::iterator it = attr_map.begin(); it != attr_map.end(); it++)
-//        A.push_back(it->first);
-//
-//
-//    uint64_t grid_side = Q[0].getGridSide();
-//    uint8_t k = Q[0].getK();
-//    uint64_t p;
-//    uint16_t coordinates[A.size()];
-//    for(uint16_t i = 0; i < A.size(); i++)
-//        coordinates[i] = 0;
-//
-//    lqdag* join_result = lqdag_join(Q,p);
-//    // join result is the formula
-//    return join_result->completion_with_pred(p, Q[0].getHeight()-1, 0, grid_side, k, UPPER_BOUND, results, pred, coordinates, A.size());
-//}
-
-
-/**
- * Selection of a formula
- * Takes a subexpression F and a predicate θ, which is a logical expression on the attributes of F.
- * @param lqdag
- * @param p
- * @param child
- * @param Q_f
- * @return a pointer to the child of lqdag and the quadtree formula updated.
- */
-//lqdag* compute_lazy_child_completion(lqdag* lqdag, uint64_t p, uint64_t child, quadtree_formula& Q_f){
-//	return lqdag->lazy_child_completion(p, child, Q_f);
-//}
-//
-//lqdag* compute_lazy_child_completion_with_pred(lqdag* lqdag, uint64_t p, uint64_t child, quadtree_formula& Q_f, quadtree_pred* qf_pred){
-//	return lqdag->lazy_child_completion_with_pred(p, child, Q_f, qf_pred);
-//}
-
 
 lqdag* projection(){
     // TODO
