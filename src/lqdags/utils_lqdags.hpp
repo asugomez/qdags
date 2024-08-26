@@ -10,6 +10,7 @@
 #include "../qdags.hpp"
 
 //const double NO_VALUE_LEAF_UTILS = 3;
+const double NO_VALUE_COMPUTED = 3;
 const double NO_VALUE_LEAF = 3;
 const double EMPTY_LEAF = 0;
 const double FULL_LEAF = 1;
@@ -73,7 +74,8 @@ struct position{
 			cur_node = p.cur_node;
 
 			// Clean up existing coordinates
-			delete[] coordinates;
+			if(this->coordinates != nullptr)
+				delete[] coordinates;
 
 			// Perform deep copy of coordinates
 			if (p.coordinates != nullptr) {

@@ -90,6 +90,14 @@ lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
 	return l->completion_dfs(l->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
+lqdag* compute_selection_dfs(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
+	lqdag* copy_lqdag = new lqdag(l->get_arr_qdags(), l->get_formula(), l->get_position_qdags(), l->get_node_completion_lqdag());
+	// TODO: OFT
+	copy_lqdag->get_node_completion_lqdag()->val_node = 5;
+	// TODO: check original lqdag l didn't change
+	return copy_lqdag->completion_selection_dfs(pred,l->getMaxLevel(),0,UPPER_BOUND,results);
+}
+
 
 
 

@@ -365,6 +365,13 @@ int main(int argc, char **argv) {
 //	double val1 = join_test_lqdag->value_lqdag(join_test_lqdag->get_formula());
 
 	lqdag* child_0 = join_test_lqdag->get_child_lqdag(0);
+	lqdag* child_5 = join_test_lqdag->get_child_lqdag(5);
+	lqdag* child_5_4 = child_5->get_child_lqdag(4);
+	lqdag* child_5_4_0 = child_5_4->get_child_lqdag(0); // TODO: see what happens here
+	lqdag* child_5_4_1 = child_5_4->get_child_lqdag(1); // TODO: see what happens here
+
+
+	lqdag* child_5_5 = child_5->get_child_lqdag(5);
 	lqdag* child_4 = join_test_lqdag->get_child_lqdag(4);
 	lqdag* child_4_4 = child_4->get_child_lqdag(4);
 	lqdag* child_4_44 = child_4->get_child_lqdag(4);
