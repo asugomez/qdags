@@ -24,6 +24,9 @@ for type_fun in 0; do
       # Iterate over each line of the input file
       count=1
       while IFS= read -r line || [ -n "$line" ]; do
+        if [[ "$line" =~ [[:space:]]$ ]]; then
+          line="${line% }"  # Remove the trailing space
+        fi
         # Append priorities; type_fun and k to the end of the line
         priority_file_1="../../../../data/priorities/$file/pri1-$count"
         priority_file_2="../../../../data/priorities/$file/pri2-$count"

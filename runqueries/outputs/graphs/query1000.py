@@ -39,7 +39,7 @@ for type_fun in [0]:#,1]:
             #rankedDfudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/backtracking/{file}', dtype=float)
             #rankedDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/nonFixedQueue/{file}', dtype=float)
 
-            #traditional = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../all/{query}.txt',dtype=float)
+            #traditional = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../original/{query}.txt',dtype=float)
 
 
             data[i] = [partialLoudsBack, partialLoudsNon, partialDfudsBack, partialDfudsNon]#,

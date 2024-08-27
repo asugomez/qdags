@@ -1,8 +1,8 @@
 #!/bin/bash
-# choose one dataset from ./data/all
+# choose one dataset from ./data/original
 
 script_dir=$(dirname "$BASH_SOURCE")
-datasets=("$script_dir/all"/*)
+datasets=("$script_dir/original"/*)
 numDatasets=${#datasets[@]}
 
 # random number between 0 and numDatasets

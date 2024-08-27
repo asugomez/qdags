@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# plot all algorithms for each query vs k (k=1,10,100,1000)
+# plot original algorithms for each query vs k (k=1,10,100,1000)
 # toma el archivo results.csv para hacer las estadisticas
 
 import pandas as pd
@@ -49,7 +49,7 @@ for i,type_fun in enumerate([0]):#,1]):
                    # rankedLoudsNon,
                    # rankedDfudsBack,
                    # rankedDfudsNon]
-    #traditional = pd.read_csv(f'../all/results.csv',delimiter=';')
+    #traditional = pd.read_csv(f'../original/results.csv',delimiter=';')
     # print(i)
     for j,query in enumerate(queries_label):
         data[j] = [partialLoudsBack[query], partialLoudsNon[query], partialDfudsBack[query], partialDfudsNon[query] ]#, rankedLoudsBack[query], rankedLoudsNon[query], rankedDfudsBack[query], rankedDfudsNon[query]]

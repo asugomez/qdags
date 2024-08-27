@@ -20,6 +20,9 @@ for type_fun in 0; do
       # Add ype_fun and k
       # Iterate over each line of the input file
       while IFS= read -r line || [ -n "$line" ]; do
+        if [[ "$line" =~ [[:space:]]$ ]]; then
+          line="${line% }"  # Remove the trailing space
+        fi
         modified_line="$line $type_fun $k"
         echo "$modified_line"
       done < "$input_file" > "$output_file"

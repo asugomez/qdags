@@ -18,6 +18,11 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 #cd "$script_dir/partial/dfuds/nonFixedQueue/"
 #./runPartialDfudsNonFixed.sh
 
+## original
+echo "Running original join"
+cd "$script_dir/original/"
+./runTraditionalJoin.sh
+
 # ranked
 ## louds
 echo "Running ranked louds backtracking"
@@ -35,10 +40,6 @@ echo "Running ranked dfuds backtracking"
 cd "$script_dir/ranked/dfuds/backtracking/"
 ./runRankedDfudsBacktracking.sh
 
-## traditional
-echo "Running traditional join"
-cd "$script_dir/all/"
-./runTraditionalJoin.sh
 
 ## lazy qdags
 echo "Running lazy join"
