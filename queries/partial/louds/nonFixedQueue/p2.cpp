@@ -99,14 +99,14 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
+//    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
     results_partial_louds.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
 
     stop = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(stop - start);
+	time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
