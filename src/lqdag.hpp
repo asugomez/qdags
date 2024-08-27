@@ -489,21 +489,21 @@ public:
 
 		double max_value = 0;
 		double min_value = 1;
-		lqdag** test = new lqdag*[nChildren()];
+//		lqdag** test = new lqdag*[nChildren()];
 		for(uint64_t i = 0; i < nChildren(); i++){
 			// compute the child and store it in node_completion->lqdag_children[i]
-			lqdag* child_lqdag = this->get_child_lqdag(i); // TODO: pb en el quinto hijo --> cuando llegue al quinto, poner puntos rojos en child_lqdag
+			lqdag* child_lqdag = this->get_child_lqdag(i);
 			// recursive call
-			test[i] = child_lqdag;
+//			test[i] = child_lqdag;
 			child_lqdag->completion_dfs(max_level, cur_level+1, UPPER_BOUND, results);
 			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
 			min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
 		}
-		cout << "cur level: "<< cur_level << endl;
-		for(uint64_t i = 0; i < nChildren(); i++){
-			cout << test[i]->node_completion_lqdag->val_node << " ";
-		}
-		cout << endl;
+//		cout << "cur level: "<< cur_level << endl;
+//		for(uint64_t i = 0; i < nChildren(); i++){
+//			cout << test[i]->node_completion_lqdag->val_node << " ";
+//		}
+//		cout << endl;
 		// pruning step --> return a leaf
 		// TODO: i think we dont need to do this, because we do it computing the full leaf
 		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
