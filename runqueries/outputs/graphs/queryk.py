@@ -37,9 +37,9 @@ for i,type_fun in enumerate([0]):#,1]):
     partialDfudsNon = pd.read_csv(f'../partial/dfuds/nonFixedQueue/{file}', delimiter=';')
 
     # rankedLoudsBack = pd.read_csv(f'../ranked/louds/backtracking/{file}', delimiter=';')
-    # rankedLoudsNon = pd.read_csv(f'../ranked/louds/nonFixedQueue/{file}', delimiter=';')
+    # rankedLoudsNon = pd.read_csv(f'../ranked/louds/optimalOrder/{file}', delimiter=';')
     # rankedDfudsBack = pd.read_csv(f'../ranked/dfuds/backtracking/{file}', delimiter=';')
-    # rankedDfudsNon = pd.read_csv(f'../ranked/dfuds/nonFixedQueue/{file}', delimiter=';')
+    # rankedDfudsNon = pd.read_csv(f'../ranked/dfuds/optimalOrder/{file}', delimiter=';')
     
     datasets[i] = [partialLoudsBack,
                    partialLoudsNon,

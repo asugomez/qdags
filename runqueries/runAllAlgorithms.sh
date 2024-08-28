@@ -6,16 +6,16 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 #echo "Running partial louds backtracking"
 #cd "$script_dir/partial/louds/backtracking/"
 #./runPartialLoudsBacktracking.sh
-#echo "Running partial louds nonFixedQueue"
-#cd "$script_dir/partial/louds/nonFixedQueue/"
+#echo "Running partial louds optimalOrder"
+#cd "$script_dir/partial/louds/optimalOrder/"
 #./runPartialLoudsNonFixed.sh
 #
 ### dfuds
 #echo "Running partial dfuds backtracking"
 #cd "$script_dir/partial/dfuds/backtracking/"
 #./runPartialDfudsBacktracking.sh
-#echo "Running partial dfuds nonFixedQueue"
-#cd "$script_dir/partial/dfuds/nonFixedQueue/"
+#echo "Running partial dfuds optimalOrder"
+#cd "$script_dir/partial/dfuds/optimalOrder/"
 #./runPartialDfudsNonFixed.sh
 
 ## original
@@ -28,13 +28,13 @@ cd "$script_dir/original/"
 echo "Running ranked louds backtracking"
 cd "$script_dir/ranked/louds/backtracking/"
 ./runRankedLoudsBacktracking.sh
-echo "Running ranked louds nonFixedQueue"
-cd "$script_dir/ranked/louds/nonFixedQueue/"
+echo "Running ranked louds optimalOrder"
+cd "$script_dir/ranked/louds/optimalOrder/"
 ./runRankedLoudsNonFixed.sh
 
 ## dfuds
-echo "Running ranked dfuds nonFixedQueue"
-cd "$script_dir/ranked/dfuds/nonFixedQueue/"
+echo "Running ranked dfuds optimalOrder"
+cd "$script_dir/ranked/dfuds/optimalOrder/"
 ./runRankedDfudsNonFixed.sh
 echo "Running ranked dfuds backtracking"
 cd "$script_dir/ranked/dfuds/backtracking/"

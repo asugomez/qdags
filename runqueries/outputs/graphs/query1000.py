@@ -30,14 +30,14 @@ for type_fun in [0]:#,1]:
             file = f"{query}-f{type_fun}-k{k}.txt"
             # print(file)
             partialLoudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)
-            partialLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)# np.loadtxt(f'../partial/louds/nonFixedQueue/{file}', dtype=float)
+            partialLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)# np.loadtxt(f'../partial/louds/optimalOrder/{file}', dtype=float)
             partialDfudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/backtracking/{file}', dtype=float)
-            partialDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/nonFixedQueue/{file}', dtype=float)
+            partialDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/optimalOrder/{file}', dtype=float)
 
             #rankedLoudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/backtracking/{file}', dtype=float)
-            #rankedLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/nonFixedQueue/{file}', dtype=float)
+            #rankedLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/optimalOrder/{file}', dtype=float)
             #rankedDfudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/backtracking/{file}', dtype=float)
-            #rankedDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/nonFixedQueue/{file}', dtype=float)
+            #rankedDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/optimalOrder/{file}', dtype=float)
 
             #traditional = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../original/{query}.txt',dtype=float)
 
