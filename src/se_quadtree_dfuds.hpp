@@ -88,15 +88,15 @@ protected:
         bit_vector k_t_ = bit_vector(k_d, 0);
 
         bit_vector k_t_b = bit_vector(3, 0);  // 1^c 0
-        bit_vector k_t_s = bit_vector(k_d, 0); // init 110
+        bit_vector k_t_s = bit_vector(k_d, 0);
 
+		// init 110
         k_t_b[0] = 1;
         k_t_b[1] = 1;
         k_t_b[2] = 0;
+
         size_type_bv size_bv_b = 3; // starting position to write in the bit_vector
         size_type_bv size_bv_s = 0; // starting position to write in the bit_vector
-
-
 
         std::stack<t_part_tuple> s;
         idx_type t = 0;
@@ -128,7 +128,6 @@ protected:
                 k_t_s.bit_resize(size_bv_s+k_d);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-//                cout << k_t_ << endl;
 
                 size_bv_s += t;
 

@@ -1,6 +1,11 @@
 #!/bin/bash
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+# original join
+echo "Compiling original join"
+cd "$script_dir/original/"
+./compileTraditionalJoin.sh
+
 # compile partial results
 # louds
 echo "Compiling partial louds backtracking"
@@ -34,10 +39,6 @@ echo "Compiling ranked dfuds backtracking"
 cd "$script_dir/ranked/dfuds/backtracking/"
 ./compileRankedDfudsBacktracking.sh
 
-# traditional join
-echo "Compiling traditional join"
-cd "$script_dir/all/"
-./compileTraditionalJoin.sh
 
 ## lazy qdags
 echo "Compiling lazy join"

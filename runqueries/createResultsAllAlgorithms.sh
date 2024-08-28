@@ -1,6 +1,12 @@
 #!/bin/bash
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+
+### original
+#echo "Results original join"
+#cd "$script_dir/original/"
+#./createResultsSummary.sh
+
 # partial
 ## louds
 echo "Results partial louds backtracking"
@@ -35,10 +41,6 @@ cd "$script_dir/partial/dfuds/backtracking/"
 #cd "$script_dir/ranked/dfuds/backtracking/"
 #./createResultsSummary.sh
 
-### traditional
-#echo "Results traditional join"
-#cd "$script_dir/all/"
-#./createResultsSummary.sh
 #
 ### lazy qdags
 #echo "Results lazy join"

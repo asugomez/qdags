@@ -1,6 +1,11 @@
 #!/bin/bash
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+## traditional
+echo "rm original join"
+cd "$script_dir/outputs/original/"
+rm *
+
 # partial
 ## louds
 echo "rm partial louds backtracking"
@@ -33,11 +38,6 @@ cd "$script_dir/outputs/ranked/dfuds/nonFixedQueue/"
 rm *
 echo "rm ranked dfuds backtracking"
 cd "$script_dir/outputs/ranked/dfuds/backtracking/"
-rm *
-
-## traditional
-echo "rm traditional join"
-cd "$script_dir/outputs/all/"
 rm *
 
 
