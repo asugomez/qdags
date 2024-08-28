@@ -42,6 +42,6 @@ cd "$script_dir/ranked/dfuds/backtracking/"
 
 
 ## lazy qdags
-echo "Running lazy join"
-cd "$script_dir/lqdags/"
-./runLazyJoin.sh
+#echo "Running lazy join"
+#cd "$script_dir/lqdags/"
+#./runLazyJoin.sh
