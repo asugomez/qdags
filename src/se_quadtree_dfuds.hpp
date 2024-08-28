@@ -465,9 +465,8 @@ public:
 
     /**
      *
-     * @param node the starting position in the bitvector S in preorder
-     * @param rank_array
      * @param node the starting position in the bitvector B in preorder
+     * @param rank_array
      * @return
      */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {

@@ -236,15 +236,15 @@ int main(int argc, char **argv) {
     vector<uint16_t*> results_partial_louds_back;
     vector<uint16_t*> results_ranked_louds;
     priority_queue<qdagResults> results_ranked_louds_back;
-
-    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+//
+//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+////    multiJoin(Q, true, k);
+//    start = high_resolution_clock::now();
 //    multiJoin(Q, true, k);
-    start = high_resolution_clock::now();
-    multiJoin(Q, true, k);
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    stop = high_resolution_clock::now();
+//    time_span = duration_cast<microseconds>(stop - start);
+//    total_time = time_span.count();
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 //
 //    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;

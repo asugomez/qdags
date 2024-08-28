@@ -1,0 +1,3 @@
+./j4 ../../data/all/prop-direct-P5053 ../../data/all/prop-direct-P1346 ../../data/all/prop-direct-P39 ../../data/all/prop-direct-normalized-P1006
+./j4 ../../data/all/prop-direct-P3433 ../../data/all/prop-direct-P1855 ../../data/all/prop-direct-P704 ../../data/all/prop-direct-P688
+./j4 ../../data/all/prop-direct-P908 ../../data/all/prop-direct-P155 ../../data/all/prop-direct-P1424 ../../data/all/prop-direct-P156
