@@ -105,7 +105,7 @@ int main(int argc, char** argv)
     uint64_t res = 0;
     start = high_resolution_clock::now();
 
-    quadtree_formula* join_r_s_t = compute_lqdag_join(Q, k, res);
+	lqdag* join = compute_dfs_join(Q, k , res);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
