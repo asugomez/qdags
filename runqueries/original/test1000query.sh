@@ -7,7 +7,7 @@ for k in 1000; do
   # echo k
 #  echo "k: $k"
 #  printf "$k;" >> $data_csv
-  for file in ti4 tr1 tr2; do
+  for file in ti4; do #
     echo "file: $file"
     input_file="./runqueries-$file-bfs-sorted.sh"
     output_file="./runqueries-$file-bfs-sorted-args.sh"

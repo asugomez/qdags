@@ -111,7 +111,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
+//    uint64_t grid_side = 52000000; // es como +infty para wikidata
+	uint64_t grid_side = 53000000;
 //    uint64_t grid_side = 8;
 
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
@@ -236,6 +237,16 @@ int main(int argc, char **argv) {
     vector<uint16_t*> results_partial_louds_back;
     vector<uint16_t*> results_ranked_louds;
     priority_queue<qdagResults> results_ranked_louds_back;
+
+//	cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
+////    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
+//    results_partial_louds_back.clear();
+//    start = high_resolution_clock::now();
+//    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
+//    stop = high_resolution_clock::now();
+//    time_span = duration_cast<microseconds>(stop - start);
+//    total_time = time_span.count();
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
 //    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
 ////    multiJoin(Q, true, k);
@@ -246,16 +257,16 @@ int main(int argc, char **argv) {
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-//
-//    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
+
+    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
 //    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
-//    results_partial_dfuds.clear();
-//    start = high_resolution_clock::now();
-//    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+    results_partial_dfuds.clear();
+    start = high_resolution_clock::now();
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 
 //    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING DFUDS------" << endl;

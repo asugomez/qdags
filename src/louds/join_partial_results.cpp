@@ -441,7 +441,7 @@ multiJoinPartialResultsBacktracking(
                              coordinates, size_queue,
                              top_results);
 
-//    cout << "number of results: " << top_results.size() << endl;
+    cout << "number of results: " << top_results.size() << endl;
 //    uint64_t i=0;
 //    while(i < top_results.size()){
 //        uint16_t* coordinates = top_results[i];

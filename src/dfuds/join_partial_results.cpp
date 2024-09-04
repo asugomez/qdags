@@ -205,7 +205,7 @@ bool multiJoinPartialResultsDfuds(
                       pq, results_points);
 
 
-//    cout << "number of results: " << results_points.size() << endl;
+    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];

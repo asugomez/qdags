@@ -634,8 +634,8 @@ public:
     /**
      *
      * @param level current level
+     * @param start_pos_next_level number of left siblings. It's useful to have as a starting position.
      * @param children number of children of the parent (i-th node).
-     * @param siblings number of left siblings. It's useful to have as a starting position.
      * @return the number of children of the i-th node.
      */
     uint64_t get_num_leaves_aux(uint16_t level, uint64_t start_pos_next_level, uint64_t n_children){
