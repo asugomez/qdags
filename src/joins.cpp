@@ -636,7 +636,7 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
 //    }
 //    cout << endl;
 
-    cout << "number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
+//    cout << "number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
 
     //cout << endl;
 
