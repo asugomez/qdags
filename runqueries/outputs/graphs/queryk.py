@@ -13,10 +13,10 @@ import tikzplotlib
 # In[3]:
 
 
-alg_label = ["G. LOUDS Backtracking",
-             "G. LOUDS Optimal Order",
-             "G. DFUDS Backtracking",
-              "Gradual DFUDS Optimal Order"]#,
+alg_label = ["Grad. LOUDS Backtracking",
+             "Grad. LOUDS Optimal Order",
+             "Grad. DFUDS Backtracking",
+              "Grad. DFUDS Optimal Order"]#,
              # "Ranked LOUDS Backtracking",
              # "Ranked LOUDS Optimal Order",
              # "Ranked DFUDS Backtracking",
@@ -112,7 +112,7 @@ for i,query in enumerate([j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr
     for j, alg in enumerate(alg_label):
         query.plot(datasets[0][0]['k'], data[i][j], marker='', color=colors[j], label=alg_label[j])
     query.set_xscale('log')
-    query.set_yscale('log')
+    # query.set_yscale('log')
     query.set_title(queries_title[i])
     query.axvline(x=10, color='gray', linestyle='--', linewidth=0.7)
     query.axvline(x=100, color='gray', linestyle='--', linewidth=0.7)
