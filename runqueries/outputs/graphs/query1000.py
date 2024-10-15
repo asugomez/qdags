@@ -8,10 +8,10 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import seaborn as sns
 
-alg_label = ["G. LOUDS Backtrack.",
-             "G. LOUDS Op. Order",
-             "G. DFUDS Backtrack.",
-             "G. DFUDS Op. Order"]#,
+alg_label = ["Grad. LOUDS Backtrack.",
+             "Grad. LOUDS Op. Order",
+             "Grad. DFUDS Backtrack.",
+             "Grad. DFUDS Op. Order"]#,
             #  "R. LOUDS Backtrack.", "R. LOUDS Op. Order",
             # "R. DFUDS Backtrack.", "R. DFUDS Op. Order"]
 queries_label = ["j3","j4","p2","p3","p4","s1","s2","s3","s4","t2","t3","t4","ti2","ti3","ti4","tr1","tr2"]
@@ -30,14 +30,14 @@ for type_fun in [0]:#,1]:
             file = f"{query}-f{type_fun}-k{k}.txt"
             # print(file)
             partialLoudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)
-            partialLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)# np.loadtxt(f'../partial/louds/nonFixedQueue/{file}', dtype=float)
-            partialDfudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/backtracking/{file}', dtype=float)
-            partialDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/nonFixedQueue/{file}', dtype=float)
+            partialLoudsNon = np.loadtxt(f'../partial/louds/optimalOrder/{file}', dtype=float)# np.loadtxt(f'../partial/louds/optimalOrder/{file}', dtype=float)
+            partialDfudsBack = np.loadtxt(f'../partial/dfuds/backtracking/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/backtracking/{file}', dtype=float)
+            partialDfudsNon = np.loadtxt(f'../partial/dfuds/optimalOrder/{file}', dtype=float)#np.loadtxt(f'../partial/dfuds/optimalOrder/{file}', dtype=float)
 
             #rankedLoudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/backtracking/{file}', dtype=float)
-            #rankedLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/nonFixedQueue/{file}', dtype=float)
+            #rankedLoudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/louds/optimalOrder/{file}', dtype=float)
             #rankedDfudsBack = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/backtracking/{file}', dtype=float)
-            #rankedDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/nonFixedQueue/{file}', dtype=float)
+            #rankedDfudsNon = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../ranked/dfuds/optimalOrder/{file}', dtype=float)
 
             #traditional = np.loadtxt(f'../partial/louds/backtracking/{file}', dtype=float)#np.loadtxt(f'../original/{query}.txt',dtype=float)
 
@@ -94,7 +94,7 @@ for i,query in enumerate([j3,j4,p2,p3,p4,s1,s2,s3,s4,t2,t3,t4,ti2,ti3,ti4,tr1,tr
         bp = query.boxplot(data[i][j], positions=[j],whis=1, widths=0.4, patch_artist=True,
                            boxprops=dict(facecolor=colors[j],color=colors[j], label=alg_label[j]),
                            medianprops=dict(color='blueviolet'))
-    query.set_yscale('log')
+    # query.set_yscale('log')
     query.set_title(queries_title[i])
     query.axes.get_xaxis().set_visible(False)
     if(query != j3 and query != s1 and query != t4):

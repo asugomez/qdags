@@ -82,10 +82,10 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char **argv) {
 
-    qdag::att_set att_R;
-    qdag::att_set att_S;
-    qdag::att_set att_T;
-    qdag::att_set att_U;
+	qdag::att_set att_R;
+	qdag::att_set att_S;
+	qdag::att_set att_T;
+	qdag::att_set att_U;
 
 
 //    att_R.push_back(AT_X1); att_R.push_back(AT_X2);
@@ -111,24 +111,23 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
-//    uint64_t grid_side = 52000000; // es como +infty para wikidata
-	uint64_t grid_side = 53000000;
-//    uint64_t grid_side = 8;
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
+//	uint64_t grid_side = 8;
 
-    qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
-    qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
-    qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
-    qdag qdag_rel_U(*rel_U, att_U, grid_side, 2, att_U.size());
-    qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
-    qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
-    qdag_dfuds qdag_rel_T_dfuds(*rel_T_2, att_T, grid_side, 2, att_T.size());
-    qdag_dfuds qdag_rel_U_dfuds(*rel_U_2, att_U, grid_side, 2, att_U.size());
+	qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
+	qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
+	qdag qdag_rel_T(*rel_T, att_T, grid_side, 2, att_T.size());
+	qdag qdag_rel_U(*rel_U, att_U, grid_side, 2, att_U.size());
+	qdag_dfuds qdag_rel_R_dfuds(*rel_R_2, att_R, grid_side, 2, att_R.size());
+	qdag_dfuds qdag_rel_S_dfuds(*rel_S_2, att_S, grid_side, 2, att_S.size());
+	qdag_dfuds qdag_rel_T_dfuds(*rel_T_2, att_T, grid_side, 2, att_T.size());
+	qdag_dfuds qdag_rel_U_dfuds(*rel_U_2, att_U, grid_side, 2, att_U.size());
 
 //     print the tree
-//    cout << endl << "rel R" << endl;
-//    qdag_rel_R.printBv();
-//    cout << endl << "rel S" << endl;
-//    qdag_rel_S.printBv();
+//	cout << endl << "rel R" << endl;
+//	qdag_rel_R.printBv();
+//	cout << endl << "rel S" << endl;
+//	qdag_rel_S.printBv();
 //    cout << endl << "rel T" << endl;
 //    qdag_rel_T.printBv();
 //    cout << endl << "rel U" << endl;
@@ -136,98 +135,98 @@ int main(int argc, char **argv) {
 
 
     vector<qdag> Q(4);
-//    vector<qdag> Q(2);
+//	vector<qdag> Q(2);
     vector<qdag_dfuds> Q_dfuds(4);
-//    vector<qdag_dfuds> Q_dfuds(2);
+//	vector<qdag_dfuds> Q_dfuds(2);
 
-    Q[0] = qdag_rel_R;
-    Q[1] = qdag_rel_S;
+	Q[0] = qdag_rel_R;
+	Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
     Q[3] = qdag_rel_U;
 
-    Q_dfuds[0] = qdag_rel_R_dfuds;
-    Q_dfuds[1] = qdag_rel_S_dfuds;
+	Q_dfuds[0] = qdag_rel_R_dfuds;
+	Q_dfuds[1] = qdag_rel_S_dfuds;
     Q_dfuds[2] = qdag_rel_T_dfuds;
     Q_dfuds[3] = qdag_rel_U_dfuds;
 
-    high_resolution_clock::time_point start, stop;
-    double total_time = 0.0;
-    duration<double> time_span;
+	high_resolution_clock::time_point start, stop;
+	double total_time = 0.0;
+	duration<double> time_span;
 
-    // read priorities from file
-    std::ifstream data_file_R(argv[5]); // Abrir el archivo de datos
-    std::ifstream data_file_S(argv[6]); // Abrir el archivo de datos
-    std::ifstream data_file_T(argv[7]); // Abrir el archivo de datos
-    std::ifstream data_file_U(argv[8]); // Abrir el archivo de datos
-    if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open() || !data_file_U.is_open()) {
-        std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
-        return 1;
-    }
+	// read priorities from file
+	std::ifstream data_file_R(argv[5]); // Abrir el archivo de datos
+	std::ifstream data_file_S(argv[6]); // Abrir el archivo de datos
+	std::ifstream data_file_T(argv[7]); // Abrir el archivo de datos
+	std::ifstream data_file_U(argv[8]); // Abrir el archivo de datos
+	if (!data_file_R.is_open() || !data_file_S.is_open() || !data_file_T.is_open() || !data_file_U.is_open()) {
+		std::cerr << "No se pudo abrir el archivo de datos." << std::endl;
+		return 1;
+	}
 
-    // get number of priorities of each file
-    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0, number_of_lines_U = 0;
-    std::string line;
-    while(std::getline(data_file_R, line))
-        ++number_of_lines_R;
-    while(std::getline(data_file_S, line))
-        ++number_of_lines_S;
-    while(std::getline(data_file_T, line))
-        ++number_of_lines_T;
-    while(std::getline(data_file_U, line))
-        ++number_of_lines_U;
-    int_vector<> priorities_R(number_of_lines_R,0);
-    int_vector<> priorities_S(number_of_lines_S,0);
-    int_vector<> priorities_T(number_of_lines_T,0);
-    int_vector<> priorities_U(number_of_lines_U,0);
+	// get number of priorities of each file
+	int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0, number_of_lines_U = 0;
+	std::string line;
+	while (std::getline(data_file_R, line))
+		++number_of_lines_R;
+	while (std::getline(data_file_S, line))
+		++number_of_lines_S;
+	while (std::getline(data_file_T, line))
+		++number_of_lines_T;
+	while (std::getline(data_file_U, line))
+		++number_of_lines_U;
+	int_vector<> priorities_R(number_of_lines_R, 0);
+	int_vector<> priorities_S(number_of_lines_S, 0);
+	int_vector<> priorities_T(number_of_lines_T, 0);
+	int_vector<> priorities_U(number_of_lines_U, 0);
 
-    data_file_R.clear();
-    data_file_R.seekg(0, std::ios::beg);
-    data_file_S.clear();
-    data_file_S.seekg(0, std::ios::beg);
-    data_file_T.clear();
-    data_file_T.seekg(0, std::ios::beg);
-    data_file_U.clear();
-    data_file_U.seekg(0, std::ios::beg);
+	data_file_R.clear();
+	data_file_R.seekg(0, std::ios::beg);
+	data_file_S.clear();
+	data_file_S.seekg(0, std::ios::beg);
+	data_file_T.clear();
+	data_file_T.seekg(0, std::ios::beg);
+	data_file_U.clear();
+	data_file_U.seekg(0, std::ios::beg);
 
-    // put the priorities in the int_vector
+	// put the priorities in the int_vector
 
-    int value;
-    int i=0;
-    while(data_file_R >> value){
-        priorities_R[i]=value;
-        i++;
-    }
-    i=0;
-    while(data_file_S >> value){
-        priorities_S[i]=value;
-        i++;
-    }
-    i=0;
-    while(data_file_T >> value){
-        priorities_T[i]=value;
-        i++;
-    }
-    i=0;
-    while(data_file_U >> value){
-        priorities_U[i]=value;
-        i++;
-    }
+	int value;
+	int i = 0;
+	while (data_file_R >> value) {
+		priorities_R[i] = value;
+		i++;
+	}
+	i = 0;
+	while (data_file_S >> value) {
+		priorities_S[i] = value;
+		i++;
+	}
+	i = 0;
+	while (data_file_T >> value) {
+		priorities_T[i] = value;
+		i++;
+	}
+	i = 0;
+	while (data_file_U >> value) {
+		priorities_U[i] = value;
+		i++;
+	}
 
-    vector<int_vector<>> vector_pri;
-    vector_pri.push_back(priorities_R);
-    vector_pri.push_back(priorities_S);
-    vector_pri.push_back(priorities_T);
-    vector_pri.push_back(priorities_U);
+	vector<int_vector<>> vector_pri;
+	vector_pri.push_back(priorities_R);
+	vector_pri.push_back(priorities_S);
+	vector_pri.push_back(priorities_T);
+	vector_pri.push_back(priorities_U);
 
-    // function type
-    uint8_t type_fun = argv[9] ? atoi(argv[9]) : 1;
-    // size queue
-    int64_t k = argv[10] ? atoi(argv[10]) : 1000;
+	// function type
+	uint8_t type_fun = argv[9] ? atoi(argv[9]) : 1;
+	// size queue
+	int64_t k = argv[10] ? atoi(argv[10]) : 1000;
 
-    vector<rmq_succinct_sct<false>> rMq_louds; // vector of rMq for each qdag
-    for(uint64_t i = 0; i < Q.size(); i++){
-        rMq_louds.push_back(rmq_succinct_sct<false>(&vector_pri[i]));
-    }
+	vector<rmq_succinct_sct<false>> rMq_louds; // vector of rMq for each qdag
+	for (uint64_t i = 0; i < Q.size(); i++) {
+		rMq_louds.push_back(rmq_succinct_sct<false>(&vector_pri[i]));
+	}
 
     vector<uint16_t*> results_partial_dfuds;
     vector<uint16_t*> results_partial_dfuds_back;
@@ -342,98 +341,52 @@ int main(int argc, char **argv) {
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-//    cout << "----- MULTI JOIN LQDAGS ------" << endl;
+	cout << "----- MULTI JOIN LQDAGS ------" << endl;
+	uint64_t res = 0;
+	start = high_resolution_clock::now();
+	lqdag* join_res = compute_dfs_join(Q, k , res);
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
+	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+	cout << "nro res: " << res << endl;
+
+
+
+	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
+	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
+	predicate pred3 = {AT_X1, AT_X3, 3, OP_EQUAL, TYPE_ATT1_ATT2};
+	predicate pred4_0 = {AT_X1, AT_X3, 4, OP_LESS, TYPE_ATT1_CONST};
+	predicate pred4_1 = {AT_X2, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
+	predicate pred4_2 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
+	predicate pred5 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
+	predicate pred6 = {AT_X3, AT_X3, 0, OP_EQUAL, TYPE_ATT1_CONST};
+	predicate pred7 = {AT_X3, AT_X3, 1, OP_EQUAL, TYPE_ATT1_CONST};
+	predicate pred12 = {AT_X1, AT_X3, 0, OP_LESS_EQUAL, TYPE_ATT1_ATT2};
 //
-//    uint64_t res = 0; //x1,x2,x3
-//    predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER,TYPE_ATT1_ATT2};
-//    predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL,TYPE_ATT1_ATT2};
-//    predicate pred3 = {AT_X1, AT_X3, 3, OP_EQUAL,TYPE_ATT1_ATT2};
-//    predicate pred4 = {AT_X2, AT_X3, 3, OP_GREATER,TYPE_ATT1_CONST};
-//    predicate pred5 = {AT_X3, AT_X3, 3, OP_GREATER,TYPE_ATT1_CONST};
-//    predicate pred6 = {AT_X3, AT_X3, 0, OP_EQUAL,TYPE_ATT1_CONST};
-//    predicate pred7 = {AT_X3, AT_X3, 1, OP_EQUAL,TYPE_ATT1_CONST};
-//    predicate pred12 = {AT_X1, AT_X3, 0, OP_LESS_EQUAL,TYPE_ATT1_ATT2};
-//    start = high_resolution_clock::now();
+//	lqdag* join_test_lqdag = lqdag_join(Q);
 //
-//    quadtree_formula* join_r_s_t = compute_lqdag_join(Q, k, res);
-//    cout << "number of results join: " << res << endl;
+////	double val1 = join_test_lqdag->value_lqdag(join_test_lqdag->get_formula());
 //
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//	lqdag* child_0 = join_test_lqdag->get_child_lqdag(0);
+//	lqdag* child_5 = join_test_lqdag->get_child_lqdag(5);
+//	lqdag* child_5_4 = child_5->get_child_lqdag(4);
+//	lqdag* child_5_4_0 = child_5_4->get_child_lqdag(0); // TODO: see what happens here
+//	lqdag* child_5_4_1 = child_5_4->get_child_lqdag(1); // TODO: see what happens here
 //
+//
+//	lqdag* child_5_5 = child_5->get_child_lqdag(5);
+//	lqdag* child_4 = join_test_lqdag->get_child_lqdag(4);
+//	lqdag* child_4_4 = child_4->get_child_lqdag(4);
+//	lqdag* child_4_44 = child_4->get_child_lqdag(4);
+
+
+//	lqdag* completion_join = compute_dfs(join_test_lqdag, 1000, res);
+//	lqdag* completion_dfs = compute_dfs_join(Q, 1000, res);
+
 //    res = 0;
-//    uint64_t p = std::pow(Q[0].getK(), 3);
-//    quadtree_formula result{};
-//    lqdag* join_r_s_lqdag = lqdag_join(Q, k);
-//    lqdag* child_0 = join_r_s_lqdag->lazy_child_completion(p,0,result);
-//    lqdag* child_0_0 = child_0->lazy_child_completion(p,0,*result.children[0]);
-//    lqdag* test_fin = join_r_s_lqdag->lazy_child_completion(p,0,*join_r_s_t);
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred1);
-//    cout << "number of results join x1 > x3: " << res << endl;
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred2);
-//    cout << "number of results join x1 >= x3: " << res << endl;
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred3);
-//    cout << "number of results join x1 = x3: " << res << endl;
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred4);
-//    cout << "number of results join x2 > 4: " << res << endl;
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred5);
-//    cout << "number of results join x3 > 4: " << res << endl;
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred6);
-//    cout << "number of results join x3 = 0: " << res << endl;
-//
-//    res = 0;
-//    compute_pred_lqdag_join(Q,k,res,&pred7);
-//    cout << "number of results join x3 = 1: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* test_pred_1 = compute_pred_quadtree(qdag_rel_R, k, res, &pred1);
-//    cout << "number of results join A=B: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* test_pred_2 = compute_pred_quadtree(qdag_rel_R, k, res, &pred2);
-//    cout << "number of results join A >= 3: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* test_pred_3 = compute_pred_quadtree(qdag_rel_R, k, res, &pred3);
-//    cout << "number of results join A>3: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* test_pred_4 = compute_pred_quadtree(qdag_rel_R, k, res, &pred4);
-//    cout << "number of results join B>3: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* compute_rel_R = compute_quadtree(qdag_rel_R, k, res);
-//    cout << "number of results compute R: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* compute_rel_S = compute_quadtree(qdag_rel_S, k, res);
-//    cout << "number of results compute S: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* compute_rel_T = compute_quadtree(qdag_rel_T, k, res);
-//    cout << "number of results compute T: " << res << endl;
-//
-//    res = 0;
-//    quadtree_formula* compute_rel_U = compute_quadtree(qdag_rel_U, k, res);
-//    cout << "number of results compute U: " << res << endl;
-//
-////    res = 0;
-////    quadtree_formula* pred_a_c = compute_pred_lqdag_join(Q,k,res,&pred12);
-////    cout << "number of results pred a_c: " << res << endl;
+//    quadtree_formula* pred_a_c = compute_pred_lqdag_join(Q,k,res,&pred12);
+//    cout << "number of results pred a_c: " << res << endl;
 
 
 

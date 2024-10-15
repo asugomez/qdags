@@ -12,16 +12,16 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo "Results partial louds backtracking"
 cd "$script_dir/partial/louds/backtracking/"
 ./createResultsSummary.sh
-echo "Results partial louds nonFixedQueue"
-cd "$script_dir/partial/louds/nonFixedQueue/"
+echo "Results partial louds optimalOrder"
+cd "$script_dir/partial/louds/optimalOrder/"
 ./createResultsSummary.sh
 
 ## dfuds
 echo "Results partial dfuds backtracking"
 cd "$script_dir/partial/dfuds/backtracking/"
 ./createResultsSummary.sh
-#echo "Results partial dfuds nonFixedQueue"
-#cd "$script_dir/partial/dfuds/nonFixedQueue/"
+#echo "Results partial dfuds optimalOrder"
+#cd "$script_dir/partial/dfuds/optimalOrder/"
 #./createResultsSummary.sh
 #
 ## ranked
@@ -29,13 +29,13 @@ cd "$script_dir/partial/dfuds/backtracking/"
 #echo "Results ranked louds backtracking"
 #cd "$script_dir/ranked/louds/backtracking/"
 #./createResultsSummary.sh
-#echo "Results ranked louds nonFixedQueue"
-#cd "$script_dir/ranked/louds/nonFixedQueue/"
+#echo "Results ranked louds optimalOrder"
+#cd "$script_dir/ranked/louds/optimalOrder/"
 #./createResultsSummary.sh
 #
 ### dfuds
-#echo "Results ranked dfuds nonFixedQueue"
-#cd "$script_dir/ranked/dfuds/nonFixedQueue/"
+#echo "Results ranked dfuds optimalOrder"
+#cd "$script_dir/ranked/dfuds/optimalOrder/"
 #./createResultsSummary.sh
 #echo "Results ranked dfuds backtracking"
 #cd "$script_dir/ranked/dfuds/backtracking/"

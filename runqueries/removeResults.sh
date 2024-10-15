@@ -11,16 +11,16 @@ rm *
 echo "rm partial louds backtracking"
 cd "$script_dir/outputs/partial/louds/backtracking/"
 rm *
-echo "rm partial louds nonFixedQueue"
-cd "$script_dir/outputs/partial/louds/nonFixedQueue/"
+echo "rm partial louds optimalOrder"
+cd "$script_dir/outputs/partial/louds/optimalOrder/"
 rm *
 
 ## dfuds
 echo "rm partial dfuds backtracking"
 cd "$script_dir/outputs/partial/dfuds/backtracking/"
 rm *
-echo "rm partial dfuds nonFixedQueue"
-cd "$script_dir/outputs/partial/dfuds/nonFixedQueue/"
+echo "rm partial dfuds optimalOrder"
+cd "$script_dir/outputs/partial/dfuds/optimalOrder/"
 rm *
 
 # ranked
@@ -28,13 +28,13 @@ rm *
 echo "rm ranked louds backtracking"
 cd "$script_dir/outputs/ranked/louds/backtracking/"
 rm *
-echo "rm ranked louds nonFixedQueue"
-cd "$script_dir/outputs/ranked/louds/nonFixedQueue/"
+echo "rm ranked louds optimalOrder"
+cd "$script_dir/outputs/ranked/louds/optimalOrder/"
 rm *
 
 ## dfuds
-echo "rm ranked dfuds nonFixedQueue"
-cd "$script_dir/outputs/ranked/dfuds/nonFixedQueue/"
+echo "rm ranked dfuds optimalOrder"
+cd "$script_dir/outputs/ranked/dfuds/optimalOrder/"
 rm *
 echo "rm ranked dfuds backtracking"
 cd "$script_dir/outputs/ranked/dfuds/backtracking/"

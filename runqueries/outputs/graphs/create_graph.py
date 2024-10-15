@@ -40,17 +40,17 @@ for type_fun in [0]:#,1]:
     file = f"../partial/louds/backtracking/results-f{type_fun}.csv"
     plot_from_csv(file, "Gradual retrieval (LOUDS - backtracking)", "k results", f"graphPartialLoudsBacktracking{type_fun}.png")
     file = f"../partial/louds/nonFixedQueue/results-f{type_fun}.csv"
-    plot_from_csv(file, "Gradual retrieval (LOUDS - nonFixedQueue)", "k results", f"graphPartialLoudsNonFixedQueue{type_fun}.png")
+    plot_from_csv(file, "Gradual retrieval (LOUDS - optimalOrder)", "k results", f"graphPartialLoudsOptimalOrder{type_fun}.png")
     file = f"../partial/dfuds/backtracking/results-f{type_fun}.csv"
     plot_from_csv(file, "Gradual retrieval (DFUDS - backtracking)", "k results", f"graphPartialDfudsBacktracking{type_fun}.png")
-    # file = f"../partial/dfuds/nonFixedQueue/results-f{type_fun}.csv"
-    # plot_from_csv(file, "Gradual retrieval (DFUDS - nonFixedQueue)", "k results", f"graphPartialDfudsNonFixedQueue{type_fun}.png")
+    # file = f"../partial/dfuds/optimalOrder/results-f{type_fun}.csv"
+    # plot_from_csv(file, "Gradual retrieval (DFUDS - optimalOrder)", "k results", f"graphPartialDfudsOptimalOrder{type_fun}.png")
     #
     # file = f"../ranked/louds/backtracking/results-f{type_fun}.csv"
     # plot_from_csv(file, "Ranked retrieval (LOUDS - backtracking)", "top k results", f"graphRankedLoudsBacktracking{type_fun}.png")
-    # file = f"../ranked/louds/nonFixedQueue/results-f{type_fun}.csv"
-    # plot_from_csv(file, "Ranked retrieval (LOUDS - nonFixedQueue)", "top k results",f"graphRankedLoudsNonFixedQueue{type_fun}.png")
+    # file = f"../ranked/louds/optimalOrder/results-f{type_fun}.csv"
+    # plot_from_csv(file, "Ranked retrieval (LOUDS - optimalOrder)", "top k results",f"graphRankedLoudsOptimalOrder{type_fun}.png")
     # file = f"../ranked/dfuds/backtracking/results-f{type_fun}.csv"
     # plot_from_csv(file, "Ranked retrieval (DFUDS - backtracking)", "top k results", f"graphRankedDfudsBacktracking{type_fun}.png")
-    # file = f"../ranked/dfuds/nonFixedQueue/results-f{type_fun}.csv"
-    # plot_from_csv(file, "Ranked retrieval (DFUDS - nonFixedQueue)", "top k results", f"graphRankedDfudsNonFixedQueue{type_fun}.png")
+    # file = f"../ranked/dfuds/optimalOrder/results-f{type_fun}.csv"
+    # plot_from_csv(file, "Ranked retrieval (DFUDS - optimalOrder)", "top k results", f"graphRankedDfudsOptimalOrder{type_fun}.png")
