@@ -1,0 +1,16 @@
+./p2 ../../../data/all/prop-direct-P1412 ../../../data/all/prop-direct-P32191000
+./p2 ../../../data/all/prop-direct-P2548 ../../../data/all/prop-direct-P18891000
+./p2 ../../../data/all/prop-direct-P5277 ../../../data/all/prop-direct-P34171000
+./p2 ../../../data/all/prop-direct-P86 ../../../data/all/prop-direct-P28861000
+./p2 ../../../data/all/prop-direct-P175 ../../../data/all/prop-direct-P25811000
+./p2 ../../../data/all/prop-direct-P30 ../../../data/all/prop-direct-P14651000
+./p2 ../../../data/all/prop-direct-P647 ../../../data/all/prop-direct-P9101000
+./p2 ../../../data/all/prop-direct-P196 ../../../data/all/prop-direct-P10141000
+./p2 ../../../data/all/prop-direct-P176 ../../../data/all/prop-direct-P21741000
+./p2 ../../../data/all/prop-direct-P4952 ../../../data/all/prop-direct-P1231000
+./p2 ../../../data/all/prop-direct-P376 ../../../data/all/prop-direct-P9481000
+./p2 ../../../data/all/prop-direct-P282 ../../../data/all/prop-direct-normalized-P25811000
+./p2 ../../../data/all/prop-direct-P674 ../../../data/all/prop-direct-P2411000
+./p2 ../../../data/all/prop-direct-P5277 ../../../data/all/prop-direct-P9101000
+./p2 ../../../data/all/prop-direct-P509 ../../../data/all/prop-direct-P13751000
+./p2 ../../../data/all/prop-direct-P3578 ../../../data/all/prop-direct-P51661000
