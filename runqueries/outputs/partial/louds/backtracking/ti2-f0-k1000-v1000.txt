@@ -1,0 +1,18 @@
+number of results: 1000
+number of results: 1000
+0.08564
+number of results: 1000
+number of results: 1000
+0.040684
+number of results: 1000
+number of results: 1000
+0.06907
+number of results: 1000
+number of results: 1000
+0.059271
+number of results: 1000
+number of results: 1000
+1.80968
+number of results: 1000
+number of results: 1000
+0.179679

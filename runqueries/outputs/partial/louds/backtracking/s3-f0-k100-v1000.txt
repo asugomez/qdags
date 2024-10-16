@@ -1,0 +1,3 @@
+number of results: 100
+number of results: 100
+0.000869

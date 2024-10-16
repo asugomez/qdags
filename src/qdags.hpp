@@ -138,7 +138,7 @@ public:
          const uint64_t _grid_side,
          uint8_t k, uint8_t d
     ) {
-        // OJO PIOJO: aqui el constructor no está terminado: no pasa el path de enteros a bits!
+        // WARNING: new version we build the quadtree!
         Q = new se_quadtree(bv, _grid_side, k, d);
 
         Msize = std::pow(k, d);

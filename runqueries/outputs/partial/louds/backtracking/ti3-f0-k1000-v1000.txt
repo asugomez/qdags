@@ -1,0 +1,12 @@
+number of results: 1000
+number of results: 1000
+34.3104
+number of results: 1000
+number of results: 1000
+230.975
+number of results: 0
+number of results: 0
+1.5e-05
+number of results: 0
+number of results: 0
+1.6e-05

@@ -1,0 +1,9 @@
+number of results: 1
+number of results: 1
+20.8113
+number of results: 12
+number of results: 12
+6.28221
+number of results: 8
+number of results: 8
+99.7353

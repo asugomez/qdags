@@ -1,0 +1,32 @@
+number of results: 100
+0.009351
+number of results: 100
+0.005683
+number of results: 100
+0.00043
+number of results: 100
+0.09257
+number of results: 100
+0.045161
+number of results: 100
+0.001924
+number of results: 100
+0.001304
+number of results: 100
+0.000846
+number of results: 100
+0.095298
+number of results: 100
+0.001228
+number of results: 100
+0.000553
+number of results: 100
+0.002265
+number of results: 100
+0.019748
+number of results: 100
+0.001497
+number of results: 100
+0.002847
+number of results: 100
+0.002504

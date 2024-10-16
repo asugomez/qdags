@@ -1,0 +1,32 @@
+number of results: 1000
+0.035305
+number of results: 1000
+0.008988
+number of results: 1000
+0.001913
+number of results: 1000
+0.558212
+number of results: 1000
+0.562591
+number of results: 1000
+0.004953
+number of results: 1000
+0.011694
+number of results: 1000
+0.004665
+number of results: 1000
+0.324712
+number of results: 1000
+0.0169
+number of results: 1000
+0.002008
+number of results: 1000
+0.004022
+number of results: 1000
+0.064433
+number of results: 1000
+0.002783
+number of results: 1000
+0.021371
+number of results: 1000
+0.014171

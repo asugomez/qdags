@@ -1,0 +1,15 @@
+number of results: 10
+number of results: 10
+0.799022
+number of results: 10
+number of results: 10
+0.591674
+number of results: 10
+number of results: 10
+0.359468
+number of results: 10
+number of results: 10
+22.4247
+number of results: 10
+number of results: 10
+3.32216

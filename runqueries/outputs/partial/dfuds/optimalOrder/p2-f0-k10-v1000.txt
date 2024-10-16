@@ -1,0 +1,32 @@
+number of results: 10
+3.61467
+number of results: 10
+0.129224
+number of results: 10
+0.002103
+number of results: 10
+0.167891
+number of results: 10
+0.410437
+number of results: 10
+0.164377
+number of results: 10
+0.077286
+number of results: 10
+0.010185
+number of results: 10
+0.087379
+number of results: 10
+0.008163
+number of results: 10
+0.012643
+number of results: 10
+0.212214
+number of results: 10
+0.073929
+number of results: 10
+0.004577
+number of results: 10
+0.123941
+number of results: 10
+0.061783

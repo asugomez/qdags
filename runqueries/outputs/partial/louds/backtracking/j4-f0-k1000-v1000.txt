@@ -1,0 +1,9 @@
+number of results: 1000
+number of results: 1000
+1.97816
+number of results: 1000
+number of results: 1000
+0.36421
+number of results: 1000
+number of results: 1000
+0.405494

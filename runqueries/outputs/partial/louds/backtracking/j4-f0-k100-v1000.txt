@@ -1,0 +1,9 @@
+number of results: 100
+number of results: 100
+0.431212
+number of results: 100
+number of results: 100
+0.424634
+number of results: 100
+number of results: 100
+0.116729

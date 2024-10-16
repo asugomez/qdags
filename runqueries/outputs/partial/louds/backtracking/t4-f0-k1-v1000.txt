@@ -1,0 +1,6 @@
+number of results: 1
+number of results: 1
+0.0014
+number of results: 1
+number of results: 1
+0.098037

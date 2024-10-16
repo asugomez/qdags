@@ -1,0 +1,12 @@
+number of results: 100
+number of results: 100
+7.38258
+number of results: 100
+number of results: 100
+163.124
+number of results: 0
+number of results: 0
+1.5e-05
+number of results: 0
+number of results: 0
+1.4e-05

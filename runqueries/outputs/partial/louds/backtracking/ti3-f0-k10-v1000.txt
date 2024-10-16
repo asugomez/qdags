@@ -1,0 +1,12 @@
+number of results: 10
+number of results: 10
+6.49639
+number of results: 10
+number of results: 10
+26.3632
+number of results: 0
+number of results: 0
+1.5e-05
+number of results: 0
+number of results: 0
+1.4e-05

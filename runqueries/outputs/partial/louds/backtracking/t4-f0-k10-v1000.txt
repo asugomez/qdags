@@ -1,0 +1,6 @@
+number of results: 10
+number of results: 10
+0.014249
+number of results: 10
+number of results: 10
+0.967643

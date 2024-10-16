@@ -1,0 +1,32 @@
+number of results: 1
+0.001195
+number of results: 1
+0.005358
+number of results: 1
+0.000196
+number of results: 1
+0.007796
+number of results: 1
+0.002059
+number of results: 1
+0.001249
+number of results: 1
+0.000335
+number of results: 1
+0.000683
+number of results: 1
+0.000414
+number of results: 1
+0.00025
+number of results: 1
+0.000229
+number of results: 1
+0.002061
+number of results: 1
+0.001804
+number of results: 1
+0.000231
+number of results: 1
+0.000604
+number of results: 1
+0.000273

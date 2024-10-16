@@ -1,0 +1,12 @@
+number of results: 1
+number of results: 1
+0.346362
+number of results: 1
+number of results: 1
+0.000831
+number of results: 1
+number of results: 1
+0.000614
+number of results: 1
+number of results: 1
+0.03306
