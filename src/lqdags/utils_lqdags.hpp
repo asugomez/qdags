@@ -297,9 +297,9 @@ static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadran
         }
     }
     else{ // att2 op val_const TYPE_ATT2_CONST
+		min_att_2 = min_att[pred->att_2];
+		max_att_2 = max_att[pred->att_2];
         switch (pred->op) {
-            min_att_2 = min_att[pred->att_2];
-            max_att_2 = max_att[pred->att_2];
             case OP_EQUAL:
                 if(quadrant_side == 1){
                     return min_att_2 == pred->val_const;
