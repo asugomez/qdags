@@ -1,7 +1,7 @@
 ./j3 ../../data/all/prop-direct-P197 ../../data/all/prop-direct-P800 ../../data/all/prop-direct-P1366 1
 ./j3 ../../data/all/prop-direct-P206 ../../data/all/prop-direct-P138 ../../data/all/prop-direct-P4839 1
 ./j3 ../../data/all/prop-direct-P4132 ../../data/all/prop-direct-P461 ../../data/all/prop-direct-P4342 1
-./j3 ../../data/all/prop-direct-P141 ../../data/all/prop-direct-P301 ../../data/all/prop-direct-P47461
+./j3 ../../data/all/prop-direct-P141 ../../data/all/prop-direct-P301 ../../data/all/prop-direct-P4746 1
 ./j3 ../../data/all/prop-direct-P1313 ../../data/all/prop-direct-P301 ../../data/all/prop-direct-P541 1
 ./j3 ../../data/all/prop-direct-P736 ../../data/all/prop-direct-P1040 ../../data/all/prop-direct-P648 1
 ./j3 ../../data/all/prop-direct-P750 ../../data/all/prop-direct-P98 ../../data/all/prop-direct-P3984 1
