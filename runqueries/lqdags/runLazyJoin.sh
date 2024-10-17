@@ -14,7 +14,10 @@ for k in 1 10 100 1000; do
     results_file="../outputs/lqdags/$file-k$k.txt"
 
     while IFS= read -r line || [ -n "$line" ]; do
-      modified_line="$line$k"
+      if [[ "$line" =~ [[:space:]]$ ]]; then
+        line="${line% }"  # Remove the trailing space
+      fi
+      modified_line="$line $k"
       echo "$modified_line"
     done < "$input_file" > "$output_file"
 
