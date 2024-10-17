@@ -1,50 +1,50 @@
-./tr2 ../../data/all/prop-direct-P552 ../../data/all/prop-direct-P461 ../../data/all/prop-direct-P7411000
-./tr2 ../../data/all/prop-direct-P479 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P12691000
-./tr2 ../../data/all/prop-direct-P87 ../../data/all/prop-direct-P136 ../../data/all/prop-direct-P8261000
-./tr2 ../../data/all/prop-direct-P5841 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P1411000
-./tr2 ../../data/all/prop-direct-P375 ../../data/all/prop-direct-P495 ../../data/all/prop-direct-P1371000
-./tr2 ../../data/all/prop-direct-P1343 ../../data/all/prop-direct-P767 ../../data/all/prop-direct-P33731000
-./tr2 ../../data/all/prop-direct-P26 ../../data/all/prop-direct-P1801 ../../data/all/prop-direct-P14421000
-./tr2 ../../data/all/prop-direct-P2747 ../../data/all/prop-direct-P1366 ../../data/all/prop-direct-P23631000
-./tr2 ../../data/all/prop-direct-P3858 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P14241000
-./tr2 ../../data/all/prop-direct-P647 ../../data/all/prop-direct-P276 ../../data/all/prop-direct-P201000
-./tr2 ../../data/all/prop-direct-P1073 ../../data/all/prop-direct-P1365 ../../data/all/prop-direct-P10721000
-./tr2 ../../data/all/prop-direct-P941 ../../data/all/prop-direct-P103 ../../data/all/prop-direct-P14121000
-./tr2 ../../data/all/prop-direct-P741 ../../data/all/prop-direct-P2283 ../../data/all/prop-direct-P25451000
-./tr2 ../../data/all/prop-direct-P749 ../../data/all/prop-direct-P488 ../../data/all/prop-direct-P23881000
-./tr2 ../../data/all/prop-direct-P1313 ../../data/all/prop-direct-P1001 ../../data/all/prop-direct-P13661000
-./tr2 ../../data/all/prop-direct-P1753 ../../data/all/prop-direct-P1754 ../../data/all/prop-direct-P18891000
-./tr2 ../../data/all/prop-direct-P485 ../../data/all/prop-direct-P488 ../../data/all/prop-direct-P261000
-./tr2 ../../data/all/prop-direct-P1302 ../../data/all/prop-direct-P47 ../../data/all/prop-direct-P2761000
-./tr2 ../../data/all/prop-direct-P552 ../../data/all/prop-direct-P461 ../../data/all/prop-direct-P7411000
-./tr2 ../../data/all/prop-direct-P40 ../../data/all/prop-direct-P39 ../../data/all/prop-direct-P1661000
-./tr2 ../../data/all/prop-direct-P1753 ../../data/all/prop-direct-P136 ../../data/all/prop-direct-P3011000
-./tr2 ../../data/all/prop-direct-P176 ../../data/all/prop-direct-P1365 ../../data/all/prop-direct-P1781000
-./tr2 ../../data/all/prop-direct-P2747 ../../data/all/prop-direct-P1366 ../../data/all/prop-direct-P23631000
-./tr2 ../../data/all/prop-direct-P1811 ../../data/all/prop-direct-P1754 ../../data/all/prop-direct-P9101000
-./tr2 ../../data/all/prop-direct-P26 ../../data/all/prop-direct-P22 ../../data/all/prop-direct-P33421000
-./tr2 ../../data/all/prop-direct-P185 ../../data/all/prop-direct-P3373 ../../data/all/prop-direct-P401000
-./tr2 ../../data/all/prop-direct-P937 ../../data/all/prop-direct-P473 ../../data/all/prop-direct-P41691000
-./tr2 ../../data/all/prop-direct-P4614 ../../data/all/prop-direct-P206 ../../data/all/prop-direct-P2001000
-./tr2 ../../data/all/prop-direct-P466 ../../data/all/prop-direct-P1532 ../../data/all/prop-direct-P1271000
-./tr2 ../../data/all/prop-direct-P1080 ../../data/all/prop-direct-P178 ../../data/all/prop-direct-P1701000
-./tr2 ../../data/all/prop-direct-P1791 ../../data/all/prop-direct-P4224 ../../data/all/prop-direct-P1381000
-./tr2 ../../data/all/prop-direct-P1365 ../../data/all/prop-direct-P910 ../../data/all/prop-direct-P4631000
-./tr2 ../../data/all/prop-direct-P1037 ../../data/all/prop-direct-P708 ../../data/all/prop-direct-P4601000
-./tr2 ../../data/all/prop-direct-P1445 ../../data/all/prop-direct-P272 ../../data/all/prop-direct-P1701000
-./tr2 ../../data/all/prop-direct-P306 ../../data/all/prop-direct-P460 ../../data/all/prop-direct-P4001000
-./tr2 ../../data/all/prop-direct-P272 ../../data/all/prop-direct-P740 ../../data/all/prop-direct-P9151000
-./tr2 ../../data/all/prop-direct-P1659 ../../data/all/prop-direct-P126 ../../data/all/prop-direct-P16291000
-./tr2 ../../data/all/prop-direct-P530 ../../data/all/prop-direct-P172 ../../data/all/prop-direct-P1381000
-./tr2 ../../data/all/prop-direct-P248 ../../data/all/prop-direct-P276 ../../data/all/prop-direct-P6111000
-./tr2 ../../data/all/prop-direct-P355 ../../data/all/prop-direct-P1056 ../../data/all/prop-direct-P4521000
-./tr2 ../../data/all/prop-direct-P1196 ../../data/all/prop-direct-P2283 ../../data/all/prop-direct-P5091000
-./tr2 ../../data/all/prop-direct-P2302 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P16291000
-./tr2 ../../data/all/prop-direct-P88 ../../data/all/prop-direct-P127 ../../data/all/prop-direct-P2721000
-./tr2 ../../data/all/prop-direct-P690 ../../data/all/prop-direct-P556 ../../data/all/prop-direct-P1381000
-./tr2 ../../data/all/prop-direct-P1056 ../../data/all/prop-direct-P1972 ../../data/all/prop-direct-P20371000
-./tr2 ../../data/all/prop-direct-P3858 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P14241000
-./tr2 ../../data/all/prop-direct-P126 ../../data/all/prop-direct-P610 ../../data/all/prop-direct-P5591000
-./tr2 ../../data/all/prop-direct-P3092 ../../data/all/prop-direct-P737 ../../data/all/prop-direct-P14311000
-./tr2 ../../data/all/prop-direct-P3092 ../../data/all/prop-direct-P3342 ../../data/all/prop-direct-P581000
-./tr2 ../../data/all/prop-direct-P1026 ../../data/all/prop-direct-P1416 ../../data/all/prop-direct-P691000
+./tr2 ../../data/all/prop-direct-P552 ../../data/all/prop-direct-P461 ../../data/all/prop-direct-P741 1000
+./tr2 ../../data/all/prop-direct-P479 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P1269 1000
+./tr2 ../../data/all/prop-direct-P87 ../../data/all/prop-direct-P136 ../../data/all/prop-direct-P826 1000
+./tr2 ../../data/all/prop-direct-P5841 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P141 1000
+./tr2 ../../data/all/prop-direct-P375 ../../data/all/prop-direct-P495 ../../data/all/prop-direct-P137 1000
+./tr2 ../../data/all/prop-direct-P1343 ../../data/all/prop-direct-P767 ../../data/all/prop-direct-P3373 1000
+./tr2 ../../data/all/prop-direct-P26 ../../data/all/prop-direct-P1801 ../../data/all/prop-direct-P1442 1000
+./tr2 ../../data/all/prop-direct-P2747 ../../data/all/prop-direct-P1366 ../../data/all/prop-direct-P2363 1000
+./tr2 ../../data/all/prop-direct-P3858 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P1424 1000
+./tr2 ../../data/all/prop-direct-P647 ../../data/all/prop-direct-P276 ../../data/all/prop-direct-P20 1000
+./tr2 ../../data/all/prop-direct-P1073 ../../data/all/prop-direct-P1365 ../../data/all/prop-direct-P1072 1000
+./tr2 ../../data/all/prop-direct-P941 ../../data/all/prop-direct-P103 ../../data/all/prop-direct-P1412 1000
+./tr2 ../../data/all/prop-direct-P741 ../../data/all/prop-direct-P2283 ../../data/all/prop-direct-P2545 1000
+./tr2 ../../data/all/prop-direct-P749 ../../data/all/prop-direct-P488 ../../data/all/prop-direct-P2388 1000
+./tr2 ../../data/all/prop-direct-P1313 ../../data/all/prop-direct-P1001 ../../data/all/prop-direct-P1366 1000
+./tr2 ../../data/all/prop-direct-P1753 ../../data/all/prop-direct-P1754 ../../data/all/prop-direct-P1889 1000
+./tr2 ../../data/all/prop-direct-P485 ../../data/all/prop-direct-P488 ../../data/all/prop-direct-P26 1000
+./tr2 ../../data/all/prop-direct-P1302 ../../data/all/prop-direct-P47 ../../data/all/prop-direct-P276 1000
+./tr2 ../../data/all/prop-direct-P552 ../../data/all/prop-direct-P461 ../../data/all/prop-direct-P741 1000
+./tr2 ../../data/all/prop-direct-P40 ../../data/all/prop-direct-P39 ../../data/all/prop-direct-P166 1000
+./tr2 ../../data/all/prop-direct-P1753 ../../data/all/prop-direct-P136 ../../data/all/prop-direct-P301 1000
+./tr2 ../../data/all/prop-direct-P176 ../../data/all/prop-direct-P1365 ../../data/all/prop-direct-P178 1000
+./tr2 ../../data/all/prop-direct-P2747 ../../data/all/prop-direct-P1366 ../../data/all/prop-direct-P2363 1000
+./tr2 ../../data/all/prop-direct-P1811 ../../data/all/prop-direct-P1754 ../../data/all/prop-direct-P910 1000
+./tr2 ../../data/all/prop-direct-P26 ../../data/all/prop-direct-P22 ../../data/all/prop-direct-P3342 1000
+./tr2 ../../data/all/prop-direct-P185 ../../data/all/prop-direct-P3373 ../../data/all/prop-direct-P40 1000
+./tr2 ../../data/all/prop-direct-P937 ../../data/all/prop-direct-P473 ../../data/all/prop-direct-P4169 1000
+./tr2 ../../data/all/prop-direct-P4614 ../../data/all/prop-direct-P206 ../../data/all/prop-direct-P200 1000
+./tr2 ../../data/all/prop-direct-P466 ../../data/all/prop-direct-P1532 ../../data/all/prop-direct-P127 1000
+./tr2 ../../data/all/prop-direct-P1080 ../../data/all/prop-direct-P178 ../../data/all/prop-direct-P170 1000
+./tr2 ../../data/all/prop-direct-P1791 ../../data/all/prop-direct-P4224 ../../data/all/prop-direct-P138 1000
+./tr2 ../../data/all/prop-direct-P1365 ../../data/all/prop-direct-P910 ../../data/all/prop-direct-P463 1000
+./tr2 ../../data/all/prop-direct-P1037 ../../data/all/prop-direct-P708 ../../data/all/prop-direct-P460 1000
+./tr2 ../../data/all/prop-direct-P1445 ../../data/all/prop-direct-P272 ../../data/all/prop-direct-P170 1000
+./tr2 ../../data/all/prop-direct-P306 ../../data/all/prop-direct-P460 ../../data/all/prop-direct-P400 1000
+./tr2 ../../data/all/prop-direct-P272 ../../data/all/prop-direct-P740 ../../data/all/prop-direct-P915 1000
+./tr2 ../../data/all/prop-direct-P1659 ../../data/all/prop-direct-P126 ../../data/all/prop-direct-P1629 1000
+./tr2 ../../data/all/prop-direct-P530 ../../data/all/prop-direct-P172 ../../data/all/prop-direct-P138 1000
+./tr2 ../../data/all/prop-direct-P248 ../../data/all/prop-direct-P276 ../../data/all/prop-direct-P611 1000
+./tr2 ../../data/all/prop-direct-P355 ../../data/all/prop-direct-P1056 ../../data/all/prop-direct-P452 1000
+./tr2 ../../data/all/prop-direct-P1196 ../../data/all/prop-direct-P2283 ../../data/all/prop-direct-P509 1000
+./tr2 ../../data/all/prop-direct-P2302 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P1629 1000
+./tr2 ../../data/all/prop-direct-P88 ../../data/all/prop-direct-P127 ../../data/all/prop-direct-P272 1000
+./tr2 ../../data/all/prop-direct-P690 ../../data/all/prop-direct-P556 ../../data/all/prop-direct-P138 1000
+./tr2 ../../data/all/prop-direct-P1056 ../../data/all/prop-direct-P1972 ../../data/all/prop-direct-P2037 1000
+./tr2 ../../data/all/prop-direct-P3858 ../../data/all/prop-direct-P1889 ../../data/all/prop-direct-P1424 1000
+./tr2 ../../data/all/prop-direct-P126 ../../data/all/prop-direct-P610 ../../data/all/prop-direct-P559 1000
+./tr2 ../../data/all/prop-direct-P3092 ../../data/all/prop-direct-P737 ../../data/all/prop-direct-P1431 1000
+./tr2 ../../data/all/prop-direct-P3092 ../../data/all/prop-direct-P3342 ../../data/all/prop-direct-P58 1000
+./tr2 ../../data/all/prop-direct-P1026 ../../data/all/prop-direct-P1416 ../../data/all/prop-direct-P69 1000
