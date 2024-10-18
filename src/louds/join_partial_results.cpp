@@ -95,8 +95,10 @@ bool AND_partial(
         uint16_t diff_level = max_level-cur_level;
         uint16_t next_level = cur_level + 1;
 
+		uint64_t root_temp[16 /*nQ*/];
         for (i = 0; i < children_to_recurse_size; ++i) {
-            uint64_t* root_temp= new uint64_t[nQ];
+//            uint64_t* root_temp= new uint64_t[nQ];
+//			auto coordinatesTemp = std::make_unique<uint16_t[]>(l);
             uint16_t* coordinatesTemp = new uint16_t[l];
             child = children_to_recurse[i];
 
@@ -106,10 +108,17 @@ bool AND_partial(
 
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
-                delete[] root_temp;
+//                delete[] root_temp;
                 results_points.push_back(coordinatesTemp);
-                if(bounded_result && ++results >= UPPER_BOUND)
+                if(bounded_result && ++results >= UPPER_BOUND){
+					// TODO: TEST: is it necessary?
+					delete[] tupleQdags.coordinates;
+					delete[] tupleQdags.roots;
+					while(!pq.empty()) {
+						pq.pop();
+					}
                     return true;
+				}
             } else{
                 // compute the weight of the tuple (ONLY if it's not a leaf)
                 double total_weight = DBL_MAX;
@@ -195,7 +204,7 @@ bool multiJoinPartialResults(
 
     priority_queue<qdagWeight> pq; // maxHeap
     pq.push({0, Q_roots, 1, coordinates}); // insert the root of the qda
-    AND_partial(Q_star, Q.size(), A.size(),
+    bool res = AND_partial(Q_star, Q.size(), A.size(),
                 bounded_result, UPPER_BOUND,
                 max_level, grid_size, type_order_fun,
                 pq, results_points);
@@ -214,7 +223,7 @@ bool multiJoinPartialResults(
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
 
-    return true;
+    return res;
 }
 
 
@@ -247,10 +256,6 @@ AND_partial_backtracking(
         uint16_t *coordinates,
         uint64_t size_queue,
         vector<uint16_t*> &top_results) {
-
-    if(top_results.size() >= size_queue){
-        return true;
-    }
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool just_zeroes = true;
@@ -263,7 +268,6 @@ AND_partial_backtracking(
 
     // last level --> add result to the priority queue
     if (cur_level == max_level){
-
         for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
             if (nAtt == 3)
@@ -292,7 +296,7 @@ AND_partial_backtracking(
         // add output to the priority queue of results
         for (i = 0; i < children_to_recurse_size; ++i){
             child = children_to_recurse[i];
-            uint16_t* coordinatesTemp = new uint16_t[l];
+            uint16_t* coordinatesTemp = new uint16_t[l]; // TODO: cambiar esta linea
 
             for(uint16_t k = 0; k < l; k++)
                 coordinatesTemp[k] = coordinates[k];
@@ -302,7 +306,10 @@ AND_partial_backtracking(
             just_zeroes = false;
             // queue full
             if(top_results.size() >= size_queue){
-                break;
+				// TODO: test this
+				delete[] coordinates;
+				delete[] roots;
+				return true;
             }
         }
     }
@@ -342,6 +349,7 @@ AND_partial_backtracking(
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
             uint16_t* coordinatesTemp = new uint16_t[l];
+//			auto coordinatesTemp = std::make_unique<uint16_t[]>(l);
             for(uint16_t k = 0; k < l; k++)
                 coordinatesTemp[k] = coordinates[k];
             transformCoordinates(coordinatesTemp, l, diff_level, child);
