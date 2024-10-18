@@ -39,7 +39,7 @@ bool AND_partial(
     uint64_t children_to_recurse_size;
     uint16_t cur_level;
 	// TOOD: maybe delete l and replace it by nAttr
-    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
+//    uint16_t l = (uint16_t) log2(p); // bits number to define the quadtree_formula's children
     uint64_t results = 0;
     while(!pq.empty()){
         children = 0xffffffff;
@@ -95,24 +95,24 @@ bool AND_partial(
         uint16_t diff_level = max_level-cur_level;
         uint16_t next_level = cur_level + 1;
 
-		uint64_t root_temp[16 /*nQ*/];
+		uint16_t coordinatesTemp[children_to_recurse_size][nAtt /*l*/];
         for (i = 0; i < children_to_recurse_size; ++i) {
-//            uint64_t* root_temp= new uint64_t[nQ];
+            uint64_t* root_temp= new uint64_t[nQ];
 //			auto coordinatesTemp = std::make_unique<uint16_t[]>(l);
-            uint16_t* coordinatesTemp = new uint16_t[l];
+//            uint16_t* coordinatesTemp = new uint16_t[nAtt];
             child = children_to_recurse[i];
 
-            for(uint16_t k = 0; k < l; k++)
-                coordinatesTemp[k] = tupleQdags.coordinates[k];
-            transformCoordinates(coordinatesTemp, l, diff_level, child);
+            for(uint16_t k = 0; k < nAtt; k++)
+                coordinatesTemp[i][k] = tupleQdags.coordinates[k];
+            transformCoordinates(coordinatesTemp[i], nAtt, diff_level, child);
 
             // compute the coordinates if it's a leaf
             if(cur_level == max_level){
 //                delete[] root_temp;
-                results_points.push_back(coordinatesTemp);
+                results_points.push_back(coordinatesTemp[i]);
                 if(bounded_result && ++results >= UPPER_BOUND){
 					// TODO: TEST: is it necessary?
-					delete[] tupleQdags.coordinates;
+//					delete[] tupleQdags.coordinates;
 					delete[] tupleQdags.roots;
 					while(!pq.empty()) {
 						pq.pop();
@@ -134,7 +134,7 @@ bool AND_partial(
                 if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
                         total_weight /= grid_size;
                 // insert the tuple
-                qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
+                qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp[i]} ;
                 pq.push(this_node); // add the tuple to the queue
             }
         }
@@ -209,7 +209,7 @@ bool multiJoinPartialResults(
                 max_level, grid_size, type_order_fun,
                 pq, results_points);
 
-//    cout << "number of results: " << results_points.size() << endl;
+    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //        uint16_t* coordinates = results_points[i];
