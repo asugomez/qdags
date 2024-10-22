@@ -1,33 +1,29 @@
 cmake_minimum_required(VERSION 3.5)
-project(
-        rankedQdagsProject
-        VERSION 1.0
-        LANGUAGES CXX)
+project(qdags) # Defines the project name according to what we provided during project creation
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14) #  see if change to 14 or 17
 
-add_executable(main main.cpp)
+# Compiler options
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
+include_directories(/opt/homebrew/include)
+link_directories(/opt/homebrew/lib)
 
-# Lista de archivos fuente dentro de la carpeta src
-set(SOURCE_FILES
-        src/joins.cpp
-        src/louds/join_partial_results.cpp
-        src/louds/join_ranked_results.cpp
-        src/qdags.hpp
-        src/lqdag.hpp
-        src/rank.hpp
-        src/se_quadtree.hpp
-        src/MinMaxHeap.hpp
-        src/utils.hpp
-)
+add_executable(qdags main.cpp)
 
-# Agrega los archivos fuente al ejecutable principal
-target_sources(main PRIVATE ${SOURCE_FILES})
+# Link libraries
+target_link_libraries(qdags sdsl divsufsort divsufsort64)
 
-# Añade la ruta de búsqueda de encabezados de la librería
-target_link_libraries(main PRIVATE sdsl divsufsort divsufsort64)
-target_include_directories(main PRIVATE /opt/homebrew/include)
-target_link_directories(main PRIVATE /opt/homebrew/lib)
+# Add command-line arguments
+#add_custom_target(
+#        run
+#        COMMAND qdags ./data/all/prop-direct-P4673 ./data/all/prop-direct-P4144 ./data/all/prop-direct-P217 ./data/all/prop-direct-P276 0 100
+#        WORKING_DIRECTORY /Users/asugomez/Desktop/Magister/Tesis/qdags
+##        ./data/priorities/t4/pri1-3
+##        ./data/priorities/t4/pri2-3
+##        ./data/priorities/t4/pri3-3
+##        ./data/priorities/t4/pri4-3
+##        0
+##        10000
+#)
 
-target_compile_options(main PRIVATE -O3 -O0 -DNDEBUG)
 
