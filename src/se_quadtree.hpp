@@ -110,7 +110,8 @@ protected:
         height = height > 1 ? height : 1; // If size == 0
 
         bv = new rank_bv_64[height];
-        total_ones.reserve(height);
+//        total_ones.reserve(height);
+		total_ones.resize(height,0);
 
         k_d = std::pow(k, d);
 
@@ -214,7 +215,7 @@ protected:
                 }
             }
             delete[] top_left_point;
-
+			top_left_point = nullptr;
         }
 
         k_t_.resize(t);
@@ -263,9 +264,12 @@ public:
         height = height > 1 ? height : 1; // If size == 0
 
         bv = new rank_bv_64[height];
-        total_ones.reserve(height);
+//        total_ones.reserve(height);
+		total_ones.resize(height,0);
 
         k_d = std::pow(k, d);
+
+		ref_count=1;
 
         // cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;
 
@@ -306,16 +310,22 @@ public:
 
     }
 
-
-    ~se_quadtree() {
-        ref_count--;
-        if (ref_count == 0)
-            delete[] bv;
-    }
+	~se_quadtree() {
+		ref_count--;
+		if (ref_count == 0){
+			delete[] bv;
+			bv = nullptr;
+			total_ones.clear();
+		}
+	}
 
     void inc_ref_count() {
         ref_count++;
     }
+
+	uint64_t get_ref_count() {
+		return this->ref_count;
+	}
 
 
     uint8_t getK() {
