@@ -36,7 +36,7 @@ bool AND_ranked(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint256_t>& results_points ) {
+        vector<uint256_t>& results_points) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
@@ -313,7 +313,6 @@ AND_ranked_backtracking(
     uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
     // last level --> add result to the priority queue
     if (cur_level == max_level){
-
         for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
             if (nAtt == 3)
@@ -450,7 +449,7 @@ AND_ranked_backtracking(
 			}
 		}
 		sortBySecond(order_to_traverse);
-		for(i=0; i<children_to_recurse_size; i++){
+		for(i=0; i<order_to_traverse.size(); i++){
 				AND_ranked_backtracking(Q,
 										nQ,
 										nAtt,

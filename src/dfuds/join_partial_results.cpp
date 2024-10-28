@@ -85,7 +85,6 @@ bool AND_partial_dfuds(
 
 		// if children_to_recurse_size is 0, delete coordinates and roots
 		if(children_to_recurse_size == 0) {
-//			delete[] tupleQdags.coordinates;
 //			delete[] tupleQdags.roots;
 		} else{
 			i = 0;
@@ -376,7 +375,7 @@ bool AND_partial_dfuds_backtracking(
             order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
         }
 		sortBySecond(order_to_traverse);
-        for (i = 0; i < children_to_recurse_size; ++i) {
+		for(i=0; i<order_to_traverse.size(); i++){
             AND_partial_dfuds_backtracking(Q, nQ, nAtt,
 										   root_temp[order_to_traverse[i].first],
 										   next_level, max_level, grid_size,

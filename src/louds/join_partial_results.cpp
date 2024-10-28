@@ -85,7 +85,6 @@ bool AND_partial(
 		// if children_to_recurse_size is 0, delete coordinates and roots
 		if(children_to_recurse_size == 0) {
 			// TODO: check memory leaks
-//			delete[] tupleQdags.coordinates;
 //			delete[] tupleQdags.roots;
 		} else{
 			i = 0;
@@ -367,7 +366,7 @@ AND_partial_backtracking(
 			order_to_traverse.push_back({i, total_weight});
 		}
 		sortBySecond(order_to_traverse);
-		for(i=0; i<children_to_recurse_size; i++){
+		for(i=0; i<order_to_traverse.size(); i++){
 				AND_partial_backtracking(Q, nQ, nAtt,
 										 root_temp[order_to_traverse[i].first],
 										 next_level, max_level, grid_size,

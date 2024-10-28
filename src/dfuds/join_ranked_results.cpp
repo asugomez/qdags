@@ -194,7 +194,6 @@ bool AND_ranked_dfuds(
  * @param bounded_result if we have to stop computing the results after a certain number of tuples.
  * @param UPPER_BOUND the number of tuples to compute. Only used if bounded_result is true.
  * @param type_priority_fun 0 sum , 1 maximum. (p1+p2+...+pn) or max(p1,p2,...,pn)
- * @param size_queue the size of the priority queue.
  * @param priorities the priorities of the points. We have a vector of priorities for each qdag.
  * @param rMq the rmq structure to get the minimum priority in a range.
  * @param results_points vector with the output
@@ -450,7 +449,7 @@ AND_ranked_dfuds_backtracking(
             }
         }
 		sortBySecond(order_to_traverse);
-		for(i=0; i<children_to_recurse_size; i++){
+		for(i=0; i<order_to_traverse.size(); i++){
             AND_ranked_dfuds_backtracking(Q, nQ, nAtt,
 										  root_temp[order_to_traverse[i].first],
 										  next_level, max_level,
@@ -479,7 +478,7 @@ bool multiJoinRankedResultsDfudsBacktracking(
         int64_t size_queue,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        priority_queue<qdagResults>& top_results) {
+        priority_queue<qdagResults> top_results) {
     qdag_dfuds::att_set A;
     map<uint64_t, uint8_t> attr_map;
     // iterar por el vector de los qdags
