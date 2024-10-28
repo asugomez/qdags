@@ -181,11 +181,20 @@ public:
 }*/
 
     ~qdag() {
-        //if (Q && !is_extended_qdag) {
-        //    delete Q;
-        //    Q = NULL;
-        //}
-        if (is_extended_qdag) delete M;
+		// TODO: implement copy
+//        if (Q && !is_extended_qdag) {
+//            delete Q;
+//            Q = NULL;
+//        }
+//		// Safely delete the dynamically allocated se_quadtree object
+//		if (Q && Q->get_ref_count() > 0){
+//			delete Q;
+//			Q = nullptr;
+//			if(M && M != nullptr){
+//				delete[] M;
+//				M = nullptr;
+//			}
+//		}
     }
 
     // extend del paper!!
