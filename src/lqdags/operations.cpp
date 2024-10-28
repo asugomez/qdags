@@ -29,26 +29,26 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     map<uint64_t, uint8_t> attr_map;
 
     for (uint64_t i = 0; i < Q.size(); i++) {
-        uint64_t nAttr = Q[i].nAttr();
+        uint64_t nAttr = Q.at(i).nAttr();
         for (uint64_t j = 0; j < nAttr; j++)
-            attr_map[Q[i].getAttr(j)] = 1;
+            attr_map[Q.at(i).getAttr(j)] = 1;
     }
 
     // set of attributs
     for (map<uint64_t, uint8_t>::iterator it = attr_map.begin(); it != attr_map.end(); it++)
         A.push_back(it->first);
 
-//	uint16_t p = std::pow(Q[0].getK(), A.size());
+//	uint16_t p = std::pow(Q.at(0).getK(), A.size());
 
-    uint8_t k = Q[0].getK();
-	uint16_t max_level = Q[0].getHeight()-1;
-	uint64_t grid_side = Q[0].getGridSide();
+    uint8_t k = Q.at(0).getK();
+	uint16_t max_level = Q.at(0).getHeight()-1;
+	uint64_t grid_side = Q.at(0).getGridSide();
 
 
     formula_lqdag* extend_formula_lqdag[Q.size()];
 
     for (uint64_t i = 0; i < Q.size(); i++) { // EXTEND((Q_TREE, index) , A)
-        extend_formula_lqdag[i] = new formula_lqdag(FUNCTOR_EXTEND, new formula_lqdag(&Q[i], i),k, A.size(), max_level, grid_side);
+        extend_formula_lqdag[i] = new formula_lqdag(FUNCTOR_EXTEND, new formula_lqdag(&Q.at(i), i),k, A.size(), max_level, grid_side);
     }
 
 	formula_lqdag* join_formula;
@@ -104,21 +104,21 @@ lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPP
 
 
 
-lqdag* projection(){
-    // TODO
-}
-
-lqdag* semijoin(){
-    // TODO
-}
-
-lqdag* antijoin(){
-    // TODO
-}
-
-lqdag* division(){
-    // TODO
-}
+//lqdag* projection(){
+//    // TODO
+//}
+//
+//lqdag* semijoin(){
+//    // TODO
+//}
+//
+//lqdag* antijoin(){
+//    // TODO
+//}
+//
+//lqdag* division(){
+//    // TODO
+//}
 
 //// (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
 //lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {

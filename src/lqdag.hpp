@@ -38,20 +38,28 @@ public:
 		}
 		// copy assignment operator (deep copy)
 		node_completion& operator=(const node_completion& n){
+			// TODO: see when we call this copy
 			if(this != &n){
+				// Clean up existing resources
+				if(this->coordinates != nullptr)
+					delete[] this->coordinates;
+				if(this->lqdag_children != nullptr)
+					delete[] this->lqdag_children;
+
 				this->val_node = n.val_node;
 				this->level = n.level;
 				this->n_children = n.n_children;
-				if(this->coordinates != nullptr)
-					delete[] this->coordinates;
+
+				// Allocate and copy coordinates
 				this->coordinates = new uint16_t[n.n_children];
-				for(uint64_t i = 0; i < n.n_children; i++)
+				for (uint64_t i = 0; i < n.n_children; i++) {
 					this->coordinates[i] = n.coordinates[i];
-				if(this->lqdag_children != nullptr)
-					delete[] this->lqdag_children;
+				}
+
 				this->lqdag_children = new lqdag*[n.n_children];
 				for(uint64_t i = 0; i < n.n_children; i++)
-					this->lqdag_children[i] = n.lqdag_children[i];
+//					this->lqdag_children[i] = n.lqdag_children[i];
+					this->lqdag_children[i] = new lqdag(*n.lqdag_children[i]);
 			}
 			return *this;
 		}
@@ -182,17 +190,17 @@ public:
 	 * Return value of the i-th child: FULL_LEAF, EMPTY_LEAF, NO_VALUE_LEAF
 	 */
 	double get_child_qdag(formula_lqdag* formula_pos, uint64_t index_qdag,uint64_t i_child, uint64_t& pos_i_child){
-		uint16_t cur_level = (*this->pos_qdags)[index_qdag].level;
-		uint64_t cur_node = (*this->pos_qdags)[index_qdag].cur_node;
+		uint16_t cur_level = (*this->pos_qdags).at(index_qdag).level;
+		uint64_t cur_node = (*this->pos_qdags).at(index_qdag).cur_node;
 		uint16_t max_level = formula_pos->getMaxLevel();
 		bool node_exists = true;
 		if(cur_level == max_level) {
 			pos_i_child = cur_node + i_child;
-			node_exists = this->arr_qdags[index_qdag].get_ith_bit(cur_level, pos_i_child);
+			node_exists = this->arr_qdags.at(index_qdag).get_ith_bit(cur_level, pos_i_child);
 			return node_exists ? FULL_LEAF : EMPTY_LEAF;
 		} else{
 			// ith_child: start position of the ith child of cur_node in the next level (cur_level + 1)
-			pos_i_child = this->arr_qdags[index_qdag].get_child(cur_level, cur_node, i_child, node_exists);
+			pos_i_child = this->arr_qdags.at(index_qdag).get_child(cur_level, cur_node, i_child, node_exists);
 			if(!node_exists)
 				return EMPTY_LEAF;
 			return is_a_qdag_leaf(formula_pos, index_qdag, cur_level+1, pos_i_child);
@@ -206,13 +214,13 @@ public:
 	 * @return
 	 */
 	position* get_position_data(uint64_t index_qdag, uint64_t ith_child, uint64_t curr_node){
-		uint64_t nAttr_qdag = this->arr_qdags[index_qdag].nAttr();
+		uint64_t nAttr_qdag = this->arr_qdags.at(index_qdag).nAttr();
 		uint16_t* copy_curr_coordinates = new uint16_t[nAttr_qdag];
-		uint16_t curr_level = (*pos_qdags)[index_qdag].level;
+		uint16_t curr_level = (*pos_qdags).at(index_qdag).level;
 		uint16_t diff_level = getMaxLevel() - curr_level;
 
 		for(uint16_t k = 0; k < nAttr_qdag; k++)
-			copy_curr_coordinates[k] = (*pos_qdags)[index_qdag].coordinates[k];
+			copy_curr_coordinates[k] = (*pos_qdags).at(index_qdag).coordinates[k];
 		transformCoordinates(copy_curr_coordinates, nAttr_qdag, diff_level, ith_child);
 		return new position{++curr_level, curr_node, copy_curr_coordinates};
 	}
@@ -232,9 +240,13 @@ public:
 				&& this->node_completion_lqdag->lqdag_children[ith_child] != nullptr) {
 			return this->node_completion_lqdag->lqdag_children[ith_child];
 		}
+		// TODO: OFT
+		if(arr_qdags.size()){
+			cout << "error get_child_lqdag: arr_qdags.size() = 0";
+		}
 		position_qdags* new_pos_qdags = new position_qdags[arr_qdags.size()];
 		// copy the vector position of the current lqdag for the new lqdag
-		new_pos_qdags[0] = pos_qdags[0];
+		new_pos_qdags[0] = pos_qdags[0]; // TODO see what happens
 
 		double val_node = get_child_lqdag_aux(this->form_lqdag, ith_child, *new_pos_qdags);
 
@@ -271,7 +283,7 @@ public:
 				double my_val  = get_child_qdag(formula_pos, formula_pos->get_index(), ith_child, jth_child);
 				formula_pos->set_val_lqdag1(my_val);
 				if(my_val!=EMPTY_LEAF)
-					m_pos_qdag[formula_pos->get_index()] = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
+					m_pos_qdag.at(formula_pos->get_index()) = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
 				return my_val;
 			}
 			case FUNCTOR_NOT: {
@@ -281,7 +293,7 @@ public:
 					my_val = 1 - my_val;
 				formula_pos->set_val_lqdag1(my_val);
 				if(my_val!=EMPTY_LEAF)
-					m_pos_qdag[formula_pos->get_index()] = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
+					m_pos_qdag.at(formula_pos->get_index()) = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
 				return my_val;
 			}
 			case FUNCTOR_AND: {
@@ -406,8 +418,8 @@ public:
      */
     double value_qdag(formula_lqdag* formula_pos, uint64_t index_qdag){
         if(formula_pos->get_functor() == FUNCTOR_QTREE || formula_pos->get_functor() == FUNCTOR_NOT) { // only is called
-			uint16_t cur_level = (*this->pos_qdags)[index_qdag].level;
-            uint64_t cur_node = (*this->pos_qdags)[index_qdag].cur_node;
+			uint16_t cur_level = (*this->pos_qdags).at(index_qdag).level;
+            uint64_t cur_node = (*this->pos_qdags).at(index_qdag).cur_node;
             if(formula_pos->get_val_lqdag1() == NO_VALUE_LEAF)
                 return is_a_qdag_leaf(formula_pos, index_qdag, cur_level, cur_node);
             return formula_pos->get_val_lqdag1();
@@ -430,13 +442,13 @@ public:
     double is_a_qdag_leaf(formula_lqdag* formula_pos, uint64_t index_qdag, uint16_t level, uint64_t node){
         uint16_t max_level = formula_pos->getMaxLevel();
         if(level > max_level){
-            return arr_qdags[index_qdag].get_ith_bit(max_level, node);
+            return arr_qdags.at(index_qdag).get_ith_bit(max_level, node);
         }
-        uint8_t node_description = arr_qdags[index_qdag].get_node_last_level(level, node);
+        uint8_t node_description = arr_qdags.at(index_qdag).get_node_last_level(level, node);
         if((node_description | 0) == 0)
             return EMPTY_LEAF;
         uint16_t val_full_ones;
-        uint64_t k_d = arr_qdags[index_qdag].getKD();
+        uint64_t k_d = arr_qdags.at(index_qdag).getKD();
         switch (k_d) {
             case 2:
                 val_full_ones = 3;
@@ -450,7 +462,7 @@ public:
         if((node_description & val_full_ones) == val_full_ones){ // check the children
             if(level == max_level)
                 return FULL_LEAF;
-            uint64_t siblings = arr_qdags[index_qdag].rank(level,node);
+            uint64_t siblings = arr_qdags.at(index_qdag).rank(level,node);
             for(uint64_t i = 0; i < k_d; i++){
                 if(is_a_qdag_leaf(formula_pos,index_qdag, level+1, (siblings+i)*k_d) != 1)
                     return INTERNAL_NODE;
