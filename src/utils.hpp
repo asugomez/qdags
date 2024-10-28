@@ -32,20 +32,23 @@ struct qdagResults{ // we store the output of the join
     }
 };
 
-struct orderJoinQdag{
-    uint64_t index;
-    //uint64_t path;
-    uint16_t* coordinates;
-    double weight;
-    bool operator<(const orderJoinQdag &ojq) const {
-        return weight < ojq.weight; // max heap
-    }
-};
+//struct orderJoinQdag{
+//    uint64_t index;
+//    //uint64_t path;
+//    uint16_t* coordinates;
+//    double weight;
+//    bool operator<(const orderJoinQdag &ojq) const {
+//        return weight < ojq.weight; // max heap
+//    }
+//};
 
-// Function to sort a vector of pairs by the second element
+/**
+ *  Function to inverse sort a vector of pairs by the second element
+ *  Tuple: < index, weight >
+ */
 void sortBySecond(std::vector<std::pair<uint64_t, uint64_t>> &arr) {
 	std::sort(arr.begin(), arr.end(), [](const std::pair<uint64_t, uint64_t> &a, const std::pair<uint64_t, uint64_t> &b) {
-		return a.second < b.second;
+		return a.second > b.second;
 	});
 }
 
@@ -71,6 +74,7 @@ void sortBySecond(std::vector<std::pair<uint64_t, uint64_t>> &arr) {
 //}
 
 /**
+ * TODO: aqui hay un error: coordinates de 16 bits no es suficiente!
  * Transform the i-th child into a coordinate according to the Morton code.
  * When we descend a level, we compute the new coordinates of the point.
  * @param coordinates
@@ -95,37 +99,32 @@ void transformCoordinates(uint16_t* coordinates, uint16_t nAtt, uint64_t diff_le
  * @param diff_level
  * @param child
  */
-void getNewMortonCodePath(uint256_t &path, uint16_t nAtt, uint64_t cur_level, uint16_t child){
-	child <<= (cur_level*nAtt);
-	path |= child;
+void getNewMortonCodePath(uint256_t &path, uint16_t nAtt, uint64_t cur_level, uint256_t child){
+
+	child = child.operator<<(cur_level*nAtt);
+	path.operator|=(child);
+//	path |= child;
 }
 
-// TODO: instead of uint256 use std::bitset<150>
-//void getNewMortonCodePathV2(std::bitset<150> &path, uint16_t nAtt, uint64_t cur_level, uint16_t child){
-//	child <<= (cur_level*nAtt);
-//	path |= child;
-//}
+uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint64_t height){
+	uint16_t* coordinates = new uint16_t[nAtt];
+	for(uint16_t i=0; i<nAtt; i++){
+		coordinates[i] = 0;
+	}
+	// Iterate over each level of the tree to extract coordinates
+	for (uint64_t i = 0; i < height; ++i) {
+		for (uint16_t j = 0; j < nAtt; ++j) {
+			// Extract the j-th bit at level i from the path
+			uint256_t bitPosition = i * nAtt + j;
+			uint256_t bit = (path.operator>>(bitPosition)).operator&(1);
 
-// TODO:
-//uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint64_t height){
-//	uint16_t* coordinates = new uint16_t[nAtt];
-//	for(uint16_t i=0; i<nAtt; i++){
-//		coordinates[i] = 0;
-//	}
-//	// Iterate over each level of the tree to extract coordinates
-//	for (uint64_t i = 0; i < height; ++i) {
-//		for (uint16_t j = 0; j < nAtt; ++j) {
-//			// Extract the j-th bit at level i from the path
-//			uint64_t bitPosition = i * nAtt + j;
-//			uint16_t bit = (path >> bitPosition) & 1;
-//
-//			// Set the bit in the correct position for the j-th coordinate
-//			coordinates[j] |= (bit << i);
-//		}
-//	}
-//
-//	return coordinates;
-//}
+			// Set the bit in the correct position for the j-th coordinate
+			coordinates[j] |= (bit.operator<<(i));
+		}
+	}
+
+	return coordinates;
+}
 
 
 #endif //QDAGS_UTILS_HPP
