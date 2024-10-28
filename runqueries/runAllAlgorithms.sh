@@ -1,6 +1,11 @@
 #!/bin/bash
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+## original
+echo "Running original join"
+cd "$script_dir/original/"
+./runTraditionalJoin.sh
+
 # partial
 # louds
 echo "Running partial louds backtracking"
@@ -17,11 +22,6 @@ cd "$script_dir/partial/dfuds/backtracking/"
 echo "Running partial dfuds optimalOrder"
 cd "$script_dir/partial/dfuds/optimalOrder/"
 ./runPartialDfudsNonFixed.sh
-
-## original
-echo "Running original join"
-cd "$script_dir/original/"
-./runTraditionalJoin.sh
 
 # ranked
 ## louds
@@ -42,6 +42,6 @@ cd "$script_dir/ranked/dfuds/backtracking/"
 
 
 ## lazy qdags
-echo "Running lazy join"
-cd "$script_dir/lqdags/"
-./runLazyJoin.sh
+#echo "Running lazy join"
+#cd "$script_dir/lqdags/"
+#./runLazyJoin.sh
