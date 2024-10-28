@@ -21,7 +21,6 @@ public:
     typedef k2_tree_ns::size_type size_type_k2;
     typedef bit_vector::size_type size_type_bp;
     typedef int_vector_size_type size_type_bv;
-    typedef bit_vector::difference_type difference_type;
 
 private:
     rank_bv_64 bv_s;
@@ -128,7 +127,6 @@ protected:
                 k_t_s.bit_resize(size_bv_s+k_d);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
-
                 size_bv_s += t;
 
                 // write 1^c0
@@ -140,7 +138,8 @@ protected:
                     }
                     k_t_b[index] = 0;
                     size_bv_b+= n_children + 1;
-                } else {
+                }
+				else {
                     // separar en chunks de k_t=4
                     uint64_t n_leaves = t/k_d;
                     for(uint64_t leaf = 0; leaf < n_leaves; leaf++){
@@ -354,7 +353,7 @@ public:
      */
     size_type_bv next_sibling(size_type_bv node_v)const{
         // B[open(B,v-1) - 1] == 1
-        assert(bp_b.is_open(bp_b->find_open(node_v-1) - 1));
+        assert(bp_b.is_open(bp_b.find_open(node_v-1) - 1));
         return bp_b.next_sibling(node_v);
     }
 
