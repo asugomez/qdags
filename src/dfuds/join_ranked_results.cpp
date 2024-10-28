@@ -41,7 +41,7 @@ bool AND_ranked_dfuds(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint16_t*>& results_points ) {
+        vector<uint256_t>& top_results ) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
@@ -58,13 +58,13 @@ bool AND_ranked_dfuds(
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         if(cur_level > max_level){
-            results_points.push_back(tupleQdags.coordinates);
+			top_results.push_back(tupleQdags.path);
             if(bounded_result && ++results >= UPPER_BOUND)
                 return true;
         }
         else{
             // if it's a leaf, output the point coordenates
-            uint64_t rank_vector[nQ][64];
+            uint64_t rank_vector[16 /*nQ*/][64];
             for (i = 0; i < nQ && children; ++i){
                 k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
                 if (nAtt == 3) {
@@ -99,90 +99,90 @@ bool AND_ranked_dfuds(
             // in children we have the actual non empty nodes
             // in children_to_recurse we store the index of these non emtpy nodes
             children_to_recurse_size = bits::cnt((uint64_t) children);
-            i = 0;
-            uint64_t msb; // most significant bit
-            while (i < children_to_recurse_size) {
-                msb = __builtin_clz(children);
-                children_to_recurse[i] = msb;
-                ++i;
-                children &= (((uint32_t) 0xffffffff) >> (msb + 1));
-            }
+			if(children_to_recurse_size == 0){
+				delete[] tupleQdags.roots;
+			}
+			else{
+				i = 0;
+				uint64_t msb; // most significant bit
+				while (i < children_to_recurse_size) {
+					msb = __builtin_clz(children);
+					children_to_recurse[i] = msb;
+					++i;
+					children &= (((uint32_t) 0xffffffff) >> (msb + 1));
+				}
 
-            uint16_t child;
-            uint16_t diff_level = max_level-cur_level;
-            uint16_t next_level = cur_level + 1;
+				uint16_t child;
+				uint16_t next_level = cur_level + 1;
 
-			double total_weight = 0;
+				double total_weight = 0;
 
-			// compute the coordinates if it's a leaf
-			if(cur_level == max_level){
-            	for (i = 0; i < children_to_recurse_size; ++i) {
-					uint16_t* coordinatesTemp = new uint16_t[nAtt];
-					child = children_to_recurse[i];
+				// compute the coordinates if it's a leaf
+				if(cur_level == max_level){
+					for (i = 0; i < children_to_recurse_size; ++i) {
+						child = children_to_recurse[i];
+						uint256_t newPath = tupleQdags.path;
+						getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
-					for (uint16_t k = 0; k < nAtt; k++)
-						coordinatesTemp[k] = tupleQdags.coordinates[k];
-					transformCoordinates(coordinatesTemp, nAtt, diff_level, child);
+						// priority
+						uint64_t priority_ith_node, min_idx;
+						for (uint64_t j = 0; j < nQ; j++) {
+							min_idx = Q[j]->get_index_pri(tupleQdags.roots[j], Q[j]->getM(child));
+							priority_ith_node = priorities[j][min_idx];
 
-					// priority
-					uint64_t priority_ith_node, min_idx;
-					for (uint64_t j = 0; j < nQ; j++) {
-						min_idx = Q[j]->get_index_pri(tupleQdags.roots[j], Q[j]->getM(child));
-						priority_ith_node = priorities[j][min_idx];
-
-						if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
-							total_weight += priority_ith_node;
-						else if (type_priority_fun == TYPE_FUN_PRI_MAX_DFUDS) { // max
-							if (total_weight < priority_ith_node) {
-								total_weight = priority_ith_node;
+							if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
+								total_weight += priority_ith_node;
+							else if (type_priority_fun == TYPE_FUN_PRI_MAX_DFUDS) { // max
+								if (total_weight < priority_ith_node) {
+									total_weight = priority_ith_node;
+								}
 							}
 						}
+						// insert the last level node
+						qdagWeight this_node = {next_level, nullptr, total_weight, newPath};
+						pq.push(this_node); // add the tuple to the queue
 					}
-					// insert the last level node
-					qdagWeight this_node = {next_level, nullptr, total_weight, coordinatesTemp};
-					pq.push(this_node); // add the tuple to the queue
 				}
-			} else{
-				for (i = 0; i < children_to_recurse_size; ++i) {
-					uint64_t* root_temp = new uint64_t[nQ];
-					uint16_t* coordinatesTemp = new uint16_t[nAtt];
-					child = children_to_recurse[i];
+				else{
+					for (i = 0; i < children_to_recurse_size; ++i) {
+						uint64_t* root_temp = new uint64_t[nQ];
+						child = children_to_recurse[i];
+						uint256_t newPath = tupleQdags.path;
+						getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
-					for (uint16_t k = 0; k < nAtt; k++)
-						coordinatesTemp[k] = tupleQdags.coordinates[k];
-					transformCoordinates(coordinatesTemp, nAtt, diff_level, child);
+						// compute the weight of the tuple (ONLY if it's not a leaf)
+						// calculate the weight of the tuple
+						uint64_t init, end, priority_ith_node, min_idx;
+						bool success;
+						for (uint64_t j = 0; j < nQ; j++) {
+							// we store the parent node that corresponds in the original quadtree of each qdag
+							root_temp[j] = (rank_vector[j][Q[j]->getM(child)]); // new roots
+							init = 0;
+							end = priorities[j].size()-1;
+							priority_ith_node = 0;
+							success = Q[j]->get_range_leaves(root_temp[j],init,end);
+							if(success){
+								min_idx = rMq[j](init, end);
+								priority_ith_node = priorities[j][min_idx];
+							} else {
+								cout << "error in get range leaves and_ranked dfuds" << endl;
+								exit(1);
+							}
+							if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
+								total_weight += priority_ith_node;
+							else if (type_priority_fun == TYPE_FUN_PRI_MAX_DFUDS) { // max
+								if (total_weight < priority_ith_node) {
+									total_weight = priority_ith_node;
+								}
+							}
+						}
+						// insert the tuple
+						qdagWeight this_node = {next_level, root_temp, total_weight, newPath} ;
+						pq.push(this_node); // add the tuple to the queue
+					}
+				}
 
-					// compute the weight of the tuple (ONLY if it's not a leaf)
-                    // calculate the weight of the tuple
-					uint64_t init, end, priority_ith_node, min_idx;
-					bool success;
-                    for (uint64_t j = 0; j < nQ; j++) {
-                        // we store the parent node that corresponds in the original quadtree of each qdag
-                        root_temp[j] = (rank_vector[j][Q[j]->getM(child)]); // new roots
-                        init = 0;
-                        end = priorities[j].size()-1;
-                        priority_ith_node = 0;
-                        success = Q[j]->get_range_leaves(root_temp[j],init,end);
-                        if(success){
-                            min_idx = rMq[j](init, end);
-                            priority_ith_node = priorities[j][min_idx];
-                        } else {
-                            cout << "error in get range leaves and_ranked dfuds" << endl;
-                            exit(1);
-                        }
-                        if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
-                            total_weight += priority_ith_node;
-                        else if (type_priority_fun == TYPE_FUN_PRI_MAX_DFUDS) { // max
-                            if (total_weight < priority_ith_node) {
-                                total_weight = priority_ith_node;
-                            }
-                        }
-                    }
-                    // insert the tuple
-                    qdagWeight this_node = {next_level, root_temp, total_weight, coordinatesTemp} ;
-                    pq.push(this_node); // add the tuple to the queue
-                }
-            }
+			}
         }
     }
     return true;
@@ -207,7 +207,7 @@ bool multiJoinRankedResultsDfuds(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint16_t*> results_points) {
+        vector<uint256_t>& top_results) {
 
     qdag_dfuds::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -248,29 +248,26 @@ bool multiJoinRankedResultsDfuds(
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
-    uint16_t coordinates[A.size()];
-    for(uint16_t i = 0; i < A.size(); i++)
-        coordinates[i] = 0;
-
     priority_queue<qdagWeight> pq;
-    pq.push({0, Q_roots, 1, coordinates}); // insert the root of the qdag
+    pq.push({0, Q_roots, 1, 0}); // insert the root of the qdag
 
     AND_ranked_dfuds(Q_star, Q.size(),
                max_level, A.size(),
                bounded_result, UPPER_BOUND,
                pq, type_priority_fun,
-               priorities, rMq, results_points);
+               priorities, rMq, top_results);
 
-    cout << "number of results: " << results_points.size() << endl;
-    uint64_t i=0;
-    while(i < results_points.size()){
-        uint16_t* coordinates = results_points[i];
-        for(uint64_t j = 0; j< A.size(); j++){
-            cout << coordinates[j] << " ";
-        }
-        cout << endl;
-        i++;
-    }
+//    cout << "number of results: " << top_results.size() << endl;
+//    uint64_t i=0;
+//    while(i < top_results.size()){
+//		cout << top_results[i] << endl;
+////        uint16_t* coordinates = results_points[i];
+////        for(uint64_t j = 0; j< A.size(); j++){
+////            cout << coordinates[j] << " ";
+////        }
+////        cout << endl;
+//        i++;
+//    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
@@ -305,7 +302,7 @@ AND_ranked_dfuds_backtracking(
         uint16_t cur_level,
         uint16_t max_level,
         uint8_t type_priority_fun,
-        uint16_t *coordinates,
+		uint256_t path,
         uint64_t size_queue,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
@@ -344,15 +341,12 @@ AND_ranked_dfuds_backtracking(
         }
 
         uint16_t child;
-        uint16_t diff_level = max_level-cur_level;
         // we do not call recursively the function AND as we do in the other levels
         // add output to the priority queue of results
         for (i = 0; i < children_to_recurse_size; ++i){
-			uint16_t*coordinatesTemp = new uint16_t[nAtt];
             child = children_to_recurse[i];
-            for(uint16_t k = 0; k < nAtt; k++)
-                coordinatesTemp[k] = coordinates[k];
-            transformCoordinates(coordinatesTemp, nAtt, diff_level, child);
+			uint256_t newPath = path;
+			getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
             // priority
             double total_weight = 0;
@@ -375,18 +369,18 @@ AND_ranked_dfuds_backtracking(
                 // add result if the priority is higher than the minimum priority in the queue
                 if(total_weight > minResult.weight){
                     top_results.pop();
-                    top_results.push({coordinatesTemp, total_weight});
+                    top_results.push({newPath, total_weight});
                 }
             }
             else{
-                top_results.push({coordinatesTemp, total_weight});
+                top_results.push({newPath, total_weight});
                 just_zeroes = false;
             }
         }
     }
         // call recursively in DFS order
     else {
-        uint64_t rank_vector[nQ][64];
+        uint64_t rank_vector[16 /*nQ*/][64];
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
@@ -409,20 +403,15 @@ AND_ranked_dfuds_backtracking(
         }
 
         uint16_t child;
-
-        uint16_t diff_level = max_level-cur_level;
         uint16_t next_level = cur_level + 1;
 
-        priority_queue<orderJoinQdag> order_to_traverse;
-
         uint64_t root_temp[children_to_recurse_size][nQ];
-		uint16_t coordinatesTemp[children_to_recurse_size][nAtt];
+		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
+		uint256_t newPath[children_to_recurse_size];
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
-
-            for(uint16_t k = 0; k < nAtt; k++)
-                coordinatesTemp[i][k] = coordinates[k];
-            transformCoordinates(coordinatesTemp[i], nAtt, diff_level, child);
+			newPath[i] = path;
+			getNewMortonCodePath(newPath[i], nAtt, cur_level, (uint256_t) child);
 
             // compute the weight of the tuple
             double total_weight = 0;
@@ -453,24 +442,22 @@ AND_ranked_dfuds_backtracking(
             if(top_results.size() >= size_queue ){
                 qdagResults minResult = top_results.top();
                 if(total_weight >= minResult.weight){ // if it has a higher priority, then we enter into this branch of the tree
-                    orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
-                    order_to_traverse.push(this_node); // add the tuple to the queue
+                    order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
                 }
             }
             else{
-                orderJoinQdag this_node = {i, coordinatesTemp[i], total_weight} ;
-                order_to_traverse.push(this_node); // add the tuple to the queue
+				order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
             }
-
         }
-        // recursive call in order according to the n_leaves
-        while(!order_to_traverse.empty()){
-            orderJoinQdag order = order_to_traverse.top();
-            order_to_traverse.pop();
-            AND_ranked_dfuds_backtracking(Q, nQ, nAtt, root_temp[order.index], next_level, max_level, type_priority_fun,
-                                    order.coordinates, size_queue,
-                                    priorities, rMq, top_results);
-//			delete[] order.coordinates;
+		sortBySecond(order_to_traverse);
+		for(i=0; i<children_to_recurse_size; i++){
+            AND_ranked_dfuds_backtracking(Q, nQ, nAtt,
+										  root_temp[order_to_traverse[i].first],
+										  next_level, max_level,
+										  type_priority_fun,
+										  newPath[order_to_traverse[i].first],
+										size_queue,
+                                    	priorities, rMq, top_results);
         }
     }
     return !just_zeroes;
@@ -532,28 +519,26 @@ bool multiJoinRankedResultsDfudsBacktracking(
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
-    uint16_t coordinates[A.size()];
-    for(uint16_t i = 0; i < A.size(); i++)
-        coordinates[i] = 0;
-
     AND_ranked_dfuds_backtracking(Q_star, Q.size(),
                             A.size(), Q_roots,
                             0, max_level,
                             type_priority_fun,
-                            coordinates, size_queue,
+                            0,
+							size_queue,
                             priorities, rMq,
                             top_results);
 
-    uint64_t size_queue_top = top_results.size();
-    cout << "number of results: " << top_results.size() << endl;
-    for(uint64_t i=0; i<size_queue_top; i++){
-        qdagResults res = top_results.top();
-        top_results.pop();
-        for(uint64_t k=0; k<A.size(); k++) {
-            cout << res.coordinates[k] << " ";
-        }
-        cout << endl;
-    }
+//    uint64_t size_queue_top = top_results.size();
+//    cout << "number of results: " << top_results.size() << endl;
+//    for(uint64_t i=0; i<size_queue_top; i++){
+//        qdagResults res = top_results.top();
+//        top_results.pop();
+//		cout << res.path << endl;
+////        for(uint64_t k=0; k<A.size(); k++) {
+////            cout << res.coordinates[k] << " ";
+////        }
+//        cout << endl;
+//    }
 
 
     for (uint64_t i = 0; i < Q.size(); i++)

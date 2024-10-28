@@ -98,19 +98,13 @@ bool AND_partial(
 			}
 
 			uint16_t child;
-//			uint16_t diff_level = max_level-cur_level;
 			uint16_t next_level = cur_level + 1;
 			// push the coordinates if it's a leaf
 			if(cur_level == max_level){
 				for (i = 0; i < children_to_recurse_size; ++i) {
-//					uint16_t* coordinatesTemp = new uint16_t[nAtt];
 					child = children_to_recurse[i];
 					uint256_t newPath = tupleQdags.path;
-					getNewMortonCodePath(newPath, nAtt, cur_level, child);
-
-//					for(uint16_t k = 0; k < nAtt; k++)
-//						coordinatesTemp[k] = tupleQdags.coordinates[k];
-//					transformCoordinates(coordinatesTemp, nAtt, diff_level, child);
+					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t)child);
 
 					results_points.push_back(newPath);
 
@@ -127,15 +121,10 @@ bool AND_partial(
 			else {
 				// Allocate 2D array for
 				for (i = 0; i < children_to_recurse_size; ++i) {
-//					uint16_t* coordinatesTemp = new uint16_t[nAtt];
 					uint64_t* root_temp = new uint64_t[nQ];
 					child = children_to_recurse[i];
 					uint256_t newPath = tupleQdags.path;
-					getNewMortonCodePath(newPath, nAtt, cur_level, child);
-
-//					for (uint16_t k = 0; k < nAtt; k++)
-//						coordinatesTemp[k] = tupleQdags.coordinates[k];
-//					transformCoordinates(coordinatesTemp, nAtt, diff_level, child);
+					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
 					// compute the weight of the tuple (ONLY if it's not a leaf)
 					double total_weight = DBL_MAX;
@@ -179,7 +168,7 @@ bool multiJoinPartialResults(
         uint64_t UPPER_BOUND,
         uint64_t grid_size,
         uint8_t type_order_fun,
-        vector<uint256_t > &results_points) {
+        vector<uint256_t> &results_points) {
 
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -219,9 +208,6 @@ bool multiJoinPartialResults(
     // ---------------  everything is the same up to here --------------- //
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
-//    uint16_t coordinates[A.size()];
-//    for(uint16_t i = 0; i < A.size(); i++)
-//        coordinates[i] = 0;
 
     priority_queue<qdagWeight> pq; // maxHeap
     pq.push({0, Q_roots, 1, 0}); // insert the root of the qda
@@ -230,17 +216,17 @@ bool multiJoinPartialResults(
                 max_level, grid_size, type_order_fun,
                 pq, results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
-    uint64_t i=0;
-    while(i < results_points.size()){
-		cout << results_points[i] << endl;
-//        uint16_t* coordinates = results_points[i];
-//        for(uint64_t j = 0; j< A.size(); j++){
-//            cout << coordinates[j] << " ";
-//        }
-//        cout << endl;
-        i++;
-    }
+//    cout << "number of results: " << results_points.size() << endl;
+//    uint64_t i=0;
+//    while(i < results_points.size()){
+//		cout << results_points[i] << endl;
+////        uint16_t* coordinates = results_points[i];
+////        for(uint64_t j = 0; j< A.size(); j++){
+////            cout << coordinates[j] << " ";
+////        }
+////        cout << endl;
+//        i++;
+//    }
 
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
@@ -271,16 +257,12 @@ AND_partial_backtracking(
         uint16_t nQ,
         uint64_t nAtt,
         uint64_t *roots,
-//		uint64_t root_temp[][32][16], // [height][2^nAttr][children_to_recurse_size]
-//		uint64_t rank_vector[][16][64],
         uint16_t cur_level,
         uint16_t max_level,
         uint64_t grid_size,
         uint8_t type_order_fun,
 		uint256_t path,
-//        uint16_t *coordinates,
         uint64_t size_queue,
-//		uint16_t coordinatesTemp[][32][5],
         vector<uint256_t> &results_points) {
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
@@ -315,18 +297,12 @@ AND_partial_backtracking(
 		}
 
 		uint16_t child;
-//		uint16_t diff_level = max_level-cur_level;
 		// we do not call recursively the function AND as we do in the other levels
 		// add output to the priority queue of results
 		for (i = 0; i < children_to_recurse_size; ++i){
-//			uint16_t* coordinatesTempResult = new uint16_t[nAtt];
 			child = children_to_recurse[i];
 			uint256_t newPath = path;
-			getNewMortonCodePath(newPath, nAtt, cur_level, child);
-
-//			for(uint16_t k = 0; k < nAtt; k++)
-//				coordinatesTempResult[k] = coordinates[k];
-//			transformCoordinates(coordinatesTempResult, nAtt, diff_level, child);
+			getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
 			results_points.push_back(newPath);
 			just_zeroes = false;
@@ -341,7 +317,7 @@ AND_partial_backtracking(
     }
     // call recursively in DFS order
     else {
-		uint64_t rank_vector[16][64];
+		uint64_t rank_vector[16 /*nQ*/][64];
 
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
@@ -365,24 +341,16 @@ AND_partial_backtracking(
 		}
 
 		uint16_t child;
-
-		uint16_t diff_level = max_level-cur_level;
 		uint16_t next_level = cur_level + 1;
 
 		uint64_t root_temp[children_to_recurse_size][16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
-
-//		priority_queue<orderJoinQdag> order_to_traverse;
 		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
 		// veo cada hijo en común que tiene el nodo actual
 		uint256_t newPath[children_to_recurse_size];
 		for (i = 0; i < children_to_recurse_size; ++i) {
 			child = children_to_recurse[i]; // the position of the 1s in children
 			newPath[i] = path;
-			getNewMortonCodePath(newPath[i], nAtt, cur_level, child);
-
-//			for(uint16_t k = 0; k < nAtt; k++)
-//				coordinatesTemp[cur_level][i][k] = coordinates[k];
-//			transformCoordinates(coordinatesTemp[cur_level][i], nAtt, diff_level, child);
+			getNewMortonCodePath(newPath[i], nAtt, cur_level, (uint256_t) child);
 
 			// compute the weight of the tuple
 			double total_weight = DBL_MAX;
@@ -396,9 +364,7 @@ AND_partial_backtracking(
 			}
 			if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
 				total_weight /= grid_size;
-//			orderJoinQdag this_node = {i, coordinatesTemp[cur_level][i], total_weight} ;
 			order_to_traverse.push_back({i, total_weight});
-//			order_to_traverse.push(this_node); // add the tuple to the queue
 		}
 		sortBySecond(order_to_traverse);
 		for(i=0; i<children_to_recurse_size; i++){
@@ -406,10 +372,8 @@ AND_partial_backtracking(
 										 root_temp[order_to_traverse[i].first],
 										 next_level, max_level, grid_size,
 										 type_order_fun,
-//										 coordinatesTemp[cur_level][order_to_traverse[i].first],
 										 newPath[order_to_traverse[i].first],
 										 size_queue,
-//										 coordinatesTemp,
 										 results_points);
 			}
 
@@ -473,30 +437,25 @@ multiJoinPartialResultsBacktracking(
 
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
-//    uint16_t coordinates[A.size()];
-//    for(uint16_t i = 0; i < A.size(); i++)
-//        coordinates[i] = 0;
 
     AND_partial_backtracking(Q_star, Q.size(), A.size(),
 							 Q_roots,
 							 0, max_level, grid_size, type_order_fun,
-//                             coordinates,
 							 0,
 							 size_queue,
-//							 coordinatesTemp,
 							 results_points);
 
-    cout << "number of results: " << results_points.size() << endl;
-    uint64_t i=0;
-    while(i < results_points.size()){
-		cout << results_points[i] << endl;
-//        uint16_t* coordinates2 = top_results[i];
-//        for(uint64_t j = 0; j< A.size(); j++){
-//            cout << coordinates2[j] << " ";
-//        }
-//        cout << endl;
-        i++;
-    }
+//    cout << "number of results: " << results_points.size() << endl;
+//    uint64_t i=0;
+//    while(i < results_points.size()){
+//		cout << results_points[i] << endl;
+////        uint16_t* coordinates2 = top_results[i];
+////        for(uint64_t j = 0; j< A.size(); j++){
+////            cout << coordinates2[j] << " ";
+////        }
+////        cout << endl;
+//        i++;
+//    }
     for (uint64_t i = 0; i < Q.size(); i++)
         delete Q_star[i];
 
