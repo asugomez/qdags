@@ -100,8 +100,8 @@ int main(int argc, char** argv)
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
     Q[3] = qdag_rel_U;
-    
-    vector<uint16_t*> results_partial_louds_back;
+
+	vector<uint256_t> results_partial_louds_back;
 
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
  

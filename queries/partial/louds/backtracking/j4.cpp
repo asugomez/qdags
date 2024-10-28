@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
     Q[2] = qdag_rel_T;
     Q[3] = qdag_rel_U;
 
-    vector<uint16_t*> results_partial_louds_back;
+	vector<uint256_t> results_partial_louds_back;
 
 
     high_resolution_clock::time_point start, stop;

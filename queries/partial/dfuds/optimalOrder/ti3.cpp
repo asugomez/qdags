@@ -98,7 +98,7 @@ int main(int argc, char** argv)
     uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
     int64_t k = argv[5] ? atoi(argv[5]) : 1000;
     
-    vector<uint16_t*> results_partial_dfuds;
+    vector<uint256_t> results_partial_dfuds;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       

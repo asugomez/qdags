@@ -102,14 +102,15 @@ int main(int argc, char** argv)
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
 
-    vector<uint16_t*> results_partial_louds_back;
+    vector<uint256_t> results_partial_louds_back;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;
     duration<double> time_span;
 
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);
-    results_partial_louds_back.clear();
+
+	results_partial_louds_back.clear();
     start = high_resolution_clock::now();
 
     multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, size_queue, results_partial_louds_back);

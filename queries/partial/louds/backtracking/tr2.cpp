@@ -96,8 +96,8 @@ int main(int argc, char** argv)
     Q[0] = qdag_rel_R;
     Q[1] = qdag_rel_S;
     Q[2] = qdag_rel_T;
-    
-    vector<uint16_t*> results_partial_louds_back;
+
+	vector<uint256_t> results_partial_louds_back;
   
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       

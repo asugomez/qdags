@@ -95,8 +95,8 @@ int main(int argc, char** argv)
     Q_dfuds[0] = qdag_dfuds_rel_R;
     Q_dfuds[1] = qdag_dfuds_rel_S;
     Q_dfuds[2] = qdag_dfuds_rel_T;
-    
-    vector<uint16_t*> results_partial_dfuds_back;
+
+	vector<uint256_t> results_partial_dfuds_back;
     uint8_t type_fun = argv[4] ? atoi(argv[4]) : 1;
     int64_t size_queue = argv[5] ? atoi(argv[5]) : 1000;
 

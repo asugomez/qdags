@@ -110,7 +110,8 @@ int main(int argc, char** argv)
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
     Join_Result = multiJoin(Q, true, k); // warmup join -> activar el caché
- 
+
+//	delete Join_Result;
     start = high_resolution_clock::now();    
     
     Join_Result = multiJoin(Q, true, k);
@@ -120,6 +121,10 @@ int main(int argc, char** argv)
     total_time = time_span.count();    
 
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//
+//	delete Join_Result;
+//	for(uint64_t i = 0; i < Q.size(); i++)
+//		delete &Q[i];
     
     return 0;
 

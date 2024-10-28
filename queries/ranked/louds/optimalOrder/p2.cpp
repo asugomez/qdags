@@ -138,7 +138,7 @@ int main(int argc, char** argv)
     vector<rmq_succinct_sct<false>> rMq;
     for(uint64_t i = 0; i < Q.size(); i++)
         rMq.push_back(rmq_succinct_sct<false>(&p[i]));
-    vector<uint16_t*> results_ranked_louds;
+    vector<uint256_t> results_ranked_louds;
 
   
     high_resolution_clock::time_point start, stop;
