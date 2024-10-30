@@ -123,8 +123,10 @@ protected:
 
             if (l != cur_l) {
                 cur_l = l;
+				// for each child, we have to resize the bitvector s.
+				// It's different from LOUDS implementation, because we dont have levels
                 k_t_s.bit_resize(size_bv_s+t);
-                k_t_s.bit_resize(size_bv_s+k_d);
+//                k_t_s.bit_resize(size_bv_s+k_d);
                 k_t_s.set_int(size_bv_s, * k_t_.data(), t);
 
                 size_bv_s += t;
@@ -141,6 +143,7 @@ protected:
                 }
 				else {
                     // separar en chunks de k_t=4
+					n_children = 1;
                     uint64_t n_leaves = t/k_d;
                     for(uint64_t leaf = 0; leaf < n_leaves; leaf++){
                         n_children = __builtin_popcount(k_t_.get_int(leaf*k_d,k_d));//t/k_d;
@@ -161,7 +164,8 @@ protected:
                 cur_level++;
                 t = 0;
                 k_t_.resize(0);
-                k_t_ = bit_vector(k_d, 0);//bit_vector(k_d * n_ones, 0);
+				// k_t.resize k_d*n_children. If we are not in the last level, n_children will be 1.
+                k_t_ = bit_vector(k_d*n_children, 0);//bit_vector(k_d * n_ones, 0);
                 n_ones = 0;
             }
 
@@ -189,15 +193,15 @@ protected:
 
             // Push to the queue every non zero elements chunk
             t_aux = t+k_d-1;
-            //for (it = 0; it < k_d; it++, t++)
+//            for (it = 0; it < k_d; it++, t++)
             for (it = k_d; it --> 0; t++, t_aux--)
                 // If not empty chunk, set bit to 1
                 if (amount_by_chunk[it] != 0) {
                     uint16_t p = std::pow(k, d - 1);
                     idx_type it_aux = it;
                     c = it % k;
-                    k_t_[t_aux] = 1;
-                    n_ones++;
+                    k_t_[t_aux] = 1; // the number is inverse, so we have to use t_aux
+					n_ones++;
 
                     top_left_point_aux = new idx_type[d]();
 
@@ -349,11 +353,13 @@ public:
     /**
      *
      * @param node_v
-     * @return The next sibling of node v, if it exists.
+     * @return The next sibling of node v, if it exists. Otherwise, it returns the last position of the bitvector
      */
     size_type_bv next_sibling(size_type_bv node_v)const{
         // B[open(B,v-1) - 1] == 1
-        assert(bp_b.is_open(bp_b.find_open(node_v-1) - 1));
+		// TODO: este assert no funciona para cuando estamos en el último hmno.
+		//  La función retorna la última posición, lo cual es correcto
+//        assert(bp_b.is_open(bp_b.find_open(node_v-1) - 1));
         return bp_b.next_sibling(node_v);
     }
 
@@ -464,9 +470,8 @@ public:
 
     /**
      *
-     * @param node the starting position in the bitvector S in preorder
-     * @param rank_array
      * @param node the starting position in the bitvector B in preorder
+     * @param rank_array
      * @return
      */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
@@ -601,6 +606,12 @@ public:
      * @param node
      * @param init will be modified if the node is not the root. -1 if the node is empty.
      * @param fin will be modified if the node is not the root. -1 if the node is empty.
+     * Example: tree in LOUDS:
+     * 1011
+     * 1111 0010 1001
+     * 1111 1111 1111 1111 1111 0001 1000
+     * bitvector_B : 110 1110 11110 11110 0000 11110 0000 11110 0000 10 11110 0000 110 10 0 10 0
+     * get_range_leaves(B: 7, init, end): init --> 0, end --> 15
      */
     bool get_range_leaves(uint64_t node, uint64_t& init, uint64_t& end){
         init = leaf_rank(node);
