@@ -35,70 +35,30 @@ struct position{
 	uint16_t level;
 	uint64_t cur_node;
 //	uint64_t n_children;
-	uint16_t* coordinates;
-//	vector<uint16_t> coordinates; // coordinates to that point/subquadrant of the grid
+	uint256_t path;
 	// default constructor
-	position() : level(0), cur_node(0), coordinates(nullptr) {}
-	position(uint64_t n_children) : level(0), cur_node(0) {
-		coordinates = new uint16_t[n_children];
-	}
-	position(uint16_t l, uint64_t n, uint64_t n_children): level(l), cur_node(n) {
-		coordinates = new uint16_t[n_children];
-	}
-//	position(uint16_t l, uint64_t n, uint16_t* c) : level(l), cur_node(n), coordinates(c) {}
-
-//	position(position* p) : level(p->level), cur_node(p->cur_node), coordinates(p->coordinates) {}
-//	position(uint16_t l, uint64_t n, std::vector<uint16_t> c) : level(l), cur_node(n), coordinates(std::move(c)) {}
-//	position(const position& p) : level(p.level), cur_node(p.cur_node), coordinates(p.coordinates) {}
-// Parameterized constructor
-	position(uint16_t l, uint64_t n, uint16_t* c)
-			: level(l), cur_node(n), coordinates(nullptr) {
-		if (c != nullptr) {
-			// Assuming coordinates point to a single value; adjust if it's an array
-			coordinates = new uint16_t(*c);
-		}
-	}
+	position() : level(0), cur_node(0), path(0) {}
+	position(uint16_t l, uint64_t n, uint256_t mPath): level(l), cur_node(n), path(mPath) {}
 
 	// Copy constructor (deep copy)
 	position(const position& p)
-			: level(p.level), cur_node(p.cur_node), coordinates(nullptr) {
-		if (p.coordinates != nullptr) {
-			coordinates = new uint16_t(*p.coordinates);
-		}
-	}
+			: level(p.level), cur_node(p.cur_node), path(p.path) {}
+
 
 	// Copy assignment operator (deep copy)
 	position& operator=(const position& p) {
 		if (this != &p) {  // Avoid self-assignment
 			level = p.level;
 			cur_node = p.cur_node;
-
-			// Clean up existing coordinates
-			if(this->coordinates != nullptr)
-				delete[] coordinates;
-
-			// Perform deep copy of coordinates
-			if (p.coordinates != nullptr) {
-				coordinates = new uint16_t(*p.coordinates);
-			} else {
-				coordinates = nullptr;
-			}
+			path = p.path;
 		}
 		return *this;
 	}
 
 
-//	position operator=(const position p){
-//		level = p.level;
-//		cur_node = p.cur_node;
-//		coordinates = (p.coordinates != nullptr) ? new uint16_t(*p.coordinates) : nullptr;
-//		return *this;
-//	}
-
 	// Destructor
-	~position() {
-		delete coordinates;
-	}
+//	~position() {
+//	}
 
 };
 
@@ -372,15 +332,15 @@ static double eval_pred(predicate* pred, uint16_t* coordinates, uint64_t quadran
 }
 
 
-struct quadtree_pred{
-    ::predicate *pred;
-    uint16_t *coordinates;
-    uint16_t cur_level;
-    uint16_t max_level;
-    uint64_t grid_side;
-    uint8_t k;
-    uint16_t nAttr;
-};
+//struct quadtree_pred{
+//    ::predicate *pred;
+//    uint16_t *coordinates;
+//    uint16_t cur_level;
+//    uint16_t max_level;
+//    uint64_t grid_side;
+//    uint8_t k;
+//    uint16_t nAttr;
+//};
 
 
 

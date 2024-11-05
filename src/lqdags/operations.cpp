@@ -48,7 +48,7 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     formula_lqdag* extend_formula_lqdag[Q.size()];
 
     for (uint64_t i = 0; i < Q.size(); i++) { // EXTEND((Q_TREE, index) , A)
-        extend_formula_lqdag[i] = new formula_lqdag(FUNCTOR_EXTEND, new formula_lqdag(&Q.at(i), i),k, A.size(), max_level, grid_side);
+        extend_formula_lqdag[i] = new formula_lqdag(FUNCTOR_EXTEND, new formula_lqdag(&Q.at(i), i),k, A, max_level, grid_side);
     }
 
 	formula_lqdag* join_formula;
@@ -86,6 +86,10 @@ lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
 
 lqdag* compute_dfs_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results){
 	lqdag* join = lqdag_join(Q);
+	return compute_dfs(join,UPPER_BOUND,results);
+}
+
+lqdag* compute_dfs_join_run_time(lqdag* join,uint64_t UPPER_BOUND, uint64_t &results){
 	return compute_dfs(join,UPPER_BOUND,results);
 }
 

@@ -42,6 +42,9 @@ private:
 	uint16_t max_level;
 	uint64_t grid_side;
 	type_mapping_M *M; // mapping for extend functor. Use it when we need to extend the subquadtree, Otherwise M[i] = i (case not extended).
+//	int32_t tab_extend_5[16];   // queries of 5 attributes, i.e., dimension 2^5=32
+//	int32_t tab_extend_4[16];
+//	int32_t tab_extend_3[16];
 
 public:
 
@@ -113,58 +116,62 @@ public:
 
 
 	// L = (EXTEND, L1, A)
-	formula_lqdag(uint8_t functor, formula_lqdag* l, uint8_t k, uint16_t nAtt, uint16_t max_level=0, uint64_t grid_side=0){
+	formula_lqdag(uint8_t functor, formula_lqdag* l, uint8_t k, att_set &attribute_set_A, uint16_t max_level=0, uint64_t grid_side=0){
 		assert(functor == FUNCTOR_EXTEND);
 		this->functor = functor;
 		this->formula_lqdag1 = l;
 		this->formula_lqdag2 = nullptr;
 		this->k = k;
-		this->nAtt = nAtt; // d
+		this->nAtt =  attribute_set_A.size(); //nAtt; // d
 		this->max_level = max_level;
 		this->grid_side = grid_side;
 
 		uint64_t p = std::pow(k, nAtt);
 
+		// TODO: 2 options:
+		// 1) call this->formula_lqdag1. set QDAG =  this->formula_lqdag1->get_qdag()->extend(attribute_set_A);
+		// 2) create the extend here and createTableExtend also
 		if(this->formula_lqdag1->is_qdag()) {
-			if(M == nullptr) {
+//			this->formula_lqdag1->get_qdag()->extend(attribute_set_A);
 //				uint64_t msize = std::pow(this->formula_lqdag1->get_qdag()->getK(),
 //										  this->formula_lqdag1->get_qdag()->getD());
 
-//				uint16_t dim = this->attribute_set_A.size(); // d
-				uint16_t dim_prime = this->formula_lqdag1->get_qdag()->nAttr(); // d'
+//			uint16_t dim = this->attribute_set_A.size(); // d
+			uint16_t dim_prime = this->formula_lqdag1->get_qdag()->nAttr(); // d'
 
-				M = new type_mapping_M[p];
+			this->M = new type_mapping_M[p];
 
-				uint64_t mask;
-				uint64_t i, i_prime;
+			uint64_t mask;
+			uint64_t i, i_prime;
 
-				for (i = 0; i < p; ++i) {
-					// todos los bits están en cero excepto el bit en la posición dim_prime - 1.
-					mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
-					i_prime = 0;
+			for (i = 0; i < p; ++i) {
+				// todos los bits están en cero excepto el bit en la posición dim_prime - 1.
+				mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
+				i_prime = 0;
 
-					for (uint16_t j = 0; j < dim_prime; ++j) {
-						if (i & (1 << (nAtt - this->formula_lqdag1->get_qdag()->getAttr(j) - 1)))
-							i_prime |= mask;
+				for (uint16_t j = 0; j < dim_prime; ++j) {
+					if (i & (1 << (nAtt - this->formula_lqdag1->get_qdag()->getAttr(j) - 1)))
+						i_prime |= mask;
 
-						mask >>= 1;
-					}
-
-					M[i] = i_prime; // = M[i_prime];
+					mask >>= 1;
 				}
-			}
-//			this->M = M;
 
-			if (nAtt == 3)
-				this->formula_lqdag1->get_qdag()->createTableExtend3();
-			else if (nAtt == 4)
-				this->formula_lqdag1->get_qdag()->createTableExtend4();
-			else if (nAtt == 5)
-				this->formula_lqdag1->get_qdag()->createTableExtend5();
-			else {
-				cout << "EXTEND only works for queries of up to 5 attributes..." << endl;
-				exit(1);
+				M[i] = i_prime;
 			}
+
+
+			// TODO: implement create table extend here
+			// TODO: ver si necesitamos esto, deberiamos necesitarlo para hacerlo mas rapido
+//			if (nAtt == 3)
+//				this->formula_lqdag1->get_qdag()->createTableExtend3();
+//			else if (nAtt == 4)
+//				this->formula_lqdag1->get_qdag()->createTableExtend4();
+//			else if (nAtt == 5)
+//				this->formula_lqdag1->get_qdag()->createTableExtend5();
+//			else {
+//				cout << "EXTEND only works for queries of up to 5 attributes..." << endl;
+//				exit(1);
+//			}
 		}
 		else{
 			// TODO: ver el extend para LQDAG como hoja
@@ -244,6 +251,7 @@ public:
 		return functor == FUNCTOR_LQDAG;
 //		return std::holds_alternative<lqdag*>(this->formula_leaf);
 	}
+
 
 
 };
