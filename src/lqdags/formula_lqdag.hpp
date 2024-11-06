@@ -45,6 +45,7 @@ private:
 //	int32_t tab_extend_5[16];   // queries of 5 attributes, i.e., dimension 2^5=32
 //	int32_t tab_extend_4[16];
 //	int32_t tab_extend_3[16];
+	uint64_t ref_count = 1;
 
 public:
 
@@ -137,7 +138,7 @@ public:
 //										  this->formula_lqdag1->get_qdag()->getD());
 
 //			uint16_t dim = this->attribute_set_A.size(); // d
-			uint16_t dim_prime = this->formula_lqdag1->get_qdag()->nAttr(); // d'
+			uint16_t dim_prime = this->formula_lqdag1->get_qdag() ? this->formula_lqdag1->get_qdag()->nAttr() : 0; // d'
 
 			this->M = new type_mapping_M[p];
 
