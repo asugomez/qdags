@@ -31,12 +31,12 @@ public:
 		node_completion() : val_node(NO_VALUE_LEAF), level(0),  path(0),n_children(0), lqdag_children(nullptr) {}
 		// constructor with p children
 		node_completion(uint64_t p) : val_node(NO_VALUE_LEAF), level(0), path(0), n_children(p), lqdag_children(new lqdag*[p]) {
-			for(uint64_t i = 0; i < p; i++)
+			for(uint64_t i = 0; i < p; i++) // initialization with NULL
 				lqdag_children[i] = nullptr;
 		}
 		// constructor with value and p children
 		node_completion(double val, uint64_t p) : val_node(val),  level(0), path(0), n_children(p), lqdag_children(new lqdag*[p]) {
-			for(uint64_t i = 0; i < p; i++)
+			for(uint64_t i = 0; i < p; i++) // initialization with NULL
 				lqdag_children[i] = nullptr;
 		}
 		// copy assignment operator (deep copy)
@@ -55,7 +55,6 @@ public:
 				// Allocate and copy coordinates
 				this->lqdag_children = new lqdag*[n.n_children];
 				for(uint64_t i = 0; i < n.n_children; i++)
-//					this->lqdag_children[i] = n.lqdag_children[i];
 					// TODO: create an equal operator!
 					this->lqdag_children[i] = new lqdag(*n.lqdag_children[i]);
 			}
@@ -90,7 +89,7 @@ public:
 		this->arr_qdags = arr_qdags;
 		this->form_lqdag = form_lqdag;
 		this->pos_qdags =  vector<position>(arr_qdags.size());
-		uint16_t p = std::pow(getK(), nAttr()); // TODO: test pos_qdags
+		uint16_t p = std::pow(getK(), nAttr());
 		this->node_completion_lqdag = new node_completion(p);
 	}
 
@@ -110,8 +109,19 @@ public:
 	}
 
 	~lqdag(){
-		// TODO: finish this
-//		delete pos_qdags;
+		uint64_t n = arr_qdags.size();
+		uint64_t i;
+		if(form_lqdag->get_ref_count() == 1){
+			for(i = 0 ; i < n; i++){
+				arr_qdags[i].~qdag();
+			}
+		}
+
+		for(i = 0 ; i < n; i++){
+			pos_qdags[i].~position(); // TODO: see if this works!
+		}
+
+		delete form_lqdag;
 		delete node_completion_lqdag;
 	}
 
@@ -196,8 +206,6 @@ public:
 	 * Return value of the i-th child: FULL_LEAF, EMPTY_LEAF, NO_VALUE_LEAF
 	 */
 	double get_child_qdag(formula_lqdag* formula_pos, uint64_t index_qdag,uint64_t i_child, uint64_t& pos_i_child){
-		if(index_qdag >= this->pos_qdags.size())
-			cout << "error: get_child_qdag index out of range" << endl;
 		uint16_t cur_level = (this->pos_qdags).at(index_qdag).level;
 		uint64_t cur_node = (this->pos_qdags).at(index_qdag).cur_node;
 		uint16_t max_level = formula_pos->getMaxLevel();
@@ -222,11 +230,8 @@ public:
 	 * @return
 	 */
 	position* get_position_data(uint64_t index_qdag, uint64_t ith_child, uint64_t curr_node){
-		if(index_qdag >= this->pos_qdags.size())
-			cout << "error: get_position_data index out of range" << endl;
-		uint64_t nAttr_qdag = this->arr_qdags.at(index_qdag).nAttr();;
+		uint64_t nAttr_qdag = this->arr_qdags.at(index_qdag).nAttr();
 		uint16_t cur_level = (pos_qdags).at(index_qdag).level;
-//		uint16_t diff_level = getMaxLevel() - cur_level;
 
 		uint256_t cur_path = (pos_qdags).at(index_qdag).path;
 
@@ -257,18 +262,10 @@ public:
 		// TODO: fix this! new_pos qdags is not stored, jere is the bug
 		vector<position> new_pos_qdags;// = position_qdags[arr_qdags.size()];
 		// copy the vector position of the current lqdag for the new lqdag
-		if(arr_qdags.size()-1 >= this->pos_qdags.size())
-			cout << "error: get_child_lqdag index out of range: arr_qdags.size" << endl;
 		for(uint64_t i = 0; i < arr_qdags.size(); i++){
-			try{
-				new_pos_qdags.push_back(this->pos_qdags.at(i));
-			} catch (const std::out_of_range& oor) {
-				cout << "Out of Range error: " << i << " " << oor.what() << '\n';
-			}
+			new_pos_qdags.push_back(this->pos_qdags.at(i));
 		}
-//		new_pos_qdags[0] = pos_qdags[0]; // TODO see what happens
 
-//		new_pos_qdags->at(0).cur_node = 40;
 
 		double val_node = get_child_lqdag_aux(this->form_lqdag, ith_child, new_pos_qdags);
 
@@ -303,8 +300,6 @@ public:
 				double my_val  = get_child_qdag(formula_pos, formula_pos->get_index(), ith_child, jth_child);
 				formula_pos->set_val_lqdag1(my_val);
 				if(my_val!=EMPTY_LEAF)
-					if(formula_pos->get_index() >= m_pos_qdag.size())
-						cout << "error: get_child_lqdag_aux index out of range" << endl;
 					m_pos_qdag.at(formula_pos->get_index()) = *get_position_data(formula_pos->get_index(), ith_child, jth_child);
 				return my_val;
 			}
@@ -440,8 +435,6 @@ public:
      */
     double value_qdag(formula_lqdag* formula_pos, uint64_t index_qdag){
         if(formula_pos->get_functor() == FUNCTOR_QTREE || formula_pos->get_functor() == FUNCTOR_NOT) { // only is called
-			if(index_qdag >= pos_qdags.size())
-				cout << "error: value_qdag index out of range" << endl;
 			uint16_t cur_level = (this->pos_qdags).at(index_qdag).level;
             uint64_t cur_node = (this->pos_qdags).at(index_qdag).cur_node;
             if(formula_pos->get_val_lqdag1() == NO_VALUE_LEAF)
@@ -465,13 +458,9 @@ public:
      */
     double is_a_qdag_leaf(formula_lqdag* formula_pos, uint64_t index_qdag, uint16_t level, uint64_t node){
         uint16_t max_level = formula_pos->getMaxLevel();
-        if(level > max_level){
-			if(index_qdag >= pos_qdags.size())
-				cout << "error: 1) is_a_qdag_leaf index out of range" << endl;
+        if(level > max_level)
             return arr_qdags.at(index_qdag).get_ith_bit(max_level, node);
-        }
-		if(index_qdag >= pos_qdags.size())
-			cout << "error: 2) is_a_qdag_leaf index out of range" << endl;
+
         uint8_t node_description = arr_qdags.at(index_qdag).get_node_last_level(level, node);
         if((node_description | 0) == 0)
             return EMPTY_LEAF;
