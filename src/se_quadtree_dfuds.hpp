@@ -23,7 +23,8 @@ public:
     typedef int_vector_size_type size_type_bv;
 
 private:
-    rank_bv_64 bv_s;
+//    rank_bv_64 bv_s; // change to rank if we want to support more complex operations
+	bit_vector bv_s;
     //bp_support_sada<> bp_s; // array S in pre-order. It contains the k^d bits that tell which of the k^d possible children of the node exist.
     const bit_vector* bit_vector_b;
     asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
@@ -263,7 +264,8 @@ protected:
         }
 
         // bitvectors
-        bv_s = rank_bv_64(k_t_s);
+//        bv_s = rank_bv_64(k_t_s);
+        bv_s = k_t_s;
         bit_vector_b = new bit_vector(k_t_b);
 
         // construct bp
@@ -321,9 +323,9 @@ public:
         return height;
     }
 
-    inline uint32_t get_node_bits(uint64_t start_pos) {
-        return bv_s.get_kd_bits(start_pos, k_d);
-    }
+//    inline uint32_t get_node_bits(uint64_t start_pos) {
+//        return bv_s.get_kd_bits(start_pos, k_d);
+//    }
 
 
     /// ----------------- Operations from Compact Data Structures (pg. 341) ----------------- ///
@@ -341,9 +343,9 @@ public:
         return 3;
     }
 
-    uint64_t rank_one(size_type_bv node_v){
-        return bv_s.rank(node_v);
-    }
+//    uint64_t rank_one(size_type_bv node_v){
+//        return bv_s.rank(node_v);
+//    }
 
     // suc_0(B,v)
     size_type_bv succ_zero(size_type_bv node_v) const{
@@ -480,7 +482,8 @@ public:
         // node + n_children + 1 (1^c 0)
         node = first_child(node);
         if(k_d == 4){
-            nd = bv_s.get_4_bits(start_pos);
+			nd = bv_s.get_int(start_pos, 4);
+//            nd = bv_s.get_4_bits(start_pos);
             switch (nd) {
                 case 0:
                     break;
@@ -566,7 +569,8 @@ public:
             }
         }
         else {
-            nd = bv_s.get_2_bits(start_pos);
+//            nd = bv_s.get_2_bits(start_pos);
+            nd = bv_s.get_int(start_pos,2);
             switch (nd) {
                 case 0:
                     break;
@@ -594,9 +598,9 @@ public:
     inline uint8_t get_node_last_level(uint64_t node) {
         uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
         if(k_d == 4){
-            return bv_s.get_4_bits(start_pos);
+            return bv_s.get_int(start_pos,4);
         } else {
-            return bv_s.get_2_bits(start_pos);
+            return bv_s.get_int(start_pos,2);
         }
     }
 
