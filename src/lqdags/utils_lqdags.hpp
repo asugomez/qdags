@@ -55,11 +55,6 @@ struct position{
 		return *this;
 	}
 
-
-	// Destructor
-//	~position() {
-//	}
-
 };
 
 //// children computed of the lqdag

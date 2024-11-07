@@ -179,6 +179,16 @@ public:
 		}
 	}
 
+	~formula_lqdag(){ // TODO: see if we need to define it because it's all numbers
+		ref_count--;
+		if(ref_count == 0){
+			if(functor != FUNCTOR_QTREE && functor != FUNCTOR_LQDAG){
+				delete formula_lqdag1;
+				delete formula_lqdag2;
+			}
+		}
+	}
+
 	uint64_t get_index(){
 		return this->index;
 	}
@@ -251,6 +261,14 @@ public:
 	bool is_lqdag() const {
 		return functor == FUNCTOR_LQDAG;
 //		return std::holds_alternative<lqdag*>(this->formula_leaf);
+	}
+
+	void inc_ref_count() {
+		ref_count++;
+	}
+
+	uint64_t get_ref_count() {
+		return ref_count;
 	}
 
 

@@ -28,7 +28,9 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
+	qdag** arr_qdags = new qdag*[Q.size()];
     for (uint64_t i = 0; i < Q.size(); i++) {
+		arr_qdags[i] = &Q.at(i);
         uint64_t nAttr = Q.at(i).nAttr();
         for (uint64_t j = 0; j < nAttr; j++)
             attr_map[Q.at(i).getAttr(j)] = 1;
@@ -77,7 +79,7 @@ lqdag* lqdag_join(vector<qdag> &Q/* uint64_t &p*/) {
     }
 
 
-    return new lqdag{Q, join_formula};
+    return new lqdag{arr_qdags, join_formula, Q.size()};
 }
 
 lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
@@ -94,7 +96,7 @@ lqdag* compute_dfs_join_run_time(lqdag* join,uint64_t UPPER_BOUND, uint64_t &res
 }
 
 lqdag* compute_dfs_selection(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
-	lqdag* copy_lqdag = new lqdag(l->get_arr_qdags(), l->get_formula(), l->get_position_qdags(), l->get_node_completion_lqdag());
+	lqdag* copy_lqdag = new lqdag(l->get_arr_qdags(), l->get_formula(), l->get_position_qdags(), l->get_node_completion_lqdag(), l->get_n_qdags());
 	// TODO: OFT
 	copy_lqdag->get_node_completion_lqdag()->val_node = 5;
 	// TODO: check original lqdag l didn't change
