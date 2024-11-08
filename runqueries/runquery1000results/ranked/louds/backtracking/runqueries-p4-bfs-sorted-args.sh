@@ -1,0 +1,3 @@
+./p4 ../../../../../data/all/prop-direct-P706 ../../../../../data/all/prop-direct-P488 ../../../../../data/all/prop-direct-P937 ../../../../../data/all/prop-direct-P2959 ../../../../../data/priorities/p4/pri1-1 0 1
+./p4 ../../../../../data/all/prop-direct-P1532 ../../../../../data/all/prop-direct-P460 ../../../../../data/all/prop-direct-P706 ../../../../../data/all/prop-direct-P237 ../../../../../data/priorities/p4/pri1-2 0 1
+./p4 ../../../../../data/all/prop-direct-P680 ../../../../../data/all/prop-direct-P2293 ../../../../../data/all/prop-direct-P1995 ../../../../../data/all/prop-direct-normalized-P508 ../../../../../data/priorities/p4/pri1-3 0 1

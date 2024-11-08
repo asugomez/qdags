@@ -1,0 +1,2 @@
+./t4 ../../../../../data/all/prop-direct-P232 ../../../../../data/all/prop-direct-P234 ../../../../../data/all/prop-direct-P679 ../../../../../data/all/prop-direct-P638 ../../../../../data/priorities/t4/pri1-1 0 1
+./t4 ../../../../../data/all/prop-direct-P3853 ../../../../../data/all/prop-direct-P644 ../../../../../data/all/prop-direct-P1057 ../../../../../data/all/prop-direct-P639 ../../../../../data/priorities/t4/pri1-2 0 1
