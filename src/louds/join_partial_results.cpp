@@ -444,7 +444,7 @@ multiJoinPartialResultsBacktracking(
 							 size_queue,
 							 results_points);
 
-    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << top_results.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //		cout << results_points[i] << endl;
