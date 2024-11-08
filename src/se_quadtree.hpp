@@ -271,7 +271,7 @@ public:
 
 		ref_count=1;
 
-        // cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;
+//         cout << /*"Join has " <<*/ _bv[height-1].size() << " \t"/* << endl*/;
 
         // OJO con lo que sigue, tengo que hacer este constructor de buena manera
         // build the quadtree
