@@ -17,36 +17,36 @@ for type_fun in 0; do #{0..1}
       echo "file: $file"
       read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
 
-      input_file="./runqueries-$file-bfs-sorted.sh"
+#      input_file="./runqueries-$file-bfs-sorted.sh"
       output_file="./runqueries-$file-bfs-sorted-args.sh"
 
       # Add priorities; type_fun and size_queue
       # Iterate over each line of the input file
-      count=1
-      while IFS= read -r line || [ -n "$line" ]; do
-        if [[ "$line" =~ [[:space:]]$ ]]; then
-          line="${line% }"  # Remove the trailing space
-        fi
-        # Append priorities; type_fun and size_queue to the end of the line
-        priority_file_1="../../../../../data/priorities/$file/pri1-$count"
-        priority_file_2="../../../../../data/priorities/$file/pri2-$count"
-        priority_file_3="../../../../../data/priorities/$file/pri3-$count"
-        priority_file_4="../../../../../data/priorities/$file/pri4-$count"
-        modified_line=""
-        # Check if the i-th argument is emtpy
-        if [ -z "$t2" ]; then # 1 dataset
-          modified_line="$line $priority_file_1 $type_fun $k"
-        elif [ -z "$t3" ]; then # 2 datasets
-          modified_line="$line $priority_file_1 $priority_file_2 $type_fun $k"
-        elif [ -z "$t4" ]; then # 3 datasets
-          modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $type_fun $k"
-        else # 4 datasets
-          modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $priority_file_4 $type_fun $k"
-        fi
-        echo "$modified_line"
-        count=$(($count + 1))
-      done < "$input_file" > "$output_file"
-
+#      count=1
+#      while IFS= read -r line || [ -n "$line" ]; do
+#        if [[ "$line" =~ [[:space:]]$ ]]; then
+#          line="${line% }"  # Remove the trailing space
+#        fi
+#        # Append priorities; type_fun and size_queue to the end of the line
+#        priority_file_1="../../../../../data/priorities/$file/pri1-$count"
+#        priority_file_2="../../../../../data/priorities/$file/pri2-$count"
+#        priority_file_3="../../../../../data/priorities/$file/pri3-$count"
+#        priority_file_4="../../../../../data/priorities/$file/pri4-$count"
+#        modified_line=""
+#        # Check if the i-th argument is emtpy
+#        if [ -z "$t2" ]; then # 1 dataset
+#          modified_line="$line $priority_file_1 $type_fun $k"
+#        elif [ -z "$t3" ]; then # 2 datasets
+#          modified_line="$line $priority_file_1 $priority_file_2 $type_fun $k"
+#        elif [ -z "$t4" ]; then # 3 datasets
+#          modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $type_fun $k"
+#        else # 4 datasets
+#          modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $priority_file_4 $type_fun $k"
+#        fi
+#        echo "$modified_line"
+#        count=$(($count + 1))
+#      done < "$input_file" > "$output_file"
+#
       results_file="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-v1000.txt"
 
       chmod +x $output_file

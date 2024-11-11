@@ -1,5 +1,5 @@
-./j3 ../../../../../data/all/prop-direct-P141 ../../../../../data/all/prop-direct-P301 ../../../../../data/all/prop-direct-P4746 ../../../../../data/priorities/j3/pri1-1 0 1
-./j3 ../../../../../data/all/prop-direct-P2302 ../../../../../data/all/prop-direct-P1366 ../../../../../data/all/prop-direct-P461 ../../../../../data/priorities/j3/pri1-2 0 1
-./j3 ../../../../../data/all/prop-direct-P914 ../../../../../data/all/prop-direct-P155 ../../../../../data/all/prop-direct-P910 ../../../../../data/priorities/j3/pri1-3 0 1
-./j3 ../../../../../data/all/prop-direct-P206 ../../../../../data/all/prop-direct-P138 ../../../../../data/all/prop-direct-P4672 ../../../../../data/priorities/j3/pri1-4 0 1
-./j3 ../../../../../data/all/prop-direct-P1830 ../../../../../data/all/prop-direct-P750 ../../../../../data/all/prop-direct-P166 ../../../../../data/priorities/j3/pri1-5 0 1
+./j3 ../../../../../data/all/prop-direct-P141 ../../../../../data/all/prop-direct-P301 ../../../../../data/all/prop-direct-P4746 ../../../../../data/priorities/j3/pri1-4 ../../../../../data/priorities/j3/pri2-4 ../../../../../data/priorities/j3/pri3-4 0 1
+./j3 ../../../../../data/all/prop-direct-P2302 ../../../../../data/all/prop-direct-P1366 ../../../../../data/all/prop-direct-P461 ../../../../../data/priorities/j3/pri1-8 ../../../../../data/priorities/j3/pri2-8 ../../../../../data/priorities/j3/pri3-8 0 1
+./j3 ../../../../../data/all/prop-direct-P914 ../../../../../data/all/prop-direct-P155 ../../../../../data/all/prop-direct-P910 ../../../../../data/priorities/j3/pri1-26 ../../../../../data/priorities/j3/pri2-26 ../../../../../data/priorities/j3/pri3-26 0 1
+./j3 ../../../../../data/all/prop-direct-P206 ../../../../../data/all/prop-direct-P138 ../../../../../data/all/prop-direct-P4672 ../../../../../data/priorities/j3/pri1-32 ../../../../../data/priorities/j3/pri2-32 ../../../../../data/priorities/j3/pri3-32 0 1
+./j3 ../../../../../data/all/prop-direct-P1830 ../../../../../data/all/prop-direct-P750 ../../../../../data/all/prop-direct-P166 ../../../../../data/priorities/j3/pri1-45 ../../../../../data/priorities/j3/pri2-45 ../../../../../data/priorities/j3/pri3-45 0 1
