@@ -30,20 +30,20 @@ cd "$script_dir/partial/dfuds/optimalOrder/"
 #echo "Running ranked louds backtracking"
 #cd "$script_dir/ranked/louds/backtracking/"
 #./runRankedLoudsBacktracking.sh
-echo "Running ranked louds optimalOrder"
-cd "$script_dir/ranked/louds/optimalOrder/"
-./runRankedLoudsNonFixed.sh
+#echo "Running ranked louds optimalOrder"
+#cd "$script_dir/ranked/louds/optimalOrder/"
+#./runRankedLoudsNonFixed.sh
 
 ## dfuds
 #echo "Running ranked dfuds backtracking"
 #cd "$script_dir/ranked/dfuds/backtracking/"
 #./runRankedDfudsBacktracking.sh
-echo "Running ranked dfuds optimalOrder"
-cd "$script_dir/ranked/dfuds/optimalOrder/"
-./runRankedDfudsNonFixed.sh
+#echo "Running ranked dfuds optimalOrder"
+#cd "$script_dir/ranked/dfuds/optimalOrder/"
+#./runRankedDfudsNonFixed.sh
 
 
 # lazy qdags
-echo "Running lazy join"
-cd "$script_dir/lqdags/"
-./runLazyJoin.sh
+#echo "Running lazy join"
+#cd "$script_dir/lqdags/"
+#./runLazyJoin.sh

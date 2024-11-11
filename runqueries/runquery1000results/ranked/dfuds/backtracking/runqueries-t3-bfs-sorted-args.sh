@@ -1,0 +1,1 @@
+./t3 ../../../../../data/all/prop-direct-P4728 ../../../../../data/all/prop-direct-P961 ../../../../../data/all/prop-direct-P5984 ../../../../../data/priorities/t3/pri1-1 ../../../../../data/priorities/t3/pri2-1 ../../../../../data/priorities/t3/pri3-1 0 1000
