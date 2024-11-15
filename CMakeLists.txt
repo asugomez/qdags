@@ -34,6 +34,10 @@ add_executable(j3-ranked-dfuds-optOrder ./queries/ranked/dfuds/optimalOrder/j3.c
 # LAZY QDAGS
 add_executable(j3-lqdags ./queries/lqdags/j3.cpp)
 
+# Main for testing
+# ORIGINAL
+add_executable(main ./main.cpp)
+
 # Link libraries
 target_link_libraries(j3-original sdsl divsufsort divsufsort64)
 
@@ -47,6 +51,8 @@ target_link_libraries(j3-ranked-dfuds-backtracking sdsl divsufsort divsufsort64)
 target_link_libraries(j3-ranked-dfuds-optOrder sdsl divsufsort divsufsort64)
 
 target_link_libraries(j3-lqdags sdsl divsufsort divsufsort64)
+
+target_link_libraries(main sdsl divsufsort divsufsort64)
 
 # Add command-line arguments
 #add_custom_target(

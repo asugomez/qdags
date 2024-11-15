@@ -98,7 +98,7 @@ lqdag* compute_dfs_join_run_time(lqdag* join,uint64_t UPPER_BOUND, uint64_t &res
 lqdag* compute_dfs_selection(lqdag* l, predicate* pred, uint64_t UPPER_BOUND, uint64_t &results){
 	lqdag* copy_lqdag = new lqdag(l->get_arr_qdags(), l->get_formula(), l->get_position_qdags(), l->get_node_completion_lqdag(), l->get_n_qdags());
 	// TODO: OFT
-	copy_lqdag->get_node_completion_lqdag()->val_node = 5;
+//	copy_lqdag->get_node_completion_lqdag()->val_node = 5; // TODO: create copy equal for lqdag and node_completion
 	// TODO: check original lqdag l didn't change
 	return copy_lqdag->completion_selection_dfs(pred,l->getMaxLevel(),0,UPPER_BOUND,results);
 }

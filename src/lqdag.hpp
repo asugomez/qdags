@@ -43,12 +43,19 @@ public:
 		}
 		// copy assignment operator (deep copy)
 		node_completion& operator=(const node_completion& n){
-			// TODO: see when we call this copy
+//			if(this. == NULL){
+//				this->val_node = n.val_node;
+//				this->level = n.level;
+//				this->n_children = n.n_children;
+//				this->path = n.path;
+//				this->lqdag_children = new lqdag*[n.n_children];
+//				for(uint64_t i = 0; i < n.n_children; i++)
+//					this->lqdag_children[i] = new lqdag(*n.lqdag_children[i]);
+//			}
 			if(this != &n){
 				// Clean up existing resources
-				if(this->lqdag_children != nullptr)
+				if(this && this->lqdag_children[0] != nullptr)
 					delete[] this->lqdag_children;
-
 				this->val_node = n.val_node;
 				this->level = n.level;
 				this->n_children = n.n_children;
@@ -117,6 +124,7 @@ public:
 		this->form_lqdag = form_lqdag;
 		this->form_lqdag->inc_ref_count();
 		this->pos_qdags = pos_qdags;
+//		this->node_completion_lqdag->operator=(*completion_children_lqdag);
 		this->node_completion_lqdag = completion_children_lqdag;
 		this->nQdags = nQdags;
 	}
@@ -558,7 +566,11 @@ public:
 	 * @return The i-th child if it satisfies the predicates. Otherwise, return an empty leaf.
 	 */
 	lqdag* get_child_selection(uint64_t ith_child, predicate *pred){
-		if(this->node_completion_lqdag->val_node == EMPTY_LEAF || (this->node_completion_lqdag->lqdag_children[ith_child] && this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->val_node == EMPTY_LEAF)){
+		// TODO: check if get_child_lqdag is always called when != NO_VALUE_LEAF
+		if(this->node_completion_lqdag->val_node == EMPTY_LEAF
+			|| (this->node_completion_lqdag->lqdag_children[0] != nullptr
+					&& this->node_completion_lqdag->lqdag_children[ith_child] != nullptr
+					 && this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->val_node == EMPTY_LEAF)){
 			return this;
 		}
 		// update the current coordinates to be the path to the ith_child

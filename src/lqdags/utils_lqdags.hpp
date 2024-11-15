@@ -107,7 +107,7 @@ struct predicate {
  */
 static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side, uint16_t nAtt) {
 	// TODO:!!! coordinates not correct (uint16_t can not be used)
-	uint16_t * coordinates = transformPathToCoordinates(path, nAtt, log2(quadrant_side));
+	uint16_t* coordinates = transformPathToCoordinates(path, nAtt, log2(quadrant_side));
     vector<uint64_t> min_att;
     vector<uint64_t> max_att;
     for(uint16_t i = 0; i < nAtt; i++){
