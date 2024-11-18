@@ -52,8 +52,24 @@ for type_fun in 0; do
 
       $output_file >> $results_file
 
-      # Calculate mean using awk
-      mean=$(awk '{ suma += $1 } END { print suma / NR }' "$results_file")
+      # Calculate the mean of hexadecimal numbers
+      sum=0
+      count=0
+
+      while IFS= read -r hex_number || [ -n "$hex_number" ]; do
+        # Convert the hexadecimal number to decimal
+        decimal_value=$((0x$hex_number))
+        sum=$((sum + decimal_value))
+        count=$((count + 1))
+      done < "$results_file"
+
+      # Calculate mean and handle division by zero
+      if [ $count -gt 0 ]; then
+        mean=$((sum / count))
+      else
+        mean=0
+      fi
+
       printf "$mean;" >> $data_csv
     done
     echo "" >> $data_csv
