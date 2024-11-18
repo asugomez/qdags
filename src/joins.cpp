@@ -172,7 +172,9 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
 bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
          uint16_t cur_level, uint16_t max_level,
          vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
-         bool bounded_result, uint64_t UPPER_BOUND) {
+         bool bounded_result, uint64_t UPPER_BOUND,
+		 uint256_t& nodes_visited) {
+	nodes_visited+=1;
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool result = false;
@@ -204,6 +206,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         i = 0;
         uint64_t msb;
 
+
         while (/*children &&*/ i < children_to_recurse_size) {
             msb = __builtin_clz(children);
             children_to_recurse[i] = msb; // write the position of the 1s
@@ -216,6 +219,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         // we do not call recursively the function AND as we do in the other levels
         for (i = 0; i < children_to_recurse_size; ++i){
+//			nodes_visited+=1;
             child = children_to_recurse[i];
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1);
@@ -268,6 +272,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         uint16_t child;
 
         for (i = 0; i < children_to_recurse_size; ++i) {
+//			nodes_visited+=1;
             child = children_to_recurse[i]; // the position of the 1s in children
             for (uint64_t j = 0; j < nQ; j++) {
                 uint16_t cur_node_test = Q[j]->getM(child);
@@ -287,7 +292,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 return false;
             else if (cur_level == max_level ||
                      AND(Q, root_temp, nQ, cur_level + 1, max_level, bv, last_pos, nAtt, bounded_result,
-                         UPPER_BOUND)) // recursive call
+                         UPPER_BOUND, nodes_visited)) // recursive call
             {
                 bv[cur_level].push_back(last_pos[cur_level]++); // we write the current result in the output bitvector
                 just_zeroes = false;
@@ -572,7 +577,7 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
  * @param UPPER_BOUND the limit of the result if bounded.
  * @return a quadtree (qdag not extended) with the result of the multi join.
  */
-qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
+qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND, uint256_t& nodes_visited) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
@@ -618,7 +623,9 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND) {
         last_pos[i] = 0; // initialize the last position
 
     // array of extended qdags, array of roots, current level, height, the output bitvector path, arreglo de ult. posicion, number of attributs,
-    AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
+    AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND,nodes_visited);
+
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
     // we create a new qdag with the output store in path (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
