@@ -164,20 +164,22 @@ int main(int argc, char** argv)
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
+
+
    
     // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);  // warmup join -> activar el caché
+//    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);  // warmup join -> activar el caché
     results_ranked_louds_back = priority_queue<qdagResults>();
- 
+	uint256_t nodes_visited = 0;
     start = high_resolution_clock::now();
 
-    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();    
+    total_time = time_span.count();
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     
     return 0;
 

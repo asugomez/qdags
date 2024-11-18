@@ -175,7 +175,7 @@ int main(int argc, char** argv)
     int64_t size_queue = argv[10] ? atoi(argv[10]) : 1000;
 
 
-    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+//    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
 
  
     high_resolution_clock::time_point start, stop;
@@ -183,17 +183,16 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
     results_ranked_louds_back = priority_queue<qdagResults>();
-    
-    start = high_resolution_clock::now();
 
-    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+	uint256_t nodes_visited = 0;
+	start = high_resolution_clock::now();
 
-   
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();    
+	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
 
-    cout << /*ntuples << "\t" <<*/ /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
 
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     return 0;
 }

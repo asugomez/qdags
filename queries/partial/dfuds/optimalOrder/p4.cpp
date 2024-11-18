@@ -110,17 +110,18 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);// cache warmup
+//    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);// cache warmup
     results_partial_dfuds.clear();
-    start = high_resolution_clock::now();
+	uint256_t nodes_visited = 0;
+	start = high_resolution_clock::now();
 
-    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
+	multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds, nodes_visited);
 
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();    
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
 
-    cout << /*ntuples << "\t" <<*/  /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }

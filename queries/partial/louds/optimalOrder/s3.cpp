@@ -103,21 +103,24 @@ int main(int argc, char** argv)
 
 	vector<uint256_t> results_partial_louds;
 
-    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
+//    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
     results_partial_louds.clear();
-    start = high_resolution_clock::now();
 
-    multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds);
+	uint256_t nodes_visited = 0;
 
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
+	start = high_resolution_clock::now();
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+	multiJoinPartialResults(Q, true, k, grid_side, type_fun, results_partial_louds, nodes_visited);
+
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
+
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }
