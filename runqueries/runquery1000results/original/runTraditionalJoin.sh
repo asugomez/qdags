@@ -3,7 +3,7 @@ chmod a+x *.sh
 data_csv="../../outputs/query1000results/original/results-v1000.csv"
 
 echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2">> $data_csv
-for k in 1 10 100 1000; do
+for k in 10000 100000 1000000 100000000; do
   # echo k
   echo "k: $k"
   printf "$k;" >> $data_csv
