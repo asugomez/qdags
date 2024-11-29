@@ -54,7 +54,7 @@ public:
 //			}
 			if(this != &n){
 				// Clean up existing resources
-				if(this && this->lqdag_children[0] != nullptr)
+				if(this->lqdag_children[0] != nullptr)
 					delete[] this->lqdag_children;
 				this->val_node = n.val_node;
 				this->level = n.level;
@@ -581,7 +581,7 @@ public:
 								 pow(this->getK(),this->getCurLevel()+1);
 
 		// we evaluate the predicate first for the ith-child (with the coordinates and the quadrant)
-		double val_eval_pred = eval_pred(pred, newPath, quadrant_side, this->nAttr(), this->getCurLevel());
+		double val_eval_pred = eval_pred(pred, newPath, quadrant_side, this->nAttr(), this->getCurLevel(), this->getMaxLevel());
 		lqdag* child_lqdag;
 		if(val_eval_pred == 0){ // return an empty child
 			child_lqdag = new lqdag(this->arr_qdags, this->form_lqdag, nQdags);
@@ -619,8 +619,7 @@ public:
 		uint64_t quadrant_side = this->getGridSide() /
 								 pow(this->getK(),this->getCurLevel());
 
-		// TODO: what is the quadrant_side? for the first call
-		double val_eval_pred = eval_pred(pred, this->node_completion_lqdag->path, quadrant_side, this->nAttr(), this->getCurLevel());
+		double val_eval_pred = eval_pred(pred, this->node_completion_lqdag->path, quadrant_side, this->nAttr(), this->getCurLevel(), this->getMaxLevel());
 
 		if(val_eval_pred == 0){
 			this->node_completion_lqdag->val_node = EMPTY_LEAF;
@@ -632,8 +631,6 @@ public:
 		} else if(val_eval_pred == 1){
 			return this->completion_dfs(max_level, cur_level, UPPER_BOUND, results);
 		} else { // val = 0.5
-			if(cur_level > max_level + 1)
-				cout << ".";
 			double max_value = 0;
 			double min_value = 1;
 			for(uint64_t i = 0; i < nChildren(); i++){
@@ -641,7 +638,6 @@ public:
 				lqdag* child_lqdag_pred = this->get_child_lqdag(i);
 				if(child_lqdag_pred->node_completion_lqdag->val_node != EMPTY_LEAF){
 					child_lqdag_pred = child_lqdag_pred->completion_selection_dfs(pred, max_level, cur_level+1, UPPER_BOUND, results);
-
 				}
 				max_value = max(max_value, child_lqdag_pred->node_completion_lqdag->val_node);
 				min_value = min(min_value, child_lqdag_pred->node_completion_lqdag->val_node);

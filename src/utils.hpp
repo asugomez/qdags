@@ -131,13 +131,13 @@ void getNewMortonCodePath(uint256_t &path, uint16_t nAtt, uint64_t cur_level, ui
  * @param height
  * @return
  */
-uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint16_t height){
+uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint16_t cur_level, uint16_t max_level){
 	uint16_t* coordinates = new uint16_t[nAtt];
 	for(uint16_t i=0; i<nAtt; i++){
 		coordinates[i] = 0;
 	}
 	// Iterate over each level of the tree to extract coordinates
-	for (uint16_t i = 0; i < height; ++i) {
+	for (uint16_t i = 0; i < cur_level; ++i) {
 		for (uint16_t j = 0; j < nAtt; ++j) {
 			// Extract the j-th bit at level i from the path
 			uint256_t bitPosition = i * nAtt + j;
@@ -145,7 +145,7 @@ uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint16_t he
 			bit = bit.operator&(1);
 
 			// Set the bit in the correct position for the j-th coordinate
-			coordinates[j] |= (bit.operator<<(i));
+			coordinates[j] |= (bit.operator<<(max_level-i));
 		}
 	}
 
