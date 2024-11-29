@@ -124,12 +124,12 @@ int main(int argc, char **argv) {
 	qdag_dfuds qdag_rel_U_dfuds(*rel_U_2, att_U, grid_side, 2, att_U.size());
 
 //     print the tree
-//	cout << endl << "rel R" << endl;
-//	qdag_rel_R.printBv();
-//	cout << endl << "rel S" << endl;
-//	qdag_rel_S.printBv();
-//    cout << endl << "rel T" << endl;
-//    qdag_rel_T.printBv();
+	cout << endl << "rel R" << endl;
+	qdag_rel_R.printBv();
+	cout << endl << "rel S" << endl;
+	qdag_rel_S.printBv();
+    cout << endl << "rel T" << endl;
+    qdag_rel_T.printBv();
 //    cout << endl << "rel U" << endl;
 //    qdag_rel_U.printBv();
 
@@ -356,7 +356,9 @@ int main(int argc, char **argv) {
 	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
 	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
 	predicate pred3 = {AT_X1, AT_X3, 3, OP_EQUAL, TYPE_ATT1_ATT2};
-	predicate pred4_0 = {AT_Z, AT_X3, 1, OP_LESS, TYPE_ATT1_CONST};
+
+	predicate pred4_0 = {AT_Y, AT_X3, 0, OP_GREATER, TYPE_ATT1_CONST};
+
 	predicate pred4_1 = {AT_X2, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
 	predicate pred4_2 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
 	predicate pred5 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
@@ -367,6 +369,8 @@ int main(int argc, char **argv) {
 	res = 0;
 
 //	lqdag* selection_test = compute_dfs_selection(join_res, &pred1, k, res);
+
+//	lqdag* join_sel_copy = compute_dfs_selection(join_res, &pred4_0, k, res);
 
 	lqdag * join_selection = compute_dfs_selection_join(Q, &pred4_0, k, res);
 
