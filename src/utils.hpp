@@ -75,6 +75,7 @@ void sortBySecond(std::vector<std::pair<uint64_t, uint64_t>> &arr) {
 
 /**
  * TODO: aqui hay un error: coordinates de 16 bits no es suficiente!
+ * La verdad creo que si es suciente, xd a ver
  * Transform the i-th child into a coordinate according to the Morton code.
  * When we descend a level, we compute the new coordinates of the point.
  * @param coordinates
@@ -92,34 +93,59 @@ void transformCoordinates(uint16_t* coordinates, uint16_t nAtt, uint64_t diff_le
     }
 }
 
+///**
+// * Reverse the bits of a number.
+// * For example: 1011 -> 1101
+//*/
+//void reverseBits(uint256_t& number){
+//	uint256_t reversed = 0;
+//	while(number.operator>(0)){
+////		reversed <<= 1;
+//		reversed = reversed.operator<<(1);
+//		if(number.operator&(1).operator==(1)){
+////			reversed.operator ^= 1;
+//		}
+////		n >>= 1;
+//		number = number.operator>>(1);
+//	}
+//	number = reversed;
+//}
+
 /**
  * Add a child to the path according to the Morton code.
+ * The coordinates are in x,y,z... order (not like in the traditional Morton code, that is ...z,y,x).
  * @param path
  * @param nAtt
  * @param diff_level
  * @param child
  */
 void getNewMortonCodePath(uint256_t &path, uint16_t nAtt, uint64_t cur_level, uint256_t child){
-
 	child = child.operator<<(cur_level*nAtt);
 	path.operator|=(child);
-//	path |= child;
 }
 
-uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint64_t height){
+/**
+ * Given a path in Morton code in x,y,z,.. order, we transform it into a vector of coordinates.
+ * @param path
+ * @param nAtt
+ * @param height
+ * @return
+ */
+uint16_t* transformPathToCoordinates(uint256_t &path, uint16_t nAtt, uint16_t cur_level, uint16_t max_level){
 	uint16_t* coordinates = new uint16_t[nAtt];
 	for(uint16_t i=0; i<nAtt; i++){
 		coordinates[i] = 0;
 	}
 	// Iterate over each level of the tree to extract coordinates
-	for (uint64_t i = 0; i < height; ++i) {
+	for (uint16_t i = 0; i < cur_level; ++i) {
 		for (uint16_t j = 0; j < nAtt; ++j) {
 			// Extract the j-th bit at level i from the path
 			uint256_t bitPosition = i * nAtt + j;
-			uint256_t bit = (path.operator>>(bitPosition)).operator&(1);
+			uint256_t bit = (path.operator>>(bitPosition)); // path >> (length - bitPosition)
+			bit = bit.operator&(1);
 
 			// Set the bit in the correct position for the j-th coordinate
-			coordinates[j] |= (bit.operator<<(i));
+			coordinates[j] |= (bit.operator<<(max_level-i));
 		}
 	}
 

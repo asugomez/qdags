@@ -105,12 +105,11 @@ struct predicate {
  * @param quadrant_side
  * @return 0 if the quadrant do not satisfy the predicate, 1 if it satisfies the predicate, 0.5 if it is partially inside the limits
  */
-static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side, uint16_t nAtt) {
-	// TODO:!!! coordinates not correct (uint16_t can not be used)
-	uint16_t * coordinates = transformPathToCoordinates(path, nAtt, log2(quadrant_side));
-    vector<uint64_t> min_att;
+static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side, uint16_t nAtt, uint16_t cur_level, uint16_t max_level){
+	uint16_t* coordinates = transformPathToCoordinates(path, nAtt, cur_level, max_level);
+	vector<uint64_t> min_att;
     vector<uint64_t> max_att;
-    for(uint16_t i = 0; i < nAtt; i++){
+    for(uint16_t i = 0; i < nAtt; i++){ // compute the range of each attribute
         min_att.push_back(coordinates[i]);
         max_att.push_back(coordinates[i] + quadrant_side - 1);
     }
@@ -229,7 +228,7 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
             case OP_GREATER_EQUAL: // att1 >= val_const
                 if(quadrant_side == 1)
                     return min_att_1 >= pred->val_const;
-                else if(min_att_1 >= pred->val_const)
+                else if(min_att_1 >= pred->val_const) // limite inferior es superior o igual al valor constante
                     return 1;
                 else if(min_att_1 < pred->val_const && pred->val_const <= max_att_1)
                     return 0.5;

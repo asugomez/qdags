@@ -43,12 +43,19 @@ public:
 		}
 		// copy assignment operator (deep copy)
 		node_completion& operator=(const node_completion& n){
-			// TODO: see when we call this copy
+//			if(this. == NULL){
+//				this->val_node = n.val_node;
+//				this->level = n.level;
+//				this->n_children = n.n_children;
+//				this->path = n.path;
+//				this->lqdag_children = new lqdag*[n.n_children];
+//				for(uint64_t i = 0; i < n.n_children; i++)
+//					this->lqdag_children[i] = new lqdag(*n.lqdag_children[i]);
+//			}
 			if(this != &n){
 				// Clean up existing resources
-				if(this->lqdag_children != nullptr)
+				if(this->lqdag_children[0] != nullptr)
 					delete[] this->lqdag_children;
-
 				this->val_node = n.val_node;
 				this->level = n.level;
 				this->n_children = n.n_children;
@@ -117,6 +124,7 @@ public:
 		this->form_lqdag = form_lqdag;
 		this->form_lqdag->inc_ref_count();
 		this->pos_qdags = pos_qdags;
+//		this->node_completion_lqdag->operator=(*completion_children_lqdag);
 		this->node_completion_lqdag = completion_children_lqdag;
 		this->nQdags = nQdags;
 	}
@@ -558,7 +566,11 @@ public:
 	 * @return The i-th child if it satisfies the predicates. Otherwise, return an empty leaf.
 	 */
 	lqdag* get_child_selection(uint64_t ith_child, predicate *pred){
-		if(this->node_completion_lqdag->val_node == EMPTY_LEAF || (this->node_completion_lqdag->lqdag_children[ith_child] && this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->val_node == EMPTY_LEAF)){
+		// TODO: check if get_child_lqdag is always called when != NO_VALUE_LEAF
+		if(this->node_completion_lqdag->val_node == EMPTY_LEAF
+			|| (this->node_completion_lqdag->lqdag_children[0] != nullptr
+					&& this->node_completion_lqdag->lqdag_children[ith_child] != nullptr
+					 && this->node_completion_lqdag->lqdag_children[ith_child]->node_completion_lqdag->val_node == EMPTY_LEAF)){
 			return this;
 		}
 		// update the current coordinates to be the path to the ith_child
@@ -569,7 +581,7 @@ public:
 								 pow(this->getK(),this->getCurLevel()+1);
 
 		// we evaluate the predicate first for the ith-child (with the coordinates and the quadrant)
-		double val_eval_pred = eval_pred(pred, newPath, quadrant_side, this->nAttr());
+		double val_eval_pred = eval_pred(pred, newPath, quadrant_side, this->nAttr(), this->getCurLevel(), this->getMaxLevel());
 		lqdag* child_lqdag;
 		if(val_eval_pred == 0){ // return an empty child
 			child_lqdag = new lqdag(this->arr_qdags, this->form_lqdag, nQdags);
@@ -600,30 +612,49 @@ public:
 									uint16_t cur_level,
 									uint64_t UPPER_BOUND,
 									uint64_t &results){
-		if(results >= UPPER_BOUND || this->node_completion_lqdag->val_node == EMPTY_LEAF){
+		if(results >= UPPER_BOUND || this->node_completion_lqdag->val_node == EMPTY_LEAF){ //cur_level > max_level + 1 ||
 			return this;
 		}
 
-		double max_value = 0;
-		double min_value = 1;
-		for(uint64_t i = 0; i < nChildren(); i++){
-			lqdag* child_lqdag_pred = this->get_child_selection(i, pred);
-			if(child_lqdag_pred->node_completion_lqdag->val_node == FULL_LEAF){
-				// TODO: check get cur level is updated
-				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
-//				results += (this->getCurLevel() > this->getMaxLevel()) ? 1 :  pow(nChildren(), (this->getMaxLevel() - this->getCurLevel() + 1));
+		uint64_t quadrant_side = this->getGridSide() /
+								 pow(this->getK(),this->getCurLevel());
+
+		double val_eval_pred = eval_pred(pred, this->node_completion_lqdag->path, quadrant_side, this->nAttr(), this->getCurLevel(), this->getMaxLevel());
+
+		if(val_eval_pred == 0){
+			this->node_completion_lqdag->val_node = EMPTY_LEAF;
+			if(this->node_completion_lqdag->lqdag_children && this->node_completion_lqdag->lqdag_children[0]){
+				delete[] this->node_completion_lqdag->lqdag_children;
+				this->node_completion_lqdag->lqdag_children = nullptr;
 			}
-			child_lqdag_pred->completion_selection_dfs(pred, max_level, cur_level+1, UPPER_BOUND, results);
-			max_value = max(max_value, child_lqdag_pred->node_completion_lqdag->val_node);
-			min_value = min(min_value, child_lqdag_pred->node_completion_lqdag->val_node);
+			return this;
+		} else if(val_eval_pred == 1){
+			return this->completion_dfs(max_level, cur_level, UPPER_BOUND, results);
+		} else { // val = 0.5
+			double max_value = 0;
+			double min_value = 1;
+			for(uint64_t i = 0; i < nChildren(); i++){
+				//option 2: compute the quadtree and the the predicate:
+				lqdag* child_lqdag_pred = this->get_child_lqdag(i);
+				if(child_lqdag_pred->node_completion_lqdag->val_node != EMPTY_LEAF){
+					child_lqdag_pred = child_lqdag_pred->completion_selection_dfs(pred, max_level, cur_level+1, UPPER_BOUND, results);
+				}
+				max_value = max(max_value, child_lqdag_pred->node_completion_lqdag->val_node);
+				min_value = min(min_value, child_lqdag_pred->node_completion_lqdag->val_node);
+			}
+			// prunning step
+			if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
+				if(this->node_completion_lqdag->lqdag_children && this->node_completion_lqdag->lqdag_children[0]){
+					delete[] this->node_completion_lqdag->lqdag_children;
+					this->node_completion_lqdag->lqdag_children = nullptr;
+				}
+				double val_leaf = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
+				this->node_completion_lqdag->val_node = val_leaf;
+			}
+			return this;
+
 		}
-		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
-			delete[] this->node_completion_lqdag->lqdag_children;
-			this->node_completion_lqdag->lqdag_children = nullptr;
-			double val_leaf = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
-			this->node_completion_lqdag->val_node = val_leaf;
-		}
-		return this;
+
 
 	}
 

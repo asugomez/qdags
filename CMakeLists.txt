@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17) #  see if change to 14 or 17
 # Compiler options
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG -DSAN=1 -fsanitize=undefined") # run with debug (assert)
 #set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DDEBUG") # run with debug (assert)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG") # run with debug (assert)
 include_directories(/opt/homebrew/include)
 link_directories(/opt/homebrew/lib)
 
@@ -34,6 +34,10 @@ add_executable(j3-ranked-dfuds-optOrder ./queries/ranked/dfuds/optimalOrder/j3.c
 # LAZY QDAGS
 add_executable(j3-lqdags ./queries/lqdags/j3.cpp)
 
+# Main for testing
+# ORIGINAL
+add_executable(main ./main.cpp)
+
 # Link libraries
 target_link_libraries(j3-original sdsl divsufsort divsufsort64)
 
@@ -47,6 +51,8 @@ target_link_libraries(j3-ranked-dfuds-backtracking sdsl divsufsort divsufsort64)
 target_link_libraries(j3-ranked-dfuds-optOrder sdsl divsufsort divsufsort64)
 
 target_link_libraries(j3-lqdags sdsl divsufsort divsufsort64)
+
+target_link_libraries(main sdsl divsufsort divsufsort64)
 
 # Add command-line arguments
 #add_custom_target(
