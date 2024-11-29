@@ -9,6 +9,9 @@
 /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/j3-ranked-dfuds-backtracking.dir
 /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/j3-ranked-dfuds-optOrder.dir
 /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/j3-lqdags.dir
+<<<<<<< Updated upstream
 /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/main.dir
+=======
+>>>>>>> Stashed changes
 /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/edit_cache.dir
 /Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug/CMakeFiles/rebuild_cache.dir
