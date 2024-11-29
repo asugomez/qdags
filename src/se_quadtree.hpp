@@ -287,7 +287,7 @@ public:
             bv_select[i] = sd_vector<>::select_1_type(path[i]);
             total_ones[i] = bv_rank[i].rank(path[i].size());
         }*/
-        printBv();
+//        printBv();
 
     }
 
