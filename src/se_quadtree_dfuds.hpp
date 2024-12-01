@@ -432,7 +432,7 @@ public:
      * @return The number of leaves to the left of node v, plus 1.
      */
     size_type_bv leaf_rank(size_type_bv node_v) const{
-        return bp_b.rank_zero_zero(node_v);
+        return bp_b.rank_zero_zero(node_v); // TODO: check how this is number of leaves + 1
     }
 
     /**

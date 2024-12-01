@@ -221,7 +221,6 @@ rule CXX_EXECUTABLE_LINKER__j3-lqdags_Debug
 
 
 #############################################
-<<<<<<< Updated upstream
 # Rule for compiling CXX files.
 
 rule CXX_COMPILER__main_unscanned_Debug
@@ -241,8 +240,6 @@ rule CXX_EXECUTABLE_LINKER__main_Debug
 
 
 #############################################
-=======
->>>>>>> Stashed changes
 # Rule for running custom commands.
 
 rule CUSTOM_COMMAND

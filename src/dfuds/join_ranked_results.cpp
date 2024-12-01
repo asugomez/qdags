@@ -351,7 +351,12 @@ AND_ranked_dfuds_backtracking(
             double total_weight = 0;
             uint64_t priority_ith_node, min_idx;
             for (uint64_t j = 0; j < nQ; j++) {
+				if(j==2 && i==0 && cur_level == 25){
+					cout << "hello" << endl;
+				}
                 min_idx = Q[j]->get_index_pri(roots[j],Q[j]->getM(child));
+				if(min_idx >= priorities[j].size())
+					cout << "error heeree" << endl;
                 priority_ith_node = priorities[j][min_idx];
 
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
@@ -451,10 +456,10 @@ AND_ranked_dfuds_backtracking(
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
             AND_ranked_dfuds_backtracking(Q, nQ, nAtt,
-										  root_temp[order_to_traverse[i].first],
+										  root_temp[order_to_traverse.at(i).first],
 										  next_level, max_level,
 										  type_priority_fun,
-										  newPath[order_to_traverse[i].first],
+										  newPath[order_to_traverse.at(i).first],
 										size_queue,
                                     	priorities, rMq, top_results);
         }
