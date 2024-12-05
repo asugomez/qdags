@@ -111,8 +111,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
-//    uint64_t grid_side = 52000000; // es como +infty para wikidata
-	uint64_t grid_side = 8;
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
+//	uint64_t grid_side = 8;
 
 	qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
 	qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -124,12 +124,12 @@ int main(int argc, char **argv) {
 	qdag_dfuds qdag_rel_U_dfuds(*rel_U_2, att_U, grid_side, 2, att_U.size());
 
 //     print the tree
-	cout << endl << "rel R" << endl;
-	qdag_rel_R.printBv();
-	cout << endl << "rel S" << endl;
-	qdag_rel_S.printBv();
-    cout << endl << "rel T" << endl;
-    qdag_rel_T.printBv();
+//	cout << endl << "rel R" << endl;
+//	qdag_rel_R.printBv();
+//	cout << endl << "rel S" << endl;
+//	qdag_rel_S.printBv();
+//    cout << endl << "rel T" << endl;
+//    qdag_rel_T.printBv();
 //    cout << endl << "rel U" << endl;
 //    qdag_rel_U.printBv();
 
