@@ -429,10 +429,11 @@ public:
 
     /**
      * @param node_v
-     * @return The number of leaves to the left of node v, plus 1.
+     * @return The number of leaves to the left of node v
      */
     size_type_bv leaf_rank(size_type_bv node_v) const{
-        return bp_b.rank_zero_zero(node_v); // TODO: check how this is number of leaves + 1
+		assert(node_v >= 3);
+        return bp_b.rank_zero_zero(node_v-1);
     }
 
     /**
@@ -477,7 +478,7 @@ public:
      * @return
      */
     inline uint8_t get_node(uint64_t node, uint64_t *rank_array) {
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
+		uint64_t start_pos = (bp_b.rank_zero(node) - 1 - bp_b.rank_zero_zero(node))*k_d;
         uint8_t nd;
         // node + n_children + 1 (1^c 0)
         node = first_child(node);
@@ -596,7 +597,7 @@ public:
      * @return The bits of the node of the tree that are descendants of the node.
      */
     inline uint8_t get_node_last_level(uint64_t node) {
-        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - leaf_rank(node))*k_d;
+        uint64_t start_pos = (bp_b.rank_zero(node) - 1 - bp_b.rank_zero_zero(node))*k_d;
         if(k_d == 4){
             return bv_s.get_int(start_pos,4);
         } else {
