@@ -1,0 +1,159 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "qdags",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-lqdags::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-lqdags-Debug-6f5ab22b4d19aa815872.json",
+					"name" : "j3-lqdags",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-original::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-original-Debug-a1ccc2ebf72a3c3d0153.json",
+					"name" : "j3-original",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-dfuds-back::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-dfuds-back-Debug-ef1f1b34a3aef3cb7c33.json",
+					"name" : "j3-partial-dfuds-back",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-dfuds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-dfuds-optOrder-Debug-0594a86bbce54232af75.json",
+					"name" : "j3-partial-dfuds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-louds-back::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-louds-back-Debug-446486eb4d3bb8d8722d.json",
+					"name" : "j3-partial-louds-back",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-louds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-louds-optOrder-Debug-5c44b7c3dd8e3b7a03ba.json",
+					"name" : "j3-partial-louds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-dfuds-backtracking::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-dfuds-backtracking-Debug-3ae464a0cf4688038bfb.json",
+					"name" : "j3-ranked-dfuds-backtracking",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-dfuds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-dfuds-optOrder-Debug-76841b363bd358ebd473.json",
+					"name" : "j3-ranked-dfuds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-louds-backtracking::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-louds-backtracking-Debug-f2c4aa64a5cd827d4dbe.json",
+					"name" : "j3-ranked-louds-backtracking",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-louds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-louds-optOrder-Debug-c1a47560b54138da35c0.json",
+					"name" : "j3-ranked-louds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main-Debug-9fc08873ddaa0e18b84d.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "qdags::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-qdags-Debug-f170f609a6e0efab85cc.json",
+					"name" : "qdags",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/asugomez/Desktop/Magister/Tesis/qdags/cmake-build-debug-event-trace",
+		"source" : "/Users/asugomez/Desktop/Magister/Tesis/qdags"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

@@ -351,9 +351,8 @@ public:
      * If the node is 1001, and t = 3, the index will be 1
      */
     uint64_t get_index_pri(uint64_t node, uint64_t t){
-        // we add 1 to t, because the first child is 1 (not 0)
         uint64_t ind = Q->get_rank_node_child(node, t);
-        return Q->leaf_rank(Q->child(node, ind+1)) - 1;
+        return Q->leaf_rank(Q->child(node, ind+1));
     }
 
 
