@@ -364,8 +364,6 @@ AND_ranked_dfuds_backtracking(
 					cout << "hello" << endl;
 				}
                 min_idx = Q[j]->get_index_pri(roots[j],Q[j]->getM(child));
-				if(min_idx >= priorities[j].size())
-					cout << "error heeree" << endl;
                 priority_ith_node = priorities[j][min_idx];
 
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
