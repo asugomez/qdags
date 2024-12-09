@@ -43,6 +43,6 @@ cd "$script_dir/partial/dfuds/optimalOrder/"
 ./runPartialDfudsNonFixed.sh
 
 # lazy qdags
-#echo "Running lazy join"
-#cd "$script_dir/lqdags/"
-#./runLazyJoin.sh
+echo "Running lazy join"
+cd "$script_dir/lqdags/"
+./runLazyJoin.sh

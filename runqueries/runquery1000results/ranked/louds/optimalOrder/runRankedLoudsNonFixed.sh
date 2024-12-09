@@ -3,7 +3,7 @@
 # run tests for each type_fun and each size_queue
 for type_fun in 0; do
   chmod a+x *.sh
-  data_csv="../../../../outputs/query1000results/ranked/louds/optimalOrder/results-f$type_fun-v1000.csv"
+  data_csv="../../../../outputs/query1000results/ranked/louds/optimalOrder/results-f$type_fun-v1000-time.csv"
   # echo type fun
   echo "type_fun : $type_fun"
   echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
@@ -20,7 +20,7 @@ for type_fun in 0; do
       output_file="./runqueries-$file-bfs-sorted.sh"
       input_file="./runqueries-$file-bfs-sorted-args.sh"
 
-      results_file="../../../../outputs/query1000results/ranked/louds/optimalOrder/$file-f$type_fun-k$k-v1000.txt"
+      results_file="../../../../outputs/query1000results/ranked/louds/optimalOrder/$file-f$type_fun-k$k-v1000-time.txt"
 
       # Create the modified script with the updated last argument
       while IFS= read -r line || [ -n "$line" ]; do
