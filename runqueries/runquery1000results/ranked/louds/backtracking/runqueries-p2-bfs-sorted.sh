@@ -1,16 +1,16 @@
-./p2 ../../../../../data/all/prop-direct-P1412 ../../../../../data/all/prop-direct-P3219
-./p2 ../../../../../data/all/prop-direct-P2548 ../../../../../data/all/prop-direct-P1889
-./p2 ../../../../../data/all/prop-direct-P5277 ../../../../../data/all/prop-direct-P3417
-./p2 ../../../../../data/all/prop-direct-P86 ../../../../../data/all/prop-direct-P2886
-./p2 ../../../../../data/all/prop-direct-P175 ../../../../../data/all/prop-direct-P2581
-./p2 ../../../../../data/all/prop-direct-P30 ../../../../../data/all/prop-direct-P1465
-./p2 ../../../../../data/all/prop-direct-P647 ../../../../../data/all/prop-direct-P910
-./p2 ../../../../../data/all/prop-direct-P196 ../../../../../data/all/prop-direct-P1014
-./p2 ../../../../../data/all/prop-direct-P176 ../../../../../data/all/prop-direct-P2174
-./p2 ../../../../../data/all/prop-direct-P4952 ../../../../../data/all/prop-direct-P123
-./p2 ../../../../../data/all/prop-direct-P376 ../../../../../data/all/prop-direct-P948
-./p2 ../../../../../data/all/prop-direct-P282 ../../../../../data/all/prop-direct-normalized-P2581
-./p2 ../../../../../data/all/prop-direct-P674 ../../../../../data/all/prop-direct-P241
-./p2 ../../../../../data/all/prop-direct-P5277 ../../../../../data/all/prop-direct-P910
-./p2 ../../../../../data/all/prop-direct-P509 ../../../../../data/all/prop-direct-P1375
-./p2 ../../../../../data/all/prop-direct-P3578 ../../../../../data/all/prop-direct-P5166
+./p2 ../../../../../data/all/prop-direct-P1412 ../../../../../data/all/prop-direct-P3219 ../../../../../data/priorities/p2/pri1-7 ../../../../../data/priorities/p2/pri2-7 0 1000
+./p2 ../../../../../data/all/prop-direct-P2548 ../../../../../data/all/prop-direct-P1889 ../../../../../data/priorities/p2/pri1-8 ../../../../../data/priorities/p2/pri2-8 0 1000
+./p2 ../../../../../data/all/prop-direct-P5277 ../../../../../data/all/prop-direct-P3417 ../../../../../data/priorities/p2/pri1-9 ../../../../../data/priorities/p2/pri2-9 0 1000
+./p2 ../../../../../data/all/prop-direct-P86 ../../../../../data/all/prop-direct-P2886 ../../../../../data/priorities/p2/pri1-10 ../../../../../data/priorities/p2/pri2-10 0 1000
+./p2 ../../../../../data/all/prop-direct-P175 ../../../../../data/all/prop-direct-P2581 ../../../../../data/priorities/p2/pri1-11 ../../../../../data/priorities/p2/pri2-11 0 1000
+./p2 ../../../../../data/all/prop-direct-P30 ../../../../../data/all/prop-direct-P1465 ../../../../../data/priorities/p2/pri1-12 ../../../../../data/priorities/p2/pri2-12 0 1000
+./p2 ../../../../../data/all/prop-direct-P647 ../../../../../data/all/prop-direct-P910 ../../../../../data/priorities/p2/pri1-13 ../../../../../data/priorities/p2/pri2-13 0 1000
+./p2 ../../../../../data/all/prop-direct-P196 ../../../../../data/all/prop-direct-P1014 ../../../../../data/priorities/p2/pri1-16 ../../../../../data/priorities/p2/pri2-16 0 1000
+./p2 ../../../../../data/all/prop-direct-P176 ../../../../../data/all/prop-direct-P2174 ../../../../../data/priorities/p2/pri1-22 ../../../../../data/priorities/p2/pri2-22 0 1000
+./p2 ../../../../../data/all/prop-direct-P4952 ../../../../../data/all/prop-direct-P123 ../../../../../data/priorities/p2/pri1-26 ../../../../../data/priorities/p2/pri2-26 0 1000
+./p2 ../../../../../data/all/prop-direct-P376 ../../../../../data/all/prop-direct-P948 ../../../../../data/priorities/p2/pri1-31 ../../../../../data/priorities/p2/pri2-31 0 1000
+./p2 ../../../../../data/all/prop-direct-P282 ../../../../../data/all/prop-direct-normalized-P2581 ../../../../../data/priorities/p2/pri1-40 ../../../../../data/priorities/p2/pri2-40 0 1000
+./p2 ../../../../../data/all/prop-direct-P674 ../../../../../data/all/prop-direct-P241 ../../../../../data/priorities/p2/pri1-42 ../../../../../data/priorities/p2/pri2-42 0 1000
+./p2 ../../../../../data/all/prop-direct-P5277 ../../../../../data/all/prop-direct-P910 ../../../../../data/priorities/p2/pri1-44 ../../../../../data/priorities/p2/pri2-44 0 1000
+./p2 ../../../../../data/all/prop-direct-P509 ../../../../../data/all/prop-direct-P1375 ../../../../../data/priorities/p2/pri1-47 ../../../../../data/priorities/p2/pri2-47 0 1000
+./p2 ../../../../../data/all/prop-direct-P3578 ../../../../../data/all/prop-direct-P5166 ../../../../../data/priorities/p2/pri1-49 ../../../../../data/priorities/p2/pri2-49 0 1000
