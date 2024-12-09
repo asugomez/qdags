@@ -360,9 +360,6 @@ AND_ranked_dfuds_backtracking(
             double total_weight = 0;
             uint64_t priority_ith_node, min_idx;
             for (uint64_t j = 0; j < nQ; j++) {
-				if(j==2 && i==0 && cur_level == 25){
-					cout << "hello" << endl;
-				}
                 min_idx = Q[j]->get_index_pri(roots[j],Q[j]->getM(child));
                 priority_ith_node = priorities[j][min_idx];
 
