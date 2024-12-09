@@ -173,21 +173,22 @@ int main(int argc, char** argv)
     vector<uint256_t> results_ranked_louds;
 
 
-    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
+//    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
  
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
     results_ranked_louds.clear();
-    start = high_resolution_clock::now();
+	uint256_t nodes_visited = 0;
+	start = high_resolution_clock::now();
 
-    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
+	multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds,nodes_visited);
 
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }

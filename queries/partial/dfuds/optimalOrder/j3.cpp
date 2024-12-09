@@ -105,19 +105,22 @@ int main(int argc, char** argv)
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
+
+	uint256_t nodes_visited = 0;
    
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds); // warmup join -> activar el caché
+//    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds, nodes_visited); // warmup join -> activar el caché
     results_partial_dfuds.clear();
+	nodes_visited = 0;
     start = high_resolution_clock::now();    
     
-    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
+    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds, nodes_visited);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     
     return 0;
 
