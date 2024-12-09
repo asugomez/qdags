@@ -122,7 +122,6 @@ int main(int argc, char** argv)
 	total_time = time_span.count();
 
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }
