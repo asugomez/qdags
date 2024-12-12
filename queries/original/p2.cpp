@@ -99,17 +99,18 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
 //    Join_Result = multiJoin(Q, true, k); // cache warmup
-	uint256_t nodes_visited = 0;
+//	uint256_t nodes_visited = 0;
     
     start = high_resolution_clock::now();    
     
-    Join_Result = multiJoin(Q, true, k, nodes_visited);
+//    Join_Result = multiJoin(Q, true, k, nodes_visited);
+	Join_Result = multiJoin(Q, true, k);
 
     stop = high_resolution_clock::now();
 	time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }

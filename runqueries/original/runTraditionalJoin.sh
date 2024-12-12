@@ -25,26 +25,28 @@ for k in 1 10 100 1000 10000 100000 1000000; do #
 
     $output_file >> $results_file
 
+    # OPTION 1: for counting nodes
     # Calculate the mean of hexadecimal numbers
-    sum=0
-    count=0
+#    sum=0
+#    count=0
+#
+#    while IFS= read -r hex_number || [ -n "$hex_number" ]; do
+#      # Convert the hexadecimal number to decimal
+#      decimal_value=$((0x$hex_number))
+#      sum=$((sum + decimal_value))
+#      count=$((count + 1))
+#    done < "$results_file"
+#
+#    # Calculate mean and handle division by zero
+#    if [ $count -gt 0 ]; then
+#      mean=$((sum / count))
+#    else
+#      mean=0
+#    fi
 
-    while IFS= read -r hex_number || [ -n "$hex_number" ]; do
-      # Convert the hexadecimal number to decimal
-      decimal_value=$((0x$hex_number))
-      sum=$((sum + decimal_value))
-      count=$((count + 1))
-    done < "$results_file"
-
-    # Calculate mean and handle division by zero
-    if [ $count -gt 0 ]; then
-      mean=$((sum / count))
-    else
-      mean=0
-    fi
-
+    # OPTION 2: for execution time
     # Calculate mean using awk
-    #mean=$(awk '{ suma += $(('0'x1)) } END { print suma / NR }' "../outputs/original/test")
+    mean=$(awk '{ suma += $(('0'x1)) } END { print suma / NR }' "$results_file")
     printf "$mean;" >> $data_csv
   done
   echo "" >> $data_csv
