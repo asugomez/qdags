@@ -30,6 +30,7 @@ add_executable(j3-ranked-louds-backtracking ./queries/ranked/louds/backtracking/
 add_executable(j3-ranked-louds-optOrder ./queries/ranked/louds/optimalOrder/j3.cpp)
 add_executable(j3-ranked-dfuds-backtracking ./queries/ranked/dfuds/backtracking/j3.cpp)
 add_executable(j3-ranked-dfuds-optOrder ./queries/ranked/dfuds/optimalOrder/j3.cpp)
+add_executable(t4-ranked-dfuds-optOrder ./queries/ranked/dfuds/optimalOrder/t4.cpp)
 
 # LAZY QDAGS
 add_executable(j3-lqdags ./queries/lqdags/j3.cpp)
@@ -49,6 +50,7 @@ target_link_libraries(j3-partial-dfuds-back sdsl divsufsort divsufsort64)
 target_link_libraries(j3-partial-dfuds-optOrder sdsl divsufsort divsufsort64)
 target_link_libraries(j3-ranked-dfuds-backtracking sdsl divsufsort divsufsort64)
 target_link_libraries(j3-ranked-dfuds-optOrder sdsl divsufsort divsufsort64)
+target_link_libraries(t4-ranked-dfuds-optOrder sdsl divsufsort divsufsort64)
 
 target_link_libraries(j3-lqdags sdsl divsufsort divsufsort64)
 
