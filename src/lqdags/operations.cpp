@@ -86,9 +86,20 @@ lqdag* compute_dfs(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results){
 	return l->completion_dfs(l->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
+lqdag* compute_dfs_nodes_visited(lqdag* l, uint64_t UPPER_BOUND, uint64_t &results, uint256_t& nodes_visited){
+	return l->completion_dfs_nodes_visited(l->getMaxLevel(),0,UPPER_BOUND,results, nodes_visited);
+}
+
 lqdag* compute_dfs_join(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results){
 	lqdag* join = lqdag_join(Q);
 	return compute_dfs(join,UPPER_BOUND,results);
+}
+
+lqdag* compute_dfs_join_nodes_visited(vector<qdag> &Q, uint64_t UPPER_BOUND, uint64_t &results,uint256_t& nodes_visited){
+	lqdag* join = lqdag_join(Q);
+	lqdag* output =  compute_dfs_nodes_visited(join,UPPER_BOUND,results,nodes_visited);
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+	return output;
 }
 
 lqdag* compute_dfs_join_run_time(lqdag* join,uint64_t UPPER_BOUND, uint64_t &results){
