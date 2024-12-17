@@ -101,16 +101,21 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-    uint64_t res = 0;
-    start = high_resolution_clock::now();
 
-	lqdag* join = compute_dfs_join(Q, k , res);
+	uint256_t nodes_visited = 0;
+	uint64_t res = 0;
+
+	start = high_resolution_clock::now();
+
+//    lqdag* join = compute_dfs_join(Q, k , res);
+	lqdag* join = compute_dfs_join_nodes_visited(Q, k , res, nodes_visited);
+
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }

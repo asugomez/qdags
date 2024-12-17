@@ -559,6 +559,50 @@ public:
 
 	}
 
+	lqdag* completion_dfs_nodes_visited(uint16_t max_level,
+						  uint16_t cur_level,
+						  uint64_t UPPER_BOUND,
+						  uint64_t &results,
+						uint256_t& nodes_visited){
+		if(results >= UPPER_BOUND){
+			return this;
+		}
+		nodes_visited += 1;
+		double val_lqdag = this->value_lqdag(this->form_lqdag);
+		this->node_completion_lqdag->val_node = val_lqdag;
+		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
+			if(val_lqdag == FULL_LEAF){
+				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
+			}
+			return this;
+		}
+
+		double max_value = 0;
+		double min_value = 1;
+		for(uint64_t i = 0; i < nChildren(); i++){
+			// compute the child and store it in node_completion->lqdag_children[i]
+			lqdag* child_lqdag = this->get_child_lqdag(i);
+			// recursive call
+			child_lqdag->completion_dfs_nodes_visited(max_level, cur_level+1, UPPER_BOUND, results, nodes_visited);
+			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
+			min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
+		}
+//		cout << "cur level: "<< cur_level << endl;
+//		for(uint64_t i = 0; i < nChildren(); i++){
+//			cout << test[i]->node_completion_lqdag->val_node << " ";
+//		}
+//		cout << endl;
+		// pruning step --> return a leaf
+		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
+			delete[] this->node_completion_lqdag->lqdag_children;
+			this->node_completion_lqdag->lqdag_children = nullptr;
+			double val_leaf = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
+			this->node_completion_lqdag->val_node = val_leaf;
+		}
+		return this;
+
+	}
+
 	/**
 	 * Lazy evaluation of the predicate
 	 * @param ith_child the i-th child we want to check if it satisfies the predicate.

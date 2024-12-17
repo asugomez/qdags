@@ -108,7 +108,7 @@ int main(int argc, char** argv)
     double total_time = 0.0;       
     duration<double> time_span;
 
-	uint256_t nodes_visited = 0;
+//	uint256_t nodes_visited = 0;
    // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
 //    Join_Result = multiJoin(Q, true, k, nodes_visited); // warmup join -> activar el caché
 
