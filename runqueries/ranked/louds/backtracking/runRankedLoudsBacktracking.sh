@@ -71,7 +71,7 @@ for type_fun in 0; do
 #      fi
 
       # Calculate mean using awk
-      mean=$(awk '{ suma += $(('0'x1)) } END { print suma / NR }' "$results_filet")
+      mean=$(awk '{ suma += $(('0'x1)) } END { print suma / NR }' "$results_file")
       printf "$mean;" >> $data_csv
     done
     echo "" >> $data_csv
