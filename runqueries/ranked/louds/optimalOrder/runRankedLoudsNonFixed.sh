@@ -3,16 +3,16 @@
 # run tests for each type_fun and each size_queue
 for type_fun in 0; do
   chmod a+x *.sh
-  data_csv="../../../outputs/ranked/louds/optimalOrder/results-f$type_fun-time.csv"
+  data_csv="../../../outputs/ranked/louds/optimalOrder/results-f$type_fun-nodes.csv"
   # echo type fun
   echo "type_fun : $type_fun"
-  echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
-  for k in 1 10 100 1000; do
+  echo "k;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
+  for k in 1000; do # 1 10 100--> t4
     # echo k
     echo "k: $k"
     printf "$k;" >> $data_csv
 
-    for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
+    for file in t4 ti2 ti3 ti4 tr1 tr2; do
       # get the number of datasets for each query
       echo "file: $file"
       read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
@@ -47,7 +47,7 @@ for type_fun in 0; do
         count=$(($count + 1))
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/ranked/louds/optimalOrder/$file-f$type_fun-k$k-time.txt"
+      results_file="../../../outputs/ranked/louds/optimalOrder/$file-f$type_fun-k$k-nodes.txt"
 
       chmod +x $output_file
 
