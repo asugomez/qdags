@@ -119,11 +119,12 @@ lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPP
 	return join->completion_selection_dfs(pred,join->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
+lqdag* projection_lqdag(){
+   // first do the mapping of the OR
 
+   // create the formula of ORs
+}
 
-//lqdag* projection(){
-//    // TODO
-//}
 //
 //lqdag* semijoin(){
 //    // TODO
