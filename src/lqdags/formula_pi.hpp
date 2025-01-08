@@ -7,6 +7,7 @@
 
 #include<bits/stdc++.h>
 #include "formula_lqdag.hpp"
+#include "utils_lqdags.hpp"
 
 //const uint8_t FUNCTOR_OR = 3;
 const uint8_t FUNCTOR_PI = 5; // root of the projection formula
@@ -22,19 +23,20 @@ private:
 	uint64_t number_leaves; // number of lqdag_children at the last level (2^d)
 	uint16_t nAttr_A;
 	uint16_t nAttr_A_prime;
+	indexes indexes_children; // indexes of the j for each i
 
 public:
 
 	formula_pi() = default;
 
-	formula_pi(uint16_t nAttr_A, uint16_t nAttr_A_prime, lqdag** lqdag_children){
+	formula_pi(att_set attribute_set_A, att_set attribute_set_A_prime, lqdag** lqdag_children){
 		this->functor = FUNCTOR_PI;
 		this->number_OR_first_level = 1 << nAttr_A_prime;
 		this->max_level_formula = nAttr_A - nAttr_A_prime;
 		this->lqdag_children = lqdag_children;
 		this->number_leaves = 1 << nAttr_A;
-		this->nAttr_A = nAttr_A;
-		this->nAttr_A_prime = nAttr_A_prime;
+		this->nAttr_A = attribute_set_A.size();
+		this->nAttr_A_prime = attribute_set_A_prime.size();
 
 		uint64_t i;
 		uint16_t current_level = max_level_formula - 1;
@@ -59,6 +61,8 @@ public:
 		}
 
 		this->formula_pi_children = level_OR_formula[0];
+
+		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 
 
 	}

@@ -342,18 +342,53 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
 //};
 
 
+/**
+ * Create the indexes of the children of the OR tree
+ * @param attribute_set_A
+ * @param attribute_set_A_prime
+ * @return
+ */
 indexes create_pi_index_children(att_set attribute_set_A, att_set attribute_set_A_prime){
 	uint16_t dim = attribute_set_A.size(); // d
 	uint16_t dim_prime = attribute_set_A_prime.size(); // d'
-	uint16_t number_j = 1 << (dim - dim_prime); // 2^(d - d'), number of j children for each OR
-	indexes diff;
+	uint16_t delta_d = dim - dim_prime;
+	uint16_t number_j = 1 << (delta_d); // 2^(d - d'), number of j children for each OR
+	indexes diff; // A \ A'
+	std::sort(attribute_set_A.begin(), attribute_set_A.end());
+	std::sort(attribute_set_A_prime.begin(), attribute_set_A_prime.end());
 	set_difference(attribute_set_A.begin(), attribute_set_A.end(), attribute_set_A_prime.begin(), attribute_set_A_prime.end(),
 								  back_inserter(diff));
 	uint64_t number_children = 1 << dim;
-	indexes index_children; // will have 2^|A| indexes
-	for(uint64_t i = 0; i < number_children; i++){
-
+	indexes index_children; // it will have 2^|A| indexes
+	uint64_t i,j;
+	index_children.insert(index_children.begin(),0);
+	j=1;
+	for(i = 1; i < diff.size()+1; i++){
+		index_children.insert(index_children.begin() + i,(1 << diff.at(i-1)));
+		j++;
+		if(i > 1 && j < number_j){
+			index_children.insert(index_children.begin() + delta_d + i - 1, index_children[i] + index_children[i-1]);
+		}
 	}
+	uint64_t iter = number_children / number_j;
+	uint64_t children_to_recurse_size,number_to_add, quadrant_to_add, lsb, current_index;
+	for(i = 1; i < iter; i++){
+		quadrant_to_add = i;
+		children_to_recurse_size = bits::cnt(quadrant_to_add);
+		number_to_add = 0;
+		j = 0;
+		while(j < children_to_recurse_size){
+			lsb = __builtin_ctz(quadrant_to_add);
+			number_to_add += (1 << attribute_set_A_prime[lsb]);
+			j++;
+			quadrant_to_add &= (0xffffffff << (lsb + 1));
+		}
+		for(j = 0; j < number_j; j++){
+			current_index = index_children.at(j);
+			index_children.insert(index_children.begin() + number_j*i + j, current_index + number_to_add);
+		}
+	}
+	return index_children;
 }
 
 

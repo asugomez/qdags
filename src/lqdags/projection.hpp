@@ -22,6 +22,7 @@ private:
 	att_set attribute_set_A_prime; // A'
 	lqdag* lqdag_root; // lqdag where we apply the projection
 
+
 public:
 
 	projection() = default;
@@ -34,7 +35,7 @@ public:
 		for(uint64_t i = 0; i < 1 << attribute_set_A.size(); i++){
 			lqdag_children[i] = new lqdag(lqdag_root);
 		}
-		this->form_or = new formula_pi(attribute_set_A.size(), attribute_set_A_prime.size(), lqdag_children);
+		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_children);
 		this->pos_qdags = new position*[1 << attribute_set_A.size()];
 	}
 
