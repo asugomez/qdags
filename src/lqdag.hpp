@@ -129,6 +129,16 @@ public:
 		this->nQdags = nQdags;
 	}
 
+	// TODO: check this constructor
+	lqdag(lqdag* lqdag){
+		this->arr_qdags = lqdag->arr_qdags;
+		this->form_lqdag = lqdag->form_lqdag;
+		this->form_lqdag->inc_ref_count();
+		this->pos_qdags = lqdag->pos_qdags;
+		this->node_completion_lqdag->operator=(*lqdag->node_completion_lqdag);
+		this->nQdags = lqdag->nQdags;
+	}
+
 	~lqdag(){
 		uint64_t i;
 		if(form_lqdag->get_ref_count() == 1){

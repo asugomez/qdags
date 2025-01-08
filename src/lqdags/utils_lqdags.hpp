@@ -28,6 +28,9 @@ const uint8_t TYPE_ATT1_ATT2 = 0;
 const uint8_t TYPE_ATT1_CONST = 1;
 const uint8_t TYPE_ATT2_CONST = 2;
 
+typedef vector<uint64_t> indexes;
+typedef vector<uint64_t> att_set;
+
 /**
  * Position of the pointer to the node of a qdag
  */
@@ -338,6 +341,20 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
 //    uint16_t nAttr;
 //};
 
+
+indexes create_pi_index_children(att_set attribute_set_A, att_set attribute_set_A_prime){
+	uint16_t dim = attribute_set_A.size(); // d
+	uint16_t dim_prime = attribute_set_A_prime.size(); // d'
+	uint16_t number_j = 1 << (dim - dim_prime); // 2^(d - d'), number of j children for each OR
+	indexes diff;
+	set_difference(attribute_set_A.begin(), attribute_set_A.end(), attribute_set_A_prime.begin(), attribute_set_A_prime.end(),
+								  back_inserter(diff));
+	uint64_t number_children = 1 << dim;
+	indexes index_children; // will have 2^|A| indexes
+	for(uint64_t i = 0; i < number_children; i++){
+
+	}
+}
 
 
 #endif //QDAGS_UTILS_LQDAGS_HPP

@@ -224,25 +224,6 @@ public:
             _M[i] = M[i_prime];
         }
 
-		// testing -- REDUCE
-//		uint64_t p_prime = std::pow(Q->getK(), dim_prime);
-//		type_mapping_M *_M_reduce = new type_mapping_M[p_prime]; // mapeo
-//
-//		for (i_prime = 0; i_prime < p_prime; ++i) {
-//			// todos los bits están en cero excepto el bit en la posición dim_prime - 1.
-//			mask = 1 << (dim - 1); // equivalent to 2^(dim-1)
-//			i = 0;
-//
-//			for (uint16_t j = 0; j < dim; ++j) {
-//				if (i & (1 << (dim - attribute_set[j] - 1)))
-//					i |= mask;
-//
-//				mask >>= 1;
-//			}
-//
-//			_M_reduce[i_prime] = M[i];
-//		}
-
         qdag *q = new qdag();
 
         q->Q = this->Q;
