@@ -48,6 +48,13 @@ public:
 		for(uint64_t i = 0; i < (1 << attribute_set_A_prime.size()); i++){
 			projection_children[i] = nullptr;
 		}
+
+		// test
+		formula_lqdag* test1 = this->get_OR_formula_child(0);
+		formula_lqdag* test2 = this->get_OR_formula_child(1);
+		formula_lqdag* test_error = this->get_OR_formula_child(2);
+
+		projection* test_child = get_child_pi(0);
 	}
 
 	projection(lqdag* lqdag_root, formula_pi* form_or, att_set attribute_set_A, att_set attribute_set_A_prime){
@@ -106,7 +113,8 @@ public:
 		switch (formula_OR->get_functor()) {
 			case FUNCTOR_LQDAG: {// leaf
 				uint64_t index_child_pi = formula_OR->get_index();
-				lqdag *child_lqdag_pi = formula_OR->get_lqdag()->get_child_lqdag(this->form_or->get_index_children(index_child_pi));
+				lqdag* test = this->lqdag_root->get_child_lqdag(index_child_pi);
+				lqdag* child_lqdag_pi = formula_OR->get_lqdag()->get_child_lqdag(this->form_or->get_index_children(index_child_pi));
 				return child_lqdag_pi; //child_lqdag_pi->value_lqdag(formula_OR)
 			}
 			case FUNCTOR_OR: {

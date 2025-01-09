@@ -247,14 +247,14 @@ int main(int argc, char **argv) {
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
-    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+////    multiJoin(Q, true, k);
+//    start = high_resolution_clock::now();
 //    multiJoin(Q, true, k);
-    start = high_resolution_clock::now();
-    multiJoin(Q, true, k);
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    stop = high_resolution_clock::now();
+//    time_span = duration_cast<microseconds>(stop - start);
+//    total_time = time_span.count();
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 //
 //    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
@@ -344,35 +344,53 @@ int main(int argc, char **argv) {
 	cout << "----- MULTI JOIN LQDAGS ------" << endl;
 	uint64_t res = 0;
 	start = high_resolution_clock::now();
-	lqdag* join_res = compute_dfs_join(Q, k , res);
+//	lqdag* join_res = compute_dfs_join(Q, k , res);
 	stop = high_resolution_clock::now();
 	time_span = duration_cast<microseconds>(stop - start);
 	total_time = time_span.count();
 	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-	cout << "nro res: " << res << endl;
+//	cout << "nro res: " << res << endl;
 
+	qdag::att_set att_A;
+	qdag::att_set att_A_prime;
+	qdag::att_set att_B_prime;
+	att_A.push_back(AT_X);
+	att_A.push_back(AT_Y);
+	att_A.push_back(AT_Z);
 
+	att_A_prime.push_back(AT_Z);
+	att_A_prime.push_back(AT_Y);
 
-	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
-	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
-	predicate pred3 = {AT_X1, AT_X3, 3, OP_EQUAL, TYPE_ATT1_ATT2};
+	att_B_prime.push_back(AT_Y);
 
-	predicate pred4_0 = {AT_Y, AT_X3, 0, OP_GREATER, TYPE_ATT1_CONST};
+//	indexes indexes_test = create_pi_index_children(att_A, att_A_prime);
+//	indexes indexes_test_2 = create_pi_index_children(att_A, att_B_prime);
 
-	predicate pred4_1 = {AT_X2, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
-	predicate pred4_2 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
-	predicate pred5 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
-	predicate pred6 = {AT_X3, AT_X3, 0, OP_EQUAL, TYPE_ATT1_CONST};
-	predicate pred7 = {AT_X3, AT_X3, 1, OP_EQUAL, TYPE_ATT1_CONST};
-	predicate pred12 = {AT_X1, AT_X3, 0, OP_LESS_EQUAL, TYPE_ATT1_ATT2};
+	vector<qdag> Q_test(1);
+	Q_test[0] = qdag_rel_R;
 
-	res = 0;
+	projection_lqdag(Q_test, att_A, att_B_prime);
+
+//	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
+//	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
+//	predicate pred3 = {AT_X1, AT_X3, 3, OP_EQUAL, TYPE_ATT1_ATT2};
+//
+//	predicate pred4_0 = {AT_Y, AT_X3, 0, OP_GREATER, TYPE_ATT1_CONST};
+//
+//	predicate pred4_1 = {AT_X2, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
+//	predicate pred4_2 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
+//	predicate pred5 = {AT_X3, AT_X3, 3, OP_GREATER, TYPE_ATT1_CONST};
+//	predicate pred6 = {AT_X3, AT_X3, 0, OP_EQUAL, TYPE_ATT1_CONST};
+//	predicate pred7 = {AT_X3, AT_X3, 1, OP_EQUAL, TYPE_ATT1_CONST};
+//	predicate pred12 = {AT_X1, AT_X3, 0, OP_LESS_EQUAL, TYPE_ATT1_ATT2};
+//
+//	res = 0;
 
 //	lqdag* selection_test = compute_dfs_selection(join_res, &pred1, k, res);
 
 //	lqdag* join_sel_copy = compute_dfs_selection(join_res, &pred4_0, k, res);
 
-	lqdag * join_selection = compute_dfs_selection_join(Q, &pred4_0, k, res);
+//	lqdag * join_selection = compute_dfs_selection_join(Q, &pred4_0, k, res);
 
 
 //	lqdag* completion_join = compute_dfs(join_test_lqdag, 1000, res);

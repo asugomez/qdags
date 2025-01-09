@@ -79,12 +79,12 @@ public:
 
 
 private:
-	qdag** arr_qdags; // array of qdags
-    formula_lqdag *form_lqdag; // expression, syntax tree, formula of the lqdag (the same for its children)
-	position** pos_qdags; // each qdag will have a space in this vector with its position (level and coordinates)
+	qdag** arr_qdags = nullptr; // array of qdags
+    formula_lqdag *form_lqdag = nullptr; // expression, syntax tree, formula of the lqdag (the same for its children)
+	position** pos_qdags ; // each qdag will have a space in this vector with its position (level and coordinates)
 	node_completion* node_completion_lqdag; // children of the lqdag (computed)
 	uint64_t nQdags;
-	lqdag* lqdag_leaf;
+	lqdag* lqdag_leaf = nullptr;
 	// TODO: see number for lqdags leaves
 
 

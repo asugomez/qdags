@@ -41,12 +41,19 @@ public:
 		uint64_t i;
 		uint16_t current_level = max_level_formula;
 		uint64_t current_number_OR = number_leaves >> 1;
+		uint64_t number_or = number_children_pi;
 
-		formula_lqdag* lqdags_leaves_formula[number_leaves];
-		// TODO: check level_OR_Formula!
-		formula_lqdag* level_OR_formula[max_level_formula][current_number_OR];
+		// init lqdags leaves and OR tree formula
+		formula_lqdag** lqdags_leaves_formula = new formula_lqdag *[number_leaves];
+		formula_lqdag*** level_OR_formula = new formula_lqdag**[max_level_formula];
+		for(i = 0; i < max_level_formula; i++){
+			level_OR_formula[i] = new formula_lqdag*[number_or];
+			number_or <<= 1;
+		}
+
+		// declaring lqdags leaves and OR tree formula
 		for(i = 0; i < number_leaves; i++){ // create the last level of the tree
-			lqdags_leaves_formula[i] = new formula_lqdag(FUNCTOR_LQDAG, lqdag, i); // TODO: check index lqdag
+			lqdags_leaves_formula[i] = new formula_lqdag(FUNCTOR_LQDAG, lqdag, i);
 			if(i%2 == 1){
 				level_OR_formula[current_level-1][i/2] = new formula_lqdag(FUNCTOR_OR, lqdags_leaves_formula[i-1], lqdags_leaves_formula[i]);
 			}
@@ -64,8 +71,6 @@ public:
 
 		this->formula_pi_children = level_OR_formula[0];
 
-
-
 	}
 
 	uint8_t get_functor() const {
@@ -73,10 +78,12 @@ public:
 	}
 
 	formula_lqdag* get_OR_formula_child(uint64_t i){
+		assert(i < number_children_pi);
 		return formula_pi_children[i];
 	}
 
 	uint64_t get_index_children(uint64_t i){
+		assert(i < number_leaves);
 		return indexes_children[i];
 	}
 

@@ -27,14 +27,12 @@ public:
 
 private:
 	// lqdag L=(f,o), where f is a functor.
-	uint64_t index; // position for the QTREE, or LQDAG
+	uint64_t index = 0; // position for the QTREE, or LQDAG
 	uint8_t functor; // QTREE, NOT, AND, OR, EXTEND, LQDAG
 	formula_lqdag *formula_lqdag1; // we save value of the left lqdag and also of the leaves (QTREE, NOT and LQDAG)
 	formula_lqdag *formula_lqdag2;
-	qdag* formula_leaf_qdag;
-	lqdag* formula_leaf_lqdag;
-//	leaf_lqdag* formula_leaf_lqdag;
-//	std::variant<qdag*, lqdag*> formula_leaf;
+	qdag* leaf_qdag;
+	lqdag* leaf_lqdag;
 	double val_lqdag1 = NO_VALUE_LEAF;
 	double val_lqdag2 = NO_VALUE_LEAF;
 	uint8_t k;
@@ -56,7 +54,7 @@ public:
 		this->functor = FUNCTOR_QTREE;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
-		this->formula_leaf_qdag = qdag;
+		this->leaf_qdag = qdag;
 		this->k = qdag->getK();
 		this->nAtt = qdag->nAttr();
 		this->max_level = qdag->getHeight()-1;
@@ -70,7 +68,7 @@ public:
 		this->functor = functor;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
-		this->formula_leaf_qdag = qdag;
+		this->leaf_qdag = qdag;
 		this->k = qdag->getK();
 		this->nAtt = qdag->nAttr();
 		this->max_level = qdag->getHeight()-1;
@@ -83,11 +81,12 @@ public:
 		this->functor = FUNCTOR_LQDAG;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
-		this->formula_leaf_lqdag = lqdag;
+		this->leaf_lqdag = lqdag;
 		this->k = k;
 		this->nAtt = nAtt; // d
 		this->max_level = max_level;
 		this->grid_side = grid_side;
+		this->index = index;
 	}
 
 	// F = (LQDAG, L_q)
@@ -96,11 +95,12 @@ public:
 		this->functor = functor;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
-		this->formula_leaf_lqdag = lqdag;
+		this->leaf_lqdag = lqdag;
 		this->k = k;
 		this->nAtt = nAtt; // d
 		this->max_level = max_level;
 		this->grid_side = grid_side;
+		this->index = index;
 	}
 
 	// F = (AND, F1, F2) o F = (OR, F1, F2)
@@ -211,13 +211,13 @@ public:
 
 	qdag* get_qdag() const {
 		if(is_qdag())
-			return formula_leaf_qdag;
+			return leaf_qdag;
 		return nullptr;
 	}
 
 	lqdag* get_lqdag() const {
 		if(is_lqdag())
-			return this->formula_leaf_lqdag;
+			return this->leaf_lqdag;
 		return nullptr;
 	}
 
