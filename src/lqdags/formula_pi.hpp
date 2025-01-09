@@ -19,7 +19,7 @@ private:
 	formula_lqdag** formula_pi_children; // formula of ORs
 	uint64_t number_OR_first_level; // number of OR in the first level
 	uint16_t max_level_formula; // height - 1 of the formula (tree of ORs)
-	lqdag** lqdag_children;
+//	lqdag* lqdag_pi;
 	uint64_t number_leaves; // number of lqdag_children at the last level (2^d)
 	uint16_t nAttr_A;
 	uint16_t nAttr_A_prime;
@@ -29,14 +29,16 @@ public:
 
 	formula_pi() = default;
 
-	formula_pi(att_set attribute_set_A, att_set attribute_set_A_prime, lqdag** lqdag_children){
+	formula_pi(att_set attribute_set_A, att_set attribute_set_A_prime, lqdag* lqdag){
 		this->functor = FUNCTOR_PI;
 		this->number_OR_first_level = 1 << nAttr_A_prime;
 		this->max_level_formula = nAttr_A - nAttr_A_prime;
-		this->lqdag_children = lqdag_children;
+//		this->lqdag_pi = lqdag;
 		this->number_leaves = 1 << nAttr_A;
 		this->nAttr_A = attribute_set_A.size();
 		this->nAttr_A_prime = attribute_set_A_prime.size();
+
+		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 
 		uint64_t i;
 		uint16_t current_level = max_level_formula - 1;
@@ -45,7 +47,8 @@ public:
 		formula_lqdag* lqdags_leaves_formula[1 << nAttr_A];
 		formula_lqdag* level_OR_formula[max_level_formula][current_number_OR];
 		for(i = 0; i < number_leaves + 1; i++){
-			lqdags_leaves_formula[i] = new formula_lqdag(FUNCTOR_LQDAG, lqdag_children[i]);
+			// TODO: check index lqdag
+			lqdags_leaves_formula[i] = new formula_lqdag(FUNCTOR_LQDAG, lqdag, i);
 			if(i%2 == 1){ // check i%2
 				level_OR_formula[current_level][i/2] = new formula_lqdag(FUNCTOR_OR, lqdags_leaves_formula[i-1], lqdags_leaves_formula[i]);
 			}
@@ -62,11 +65,21 @@ public:
 
 		this->formula_pi_children = level_OR_formula[0];
 
-		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 
 
 	}
 
+	uint8_t get_functor() const {
+		return this->functor;
+	}
+
+	formula_lqdag* get_OR_formula_child(uint64_t i){
+		return formula_pi_children[i];
+	}
+
+	uint64_t get_index_children(uint64_t i){
+		return indexes_children[i];
+	}
 
 };
 

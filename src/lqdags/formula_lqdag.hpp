@@ -79,7 +79,7 @@ public:
 	}
 
 	// F = (LQDAG, L_q)
-	formula_lqdag(lqdag *lqdag, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
+	formula_lqdag(lqdag *lqdag, uint64_t index = 0, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
 		this->functor = FUNCTOR_LQDAG;
 		this->formula_lqdag1 = nullptr;
 		this->formula_lqdag2 = nullptr;
@@ -91,7 +91,7 @@ public:
 	}
 
 	// F = (LQDAG, L_q)
-	formula_lqdag(uint8_t functor, lqdag *lqdag, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
+	formula_lqdag(uint8_t functor, lqdag *lqdag, uint64_t index = 0, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
 		assert(functor == FUNCTOR_LQDAG);
 		this->functor = functor;
 		this->formula_lqdag1 = nullptr;

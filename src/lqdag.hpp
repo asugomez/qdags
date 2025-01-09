@@ -84,6 +84,7 @@ private:
 	position** pos_qdags; // each qdag will have a space in this vector with its position (level and coordinates)
 	node_completion* node_completion_lqdag; // children of the lqdag (computed)
 	uint64_t nQdags;
+	lqdag* lqdag_leaf;
 	// TODO: see number for lqdags leaves
 
 
@@ -131,6 +132,7 @@ public:
 
 	// TODO: check this constructor
 	lqdag(lqdag* lqdag){
+		this->lqdag_leaf = lqdag;
 		this->arr_qdags = lqdag->arr_qdags;
 		this->form_lqdag = lqdag->form_lqdag;
 		this->form_lqdag->inc_ref_count();
@@ -390,7 +392,7 @@ public:
 				return get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag);
 			}
 			default:
-				throw "error: value_lqdag non valid functor";
+				throw "error: get_child_lqdag_aux non valid functor";
 		}
 	}
 
