@@ -20,9 +20,10 @@ private:
 //	node_completion* node_completion_lqdag; // children of the lqdag (computed)
 	att_set attribute_set_A; // A
 	att_set attribute_set_A_prime; // A'
-	lqdag** lqdags; // lqdag where we apply the projection
+//	lqdag** lqdags; // lqdag where we apply the projection
+	lqdag* lqdag_root; // root of the lqdag
 	double* val_pi; // value of each OR
-	projection** projection_children;
+	projection** projection_children = nullptr;
 
 
 public:
@@ -32,35 +33,34 @@ public:
 	projection(lqdag* lqdag_root, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-		for(uint64_t i = 0; i < (1 << attribute_set_A.size()); i++){
-			lqdags[i] = new lqdag(lqdag_root); // TODO: check this is a copy!
-		}
+		this->lqdag_root = lqdag_root;
+
 		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
-//		this->pos_qdags = new position*[1 << attribute_set_A.size()];
-		this->val_pi = new double[1 << attribute_set_A_prime.size()]; // check val_pi is 0
+
+		this->val_pi = new double[1 << attribute_set_A_prime.size()];
 
 		for(uint64_t i = 0; i < (1 << attribute_set_A.size()); i++){
 			this->val_pi[i] = NO_VALUE_LEAF;
 		}
+
+		projection_children = new projection*[1 << attribute_set_A_prime.size()];
 
 		for(uint64_t i = 0; i < (1 << attribute_set_A_prime.size()); i++){
 			projection_children[i] = nullptr;
 		}
 	}
 
-	projection(formula_pi* form_or, att_set attribute_set_A, att_set attribute_set_A_prime, lqdag* lqdag_PROBLEM){
-		// TODO: not implemented yet --> see lqdag
+	projection(lqdag* lqdag_root, formula_pi* form_or, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-		for(uint64_t i = 0; i < (1 << attribute_set_A.size()); i++){
-//			lqdags[i] = new lqdag(lqdag_root);
-		}
+		this->lqdag_root = lqdag_root;
 		this->form_or = form_or;
 
 		this->val_pi = new double[1 << attribute_set_A_prime.size()]; // check val_pi is 0
 		for(uint64_t i = 0; i < (1 << attribute_set_A.size()); i++){
 			this->val_pi[i] = NO_VALUE_LEAF;
 		}
+		projection_children = new projection*[1 << attribute_set_A_prime.size()];
 		for(uint64_t i = 0; i < (1 << attribute_set_A_prime.size()); i++){
 			projection_children[i] = nullptr;
 		}
@@ -80,6 +80,8 @@ public:
 
 
 	double value_child_pi(uint64_t i){
+		if(this->val_pi[i] == NO_VALUE_LEAF)
+			this->get_child_pi(i);
 		return this->val_pi[i];
 	}
 
@@ -87,37 +89,46 @@ public:
 		assert(i < (1 << this->attribute_set_A_prime.size()) );
 		// crear el formular_or
 		// create new projection(...)
-		this->val_pi[i] = get_child_pi_aux(i, this->get_OR_formula_child(i));
-		this->projection_children[i] = new projection(this->form_or, this->attribute_set_A, this->attribute_set_A_prime, this->lqdags[i]);
+		lqdag* lqdag_child_pi = get_child_pi_aux(i, this->get_OR_formula_child(i));
+		if(lqdag_child_pi != nullptr)
+			this->val_pi[i] = lqdag_child_pi->val_node();
+
+		if(this->val_pi[i] == VALUE_NEED_CHILDREN && lqdag_child_pi != nullptr) // TODO: check this value is correct or we need to check 0.5 as well
+			this->projection_children[i] = new projection(lqdag_child_pi, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
+
+		return this->projection_children[i]; // TODO: check what if this is null
+
+
 
 	}
 
-	double get_child_pi_aux(uint64_t i,formula_lqdag* formula_OR){ // TODO: see if we need i
+	lqdag* get_child_pi_aux(uint64_t i,formula_lqdag* formula_OR){
 		switch (formula_OR->get_functor()) {
 			case FUNCTOR_LQDAG: {// leaf
 				uint64_t index_child_pi = formula_OR->get_index();
 				lqdag *child_lqdag_pi = formula_OR->get_lqdag()->get_child_lqdag(this->form_or->get_index_children(index_child_pi));
-				return child_lqdag_pi->value_lqdag(formula_OR);
+				return child_lqdag_pi; //child_lqdag_pi->value_lqdag(formula_OR)
 			}
 			case FUNCTOR_OR: {
-				if (formula_OR->get_val_lqdag1() == FULL_LEAF || formula_OR->get_val_lqdag2() == FULL_LEAF)
-					return FULL_LEAF;
+				if (formula_OR->get_val_lqdag1() == FULL_LEAF || formula_OR->get_val_lqdag2() == FULL_LEAF) {
+					this->val_pi[i] = FULL_LEAF;
+					return nullptr;
+				}
 				if (formula_OR->get_val_lqdag1() == EMPTY_LEAF) {
-					double val_l2 = get_child_pi_aux(i, formula_OR->get_formula_lqdag2());
-					return val_l2;
+					return get_child_pi_aux(i, formula_OR->get_formula_lqdag2());
 				}
 				if (formula_OR->get_val_lqdag2() == EMPTY_LEAF) {
-					double val_l1 = get_child_pi_aux(i, formula_OR->get_formula_lqdag1());
-					return val_l1;
+					return get_child_pi_aux(i, formula_OR->get_formula_lqdag1());
 				} else {
-					double val_l1 = get_child_pi_aux(i, formula_OR->get_formula_lqdag1());
-					double val_l2 = get_child_pi_aux(i, formula_OR->get_formula_lqdag2());
-					if (val_l1 == FULL_LEAF || val_l2 == FULL_LEAF)
-						return FULL_LEAF;
-					else if (!val_l1 && !val_l2)
-						return EMPTY_LEAF;
+					lqdag l1 = get_child_pi_aux(i, formula_OR->get_formula_lqdag1());
+					lqdag l2 = get_child_pi_aux(i, formula_OR->get_formula_lqdag2());
+					if (l1.val_node() == FULL_LEAF || l2.val_node() == FULL_LEAF)
+						this->val_pi[i] = FULL_LEAF;
+					else if (!l1.val_node() && !l2.val_node())
+						this->val_pi[i] = EMPTY_LEAF;
 					else
-						return VALUE_NEED_CHILDREN;
+						this->val_pi[i] = VALUE_NEED_CHILDREN;
+					return nullptr;
 				}
 			}
 			default:
@@ -127,6 +138,8 @@ public:
 		}
 
 	}
+
+
 
 };
 

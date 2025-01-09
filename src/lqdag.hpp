@@ -130,6 +130,7 @@ public:
 		this->nQdags = nQdags;
 	}
 
+	//lqdag(qdag** arr_qdags, formula_lqdag *form_lqdag, uin
 	// TODO: check this constructor
 	lqdag(lqdag* lqdag){
 		this->lqdag_leaf = lqdag;
@@ -185,6 +186,10 @@ public:
 
 	node_completion* get_node_completion_lqdag(){
 		return this->node_completion_lqdag;
+	}
+
+	double val_node(){
+		return this->node_completion_lqdag->val_node;
 	}
 
 	double val_lqdag1(){

@@ -4,6 +4,7 @@
 
 #include "../lqdag.hpp"
 #include "formula_lqdag.hpp"
+#include "projection.hpp"
 
 // ---------- QUADTREE  ---------- //
 
@@ -119,7 +120,20 @@ lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPP
 	return join->completion_selection_dfs(pred,join->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
-lqdag* projection_lqdag(){
+lqdag* projection_lqdag(vector<qdag> &Q, att_set attribute_set_A, att_set attribute_set_A_prime){
+
+	qdag** arr_qdags = new qdag*[1];
+	arr_qdags[0] = &Q.at(0);
+
+	uint8_t k = Q.at(0).getK();
+	uint16_t max_level = Q.at(0).getHeight()-1;
+	uint64_t grid_side = Q.at(0).getGridSide();
+	formula_lqdag form = formula_lqdag(&Q.at(0), 0);
+	lqdag* lqdag_root = new lqdag{arr_qdags, &form, Q.size()}; // check LQDAG as leaf --> LQDAG -> QTREE
+
+	projection* new_proj = new projection(lqdag_root, attribute_set_A, attribute_set_A_prime);
+
+
    // first do the mapping of the OR
 
    // create the formula of ORs
