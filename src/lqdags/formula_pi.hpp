@@ -77,6 +77,11 @@ public:
 		return this->functor;
 	}
 
+	/**
+	 * Get the root of the i-th OR of the formula PI.
+	 * @param i
+	 * @return
+	 */
 	formula_lqdag* get_OR_formula_child(uint64_t i){
 		assert(i < number_children_pi);
 		return formula_pi_children[i];

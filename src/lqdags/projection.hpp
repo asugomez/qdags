@@ -35,6 +35,7 @@ public:
 		this->attribute_set_A_prime = attribute_set_A_prime;
 		this->lqdag_root = lqdag_root;
 
+		// TODO: see if memory is correct allocated!
 		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
 
 		this->val_pi = new double[1 << attribute_set_A_prime.size()];
@@ -48,11 +49,6 @@ public:
 		for(uint64_t i = 0; i < (1 << attribute_set_A_prime.size()); i++){
 			projection_children[i] = nullptr;
 		}
-
-		// test
-		formula_lqdag* test1 = this->get_OR_formula_child(0);
-		formula_lqdag* test2 = this->get_OR_formula_child(1);
-		formula_lqdag* test_error = this->get_OR_formula_child(2);
 
 		projection* test_child = get_child_pi(0);
 	}
@@ -77,6 +73,11 @@ public:
 		return this->form_or->get_functor();
 	}
 
+	/**
+	 * Get the root of the i-th OR of the projection
+	 * @param i
+	 * @return
+	 */
 	formula_lqdag* get_OR_formula_child(uint64_t i){
 		return this->form_or->get_OR_formula_child(i);
 	}
@@ -92,6 +93,11 @@ public:
 		return this->val_pi[i];
 	}
 
+	/**
+	 * Compute the i-th child of the projection. Assuming the i-th child is not already computed (value 0 or 1)
+	 * @param i
+	 * @return
+	 */
 	projection* get_child_pi(uint64_t i){
 		assert(i < (1 << this->attribute_set_A_prime.size()) );
 		// crear el formular_or
@@ -104,16 +110,20 @@ public:
 			this->projection_children[i] = new projection(lqdag_child_pi, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
 
 		return this->projection_children[i]; // TODO: check what if this is null
-
-
-
 	}
 
+	/**
+	 * Compute the i-th child of the projection
+	 * @param i
+	 * @param formula_OR
+	 * @return
+	 */
 	lqdag* get_child_pi_aux(uint64_t i,formula_lqdag* formula_OR){
 		switch (formula_OR->get_functor()) {
 			case FUNCTOR_LQDAG: {// leaf
 				uint64_t index_child_pi = formula_OR->get_index();
-				lqdag* test = this->lqdag_root->get_child_lqdag(index_child_pi);
+				// TODO: test which lqdag!
+//				lqdag* test = this->lqdag_root->get_child_lqdag(index_child_pi);
 				lqdag* child_lqdag_pi = formula_OR->get_lqdag()->get_child_lqdag(this->form_or->get_index_children(index_child_pi));
 				return child_lqdag_pi; //child_lqdag_pi->value_lqdag(formula_OR)
 			}
@@ -141,14 +151,8 @@ public:
 			}
 			default:
 				throw "error: get_child_pi_aux non valid functor";
-
-
 		}
-
 	}
-
-
-
 };
 
 #endif //INCLUDED_PROJECTION

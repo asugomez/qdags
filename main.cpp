@@ -111,8 +111,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
-//	uint64_t grid_side = 8;
+//    uint64_t grid_side = 52000000; // es como +infty para wikidata
+	uint64_t grid_side = 8;
 
 	qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
 	qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -344,32 +344,32 @@ int main(int argc, char **argv) {
 	cout << "----- MULTI JOIN LQDAGS ------" << endl;
 	uint64_t res = 0;
 	start = high_resolution_clock::now();
-//	lqdag* join_res = compute_dfs_join(Q, k , res);
+	lqdag* join_res = compute_dfs_join(Q, k , res);
 	stop = high_resolution_clock::now();
 	time_span = duration_cast<microseconds>(stop - start);
 	total_time = time_span.count();
 	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//	cout << "nro res: " << res << endl;
+	cout << "nro res: " << res << endl;
 
 	qdag::att_set att_A;
 	qdag::att_set att_A_prime;
 	qdag::att_set att_B_prime;
+	qdag::att_set att_C_prime;
 	att_A.push_back(AT_X);
 	att_A.push_back(AT_Y);
 	att_A.push_back(AT_Z);
-
-	att_A_prime.push_back(AT_Z);
-	att_A_prime.push_back(AT_Y);
-
+//
+	att_A_prime.push_back(AT_X);
+//	att_A_prime.push_back(AT_Y);
+//
 	att_B_prime.push_back(AT_Y);
 
-//	indexes indexes_test = create_pi_index_children(att_A, att_A_prime);
-//	indexes indexes_test_2 = create_pi_index_children(att_A, att_B_prime);
+	att_C_prime.push_back(AT_Z);
 
-	vector<qdag> Q_test(1);
-	Q_test[0] = qdag_rel_R;
 
-	projection_lqdag(Q_test, att_A, att_B_prime);
+	projection* test_x = projection_lqdag(join_res, att_A, att_A_prime);
+	projection* test_y = projection_lqdag(join_res, att_A, att_B_prime);
+	projection* test_z = projection_lqdag(join_res, att_A, att_C_prime);
 
 //	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
 //	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
