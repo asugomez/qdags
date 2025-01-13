@@ -73,6 +73,9 @@ public:
 
 	}
 
+
+
+
 	~formula_pi() {
 		for (uint64_t i = 0; i < number_children_pi; ++i) {
 			delete formula_pi_children[i];
