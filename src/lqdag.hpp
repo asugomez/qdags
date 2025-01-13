@@ -285,7 +285,6 @@ public:
 	 * @return a new lqdag that corresponds to the ith-child of the current lqdag.
 	 */
 	lqdag* get_child_lqdag(uint64_t ith_child){
-		// TODO: check empty and full, isnt it?
 		if(this->node_completion_lqdag->val_node == EMPTY_LEAF || this->node_completion_lqdag->val_node == FULL_LEAF)
 			return this;
 		// check if the ith_child has been computed

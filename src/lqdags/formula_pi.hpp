@@ -9,7 +9,6 @@
 #include "formula_lqdag.hpp"
 #include "utils_lqdags.hpp"
 
-//const uint8_t FUNCTOR_OR = 3;
 const uint8_t FUNCTOR_PI = 5; // root of the projection formula
 
 class formula_pi{ // tree of ORs for the projection operation
@@ -62,16 +61,25 @@ public:
 		current_number_OR >>= 1;
 
 		while(current_level > 0){
-			for(i = 0; i < current_number_OR + 1; i++) {
+			for(i = 0; i < current_number_OR; i++) {
 				level_OR_formula[current_level-1][i] = new formula_lqdag(FUNCTOR_OR, level_OR_formula[current_level][2*i], level_OR_formula[current_level][2*i + 1]);
 			}
 			current_level --;
 			current_number_OR >>= 1;
 		}
 
+		this->formula_pi_children = new formula_lqdag * [number_children_pi];
 		this->formula_pi_children = level_OR_formula[0];
 
 	}
+
+	~formula_pi() {
+		for (uint64_t i = 0; i < number_children_pi; ++i) {
+			delete formula_pi_children[i];
+		}
+		delete[] formula_pi_children;
+	}
+
 
 	uint8_t get_functor() const {
 		return this->functor;

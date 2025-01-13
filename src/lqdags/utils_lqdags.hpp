@@ -349,6 +349,7 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
  * @return
  */
 indexes create_pi_index_children(att_set attribute_set_A, att_set attribute_set_A_prime){
+	assert(attribute_set_A.size() >= attribute_set_A_prime.size());
 	uint16_t dim = attribute_set_A.size(); // d
 	uint16_t dim_prime = attribute_set_A_prime.size(); // d'
 	uint16_t delta_d = dim - dim_prime;
