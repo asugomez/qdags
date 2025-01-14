@@ -139,12 +139,14 @@ bool AND_partial(
 						// we store the parent node that corresponds in the original quadtree of each qdag
 						root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
 						n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1, root_temp[j]);
-						if (n_leaves_child_node < total_weight) {
-							total_weight = n_leaves_child_node;
+						if(type_order_fun == TYPE_FUN_NUM_LEAVES){ // gets the minimum number of leaves of the tuple
+							if (n_leaves_child_node < total_weight) {
+								total_weight = n_leaves_child_node;
+							}
+						} else { // density estimator
+							total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
 						}
 					}
-					if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
-						total_weight /= grid_size;
 					// insert the tuple
 //					nodes_visited+=1;
 					qdagWeight this_node = {next_level, root_temp, total_weight, newPath} ;
@@ -375,12 +377,14 @@ AND_partial_backtracking(
 			for (uint64_t j = 0; j < nQ; j++) {
 				root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
 				n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1,root_temp[i][j]);
-				if (n_leaves_child_node < total_weight) {
-					total_weight = n_leaves_child_node;
+				if(type_order_fun == TYPE_FUN_NUM_LEAVES){ // gets the minimum number of leaves of the tuple
+					if (n_leaves_child_node < total_weight) {
+						total_weight = n_leaves_child_node;
+					}
+				} else { // density estimator
+					total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
 				}
 			}
-			if(type_order_fun == TYPE_FUN_DENSITY_LEAVES) // density estimator, otherwise it's the number of leaves (min of the tuple)
-				total_weight /= grid_size;
 			order_to_traverse.push_back({i, total_weight});
 		}
 		sortBySecond(order_to_traverse);
