@@ -141,7 +141,7 @@ bool AND_partial_dfuds(
 								total_weight = n_leaves_child_node;
 							}
 						} else { //density estimator
-							total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
+							total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
 						}
 					}
 					// insert the tuple
