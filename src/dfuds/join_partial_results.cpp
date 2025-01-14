@@ -141,7 +141,9 @@ bool AND_partial_dfuds(
 								total_weight = n_leaves_child_node;
 							}
 						} else { //density estimator
+							cout << "estimator: " << (pow(2,cur_level)) << " " << grid_size/(pow(2,cur_level)) << " " << pow(grid_size/(pow(2,cur_level)),2) << endl;
 							total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
+							cout << "total weigth: " << total_weight << endl;
 						}
 					}
 					// insert the tuple
@@ -379,7 +381,10 @@ bool AND_partial_dfuds_backtracking(
 						total_weight = n_leaves_child_node;
 					}
 				} else { //density estimator
-					total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
+//					total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
+					cout << "estimator: " << (pow(2,cur_level)) << " " << grid_size/(pow(2,cur_level)) << " " << pow(grid_size/(pow(2,cur_level)),2) << endl;
+					total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
+					cout << "total weigth: " << total_weight << endl;
 				}
             }
 
