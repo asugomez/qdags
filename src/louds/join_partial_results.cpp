@@ -132,7 +132,7 @@ bool AND_partial(
 					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
 					// compute the weight of the tuple (ONLY if it's not a leaf)
-					double total_weight = DBL_MAX;
+					double total_weight = (type_order_fun == TYPE_FUN_NUM_LEAVES) ? DBL_MAX : 1;
 					uint64_t n_leaves_child_node;
 					// calculate the weight of the tuple
 					for (uint64_t j = 0; j < nQ; j++) {
@@ -144,7 +144,7 @@ bool AND_partial(
 								total_weight = n_leaves_child_node;
 							}
 						} else { // density estimator
-							total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
+							total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
 						}
 					}
 					// insert the tuple
@@ -372,7 +372,7 @@ AND_partial_backtracking(
 			getNewMortonCodePath(newPath[i], nAtt, cur_level, (uint256_t) child);
 
 			// compute the weight of the tuple
-			double total_weight = DBL_MAX;
+			double total_weight = (type_order_fun == TYPE_FUN_NUM_LEAVES) ? DBL_MAX : 1;
 			uint64_t n_leaves_child_node;
 			for (uint64_t j = 0; j < nQ; j++) {
 				root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
@@ -382,7 +382,7 @@ AND_partial_backtracking(
 						total_weight = n_leaves_child_node;
 					}
 				} else { // density estimator
-					total_weight *= (n_leaves_child_node / (grid_size/(2^cur_level))^2);
+					total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
 				}
 			}
 			order_to_traverse.push_back({i, total_weight});
