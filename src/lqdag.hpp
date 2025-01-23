@@ -567,7 +567,8 @@ public:
 		if(results >= UPPER_BOUND){
 			return this;
 		}
-		nodes_visited += 1;
+		// AQUI LO PUSE
+//		nodes_visited += 1;
 		double val_lqdag = this->value_lqdag(this->form_lqdag);
 		this->node_completion_lqdag->val_node = val_lqdag;
 		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
@@ -576,6 +577,9 @@ public:
 			}
 			return this;
 		}
+
+		// AQUI DEBIESE SER CREO
+		nodes_visited += 1;
 
 		double max_value = 0;
 		double min_value = 1;
@@ -587,11 +591,6 @@ public:
 			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
 			min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
 		}
-//		cout << "cur level: "<< cur_level << endl;
-//		for(uint64_t i = 0; i < nChildren(); i++){
-//			cout << test[i]->node_completion_lqdag->val_node << " ";
-//		}
-//		cout << endl;
 		// pruning step --> return a leaf
 		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
 			delete[] this->node_completion_lqdag->lqdag_children;

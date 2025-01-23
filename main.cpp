@@ -111,8 +111,8 @@ int main(int argc, char **argv) {
     std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
     std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
-    uint64_t grid_side = 52000000; // es como +infty para wikidata
-//	uint64_t grid_side = 8;
+//    uint64_t grid_side = 52000000; // es como +infty para wikidata
+	uint64_t grid_side = 8;
 
 	qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
 	qdag qdag_rel_S(*rel_S, att_S, grid_side, 2, att_S.size());
@@ -124,12 +124,12 @@ int main(int argc, char **argv) {
 	qdag_dfuds qdag_rel_U_dfuds(*rel_U_2, att_U, grid_side, 2, att_U.size());
 
 //     print the tree
-//	cout << endl << "rel R" << endl;
-//	qdag_rel_R.printBv();
-//	cout << endl << "rel S" << endl;
-//	qdag_rel_S.printBv();
-//    cout << endl << "rel T" << endl;
-//    qdag_rel_T.printBv();
+	cout << endl << "rel R" << endl;
+	qdag_rel_R.printBv();
+	cout << endl << "rel S" << endl;
+	qdag_rel_S.printBv();
+    cout << endl << "rel T" << endl;
+    qdag_rel_T.printBv();
 //    cout << endl << "rel U" << endl;
 //    qdag_rel_U.printBv();
 
@@ -237,6 +237,16 @@ int main(int argc, char **argv) {
     vector<uint256_t> results_ranked_louds;
     priority_queue<qdagResults> results_ranked_louds_back;
 
+    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
+//    multiJoin(Q, true, k);
+	uint256_t nodes_visited = 0;
+    start = high_resolution_clock::now();
+    multiJoin(Q, true,k); //, nodes_visited);
+    stop = high_resolution_clock::now();
+    time_span = duration_cast<microseconds>(stop - start);
+    total_time = time_span.count();
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
 //	cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
 ////    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
 //    results_partial_louds_back.clear();
@@ -247,25 +257,17 @@ int main(int argc, char **argv) {
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
-//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-////    multiJoin(Q, true, k);
+
+//
+//    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
+//    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
+//    results_partial_dfuds.clear();
 //    start = high_resolution_clock::now();
-//    multiJoin(Q, true, k);
+//	multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
 //    stop = high_resolution_clock::now();
 //    time_span = duration_cast<microseconds>(stop - start);
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-
-//
-    cout << "----- MULTI JOIN PARTIAL RESULTS DFUDS------" << endl;
-//    multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
-    results_partial_dfuds.clear();
-    start = high_resolution_clock::now();
-	multiJoinPartialResultsDfuds(Q_dfuds, true, k, grid_side, type_fun, results_partial_dfuds);
-    stop = high_resolution_clock::now();
-    time_span = duration_cast<microseconds>(stop - start);
-    total_time = time_span.count();
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
 
 //    cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING DFUDS------" << endl;
@@ -341,15 +343,17 @@ int main(int argc, char **argv) {
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-//	cout << "----- MULTI JOIN LQDAGS ------" << endl;
-//	uint64_t res = 0;
-//	start = high_resolution_clock::now();
+	cout << "----- MULTI JOIN LQDAGS ------" << endl;
+	uint64_t res = 0;
+	nodes_visited = 0;
+	start = high_resolution_clock::now();
 //	lqdag* join_res = compute_dfs_join(Q, k , res);
-//	stop = high_resolution_clock::now();
-//	time_span = duration_cast<microseconds>(stop - start);
-//	total_time = time_span.count();
-//	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-//	cout << "nro res: " << res << endl;
+	lqdag* join_res = compute_dfs_join_nodes_visited(Q, k , res, nodes_visited);
+	stop = high_resolution_clock::now();
+	time_span = duration_cast<microseconds>(stop - start);
+	total_time = time_span.count();
+	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+	cout << "nro res: " << res << endl;
 //
 //
 //
