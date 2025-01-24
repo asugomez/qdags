@@ -1,6 +1,6 @@
 #!/bin/bash
 chmod a+x *.sh
-data_csv="../outputs/lqdags/results-nodes-v2.csv"
+data_csv="../outputs/lqdags/results-time-v2.csv"
 
 echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2">> $data_csv
 for k in 1 10 100 1000; do
@@ -11,7 +11,7 @@ for k in 1 10 100 1000; do
     echo "file: $file"
     input_file="./runqueries-$file-bfs-sorted.sh"
     output_file="./runqueries-$file-bfs-sorted-args.sh"
-    results_file="../outputs/lqdags/$file-k$k-nodes-v2.txt"
+    results_file="../outputs/lqdags/$file-k$k-time-v2.txt"
 
     while IFS= read -r line || [ -n "$line" ]; do
       if [[ "$line" =~ [[:space:]]$ ]]; then
