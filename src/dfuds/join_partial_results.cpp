@@ -272,10 +272,6 @@ bool AND_partial_dfuds_backtracking(
         uint64_t size_queue,
         vector<uint256_t> &results_points){
 //		uint256_t& nodes_visited) {
-
-    if(results_points.size() >= size_queue){
-        return true;
-    }
 //	nodes_visited+=1;
 
     // number of children of the qdag (extended)
@@ -388,13 +384,16 @@ bool AND_partial_dfuds_backtracking(
         }
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
-            AND_partial_dfuds_backtracking(Q, nQ, nAtt,
-										   root_temp[order_to_traverse[i].first],
-										   next_level, max_level, grid_size,
-                                           type_order_fun,
-										   newPath[order_to_traverse[i].first],
-										   size_queue, results_points);
-//										   nodes_visited);
+			if(results_points.size() < size_queue){
+				AND_partial_dfuds_backtracking(Q, nQ, nAtt,
+											   root_temp[order_to_traverse[i].first],
+											   next_level, max_level, grid_size,
+											   type_order_fun,
+											   newPath[order_to_traverse[i].first],
+											   size_queue, results_points);
+	//										   nodes_visited);
+
+			}
         }
 
     }

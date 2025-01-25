@@ -275,7 +275,7 @@ AND_partial_backtracking(
         uint8_t type_order_fun,
 		uint256_t path,
         uint64_t size_queue,
-        vector<uint256_t> &results_points){
+        vector<uint256_t> &results_points){//){
 //		uint256_t& nodes_visited) {
 //	nodes_visited+=1;
     // number of children of the qdag (extended)
@@ -315,7 +315,6 @@ AND_partial_backtracking(
 		// we do not call recursively the function AND as we do in the other levels
 		// add output to the priority queue of results
 		for (i = 0; i < children_to_recurse_size; ++i){
-//			nodes_visited+=1;
 			child = children_to_recurse[i];
 			uint256_t newPath = path;
 			getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
@@ -347,7 +346,6 @@ AND_partial_backtracking(
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
 
-//		nodes_visited+=children_to_recurse_size;
 
 		i = 0;
 		uint64_t msb;
@@ -362,9 +360,9 @@ AND_partial_backtracking(
 		uint16_t child;
 		uint16_t next_level = cur_level + 1;
 
-		uint64_t root_temp[children_to_recurse_size][16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
 		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
 		// veo cada hijo en común que tiene el nodo actual
+		uint64_t root_temp[children_to_recurse_size][nQ]; // CUIDADO, solo hasta 16 relaciones por query
 		uint256_t newPath[children_to_recurse_size];
 		for (i = 0; i < children_to_recurse_size; ++i) {
 			child = children_to_recurse[i]; // the position of the 1s in children
@@ -377,6 +375,7 @@ AND_partial_backtracking(
 			for (uint64_t j = 0; j < nQ; j++) {
 				root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
 				n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1,root_temp[i][j]);
+//				cout << "n leaves : " << n_leaves_child_node << endl;
 				if(type_order_fun == TYPE_FUN_NUM_LEAVES){ // gets the minimum number of leaves of the tuple
 					if (n_leaves_child_node < total_weight) {
 						total_weight = n_leaves_child_node;
@@ -389,15 +388,16 @@ AND_partial_backtracking(
 		}
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
-//			nodes_visited+=1;
-			AND_partial_backtracking(Q, nQ, nAtt,
-									 root_temp[order_to_traverse[i].first],
-									 next_level, max_level, grid_size,
-									 type_order_fun,
-									 newPath[order_to_traverse[i].first],
-									 size_queue,
-									 results_points);
-//										 nodes_visited);
+			if(results_points.size() < size_queue){
+				AND_partial_backtracking(Q, nQ, nAtt,
+										 root_temp[order_to_traverse[i].first],
+										 next_level, max_level, grid_size,
+										 type_order_fun,
+										 newPath[order_to_traverse[i].first],
+										 size_queue,
+										 results_points);
+//											 nodes_visited);
+			}
 		}
 
     }
