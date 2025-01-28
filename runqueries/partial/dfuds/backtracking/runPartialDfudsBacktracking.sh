@@ -2,7 +2,7 @@
 
 # ./runqueries-$file-bfs-sorted.sh type_fun size_queue > ../../../outputs/partial/dfuds/backtracking/$file.txt
 # run tests for each type_fun and each size_queue
-for type_fun in 1; do
+for type_fun in 0; do
   chmod a+x *.sh
   data_csv="../../../outputs/partial/dfuds/backtracking/results-f$type_fun-time-v2.csv"
   # echo type fun
