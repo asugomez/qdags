@@ -43,8 +43,10 @@ while IFS= read -r line; do
 
       shuf -i 1-"$line_count" | while read -r x; do
         div=$(echo "0.1 * $line_count" | bc -l)  # Ensure division is done correctly
-        exp_value=$(echo "e($x/$div)" | bc -l)  # Aplicar e^x
-        exp_value=$(printf "%.0f" $(echo "$exp_value"))
+        exp_value=$(awk -v x="$x" -v div="$div" 'BEGIN {print exp(x/div)}')
+        #exp_value_int=$(awk -v exp_value="$exp_value" 'BEGIN {print int(exp_value + 0.5)}')
+        #exp_value=$(echo "e($x/$div)" | bc -l)  # Aplicar e^x
+        #exp_value=$(printf "%.0f" $(echo "$exp_value"))
 
         echo "$exp_value" >> "$output_file"
       done
