@@ -42,13 +42,14 @@ while IFS= read -r line; do
       # Generar una permutación de los números del 1 al line_count y aplicar la exponencial
 
       shuf -i 1-"$line_count" | while read -r x; do
-        div=$(echo "0.1 * $line_count" | bc -l)  # Ensure division is done correctly
+        #div=$(echo "0.1 * $line_count" | bc -l)  # Ensure division is done correctly
+        div=$(awk -v x="0.1" -v count="$line_count" 'BEGIN {print x*count}')
         exp_value=$(awk -v x="$x" -v div="$div" 'BEGIN {print exp(x/div)}')
-        #exp_value_int=$(awk -v exp_value="$exp_value" 'BEGIN {print int(exp_value + 0.5)}')
+        exp_value_int=$(awk -v exp_value="$exp_value" 'BEGIN {print int(exp_value + 0.5)}')
         #exp_value=$(echo "e($x/$div)" | bc -l)  # Aplicar e^x
         #exp_value=$(printf "%.0f" $(echo "$exp_value"))
 
-        echo "$exp_value" >> "$output_file"
+        echo "$exp_value_int" >> "$output_file"
       done
 
       ((file_index++))
