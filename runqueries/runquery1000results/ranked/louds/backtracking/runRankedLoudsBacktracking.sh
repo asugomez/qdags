@@ -1,7 +1,7 @@
 #!/bin/bash
 # ./runqueries-$file-bfs-sorted.sh > ../../../outputs/ranked/louds/backtracking/$file.txt
 # run tests for each type_fun and each k
-for type_fun in 0; do
+for type_fun in 1; do
   chmod a+x *.sh
   data_csv="../../../../outputs/query1000results/ranked/louds/backtracking/results-f$type_fun-v1000-time.csv"
   # echo type fun

@@ -2,7 +2,7 @@
 
 # ./runqueries-$file-bfs-sorted.sh > ../../../outputs/ranked/dfuds/optimalOrder/$file.txt
 # run tests for each type_fun and each size_queue
-for type_fun in 0; do #{0..1}
+for type_fun in 1; do #{0..1}
   chmod a+x *.sh
   data_csv="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/results-f$type_fun-v1000-time.csv"
   # echo type fun
