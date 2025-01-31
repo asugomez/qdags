@@ -1,5 +1,3 @@
-./j4 ../../data/all/prop-direct-P2184 ../../data/all/prop-direct-P2650 ../../data/all/prop-direct-P1366 ../../data/all/prop-direct-P1807
-./j4 ../../data/all/prop-direct-P58 ../../data/all/prop-direct-P800 ../../data/all/prop-direct-P462 ../../data/all/prop-direct-P3212
 ./j4 ../../data/all/prop-direct-P1026 ../../data/all/prop-direct-P1855 ../../data/all/prop-direct-P217 ../../data/all/prop-direct-P953
 ./j4 ../../data/all/prop-direct-P2389 ../../data/all/prop-direct-P162 ../../data/all/prop-direct-P3761 ../../data/all/prop-direct-normalized-P3153
 ./j4 ../../data/all/prop-direct-P1454 ../../data/all/prop-direct-P740 ../../data/all/prop-direct-P1451 ../../data/all/prop-direct-P2250
