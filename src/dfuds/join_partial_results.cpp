@@ -129,20 +129,21 @@ bool AND_partial_dfuds(
 					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
 					// compute the weight of the tuple (ONLY if it's not a leaf)
-					double total_weight = DBL_MAX;
+					double total_weight = (type_order_fun == TYPE_FUN_NUM_LEAVES_DFUDS) ? DBL_MAX : 1;
 					uint64_t n_leaves_child_node;
 					// calculate the weight of the tuple
 					for (uint64_t j = 0; j < nQ; j++) {
 						// we store the parent node that corresponds in the original quadtree of each qdag
 						root_temp[j] = (rank_vector[j][Q[j]->getM(child)]);
 						n_leaves_child_node = Q[j]->get_num_leaves(root_temp[j]);
-						if (n_leaves_child_node < total_weight) {
-							total_weight = n_leaves_child_node;
+						if(type_order_fun == TYPE_FUN_NUM_LEAVES_DFUDS){ // gets the minimum number of leaves of the tuple
+							if (n_leaves_child_node < total_weight) {
+								total_weight = n_leaves_child_node;
+							}
+						} else { //density estimator
+							total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
 						}
 					}
-					if (type_order_fun ==
-						TYPE_FUN_DENSITY_LEAVES_DFUDS) // density estimator, otherwise it's the number of leaves (min of the tuple)
-						total_weight /= grid_size;
 					// insert the tuple
 					qdagWeight this_node = {next_level, root_temp, total_weight, newPath};
 					pq.push(this_node); // add the tuple to the queue
@@ -271,10 +272,6 @@ bool AND_partial_dfuds_backtracking(
         uint64_t size_queue,
         vector<uint256_t> &results_points){
 //		uint256_t& nodes_visited) {
-
-    if(results_points.size() >= size_queue){
-        return true;
-    }
 //	nodes_visited+=1;
 
     // number of children of the qdag (extended)
@@ -368,30 +365,35 @@ bool AND_partial_dfuds_backtracking(
 			getNewMortonCodePath(newPath[i], nAtt, cur_level, (uint256_t) child);
 
             // compute the weight of the tuple
-            double total_weight = DBL_MAX;
+            double total_weight = (type_order_fun == TYPE_FUN_NUM_LEAVES_DFUDS) ? DBL_MAX : 1;
 			uint64_t n_leaves_child_node;
             for (uint64_t j = 0; j < nQ; j++) {
                 root_temp[i][j] = (rank_vector[j][Q[j]->getM(child)]);
                 n_leaves_child_node = Q[j]->get_num_leaves(root_temp[i][j]);
-                if (n_leaves_child_node < total_weight) {
-                    total_weight = n_leaves_child_node;
-                }
+				if(type_order_fun == TYPE_FUN_NUM_LEAVES_DFUDS){ // gets the minimum number of leaves of the tuple
+					if (n_leaves_child_node < total_weight) {
+						total_weight = n_leaves_child_node;
+					}
+				} else { //density estimator
+					total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
+				}
             }
 
-            if(type_order_fun == TYPE_FUN_DENSITY_LEAVES_DFUDS) // density estimator, otherwise it's the number of leaves (min of the tuple)
-                total_weight /= grid_size;
 
             order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
         }
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
-            AND_partial_dfuds_backtracking(Q, nQ, nAtt,
-										   root_temp[order_to_traverse[i].first],
-										   next_level, max_level, grid_size,
-                                           type_order_fun,
-										   newPath[order_to_traverse[i].first],
-										   size_queue, results_points);
-//										   nodes_visited);
+			if(results_points.size() < size_queue){
+				AND_partial_dfuds_backtracking(Q, nQ, nAtt,
+											   root_temp[order_to_traverse[i].first],
+											   next_level, max_level, grid_size,
+											   type_order_fun,
+											   newPath[order_to_traverse[i].first],
+											   size_queue, results_points);
+	//										   nodes_visited);
+
+			}
         }
 
     }

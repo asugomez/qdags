@@ -4,7 +4,7 @@
 # run tests for each type_fun and each k
 for type_fun in 0; do
   chmod a+x *.sh
-  data_csv="../../../../outputs/query1000results/ranked/dfuds/backtracking/results-f$type_fun-v1000-time.csv"
+  data_csv="../../../../outputs/query1000results/ranked/dfuds/backtracking/results-f$type_fun-v1000-time-new-pri.csv"
   # echo type fun
   echo "type_fun : $type_fun"
   echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv

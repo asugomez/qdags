@@ -542,20 +542,30 @@ public:
 		}
 		double val_lqdag = this->value_lqdag(this->form_lqdag);
 		this->node_completion_lqdag->val_node = val_lqdag;
-		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
-			if(val_lqdag == FULL_LEAF){
-				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
-			}
-			return this;
-		}
+//		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
+//			if(val_lqdag == FULL_LEAF){
+//				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
+//			}
+//			return this;
+//		}
 
 		double max_value = 0;
 		double min_value = 1;
 		for(uint64_t i = 0; i < nChildren(); i++){
 			// compute the child and store it in node_completion->lqdag_children[i]
 			lqdag* child_lqdag = this->get_child_lqdag(i);
-			// recursive call
-			child_lqdag->completion_dfs(max_level, cur_level+1, UPPER_BOUND, results);
+			// option 1:
+//			child_lqdag->completion_dfs_nodes_visited(max_level, cur_level+1, UPPER_BOUND, results, nodes_visited);
+			// option 2:
+			if(child_lqdag->node_completion_lqdag->val_node != EMPTY_LEAF && child_lqdag->node_completion_lqdag->val_node != FULL_LEAF)
+				child_lqdag->completion_dfs(max_level, cur_level+1, UPPER_BOUND, results);
+			else{
+				if(child_lqdag->node_completion_lqdag->val_node == EMPTY_LEAF || child_lqdag->node_completion_lqdag->val_node == FULL_LEAF){
+					if(child_lqdag->node_completion_lqdag->val_node == FULL_LEAF){
+						results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level ));
+					}
+				}
+			}
 			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
 			min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
 		}
@@ -583,31 +593,38 @@ public:
 		if(results >= UPPER_BOUND){
 			return this;
 		}
-		nodes_visited += 1;
 		double val_lqdag = this->value_lqdag(this->form_lqdag);
 		this->node_completion_lqdag->val_node = val_lqdag;
-		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
-			if(val_lqdag == FULL_LEAF){
-				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
-			}
-			return this;
-		}
+//		if(val_lqdag == EMPTY_LEAF || val_lqdag == FULL_LEAF){
+//			if(val_lqdag == FULL_LEAF){
+//				results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level + 1));
+//			}
+//			return this;
+//		}
+
+		nodes_visited += 1;
 
 		double max_value = 0;
 		double min_value = 1;
 		for(uint64_t i = 0; i < nChildren(); i++){
 			// compute the child and store it in node_completion->lqdag_children[i]
 			lqdag* child_lqdag = this->get_child_lqdag(i);
+			// option 1:
+//			child_lqdag->completion_dfs_nodes_visited(max_level, cur_level+1, UPPER_BOUND, results, nodes_visited);
+			// option 2:
+			if(child_lqdag->node_completion_lqdag->val_node != EMPTY_LEAF && child_lqdag->node_completion_lqdag->val_node != FULL_LEAF)
+				child_lqdag->completion_dfs_nodes_visited(max_level, cur_level+1, UPPER_BOUND, results, nodes_visited);
+			else{
+				if(child_lqdag->node_completion_lqdag->val_node == EMPTY_LEAF || child_lqdag->node_completion_lqdag->val_node == FULL_LEAF){
+					if(child_lqdag->node_completion_lqdag->val_node == FULL_LEAF){
+						results += (cur_level > max_level) ? 1 :  pow(nChildren(), (max_level - cur_level ));
+					}
+				}
+			}
 			// recursive call
-			child_lqdag->completion_dfs_nodes_visited(max_level, cur_level+1, UPPER_BOUND, results, nodes_visited);
 			max_value = max(max_value, child_lqdag->node_completion_lqdag->val_node);
 			min_value = min(min_value, child_lqdag->node_completion_lqdag->val_node);
 		}
-//		cout << "cur level: "<< cur_level << endl;
-//		for(uint64_t i = 0; i < nChildren(); i++){
-//			cout << test[i]->node_completion_lqdag->val_node << " ";
-//		}
-//		cout << endl;
 		// pruning step --> return a leaf
 		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
 			delete[] this->node_completion_lqdag->lqdag_children;
