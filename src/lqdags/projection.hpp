@@ -43,7 +43,7 @@ public:
 			this->value_children[i] = NO_VALUE_LEAF;
 		}
 
-		uint64_t number_projection_children = 2 << attribute_set_A.size();
+		uint64_t number_projection_children = 1 << attribute_set_A.size();
 
 		projection_children = new projection*[number_projection_children];
 		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
@@ -66,7 +66,7 @@ public:
 			this->value_children[i] = NO_VALUE_LEAF;
 		}
 
-		uint64_t number_projection_children = 2 << attribute_set_A.size();
+		uint64_t number_projection_children = 1 << attribute_set_A.size();
 
 		projection_children = new projection*[number_projection_children];
 		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
@@ -93,7 +93,7 @@ public:
 	uint8_t get_functor(){
 		return this->form_or->get_functor();
 	}
-	
+
 
 	/**
 	 * Get the root of the i-th OR of the projection
@@ -133,7 +133,7 @@ public:
 	 * @return EMPTY_LEAF, FULL_LEAF or VALUE_NEED_CHILDREN
 	 */
 	double get_value_multi_or_child_pi(uint64_t i){
-		assert(i < this->nChildren() );
+		assert(i < this->nChildren());
 
 		if(this->value_children[i] != NO_VALUE_LEAF){
 			return this->value_children[i];
@@ -160,6 +160,24 @@ public:
 
 	}
 
+	void compute_multi_projection_child_pi(uint64_t i){
+		assert(i < this->nChildren());
+		assert(this->value_children[i] == VALUE_NEED_CHILDREN);
+		uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
+		uint64_t init_index = i * n_leaves_per_children;
+		for(uint64_t j = init_index; j < init_index + n_leaves_per_children; j++) {
+			lqdag *lqdag_j = this->lqdag_root->get_child_lqdag(this->get_index_children(j));
+			projection* child_pi = new projection(lqdag_j, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
+			this->projection_children[j] = child_pi;
+		}
+
+	}
+
+	projection* get_ith_projection(uint64_t i){
+		assert(i < 1 << nAttrA());
+		return this->projection_children[i];
+	}
+
 	/**
 	 *
 	 * @return a projection with the output as a traditional quadtree (with the values of val_pi)
@@ -176,8 +194,7 @@ public:
 			double val_child_pi = get_value_multi_or_child_pi(i); // evaluate an OR
 			value_children[i] = val_child_pi;
 			if(val_child_pi != EMPTY_LEAF && val_child_pi != FULL_LEAF){
-				projection* child_pi = get_child_pi(i);
-				child_pi->eval_projection();
+				compute_multi_projection_child_pi(i);
 			}
 			else{
 				// is a EMPTY_LEAF or a FULL_LEAF, no further computation is needed
@@ -195,99 +212,7 @@ public:
 		}
 	}
 
-	projection* get_ith_projection(uint64_t i){
-		assert(i < 1 << this->attribute_set_A.size());
-		lqdag* ith_child_lqdag = this->lqdag_root->get_child_lqdag(this->get_index_children(i));
-		projection* child_pi = new projection(ith_child_lqdag, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
-		return child_pi;
 
-	}
-
-	/**
-	 * Compute the i-th child of the projection.
-	 * Assuming the i-th child is not already computed (value 0 or 1).
-	 * @param i
-	 * @return
-	 */
-	projection* get_child_pi(uint64_t i){
-		assert(i < nChildren() ); // TODO check assert
-
-		if(this->value_pi() == EMPTY_LEAF || this->value_pi() == FULL_LEAF)
-			return this;
-
-		// check if the i-th child is already computed in projection_children, then return that
-		if(this->value_pi() == VALUE_NEED_CHILDREN
-			&& this->projection_children[0] != nullptr
-			&& this->projection_children[i] != nullptr){
-			return  this->projection_children[i];
-		}
-
-		// TODO: it has to create X projection that will be a multi - OR projection
-
-		double val_child_pi = get_child_pi_aux(i, this->get_OR_formula_child(i));
-		projection* child_pi = get_ith_projection(i);
-		child_pi->val_pi = val_child_pi;
-
-		if(val_child_pi != EMPTY_LEAF){
-			// add coordinates to the i-th child
-			uint256_t newPath = this->materialization->path;
-			getNewMortonCodePath(newPath, nChildren, this->getCurLevel(), (uint256_t)i);
-			// TODO: add this coordinates to the new projection
-		}
-
-		// TODO: what to return!
-//		if(lqdag_child_pi != nullptr && this->val_pi[i] == VALUE_NEED_CHILDREN) // TODO: check this value is correct or we need to check 0.5 as well
-//			this->projection_children[i] = new projection(lqdag_child_pi, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
-	}
-
-	/**
-	 * Compute the i-th child of the projection
-	 * @param i
-	 * @param formula_OR
-	 * @return nullptr if the value is FULL_LEAF or EMPTY_LEAF, otherwise the lqdag of the child
-	 */
-	double get_child_pi_aux(uint64_t i, formula_lqdag* formula_OR){
-		switch (formula_OR->get_functor()) {
-			case FUNCTOR_LQDAG: {// leaf
-				uint64_t index_child_pi = formula_OR->get_index();
-				// TODO: test which lqdag!
-//				lqdag* test = this->lqdag_root->get_child_lqdag(index_child_pi);
-				lqdag* child_lqdag_pi = formula_OR->get_lqdag()->get_child_lqdag(this->form_or->get_index_children(index_child_pi));
-				double val_child_lqdag_pi = child_lqdag_pi->val_node(); // TODO: check this wont be 0.5
-				if(val_child_lqdag_pi != FULL_LEAF && val_child_lqdag_pi != EMPTY_LEAF){// create a projection
-					this->projection_children[index_child_pi] = new projection(child_lqdag_pi, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
-					this->projection_children[index_child_pi]->set_val_node_pi(val_child_lqdag_pi);
-				}
-				return VALUE_NEED_CHILDREN;
-			}
-			case FUNCTOR_OR: {
-				if (formula_OR->get_val_lqdag1() == FULL_LEAF || formula_OR->get_val_lqdag2() == FULL_LEAF) {
-					return FULL_LEAF;
-				}
-				if (formula_OR->get_val_lqdag1() == EMPTY_LEAF) {
-					// TODO: save the value only if is 0,1 otherwise put VALUE_NEED_CHILDREN
-//					formula_OR->set_val_lqdag1(XX);
-					double val_pi_2 = get_child_pi_aux(i, formula_OR->get_formula_lqdag2());
-					return val_pi_2;
-				}
-				if (formula_OR->get_val_lqdag2() == EMPTY_LEAF) {
-					double val_pi_1 = get_child_pi_aux(i, formula_OR->get_formula_lqdag1());
-					return val_pi_1;
-				} else {
-					double val_pi_1 = get_child_pi_aux(i, formula_OR->get_formula_lqdag1());
-					double val_pi_2 = get_child_pi_aux(i, formula_OR->get_formula_lqdag2());
-					if(val_pi_1 == FULL_LEAF || val_pi_2 == FULL_LEAF)
-						return FULL_LEAF;
-					else if(!val_pi_1 && !val_pi_2)
-						return EMPTY_LEAF;
-					else
-						return VALUE_NEED_CHILDREN;
-				}
-			}
-			default:
-				throw "error: get_child_pi_aux non valid functor";
-		}
-	}
 };
 
 #endif //INCLUDED_PROJECTION
