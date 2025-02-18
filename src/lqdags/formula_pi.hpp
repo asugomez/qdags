@@ -35,8 +35,10 @@ public:
 		this->number_children_pi = 1 << nAttr_A_prime;
 		this->max_level_formula = nAttr_A - nAttr_A_prime;
 		this->number_leaves = 1 << nAttr_A;
+		// create the index for the leaves. If the projection is from (A,B) to (B) --> 0 2 1 3 (for example
 		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 
+		// we build the formula from the bottom
 		uint64_t i;
 		uint16_t current_level = max_level_formula;
 		uint64_t current_number_OR = number_leaves >> 1;
@@ -46,13 +48,13 @@ public:
 		formula_lqdag** lqdags_leaves_formula = new formula_lqdag *[number_leaves];
 		formula_lqdag*** level_OR_formula = new formula_lqdag**[max_level_formula];
 		for(i = 0; i < max_level_formula; i++){
-			level_OR_formula[i] = new formula_lqdag*[number_or];
+			level_OR_formula[i] = new formula_lqdag*[number_or]; // array of pointers to the ORs of the level i. We initialize them later
 			number_or <<= 1;
 		}
 
 		// declaring lqdags leaves and OR tree formula
 		for(i = 0; i < number_leaves; i++){ // create the last level of the tree
-			lqdags_leaves_formula[i] = new formula_lqdag(FUNCTOR_LQDAG, lqdag, i);
+			lqdags_leaves_formula[i] = new formula_lqdag(FUNCTOR_LQDAG, lqdag, i); // TODO: why not put the indexes_children[i] here?
 			if(i%2 == 1){
 				level_OR_formula[current_level-1][i/2] = new formula_lqdag(FUNCTOR_OR, lqdags_leaves_formula[i-1], lqdags_leaves_formula[i]);
 			}
@@ -85,7 +87,11 @@ public:
 
 
 	uint8_t get_functor() const {
-		return this->functor;
+		return this->functor; // TODO: probable delete it, unuseful
+	}
+
+	uint64_t get_number_leaves(){
+		return this->number_leaves;
 	}
 
 	/**
