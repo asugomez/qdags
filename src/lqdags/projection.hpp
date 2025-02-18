@@ -13,22 +13,7 @@ class projection {
 public:
 
 	typedef vector<uint64_t> att_set;
-
-//	struct pi_materialization{
-//		double val_node = NO_VALUE_LEAF;
-//		uint16_t level;
-//		uint64_t n_children; // number of children
-//		uint256_t path;
-//		projection** projection_children; // TODO: aun no estoy segura si usariamos esto
-//
-//		pi_materialization(): val_node(NO_VALUE_LEAF), level(0), n_children(0), path(0), projection_children(nullptr) {}
-//
-//		pi_materialization(uint64_t n_children): val_node(NO_VALUE_LEAF), level(0), n_children(n_children), path(0), projection_children(new projection * [n_children]) {
-//			for(uint64_t i = 0; i < n_children; i++){
-//				projection_children[i] = nullptr;
-//			}
-//		}
-//	};
+	
 
 private:
 	formula_pi* form_or; // expression, syntax tree, formula of the OR tree.
@@ -36,10 +21,8 @@ private:
 	att_set attribute_set_A_prime; // A'
 	lqdag* lqdag_root; // the lqdag where we apply the projection
 	double val_pi = NO_VALUE_LEAF; // value of each OR
-	projection** projection_children = nullptr;
-	double* value_children = nullptr;
-//	pi_materialization* materialization;
-
+	projection** projection_children; // it has 2^|A| children (leaves of projection)
+	double* value_children;
 
 public:
 
@@ -54,17 +37,19 @@ public:
 		// TODO: see if memory is correct allocated!
 		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
 
-//		this->val_pi = new double[nChildren];
+		this->value_children = new double[nChildren()];
 
-//		for(uint64_t i = 0; i < nChildren; i++){
-//			this->val_pi[i] = NO_VALUE_LEAF;
-//		}
+		for(uint64_t i = 0; i < nChildren(); i++){
+			this->value_children[i] = NO_VALUE_LEAF;
+		}
 
-//		projection_children = new projection*[number_projection_children];
-//
-//		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
-//			projection_children[i] = nullptr;
-//		}
+		uint64_t number_projection_children = 2 << attribute_set_A.size();
+
+		projection_children = new projection*[number_projection_children];
+
+		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
+			projection_children[i] = nullptr;
+		}
 
 		// TODO: OFT
 		projection* test_child = get_child_pi(0);
@@ -184,7 +169,7 @@ public:
 		return val_or;
 
 	}
-	
+
 	/**
 	 *
 	 * @return a projection with the output as a traditional quadtree (with the values of val_pi)
