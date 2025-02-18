@@ -13,7 +13,7 @@ class projection {
 public:
 
 	typedef vector<uint64_t> att_set;
-	
+
 
 private:
 	formula_pi* form_or; // expression, syntax tree, formula of the OR tree.
@@ -31,14 +31,14 @@ public:
 	projection(lqdag* lqdag_root, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-//		this->materialization = new pi_materialization(this->number_projection_children);
 		this->lqdag_root = lqdag_root;
 
 		// TODO: see if memory is correct allocated!
 		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
+		// TODO: maybe we only need the indexes children:
+		// this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 
 		this->value_children = new double[nChildren()];
-
 		for(uint64_t i = 0; i < nChildren(); i++){
 			this->value_children[i] = NO_VALUE_LEAF;
 		}
@@ -46,7 +46,6 @@ public:
 		uint64_t number_projection_children = 2 << attribute_set_A.size();
 
 		projection_children = new projection*[number_projection_children];
-
 		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
 			projection_children[i] = nullptr;
 		}
@@ -55,22 +54,24 @@ public:
 		projection* test_child = get_child_pi(0);
 	}
 
+	// TODO: maybe instead of the form, we need the indexes of the children
 	projection(lqdag* lqdag_root, formula_pi* form_or, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-//		this->number_projection_children = 1 << attribute_set_A_prime.size();
-//		this->materialization = new pi_materialization(this->number_projection_children);
 		this->form_or = form_or;
 		this->lqdag_root = lqdag_root;
 
-//		this->val_pi = new double[number_projection_children]; // check val_pi is 0
-//		for(uint64_t i = 0; i < number_projection_children; i++){
-//			this->val_pi[i] = NO_VALUE_LEAF;
-//		}
-//		projection_children = new projection*[number_projection_children];
-//		for(uint64_t i = 0; i < number_projection_children; i++){
-//			projection_children[i] = nullptr;
-//		}
+		this->value_children = new double[nChildren()];
+		for(uint64_t i = 0; i < nChildren(); i++){
+			this->value_children[i] = NO_VALUE_LEAF;
+		}
+
+		uint64_t number_projection_children = 2 << attribute_set_A.size();
+
+		projection_children = new projection*[number_projection_children];
+		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
+			projection_children[i] = nullptr;
+		}
 	}
 
 	uint64_t nAttrA(){
@@ -92,18 +93,7 @@ public:
 	uint8_t get_functor(){
 		return this->form_or->get_functor();
 	}
-
-//	uint16_t getCurLevel(){
-//		return this->materialization->level;
-//	}
-
-	/**
-	 * The value of the root of the projection: 0, 1 or VALUE_NEED_CHILDREN
-	 * @param val
-	 */
-//	void set_val_node_pi(double val){
-//		this->materialization->val_node = val;
-//	}
+	
 
 	/**
 	 * Get the root of the i-th OR of the projection
