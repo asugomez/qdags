@@ -93,23 +93,29 @@ int main(int argc, char **argv) {
 //    att_T.push_back(AT_X3); att_T.push_back(AT_X4);
 //    att_U.push_back(AT_X4); att_U.push_back(AT_X5);
 
-	att_R.push_back(AT_X); att_R.push_back(AT_Y);
-	att_S.push_back(AT_Y); att_S.push_back(AT_Z);
-	att_T.push_back(AT_X); att_T.push_back(AT_Z);
-	att_U.push_back(AT_X); att_U.push_back(AT_V);
+	att_R.push_back(AT_X);
+	att_R.push_back(AT_Y);
+	att_S.push_back(AT_Y);
+	att_S.push_back(AT_Z);
+	att_T.push_back(AT_X);
+	att_T.push_back(AT_Z);
+	att_U.push_back(AT_X);
+	att_U.push_back(AT_V);
 
 	std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]), strRel_U(argv[4]);
 
 
-    // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
-    std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
-    std::vector<std::vector<uint64_t>> *rel_R_2 = read_relation(strRel_R,att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
-    std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
-    std::vector<std::vector<uint64_t>>* rel_S_2 = read_relation(strRel_S, att_S.size());
-    std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
-    std::vector<std::vector<uint64_t>>* rel_T_2 = read_relation(strRel_T, att_T.size());
-    std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
-    std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
+	// lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
+	std::vector<std::vector<uint64_t>> *rel_R = read_relation(strRel_R,
+															  att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
+	std::vector<std::vector<uint64_t>> *rel_R_2 = read_relation(strRel_R,
+																att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
+	std::vector<std::vector<uint64_t>> *rel_S = read_relation(strRel_S, att_S.size());
+	std::vector<std::vector<uint64_t>> *rel_S_2 = read_relation(strRel_S, att_S.size());
+	std::vector<std::vector<uint64_t>> *rel_T = read_relation(strRel_T, att_T.size());
+	std::vector<std::vector<uint64_t>> *rel_T_2 = read_relation(strRel_T, att_T.size());
+	std::vector<std::vector<uint64_t>> *rel_U = read_relation(strRel_U, att_U.size());
+	std::vector<std::vector<uint64_t>> *rel_U_2 = read_relation(strRel_U, att_U.size());
 
 //    uint64_t grid_side = 52000000; // es como +infty para wikidata
 	uint64_t grid_side = 8;
@@ -128,8 +134,8 @@ int main(int argc, char **argv) {
 	qdag_rel_R.printBv();
 	cout << endl << "rel S" << endl;
 	qdag_rel_S.printBv();
-    cout << endl << "rel T" << endl;
-    qdag_rel_T.printBv();
+	cout << endl << "rel T" << endl;
+	qdag_rel_T.printBv();
 //    cout << endl << "rel U" << endl;
 //    qdag_rel_U.printBv();
 
@@ -141,12 +147,12 @@ int main(int argc, char **argv) {
 
 	Q[0] = qdag_rel_R;
 	Q[1] = qdag_rel_S;
-    Q[2] = qdag_rel_T;
+	Q[2] = qdag_rel_T;
 //    Q[3] = qdag_rel_U;
 
 	Q_dfuds[0] = qdag_rel_R_dfuds;
 	Q_dfuds[1] = qdag_rel_S_dfuds;
-    Q_dfuds[2] = qdag_rel_T_dfuds;
+	Q_dfuds[2] = qdag_rel_T_dfuds;
 //    Q_dfuds[3] = qdag_rel_U_dfuds;
 
 	high_resolution_clock::time_point start, stop;
@@ -228,17 +234,17 @@ int main(int argc, char **argv) {
 		rMq_louds.push_back(rmq_succinct_sct<false>(&vector_pri[i]));
 	}
 
-    vector<uint256_t> results_partial_dfuds;
-    vector<uint256_t> results_partial_dfuds_back;
-    vector<uint256_t> results_ranked_dfuds;
-    priority_queue<qdagResults> results_ranked_dfuds_back;
-    vector<uint256_t> results_partial_louds;
-    vector<uint256_t> results_partial_louds_back;
-    vector<uint256_t> results_ranked_louds;
-    priority_queue<qdagResults> results_ranked_louds_back;
+	vector<uint256_t> results_partial_dfuds;
+	vector<uint256_t> results_partial_dfuds_back;
+	vector<uint256_t> results_ranked_dfuds;
+	priority_queue<qdagResults> results_ranked_dfuds_back;
+	vector<uint256_t> results_partial_louds;
+	vector<uint256_t> results_partial_louds_back;
+	vector<uint256_t> results_ranked_louds;
+	priority_queue<qdagResults> results_ranked_louds_back;
 
 //	cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
-////    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
+//    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
 //    results_partial_louds_back.clear();
 //    start = high_resolution_clock::now();
 //    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
@@ -247,26 +253,26 @@ int main(int argc, char **argv) {
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
-//    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
-////    multiJoin(Q, true, k);
-//    start = high_resolution_clock::now();
+    cout << "----- MULTI JOIN TRADICIONAL ------" << endl;
 //    multiJoin(Q, true, k);
-//    stop = high_resolution_clock::now();
-//    time_span = duration_cast<microseconds>(stop - start);
-//    total_time = time_span.count();
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
-
-	cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
-//    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
-    results_partial_louds_back.clear();
-	nodes_visited = 0;
     start = high_resolution_clock::now();
-//    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
-	multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back, nodes_visited);
+    multiJoin(Q, true, k);
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
     cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+
+	cout << "----- MULTI JOIN PARTIAL RESULTS BACKTRACKING ------" << endl;
+//    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
+//	results_partial_louds_back.clear();
+//	uint256_t nodes_visited = 0;
+//	start = high_resolution_clock::now();
+//    multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back);
+//	multiJoinPartialResultsBacktracking(Q, grid_side, type_fun, k, results_partial_louds_back, nodes_visited);
+//	stop = high_resolution_clock::now();
+//	time_span = duration_cast<microseconds>(stop - start);
+//	total_time = time_span.count();
+//	cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 //
 
 //
@@ -354,12 +360,12 @@ int main(int argc, char **argv) {
 //    total_time = time_span.count();
 //    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
-//	cout << "----- MULTI JOIN LQDAGS ------" << endl;
-//	uint64_t res = 0;
-//	nodes_visited = 0;
-//	start = high_resolution_clock::now();
-////	lqdag* join_res = compute_dfs_join(Q, k , res);
-//	lqdag* join_res = compute_dfs_join_nodes_visited(Q, k , res, nodes_visited);
+	cout << "----- MULTI JOIN LQDAGS ------" << endl;
+	uint64_t res = 0;
+//	uint256_t nodes_visited = 0;
+	start = high_resolution_clock::now();
+	lqdag* join_res = compute_dfs_join(Q, k , res);
+//	lqdag *join_res = compute_dfs_join_nodes_visited(Q, k, res, nodes_visited);
 //	stop = high_resolution_clock::now();
 //	time_span = duration_cast<microseconds>(stop - start);
 //	total_time = time_span.count();
@@ -393,15 +399,15 @@ int main(int argc, char **argv) {
 //
 	att_A_prime.push_back(AT_X);
 //	att_A_prime.push_back(AT_Y);
-//
+
 	att_B_prime.push_back(AT_Y);
 
 	att_C_prime.push_back(AT_Z);
 
 
-	projection* test_x = projection_lqdag(join_res, att_A, att_A_prime);
-	projection* test_y = projection_lqdag(join_res, att_A, att_B_prime);
-	projection* test_z = projection_lqdag(join_res, att_A, att_C_prime);
+	projection *test_x = projection_lqdag(join_res, att_A, att_A_prime);
+	projection *test_y = projection_lqdag(join_res, att_A, att_B_prime);
+	projection *test_z = projection_lqdag(join_res, att_A, att_C_prime);
 
 //	predicate pred1 = {AT_X1, AT_X3, 0, OP_GREATER, TYPE_ATT1_ATT2};
 //	predicate pred2 = {AT_X1, AT_X3, 3, OP_GREATER_EQUAL, TYPE_ATT1_ATT2};
@@ -428,15 +434,8 @@ int main(int argc, char **argv) {
 //	lqdag* completion_join = compute_dfs(join_test_lqdag, 1000, res);
 //	lqdag* completion_dfs = compute_dfs_join(Q, 1000, res);
 
-//    res = 0;
+    res = 0;
 //    quadtree_formula* pred_a_c = compute_pred_lqdag_join(Q,k,res,&pred12);
 //    cout << "number of results pred a_c: " << res << endl;
 
-
-
-
-
-
-    return 0;
-
-}
+};
