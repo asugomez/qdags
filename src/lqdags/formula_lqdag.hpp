@@ -104,7 +104,7 @@ public:
 	}
 
 	// F = (AND, F1, F2) o F = (OR, F1, F2)
-	formula_lqdag(uint8_t functor, formula_lqdag *l1, formula_lqdag *l2, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0) {
+	formula_lqdag(uint8_t functor, formula_lqdag *l1, formula_lqdag *l2, uint8_t k = 0, uint16_t nAtt = 0, uint16_t max_level = 0, uint64_t grid_side = 0,uint64_t index = 0) {
 		assert(functor == FUNCTOR_AND || functor == FUNCTOR_OR);
 		this->functor = functor;
 		this->formula_lqdag1 = l1;
@@ -113,11 +113,12 @@ public:
 		this->nAtt = nAtt;
 		this->max_level = max_level;
 		this->grid_side = grid_side;
+		this->index = index;
 	}
 
 
 	// L = (EXTEND, L1, A)
-	formula_lqdag(uint8_t functor, formula_lqdag* l, uint8_t k, att_set &attribute_set_A, uint16_t max_level=0, uint64_t grid_side=0){
+	formula_lqdag(uint8_t functor, formula_lqdag* l, uint8_t k, att_set &attribute_set_A, uint16_t max_level=0, uint64_t grid_side=0,uint64_t index = 0){
 		assert(functor == FUNCTOR_EXTEND);
 		this->functor = functor;
 		this->formula_lqdag1 = l;
@@ -126,6 +127,7 @@ public:
 		this->nAtt =  attribute_set_A.size(); //nAtt; // d
 		this->max_level = max_level;
 		this->grid_side = grid_side;
+		this->index = index;
 
 		uint64_t p = std::pow(k, nAtt);
 
