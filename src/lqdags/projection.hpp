@@ -13,7 +13,51 @@ class projection {
 public:
 
 	typedef vector<uint64_t> att_set;
-	// TODO: add struture of Node!
+
+	struct TreeNode {
+		double value = NO_VALUE_LEAF;
+		TreeNode **children; // Dynamic array of child pointers
+		uint64_t nChildren;      // Number of children
+
+		// Constructor
+		TreeNode(uint64_t n) : value(NO_VALUE_LEAF), children(nullptr), nChildren(n) {}
+
+		TreeNode(double val, uint64_t n) : value(val), children(nullptr), nChildren(n) {}
+
+		double get_val_node(){
+			return this->value;
+		}
+
+		void set_val_node(double val){
+			this->value = val;
+		}
+
+		// Add a child or change the value of a child
+		void addChild(uint64_t i, double val_children_i){
+			if(children == nullptr){
+				children = new TreeNode*[nChildren];
+				for(uint64_t j = 0; j < nChildren; j++){
+					children[j] = nullptr;
+				}
+			}
+			if(children[i] == nullptr){
+				children[i] = new TreeNode(val_children_i, nChildren);
+			}
+			if(children[i] != nullptr && children[i]->value == NO_VALUE_LEAF){
+				children[i]->value = val_children_i;
+			}
+		}
+
+
+
+		// Destructor to free memory
+		~TreeNode() {
+			for (uint64_t i = 0; i < nChildren; ++i) {
+				delete children[i];
+			}
+			delete[] children;
+		}
+	};
 
 
 private:
@@ -21,10 +65,9 @@ private:
 	att_set attribute_set_A; // A
 	att_set attribute_set_A_prime; // A'
 	lqdag* lqdag_root; // the lqdag where we apply the projection
-	double val_pi = NO_VALUE_LEAF; // value of each OR
 	projection** projection_children; // it has 2^|A| children (leaves of projection)
-	double* value_children;
 	indexes indexes_children; // indexes of the j for each i
+	TreeNode* quadtree_materialization;
 
 public:
 
@@ -34,17 +77,13 @@ public:
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
 		this->lqdag_root = lqdag_root;
+		this->quadtree_materialization = new TreeNode(nChildren());
 
 		// TODO: see if memory is correct allocated!
 //		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
 		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 		// TODO: maybe we only need the indexes children:
 		// this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
-
-		this->value_children = new double[nChildren()];
-		for(uint64_t i = 0; i < nChildren(); i++){
-			this->value_children[i] = NO_VALUE_LEAF;
-		}
 
 		uint64_t number_projection_children = 1 << attribute_set_A.size();
 
@@ -66,11 +105,6 @@ public:
 		this->indexes_children = ind;
 		this->lqdag_root = lqdag_root;
 
-		this->value_children = new double[nChildren()];
-		for(uint64_t i = 0; i < nChildren(); i++){
-			this->value_children[i] = NO_VALUE_LEAF;
-		}
-
 		uint64_t number_projection_children = 1 << attribute_set_A.size();
 
 		projection_children = new projection*[number_projection_children];
@@ -91,23 +125,6 @@ public:
 		return (1 << nAttrA_prime()); // 2^|A'|
 	}
 
-//	uint64_t number_projection_leaves(){
-//		return this->form_or->get_number_leaves();
-//	}
-
-//	uint8_t get_functor(){
-//		return this->form_or->get_functor();
-//	}
-
-
-	/**
-	 * Get the root of the i-th OR of the projection
-	 * @param i
-	 * @return
-	 */
-//	formula_lqdag* get_OR_formula_child(uint64_t i){
-//		return this->form_or->get_OR_formula_child(i);
-//	}
 
 	projection* get_ith_projection(uint64_t i){
 		assert(i < 1 << nAttrA());
@@ -125,6 +142,13 @@ public:
 //		return this->form_or->get_index_children(i);
 	}
 
+	void set_val_node(double val){
+		this->quadtree_materialization->set_val_node(val);
+	}
+
+	double get_val_node(){
+		return this->quadtree_materialization->get_val_node();
+	}
 
 	/**
 	 * Get the value of the current projection (EMPTY_LEAF, FULL_LEAF or VALUE_NEED_CHILDREN)
@@ -134,10 +158,26 @@ public:
 	double value_pi(){
 		double val_lqdag = this->lqdag_root->val_node();
 		if(val_lqdag == FULL_LEAF || val_lqdag == EMPTY_LEAF){
-			this->val_pi = val_lqdag;
+			this->set_val_node(val_lqdag);
 		}
-		return this->val_pi; // initially it will return NO_VALUE_LEAF, and then VALUE_NEED_CHILDREN
+		return this->get_val_node(); // initially it will return NO_VALUE_LEAF, and then VALUE_NEED_CHILDREN
 	}
+
+	double get_value_children(uint64_t i){
+		assert(i < this->nChildren());
+		if(this->quadtree_materialization->children != nullptr
+			&& this->quadtree_materialization->children[i] != nullptr) {
+			return this->quadtree_materialization->children[i]->value;
+		}
+		return NO_VALUE_LEAF; // TODO: check its return this!
+	}
+
+	void set_value_children(uint64_t i, double val){
+		assert(i < this->nChildren());
+		this->quadtree_materialization->addChild(i, val);
+	}
+
+
 
 	/**
 	 * Compute a multi-OR between the lqdags chidlren of the i-th projection
@@ -147,8 +187,8 @@ public:
 	double get_value_multi_or_child_pi(uint64_t i){
 		assert(i < this->nChildren());
 
-		if(this->value_children[i] != NO_VALUE_LEAF){
-			return this->value_children[i];
+		if(this->get_value_children(i) != NO_VALUE_LEAF){
+			return this->get_value_children(i);
 		}
 
 		double max_value = 0;
@@ -158,7 +198,7 @@ public:
 			lqdag *lqdag_j = this->lqdag_root->get_child_lqdag(this->get_index_children(j));
 			double val_lqdag_j = lqdag_j->value_lqdag(lqdag_j->get_formula());
 			if(val_lqdag_j == FULL_LEAF){
-				this->value_children[i] = FULL_LEAF;
+				this->set_value_children(i, FULL_LEAF);
 				return FULL_LEAF;
 			}
 			max_value = max(max_value, val_lqdag_j);
@@ -170,7 +210,7 @@ public:
 		else{
 			val_or = VALUE_NEED_CHILDREN;
 		}
-		this->value_children[i] = val_or;
+		this->set_value_children(i, val_or);
 		return val_or;
 
 	}
@@ -202,17 +242,13 @@ public:
 	 * @return a projection with the output as a traditional quadtree (with the values in value_children)
 	 */
 	projection* eval_projection(uint16_t cur_level = 0){
-//		double val_pi = this->value_pi(); // normally it has to be VALUE_NEED_CHILDREN
-		this->val_pi = this->value_pi();
+		this->set_val_node(this->value_pi());
 		double max_value = 0;
 		double min_value = 1;
-//		if(val_pi == EMPTY_LEAF || val_pi == FULL_LEAF){
-//			return this;
-//		}
 
 		for(uint64_t i = 0; i < nChildren(); i++){
 			double val_child_pi = get_value_multi_or_child_pi(i); // evaluate an OR
-			value_children[i] = val_child_pi;
+			this->set_value_children(i, val_child_pi);
 			if(val_child_pi == VALUE_NEED_CHILDREN){
 				compute_multi_projection_child_pi(i);
 				uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
@@ -231,7 +267,7 @@ public:
 			}
 			else{
 				// is a EMPTY_LEAF or a FULL_LEAF, no further computation is needed
-				// TOOD: count the results?
+				// TODO: count the results?
 			}
 			max_value = max(max_value, val_child_pi);
 			min_value = min(min_value, val_child_pi);
@@ -239,9 +275,9 @@ public:
 
 		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
 			delete [] projection_children;
-			delete [] value_children;
+			delete [] quadtree_materialization->children;
 			double val_node = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
-			this->val_pi = val_node;
+			this->set_val_node(val_node);
 		}
 		return this;
 	}
