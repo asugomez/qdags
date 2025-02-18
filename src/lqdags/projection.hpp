@@ -14,32 +14,31 @@ public:
 
 	typedef vector<uint64_t> att_set;
 
-	struct pi_materialization{
-		double val_node = NO_VALUE_LEAF;
-		uint16_t level;
-		uint64_t n_children; // number of children
-		uint256_t path;
-		projection** projection_children; // TODO: aun no estoy segura si usariamos esto
-
-		pi_materialization(): val_node(NO_VALUE_LEAF), level(0), n_children(0), path(0), projection_children(nullptr) {}
-
-		pi_materialization(uint64_t n_children): val_node(NO_VALUE_LEAF), level(0), n_children(n_children), path(0), projection_children(new projection * [n_children]) {
-			for(uint64_t i = 0; i < n_children; i++){
-				projection_children[i] = nullptr;
-			}
-		}
-	};
+//	struct pi_materialization{
+//		double val_node = NO_VALUE_LEAF;
+//		uint16_t level;
+//		uint64_t n_children; // number of children
+//		uint256_t path;
+//		projection** projection_children; // TODO: aun no estoy segura si usariamos esto
+//
+//		pi_materialization(): val_node(NO_VALUE_LEAF), level(0), n_children(0), path(0), projection_children(nullptr) {}
+//
+//		pi_materialization(uint64_t n_children): val_node(NO_VALUE_LEAF), level(0), n_children(n_children), path(0), projection_children(new projection * [n_children]) {
+//			for(uint64_t i = 0; i < n_children; i++){
+//				projection_children[i] = nullptr;
+//			}
+//		}
+//	};
 
 private:
 	formula_pi* form_or; // expression, syntax tree, formula of the OR tree.
 	att_set attribute_set_A; // A
 	att_set attribute_set_A_prime; // A'
 	lqdag* lqdag_root; // the lqdag where we apply the projection
-	uint64_t nChildren; // 2^(A')
-	double* val_pi; // value of each OR
-	uint64_t number_projection_leaves; // 2^(A)
+	double val_pi = NO_VALUE_LEAF; // value of each OR
 	projection** projection_children = nullptr;
-	pi_materialization* materialization;
+	double* value_children = nullptr;
+//	pi_materialization* materialization;
 
 
 public:
@@ -49,25 +48,23 @@ public:
 	projection(lqdag* lqdag_root, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-		this->nChildren = 1 << attribute_set_A_prime.size();
-		this->number_projection_leaves = 1 << attribute_set_A.size();
-		this->materialization = new pi_materialization(this->number_projection_children);
+//		this->materialization = new pi_materialization(this->number_projection_children);
 		this->lqdag_root = lqdag_root;
 
 		// TODO: see if memory is correct allocated!
 		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
 
-		this->val_pi = new double[nChildren];
+//		this->val_pi = new double[nChildren];
 
-		for(uint64_t i = 0; i < nChildren; i++){
-			this->val_pi[i] = NO_VALUE_LEAF;
-		}
+//		for(uint64_t i = 0; i < nChildren; i++){
+//			this->val_pi[i] = NO_VALUE_LEAF;
+//		}
 
-		projection_children = new projection*[number_projection_children];
-
-		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
-			projection_children[i] = nullptr;
-		}
+//		projection_children = new projection*[number_projection_children];
+//
+//		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
+//			projection_children[i] = nullptr;
+//		}
 
 		// TODO: OFT
 		projection* test_child = get_child_pi(0);
@@ -76,19 +73,19 @@ public:
 	projection(lqdag* lqdag_root, formula_pi* form_or, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-		this->number_projection_children = 1 << attribute_set_A_prime.size();
-		this->materialization = new pi_materialization(this->number_projection_children);
+//		this->number_projection_children = 1 << attribute_set_A_prime.size();
+//		this->materialization = new pi_materialization(this->number_projection_children);
 		this->form_or = form_or;
 		this->lqdag_root = lqdag_root;
 
-		this->val_pi = new double[number_projection_children]; // check val_pi is 0
-		for(uint64_t i = 0; i < number_projection_children; i++){
-			this->val_pi[i] = NO_VALUE_LEAF;
-		}
-		projection_children = new projection*[number_projection_children];
-		for(uint64_t i = 0; i < number_projection_children; i++){
-			projection_children[i] = nullptr;
-		}
+//		this->val_pi = new double[number_projection_children]; // check val_pi is 0
+//		for(uint64_t i = 0; i < number_projection_children; i++){
+//			this->val_pi[i] = NO_VALUE_LEAF;
+//		}
+//		projection_children = new projection*[number_projection_children];
+//		for(uint64_t i = 0; i < number_projection_children; i++){
+//			projection_children[i] = nullptr;
+//		}
 	}
 
 	uint64_t nAttrA(){
@@ -99,21 +96,29 @@ public:
 		return this->attribute_set_A_prime.size();
 	}
 
+	uint64_t nChildren(){
+		return (1 << nAttrA_prime()); // 2^|A'|
+	}
+
+	uint64_t number_projection_leaves(){
+		return this->form_or->get_number_leaves();
+	}
+
 	uint8_t get_functor(){
 		return this->form_or->get_functor();
 	}
 
-	uint16_t getCurLevel(){
-		return this->materialization->level;
-	}
+//	uint16_t getCurLevel(){
+//		return this->materialization->level;
+//	}
 
 	/**
 	 * The value of the root of the projection: 0, 1 or VALUE_NEED_CHILDREN
 	 * @param val
 	 */
-	void set_val_node_pi(double val){
-		this->materialization->val_node = val;
-	}
+//	void set_val_node_pi(double val){
+//		this->materialization->val_node = val;
+//	}
 
 	/**
 	 * Get the root of the i-th OR of the projection
@@ -124,29 +129,103 @@ public:
 		return this->form_or->get_OR_formula_child(i);
 	}
 
-	uint8_t get_functor_child(uint64_t i){
-		return this->get_OR_formula_child(i)->get_functor();
-	}
-
 	/**
-	 * Get the value of the current projection
-	 * @return
-	 */
-	double get_value_pi(){
-		double val_lqdag = this->lqdag_root->val_node();
-		if(val_lqdag == FULL_LEAF || val_lqdag == EMPTY_LEAF)
-			return val_lqdag;
-		else
-			return VALUE_NEED_CHILDREN;
-	}
-
-	/**
-	 * Get the value of the i-th child of the projection
+	 * Get the correspondant index of the i-th child of the lqdag.
 	 * @param i
 	 * @return
 	 */
-	double get_value_child_pi(uint64_t i){
-		return this->val_pi[i];
+	uint64_t get_index_children(uint64_t i){
+		return this->form_or->get_index_children(i);
+	}
+
+
+	/**
+	 * Get the value of the current projection (EMPTY_LEAF, FULL_LEAF or VALUE_NEED_CHILDREN)
+	 * if the value of the original lqdag is 0 or 1, return that value. Otherwise, return VALUE_NEED_CHILDREN
+	 * @return
+	 */
+	double value_pi(){
+		double val_lqdag = this->lqdag_root->val_node();
+		if(val_lqdag == FULL_LEAF || val_lqdag == EMPTY_LEAF){
+			this->val_pi = val_lqdag;
+		}
+		return this->val_pi; // initially it will return NO_VALUE_LEAF, and then VALUE_NEED_CHILDREN
+	}
+
+	/**
+	 * Compute a multi-OR between the lqdags chidlren of the i-th projection
+	 * @param i the i-th child of the projection.
+	 * @return EMPTY_LEAF, FULL_LEAF or VALUE_NEED_CHILDREN
+	 */
+	double get_value_multi_or_child_pi(uint64_t i){
+		assert(i < this->nChildren() );
+
+		if(this->value_children[i] != NO_VALUE_LEAF){
+			return this->value_children[i];
+		}
+
+		double max_value = 0;
+		double min_value = 1;
+		uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
+		uint64_t init_index = i * n_leaves_per_children;
+		for(uint64_t j = init_index; j < init_index + n_leaves_per_children; j++) {
+			lqdag *lqdag_j = this->lqdag_root->get_child_lqdag(this->get_index_children(j));
+			double val_lqdag_j = lqdag_j->value_lqdag(lqdag_j->get_formula());
+			max_value = max(max_value, val_lqdag_j);
+			min_value = min(min_value, val_lqdag_j);
+		}
+		double val_or;
+		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
+			val_or = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
+		}
+		else{
+			val_or = VALUE_NEED_CHILDREN;
+		}
+		return val_or;
+
+	}
+	
+	/**
+	 *
+	 * @return a projection with the output as a traditional quadtree (with the values of val_pi)
+	 */
+	projection* eval_projection(){
+		double val_pi = this->value_pi(); // normally it has to be VALUE_NEED_CHILDREN
+		double max_value = 0;
+		double min_value = 1;
+		if(val_pi == EMPTY_LEAF || val_pi == FULL_LEAF){
+			return this;
+		}
+
+		for(uint64_t i = 0; i < nChildren(); i++){
+			double val_child_pi = get_value_multi_or_child_pi(i); // evaluate an OR
+			value_children[i] = val_child_pi;
+			if(val_child_pi != EMPTY_LEAF && val_child_pi != FULL_LEAF){
+				projection* child_pi = get_child_pi(i);
+				child_pi->eval_projection();
+			}
+			else{
+				// is a EMPTY_LEAF or a FULL_LEAF, no further computation is needed
+				// TOOD: count the results?
+			}
+			max_value = max(max_value, val_child_pi);
+			min_value = min(min_value, val_child_pi);
+		}
+
+		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
+			delete [] projection_children;
+			delete [] value_children;
+			double val_node = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
+			this->val_pi = val_node;
+		}
+	}
+
+	projection* get_ith_projection(uint64_t i){
+		assert(i < 1 << this->attribute_set_A.size());
+		lqdag* ith_child_lqdag = this->lqdag_root->get_child_lqdag(this->get_index_children(i));
+		projection* child_pi = new projection(ith_child_lqdag, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
+		return child_pi;
+
 	}
 
 	/**
@@ -156,15 +235,23 @@ public:
 	 * @return
 	 */
 	projection* get_child_pi(uint64_t i){
-		assert(i < (1 << this->attribute_set_A_prime.size()) );
-		if(this->get_value_pi() == EMPTY_LEAF || this->get_value_pi() == FULL_LEAF)
+		assert(i < nChildren() ); // TODO check assert
+
+		if(this->value_pi() == EMPTY_LEAF || this->value_pi() == FULL_LEAF)
 			return this;
 
+		// check if the i-th child is already computed in projection_children, then return that
+		if(this->value_pi() == VALUE_NEED_CHILDREN
+			&& this->projection_children[0] != nullptr
+			&& this->projection_children[i] != nullptr){
+			return  this->projection_children[i];
+		}
+
+		// TODO: it has to create X projection that will be a multi - OR projection
+
 		double val_child_pi = get_child_pi_aux(i, this->get_OR_formula_child(i));
-
-		this->val_pi[i] = val_child_pi;
-
-		// create new projection
+		projection* child_pi = get_ith_projection(i);
+		child_pi->val_pi = val_child_pi;
 
 		if(val_child_pi != EMPTY_LEAF){
 			// add coordinates to the i-th child
@@ -176,7 +263,7 @@ public:
 		// TODO: what to return!
 //		if(lqdag_child_pi != nullptr && this->val_pi[i] == VALUE_NEED_CHILDREN) // TODO: check this value is correct or we need to check 0.5 as well
 //			this->projection_children[i] = new projection(lqdag_child_pi, this->form_or, this->attribute_set_A, this->attribute_set_A_prime);
-//	}
+	}
 
 	/**
 	 * Compute the i-th child of the projection
