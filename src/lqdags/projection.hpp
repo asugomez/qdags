@@ -14,15 +14,32 @@ public:
 
 	typedef vector<uint64_t> att_set;
 
-	struct TreeNode {
+	// TODOO: maybe replace it, idk
+	struct NodeMaterialization {
 		double value = NO_VALUE_LEAF;
-		TreeNode **children; // Dynamic array of child pointers
-		uint64_t nChildren;      // Number of children
+		uint64_t n_children;      // Number of children
+		uint64_t n_projection;      // Number of children
+		NodeMaterialization **children; // Dynamic array of child pointers
+		projection** projection_children = nullptr; // it has 2^|A| children (leaves of projection)
 
 		// Constructor
-		TreeNode(uint64_t n) : value(NO_VALUE_LEAF), children(nullptr), nChildren(n) {}
+		NodeMaterialization(uint64_t n, uint64_t p) : value(NO_VALUE_LEAF), n_children(n), n_projection(p), children(nullptr), projection_children(nullptr) {}
 
-		TreeNode(double val, uint64_t n) : value(val), children(nullptr), nChildren(n) {}
+		NodeMaterialization(double val, uint64_t n, uint64_t p) : value(val), n_children(n), n_projection(p), children(nullptr), projection_children(nullptr) {}
+
+		void init_children(){
+			children = new NodeMaterialization*[n_children];
+			for(uint64_t j = 0; j < n_children; j++){
+				children[j] = nullptr;
+			}
+		}
+
+		void init_projection_children(){
+			projection_children = new projection*[n_projection];
+			for(uint64_t j = 0; j < n_projection; j++){
+				projection_children[j] = nullptr;
+			}
+		}
 
 		double get_val_node(){
 			return this->value;
@@ -32,30 +49,47 @@ public:
 			this->value = val;
 		}
 
+		projection* get_ith_projection(uint64_t i){
+			assert(i < n_projection);
+			if(projection_children != nullptr && projection_children[i] != nullptr)
+				return projection_children[i];
+			return nullptr;
+		}
+
+		void set_ith_projection(uint64_t i, projection* proj){
+			assert(i < n_projection);
+			projection_children[i] = proj;
+		}
+
 		// Add a child or change the value of a child
 		void addChild(uint64_t i, double val_children_i){
 			if(children == nullptr){
-				children = new TreeNode*[nChildren];
-				for(uint64_t j = 0; j < nChildren; j++){
-					children[j] = nullptr;
-				}
+				init_children();
+				init_projection_children();
 			}
 			if(children[i] == nullptr){
-				children[i] = new TreeNode(val_children_i, nChildren);
+				children[i] = new NodeMaterialization(val_children_i,n_children, n_projection);
 			}
-			if(children[i] != nullptr && children[i]->value == NO_VALUE_LEAF){
-				children[i]->value = val_children_i;
-			}
+			children[i]->value = val_children_i;
 		}
 
 
-
 		// Destructor to free memory
-		~TreeNode() {
-			for (uint64_t i = 0; i < nChildren; ++i) {
-				delete children[i];
+		~NodeMaterialization() {
+			if(children != nullptr){
+				for (uint64_t i = 0; i < n_children; ++i) {
+					if(children[i] != nullptr)
+						delete children[i];
+				}
+				delete[] children;
 			}
-			delete[] children;
+			if(projection_children != nullptr){
+				for (uint64_t i = 0; i < n_projection; ++i) {
+					if(projection_children[i] != nullptr)
+						delete projection_children[i];
+				}
+				delete[] projection_children;
+			}
 		}
 	};
 
@@ -65,9 +99,9 @@ private:
 	att_set attribute_set_A; // A
 	att_set attribute_set_A_prime; // A'
 	lqdag* lqdag_root; // the lqdag where we apply the projection
-	projection** projection_children; // it has 2^|A| children (leaves of projection)
+//	projection** projection_children; // it has 2^|A| children (leaves of projection)
 	indexes indexes_children; // indexes of the j for each i
-	TreeNode* quadtree_materialization;
+	NodeMaterialization* node_materialization; // the materialization of the projection
 
 public:
 
@@ -77,23 +111,24 @@ public:
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
 		this->lqdag_root = lqdag_root;
-		this->quadtree_materialization = new TreeNode(nChildren());
+		this->node_materialization = new NodeMaterialization(nChildren(), 1<<attribute_set_A.size());
 
 		// TODO: see if memory is correct allocated!
 //		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
 		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
-		// TODO: maybe we only need the indexes children:
+
 		// this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
 
 		uint64_t number_projection_children = 1 << attribute_set_A.size();
 
-		projection_children = new projection*[number_projection_children];
-		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
-			projection_children[i] = nullptr;
-		}
+//		projection_children = new projection*[number_projection_children];
+//		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
+//			projection_children[i] = nullptr;
+//		}
 
 		// TODO: OFT
-		this->eval_projection();
+		projection* test = this->eval_projection();
+		test->get_val_node();
 	}
 
 	// TODO: maybe instead of the form, we need the indexes of the children
@@ -104,13 +139,14 @@ public:
 // TODO: check memory leaks for vector indexes
 		this->indexes_children = ind;
 		this->lqdag_root = lqdag_root;
+		this->node_materialization = new NodeMaterialization(nChildren(), 1 << attribute_set_A.size());
 
-		uint64_t number_projection_children = 1 << attribute_set_A.size();
+//		uint64_t number_projection_children = 1 << attribute_set_A.size();
 
-		projection_children = new projection*[number_projection_children];
-		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
-			projection_children[i] = nullptr;
-		}
+//		projection_children = new projection*[number_projection_children];
+//		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
+//			projection_children[i] = nullptr;
+//		}
 	}
 
 	uint64_t nAttrA(){
@@ -128,7 +164,12 @@ public:
 
 	projection* get_ith_projection(uint64_t i){
 		assert(i < 1 << nAttrA());
-		return this->projection_children[i];
+		return this->node_materialization->get_ith_projection(i);
+	}
+
+	void set_ith_projection(uint64_t i, projection* proj){
+		assert(i < 1 << nAttrA());
+		this->node_materialization->set_ith_projection(i, proj);
 	}
 
 	/**
@@ -142,12 +183,37 @@ public:
 //		return this->form_or->get_index_children(i);
 	}
 
-	void set_val_node(double val){
-		this->quadtree_materialization->set_val_node(val);
-	}
 
 	double get_val_node(){
-		return this->quadtree_materialization->get_val_node();
+		return this->node_materialization->get_val_node();
+	}
+
+	void set_val_node(double val){
+		this->node_materialization->set_val_node(val);
+	}
+
+	/**
+	 * Get the value of the i-th child of the materialization quadtree
+	 * @param i the i-th child.
+	 * @return
+	 */
+	double get_value_child_node(uint64_t i){
+		assert(i < this->nChildren());
+		if(this->node_materialization->children != nullptr
+		   && this->node_materialization->children[i] != nullptr) {
+			return this->node_materialization->children[i]->value;
+		}
+		return NO_VALUE_LEAF; // TODO: check its return this!
+	}
+
+	/**
+	 * Set the value for the i-th child of the materialization quadtree
+	 * @param i the i-th child
+	 * @param val the value of the i-th child
+	 */
+	void set_value_child_node(uint64_t i, double val){
+		assert(i < this->nChildren());
+		this->node_materialization->addChild(i, val);
 	}
 
 	/**
@@ -156,27 +222,12 @@ public:
 	 * @return
 	 */
 	double value_pi(){
-		double val_lqdag = this->lqdag_root->val_node();
+		double val_lqdag = this->lqdag_root->value_lqdag(lqdag_root->get_formula());
 		if(val_lqdag == FULL_LEAF || val_lqdag == EMPTY_LEAF){
-			this->set_val_node(val_lqdag);
+			return val_lqdag;
 		}
-		return this->get_val_node(); // initially it will return NO_VALUE_LEAF, and then VALUE_NEED_CHILDREN
+		return VALUE_NEED_CHILDREN; // initially it will return NO_VALUE_LEAF, and then VALUE_NEED_CHILDREN
 	}
-
-	double get_value_children(uint64_t i){
-		assert(i < this->nChildren());
-		if(this->quadtree_materialization->children != nullptr
-			&& this->quadtree_materialization->children[i] != nullptr) {
-			return this->quadtree_materialization->children[i]->value;
-		}
-		return NO_VALUE_LEAF; // TODO: check its return this!
-	}
-
-	void set_value_children(uint64_t i, double val){
-		assert(i < this->nChildren());
-		this->quadtree_materialization->addChild(i, val);
-	}
-
 
 
 	/**
@@ -187,8 +238,8 @@ public:
 	double get_value_multi_or_child_pi(uint64_t i){
 		assert(i < this->nChildren());
 
-		if(this->get_value_children(i) != NO_VALUE_LEAF){
-			return this->get_value_children(i);
+		if(this->get_value_child_node(i) != NO_VALUE_LEAF){
+			return this->get_value_child_node(i);
 		}
 
 		double max_value = 0;
@@ -198,7 +249,7 @@ public:
 			lqdag *lqdag_j = this->lqdag_root->get_child_lqdag(this->get_index_children(j));
 			double val_lqdag_j = lqdag_j->value_lqdag(lqdag_j->get_formula());
 			if(val_lqdag_j == FULL_LEAF){
-				this->set_value_children(i, FULL_LEAF);
+//				this->set_value_child_node(i, FULL_LEAF);
 				return FULL_LEAF;
 			}
 			max_value = max(max_value, val_lqdag_j);
@@ -210,14 +261,14 @@ public:
 		else{
 			val_or = VALUE_NEED_CHILDREN;
 		}
-		this->set_value_children(i, val_or);
+//		this->set_value_child_node(i, val_or);
 		return val_or;
 
 	}
 
-	void compute_multi_projection_child_pi(uint64_t i){
+	void compute_multi_or_projection_child_pi(uint64_t i){
 		assert(i < this->nChildren());
-		assert(this->value_children[i] == VALUE_NEED_CHILDREN);
+		assert(this->get_value_child_node(i) == VALUE_NEED_CHILDREN);
 
 		uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
 		uint64_t init_index = i * n_leaves_per_children;
@@ -225,16 +276,15 @@ public:
 			lqdag *lqdag_j = this->lqdag_root->get_child_lqdag(this->get_index_children(j));
 			double val_lqdag_j = lqdag_j->value_lqdag(lqdag_j->get_formula());
 			if(val_lqdag_j == EMPTY_LEAF){
-				this->projection_children[j] = nullptr;
+				this->set_ith_projection(j, nullptr);
 			} else {
 				projection* child_pi = new projection(lqdag_j, this->indexes_children, this->attribute_set_A, this->attribute_set_A_prime);
-				this->projection_children[j] = child_pi;
-
+				child_pi->set_val_node(val_lqdag_j);
+				this->set_ith_projection(j,child_pi);
 			}
 		}
 
 	}
-
 
 
 	/**
@@ -243,27 +293,34 @@ public:
 	 */
 	projection* eval_projection(uint16_t cur_level = 0){
 		this->set_val_node(this->value_pi());
+
+		if(this->value_pi() == FULL_LEAF || this->value_pi() == EMPTY_LEAF){
+			return this;
+		}
 		double max_value = 0;
 		double min_value = 1;
 
+		// TODO: is haciendo el OR
 		for(uint64_t i = 0; i < nChildren(); i++){
 			double val_child_pi = get_value_multi_or_child_pi(i); // evaluate an OR
-			this->set_value_children(i, val_child_pi);
+			this->set_value_child_node(i, val_child_pi);
 			if(val_child_pi == VALUE_NEED_CHILDREN){
-				compute_multi_projection_child_pi(i);
+				compute_multi_or_projection_child_pi(i); // compute the projection leaves for the i-th child
 				uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
 				uint64_t init_index = i * n_leaves_per_children;
 				for(uint64_t j = init_index; j < init_index + n_leaves_per_children; j++) {
-					if(this->projection_children[j] != nullptr) {
-						projection *proj_child_j = this->projection_children[j]->eval_projection(++cur_level);
-//						if(proj_child_j->val_pi == FULL_LEAF){
-//							val_child_pi = FULL_LEAF;
-//							value_children[i] = FULL_LEAF;
-//							break; // TODO: check it gets out of the for
-//						}
+					if(this->get_ith_projection(j) != nullptr) {
+						projection *proj_child_j = this->get_ith_projection(j)->eval_projection(++cur_level);
+						if(proj_child_j->get_val_node() == FULL_LEAF){
+							// no further computation is needed for the other ORs for THAT child
+							val_child_pi = FULL_LEAF;
+							this->set_value_child_node(i, val_child_pi);
+							// TODO: delete the other projection?
+							break;
+						}
 					}
-
 				}
+				// TODO: after compute all the projections, commpute a MUUUULTI or
 			}
 			else{
 				// is a EMPTY_LEAF or a FULL_LEAF, no further computation is needed
@@ -273,11 +330,12 @@ public:
 			min_value = min(min_value, val_child_pi);
 		}
 
+		// if all the children are empty or full, then is a leaf
 		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
-			delete [] projection_children;
-			delete [] quadtree_materialization->children;
 			double val_node = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
 			this->set_val_node(val_node);
+			delete[] node_materialization->children;
+			delete[] node_materialization->projection_children;
 		}
 		return this;
 	}
