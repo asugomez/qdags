@@ -103,11 +103,9 @@ public:
 
 
 private:
-//	formula_pi* form_or; // expression, syntax tree, formula of the OR tree.
 	att_set attribute_set_A; // A
 	att_set attribute_set_A_prime; // A'
 	lqdag* lqdag_root; // the lqdag where we apply the projection
-//	projection** projection_children; // it has 2^|A| children (leaves of projection)
 	indexes indexes_children; // indexes of the j for each i
 	NodeMaterialization* node_materialization; // the materialization of the projection
 
@@ -120,23 +118,10 @@ public:
 		this->attribute_set_A_prime = attribute_set_A_prime;
 		this->lqdag_root = lqdag_root;
 		this->node_materialization = new NodeMaterialization(nChildren(), 1<<attribute_set_A.size());
-
-		// TODO: see if memory is correct allocated!
-//		this->form_or = new formula_pi(attribute_set_A, attribute_set_A_prime, lqdag_root);
 		this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
-
-		// this->indexes_children = create_pi_index_children(attribute_set_A, attribute_set_A_prime);
-
-		uint64_t number_projection_children = 1 << attribute_set_A.size();
-
-//		projection_children = new projection*[number_projection_children];
-//		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
-//			projection_children[i] = nullptr;
-//		}
 
 		// TODO: OFT
 		projection* test = this->eval_projection(0, this->node_materialization);
-		// TODO: see materialization
 		test->get_val_node();
 
 	}
@@ -147,7 +132,6 @@ public:
 		this->indexes_children = ind;
 		this->lqdag_root = lqdag_root;
 		this->node_materialization = new NodeMaterialization(nChildren(), 1 << attribute_set_A.size());
-
 	}
 
 	uint64_t nAttrA(){
@@ -181,7 +165,6 @@ public:
 	uint64_t get_index_children(uint64_t i){
 		assert(i < (1<<nAttrA()));
 		return indexes_children[i];
-//		return this->form_or->get_index_children(i);
 	}
 
 
@@ -250,7 +233,6 @@ public:
 			lqdag *lqdag_j = this->lqdag_root->get_child_lqdag(this->get_index_children(j));
 			double val_lqdag_j = lqdag_j->value_lqdag(lqdag_j->get_formula());
 			if(val_lqdag_j == FULL_LEAF){
-//				this->set_value_child_node(i, FULL_LEAF);
 				return FULL_LEAF;
 			}
 			max_value = max(max_value, val_lqdag_j);
@@ -262,7 +244,6 @@ public:
 		else{
 			val_or = VALUE_NEED_CHILDREN;
 		}
-//		this->set_value_child_node(i, val_or);
 		return val_or;
 
 	}
@@ -341,14 +322,11 @@ public:
 				}
 			}
 
-			else{
-				// is a EMPTY_LEAF or a FULL_LEAF, no further computation is needed
-				// TODO: count the results?
-			}
 			max_value = max(max_value, val_child_pi);
 			min_value = min(min_value, val_child_pi);
 		}
 
+		// pruning step
 		// if all the children are empty or full, then is a leaf
 		if(max_value == EMPTY_LEAF || min_value == FULL_LEAF){
 			double val_node = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
