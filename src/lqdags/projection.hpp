@@ -16,10 +16,11 @@ public:
 
 	// TODOO: maybe replace it, idk
 	struct NodeMaterialization {
-		double value = NO_VALUE_LEAF;
+		double value = NO_VALUE_LEAF; // the evaluation
 		uint64_t n_children;      // Number of children
 		uint64_t n_projection;      // Number of children
 		NodeMaterialization **children; // Dynamic array of child pointers
+		// the projection to evaluate and compute value and the values of the n_children
 		projection** projection_children = nullptr; // it has 2^|A| children (leaves of projection)
 
 		// Constructor
@@ -47,6 +48,13 @@ public:
 
 		void set_val_node(double val){
 			this->value = val;
+		}
+
+		double get_value_child_node(uint64_t i){
+			assert(i < n_children);
+			if(children != nullptr && children[i] != nullptr)
+				return children[i]->value;
+			return NO_VALUE_LEAF;
 		}
 
 		projection* get_ith_projection(uint64_t i){
@@ -127,26 +135,19 @@ public:
 //		}
 
 		// TODO: OFT
-		projection* test = this->eval_projection();
+		projection* test = this->eval_projection(0, this->node_materialization);
+		// TODO: see materialization
 		test->get_val_node();
+
 	}
 
-	// TODO: maybe instead of the form, we need the indexes of the children
 	projection(lqdag* lqdag_root, indexes &ind, att_set attribute_set_A, att_set attribute_set_A_prime){
 		this->attribute_set_A = attribute_set_A;
 		this->attribute_set_A_prime = attribute_set_A_prime;
-//		this->form_or = form_or;
-// TODO: check memory leaks for vector indexes
 		this->indexes_children = ind;
 		this->lqdag_root = lqdag_root;
 		this->node_materialization = new NodeMaterialization(nChildren(), 1 << attribute_set_A.size());
 
-//		uint64_t number_projection_children = 1 << attribute_set_A.size();
-
-//		projection_children = new projection*[number_projection_children];
-//		for(uint64_t i = 0; i < number_projection_children; i++){ // number of leaves
-//			projection_children[i] = nullptr;
-//		}
 	}
 
 	uint64_t nAttrA(){
@@ -291,7 +292,7 @@ public:
 	 *
 	 * @return a projection with the output as a traditional quadtree (with the values in value_children)
 	 */
-	projection* eval_projection(uint16_t cur_level = 0){
+	projection* eval_projection(uint16_t cur_level, NodeMaterialization* materialization, projection* last_proj = nullptr){
 		this->set_val_node(this->value_pi());
 
 		if(this->value_pi() == FULL_LEAF || this->value_pi() == EMPTY_LEAF){
@@ -300,28 +301,46 @@ public:
 		double max_value = 0;
 		double min_value = 1;
 
-		// TODO: is haciendo el OR
+		// we evaluate the previous projection and we keep the best value (because it's an OR)
 		for(uint64_t i = 0; i < nChildren(); i++){
+			double parent_child_i = last_proj ? last_proj->get_value_child_node(i) : 3;
 			double val_child_pi = get_value_multi_or_child_pi(i); // evaluate an OR
 			this->set_value_child_node(i, val_child_pi);
-			if(val_child_pi == VALUE_NEED_CHILDREN){
+
+			if(val_child_pi == FULL_LEAF){
+				if(parent_child_i != FULL_LEAF){
+					materialization->addChild(i, val_child_pi);
+				}
+			}
+			else if(val_child_pi == VALUE_NEED_CHILDREN){
+				if(parent_child_i == EMPTY_LEAF || parent_child_i == NO_VALUE_LEAF){
+					materialization->addChild(i, val_child_pi);
+				}
 				compute_multi_or_projection_child_pi(i); // compute the projection leaves for the i-th child
 				uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
 				uint64_t init_index = i * n_leaves_per_children;
+				projection* last = nullptr;
 				for(uint64_t j = init_index; j < init_index + n_leaves_per_children; j++) {
 					if(this->get_ith_projection(j) != nullptr) {
-						projection *proj_child_j = this->get_ith_projection(j)->eval_projection(++cur_level);
+						projection *proj_child_j = this->get_ith_projection(j);
+						proj_child_j->eval_projection(++cur_level, materialization->children[i],last);
+						last = proj_child_j;
 						if(proj_child_j->get_val_node() == FULL_LEAF){
 							// no further computation is needed for the other ORs for THAT child
 							val_child_pi = FULL_LEAF;
 							this->set_value_child_node(i, val_child_pi);
-							// TODO: delete the other projection?
+							materialization->addChild(i, val_child_pi);
 							break;
 						}
 					}
 				}
-				// TODO: after compute all the projections, commpute a MUUUULTI or
 			}
+			else if(val_child_pi == EMPTY_LEAF){
+				if(parent_child_i == NO_VALUE_LEAF){
+					materialization->addChild(i, val_child_pi);
+				}
+			}
+
 			else{
 				// is a EMPTY_LEAF or a FULL_LEAF, no further computation is needed
 				// TODO: count the results?
@@ -335,7 +354,14 @@ public:
 			double val_node = (max_value == EMPTY_LEAF) ? EMPTY_LEAF : FULL_LEAF;
 			this->set_val_node(val_node);
 			delete[] node_materialization->children;
+			node_materialization->children = nullptr;
 			delete[] node_materialization->projection_children;
+			node_materialization->projection_children = nullptr;
+			delete[] materialization->children;
+			materialization->children = nullptr;
+			delete[] materialization->projection_children;
+			materialization->projection_children = nullptr;
+
 		}
 		return this;
 	}
