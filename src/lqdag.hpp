@@ -72,6 +72,11 @@ public:
 		// destructor
 		~node_completion(){
 			if(lqdag_children != nullptr){
+				// TODO: check if this for is correct
+				for(uint64_t i = 0; i < n_children; i++){
+					if(lqdag_children[i] != nullptr)
+						delete lqdag_children[i];
+				}
 				delete[] lqdag_children;
 			}
 		}
