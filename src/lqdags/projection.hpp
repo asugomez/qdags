@@ -14,7 +14,6 @@ public:
 
 	typedef vector<uint64_t> att_set;
 
-	// TODOO: maybe replace it, idk
 	struct NodeMaterialization {
 		double value = NO_VALUE_LEAF; // the evaluation
 		uint64_t n_children;      // Number of children
@@ -22,11 +21,11 @@ public:
 		NodeMaterialization **children; // Dynamic array of child pointers
 		// the projection to evaluate and compute value and the values of the n_children
 		projection** projection_children = nullptr; // it has 2^|A| children (leaves of projection)
-
+		position* pos = nullptr;// the coordinates of the node
 		// Constructor
-		NodeMaterialization(uint64_t n, uint64_t p) : value(NO_VALUE_LEAF), n_children(n), n_projection(p), children(nullptr), projection_children(nullptr) {}
+		NodeMaterialization(uint64_t n, uint64_t p) : value(NO_VALUE_LEAF), n_children(n), n_projection(p), children(nullptr), projection_children(nullptr), pos(new position) {}
 
-		NodeMaterialization(double val, uint64_t n, uint64_t p) : value(val), n_children(n), n_projection(p), children(nullptr), projection_children(nullptr) {}
+		NodeMaterialization(double val, uint64_t n, uint64_t p) : value(val), n_children(n), n_projection(p), children(nullptr), projection_children(nullptr), pos(new position)  {}
 
 		void init_children(){
 			children = new NodeMaterialization*[n_children];
@@ -70,7 +69,7 @@ public:
 		}
 
 		// Add a child or change the value of a child
-		void addChild(uint64_t i, double val_children_i){
+		void addChild(uint64_t i, double val_children_i, uint64_t nAttr_pi){
 			if(children == nullptr){
 				init_children();
 				init_projection_children();
@@ -78,7 +77,16 @@ public:
 			if(children[i] == nullptr){
 				children[i] = new NodeMaterialization(val_children_i,n_children, n_projection);
 			}
+
 			children[i]->value = val_children_i;
+
+			// update coordinates
+			uint16_t cur_level = pos->level;
+			uint256_t cur_path = pos->path;
+			getNewMortonCodePath(cur_path, nAttr_pi, cur_level, (uint256_t)i);
+			// no need of curr_node
+			children[i]->pos = new position{++cur_level, 0,cur_path};
+
 		}
 
 
@@ -197,7 +205,7 @@ public:
 	 */
 	void set_value_child_node(uint64_t i, double val){
 		assert(i < this->nChildren());
-		this->node_materialization->addChild(i, val);
+		this->node_materialization->addChild(i, val, nAttrA_prime());
 	}
 
 	/**
@@ -219,7 +227,7 @@ public:
 	 * @param i the i-th child of the projection.
 	 * @return EMPTY_LEAF, FULL_LEAF or VALUE_NEED_CHILDREN
 	 */
-	double get_value_multi_or_child_pi(uint64_t i){
+	double get_value_multi_or_child_lqdags(uint64_t i){
 		assert(i < this->nChildren());
 
 		if(this->get_value_child_node(i) != NO_VALUE_LEAF){
@@ -248,6 +256,11 @@ public:
 
 	}
 
+
+	/**
+	 * This is like the equivalent to child
+	 * @param i
+	 */
 	void compute_multi_or_projection_child_pi(uint64_t i){
 		assert(i < this->nChildren());
 		assert(this->get_value_child_node(i) == VALUE_NEED_CHILDREN);
@@ -269,6 +282,8 @@ public:
 	}
 
 
+
+
 	/**
 	 *
 	 * @return a projection with the output as a traditional quadtree (with the values in value_children)
@@ -285,17 +300,19 @@ public:
 		// we evaluate the previous projection and we keep the best value (because it's an OR)
 		for(uint64_t i = 0; i < nChildren(); i++){
 			double parent_child_i = last_proj ? last_proj->get_value_child_node(i) : 3;
-			double val_child_pi = get_value_multi_or_child_pi(i); // evaluate an OR
+			double val_child_pi = get_value_multi_or_child_lqdags(i); // evaluate an OR
 			this->set_value_child_node(i, val_child_pi);
 
 			if(val_child_pi == FULL_LEAF){
 				if(parent_child_i != FULL_LEAF){
-					materialization->addChild(i, val_child_pi);
+					// definitive value
+					materialization->addChild(i, val_child_pi,nAttrA_prime());
 				}
 			}
 			else if(val_child_pi == VALUE_NEED_CHILDREN){
 				if(parent_child_i == EMPTY_LEAF || parent_child_i == NO_VALUE_LEAF){
-					materialization->addChild(i, val_child_pi);
+					// definitive value
+					materialization->addChild(i, val_child_pi,nAttrA_prime());
 				}
 				compute_multi_or_projection_child_pi(i); // compute the projection leaves for the i-th child
 				uint64_t n_leaves_per_children = 1 << (nAttrA() - nAttrA_prime());
@@ -310,7 +327,8 @@ public:
 							// no further computation is needed for the other ORs for THAT child
 							val_child_pi = FULL_LEAF;
 							this->set_value_child_node(i, val_child_pi);
-							materialization->addChild(i, val_child_pi);
+							// definitive value
+							materialization->addChild(i, val_child_pi,nAttrA_prime());
 							break;
 						}
 					}
@@ -318,7 +336,8 @@ public:
 			}
 			else if(val_child_pi == EMPTY_LEAF){
 				if(parent_child_i == NO_VALUE_LEAF){
-					materialization->addChild(i, val_child_pi);
+					// definitive value
+					materialization->addChild(i, val_child_pi,nAttrA_prime());
 				}
 			}
 
