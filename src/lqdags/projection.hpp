@@ -258,7 +258,7 @@ public:
 
 
 	/**
-	 * This is like the equivalent to child
+	 * This is like the equivalent to child in lqdags
 	 * @param i
 	 */
 	void compute_multi_or_projection_child_pi(uint64_t i){
