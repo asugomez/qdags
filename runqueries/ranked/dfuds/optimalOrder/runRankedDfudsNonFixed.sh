@@ -4,7 +4,7 @@
 # run tests for each type_fun and each size_queue
 for type_fun in 0; do #{0..1}
   chmod a+x *.sh
-  data_csv="../../../outputs/ranked/dfuds/optimalOrder/results-f$type_fun-time-new-pri.csv"
+  data_csv="../../../outputs/ranked/dfuds/optimalOrder/results-f$type_fun-time-final.csv"
   # echo type fun
   echo "type_fun : $type_fun"
   echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
@@ -28,10 +28,10 @@ for type_fun in 0; do #{0..1}
           line="${line% }"  # Remove the trailing space
         fi
         # Append priorities; type_fun and size_queue to the end of the line
-        priority_file_1="../../../../data/pri/$file/pri1-$count"
-        priority_file_2="../../../../data/pri/$file/pri2-$count"
-        priority_file_3="../../../../data/pri/$file/pri3-$count"
-        priority_file_4="../../../../data/pri/$file/pri4-$count"
+        priority_file_1="../../../../data/priorities/$file/pri1-$count"
+        priority_file_2="../../../../data/priorities/$file/pri2-$count"
+        priority_file_3="../../../../data/priorities/$file/pri3-$count"
+        priority_file_4="../../../../data/priorities/$file/pri4-$count"
         modified_line=""
         # Check if the i-th argument is emtpy
         if [ -z "$t2" ]; then # 1 dataset
@@ -47,7 +47,7 @@ for type_fun in 0; do #{0..1}
         count=$(($count + 1))
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-time-new-pri.txt"
+      results_file="../../../outputs/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-time-final.txt"
 
       chmod +x $output_file
 
