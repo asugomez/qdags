@@ -28,10 +28,10 @@ for type_fun in 0; do
           line="${line% }"  # Remove the trailing space
         fi
         # Append priorities; type_fun and size_queue to the end of the line
-        priority_file_1="../../../../data/pri/$file/pri1-$count"
-        priority_file_2="../../../../data/pri/$file/pri2-$count"
-        priority_file_3="../../../../data/pri/$file/pri3-$count"
-        priority_file_4="../../../../data/pri/$file/pri4-$count"
+        priority_file_1="../../../../data/priorities/$file/pri1-$count"
+        priority_file_2="../../../../data/priorities/$file/pri2-$count"
+        priority_file_3="../../../../data/priorities/$file/pri3-$count"
+        priority_file_4="../../../../data/priorities/$file/pri4-$count"
         modified_line=""
         # Check if the i-th argument is emtpy
         if [ -z "$t2" ]; then # 1 dataset
