@@ -4,11 +4,11 @@
 # run tests for each type_fun and each size_queue
 for type_fun in 0; do #{0..1}
   chmod a+x *.sh
-  data_csv="../../../outputs/ranked/dfuds/optimalOrder/results-f$type_fun-time-final.csv"
+  data_csv="../../../outputs/ranked/dfuds/optimalOrder/results-f$type_fun-time.csv"
   # echo type fun
   echo "type_fun : $type_fun"
   echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
-  for k in 1000; do
+  for k in 1 10 100 1000; do
     # echo k
     echo "k: $k"
     printf "$k;" >> $data_csv
@@ -47,7 +47,7 @@ for type_fun in 0; do #{0..1}
         count=$(($count + 1))
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-time-final.txt"
+      results_file="../../../outputs/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-time.txt"
 
       chmod +x $output_file
 
