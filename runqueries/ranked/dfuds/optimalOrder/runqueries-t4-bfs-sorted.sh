@@ -12,7 +12,7 @@
 ./t4 ../../../../data/all/prop-direct-P1542 ../../../../data/all/prop-direct-P4000 ../../../../data/all/prop-direct-normalized-P961 ../../../../data/all/prop-direct-P5179
 ./t4 ../../../../data/all/prop-direct-P4786 ../../../../data/all/prop-direct-P179 ../../../../data/all/prop-direct-P2465 ../../../../data/all/prop-direct-P2515
 ./t4 ../../../../data/all/prop-direct-P4501 ../../../../data/all/prop-direct-P716 ../../../../data/all/prop-direct-P2213 ../../../../data/all/prop-direct-P397
-./t4 ../../../../data/all/prop-direct-P179 ../../../../data/all/prop-direct-P580 ../../../../data/all/prop-direct-P2529 ../../../../data/all/prop-direct-P4665
+#./t4 ../../../../data/all/prop-direct-P179 ../../../../data/all/prop-direct-P580 ../../../../data/all/prop-direct-P2529 ../../../../data/all/prop-direct-P4665
 ./t4 ../../../../data/all/prop-direct-P2870 ../../../../data/all/prop-direct-P688 ../../../../data/all/prop-direct-P702 ../../../../data/all/prop-direct-P644
 ./t4 ../../../../data/all/prop-direct-P393 ../../../../data/all/prop-direct-P162 ../../../../data/all/prop-direct-normalized-P2671 ../../../../data/all/prop-direct-P495
 ./t4 ../../../../data/all/prop-direct-P1421 ../../../../data/all/prop-direct-P10 ../../../../data/all/prop-direct-P3151 ../../../../data/all/prop-direct-P960
@@ -33,7 +33,7 @@
 ./t4 ../../../../data/all/prop-direct-P1793 ../../../../data/all/prop-direct-P2959 ../../../../data/all/prop-direct-P910 ../../../../data/all/prop-direct-P5398
 ./t4 ../../../../data/all/prop-direct-P425 ../../../../data/all/prop-direct-normalized-P2163 ../../../../data/all/prop-direct-P269 ../../../../data/all/prop-direct-P3417
 ./t4 ../../../../data/all/prop-direct-P3225 ../../../../data/all/prop-direct-P3794 ../../../../data/all/prop-direct-P1128 ../../../../data/all/prop-direct-P1315
-./t4 ../../../../data/all/prop-direct-P838 ../../../../data/all/prop-direct-P1939 ../../../../data/all/prop-direct-P3088 ../../../../data/all/prop-direct-P4630
+#./t4 ../../../../data/all/prop-direct-P838 ../../../../data/all/prop-direct-P1939 ../../../../data/all/prop-direct-P3088 ../../../../data/all/prop-direct-P4630
 ./t4 ../../../../data/all/prop-direct-P1389 ../../../../data/all/prop-direct-normalized-P227 ../../../../data/all/prop-direct-P227 ../../../../data/all/prop-direct-P1417
 ./t4 ../../../../data/all/prop-direct-P3454 ../../../../data/all/prop-direct-P112 ../../../../data/all/prop-direct-P1414 ../../../../data/all/prop-direct-P1972
 ./t4 ../../../../data/all/prop-direct-P1952 ../../../../data/all/prop-direct-P39 ../../../../data/all/prop-direct-P1412 ../../../../data/all/prop-direct-P463
