@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17) #  see if change to 14 or 17
 # Compiler options
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG -DSAN=1 -fsanitize=undefined") # run with debug (assert)
 #set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG") # run with debug (assert)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG") # run with debug (assert)
 include_directories(/opt/homebrew/include)
 link_directories(/opt/homebrew/lib)
 

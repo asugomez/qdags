@@ -125,7 +125,7 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
                 if(quadrant_side == 1){
                     return min_att_1 == min_att_2;
                 }
-                else if(min_att_1 == min_att_2 || max_att_1 == max_att_2) // || min_att_1 == max_att_2 || max_att_1 == min_att_2)
+                else if(min_att_1 == min_att_2) // || max_att_1 == max_att_2 || min_att_1 == max_att_2 || max_att_1 == min_att_2)
                     return 0.5;
                 else
                     return 0;
@@ -171,9 +171,9 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
                 if(quadrant_side == 1){
                     return min_att_1 > min_att_2;
                 }
-                if(min_att_1 > max_att_2 && max_att_1 > min_att_2)
+                if(min_att_1 > max_att_2)
                     return 1;
-                else if(max_att_1 > min_att_2 &&  min_att_1 < max_att_2) // a part of the quadrant is inside the limits
+                else if(max_att_1 > min_att_2) // a part of the quadrant is inside the limits
                     return 0.5;
                 else
                     return 0;
@@ -230,7 +230,7 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
                     return min_att_1 >= pred->val_const;
                 else if(min_att_1 >= pred->val_const) // limite inferior es superior o igual al valor constante
                     return 1;
-                else if(min_att_1 < pred->val_const && pred->val_const <= max_att_1)
+                else if(pred->val_const <= max_att_1)
                     return 0.5;
                 else if(max_att_1 < pred->val_const)
                     return 0;
@@ -242,7 +242,7 @@ static double eval_pred(predicate* pred, uint256_t path, uint64_t quadrant_side,
                 }
                 if(min_att_1 > pred->val_const)
                     return 1;
-                else if(min_att_1 <= pred->val_const && pred->val_const <= max_att_1) // TPDO: ver estas
+                else if(pred->val_const <= max_att_1) // TPDO: ver estas
                     return 0.5;
                 else if(max_att_1 < pred->val_const)
                     return 0;

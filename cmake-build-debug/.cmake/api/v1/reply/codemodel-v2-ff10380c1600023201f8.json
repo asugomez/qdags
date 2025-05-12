@@ -1,0 +1,168 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "qdags",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-lqdags::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-lqdags-Debug-e5947fb35a3f9ad1660e.json",
+					"name" : "j3-lqdags",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-original::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-original-Debug-03be33c76348f1390edd.json",
+					"name" : "j3-original",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-dfuds-back::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-dfuds-back-Debug-26e8aa5ad4adff28ae42.json",
+					"name" : "j3-partial-dfuds-back",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-dfuds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-dfuds-optOrder-Debug-e64260975d72d6e9676c.json",
+					"name" : "j3-partial-dfuds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-louds-back::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-louds-back-Debug-e5808792f25e984ed3e2.json",
+					"name" : "j3-partial-louds-back",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-partial-louds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-partial-louds-optOrder-Debug-5fa1259312ecfe84ccb0.json",
+					"name" : "j3-partial-louds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-dfuds-backtracking::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-dfuds-backtracking-Debug-d3c9ea4c0932568c7c27.json",
+					"name" : "j3-ranked-dfuds-backtracking",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-dfuds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-dfuds-optOrder-Debug-c49cce40f6c018b51465.json",
+					"name" : "j3-ranked-dfuds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-louds-backtracking::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-louds-backtracking-Debug-77927c909594a352b753.json",
+					"name" : "j3-ranked-louds-backtracking",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "j3-ranked-louds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-j3-ranked-louds-optOrder-Debug-8dd09f49d42adeb81fab.json",
+					"name" : "j3-ranked-louds-optOrder",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main-Debug-a13ddfebec6bbe2f8ae4.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "qdags::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-qdags-Debug-db53e6050c4c74d62c82.json",
+					"name" : "qdags",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "t4-ranked-dfuds-optOrder::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t4-ranked-dfuds-optOrder-Debug-780dda5eb27d38bd4f5e.json",
+					"name" : "t4-ranked-dfuds-optOrder",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/asugomez/Documentos/Magister/Tesis/qdags/cmake-build-debug",
+		"source" : "/Users/asugomez/Documentos/Magister/Tesis/qdags"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
