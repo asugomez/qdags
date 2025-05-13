@@ -15,24 +15,38 @@ for type_fun in 0; do
     for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
       # get the number of datasets for each query
       echo "file: $file"
+      read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
 
-
-      output_file="./runqueries-$file-bfs-sorted.sh"
-      input_file="./runqueries-$file-bfs-sorted-args.sh"
-
-      results_file="../../../../outputs/query1000results/ranked/louds/optimalOrder/$file-f$type_fun-k$k-v1000-time-new-pri.txt"
+      input_file="./runqueries-$file-bfs-sorted.sh"
+      output_file="./runqueries-$file-bfs-sorted-args.sh"
+      results_file="../../../../outputs/query1000results/ranked/louds/optimalOrder/$file-f$type_fun-k$k-v1000-time.txt"
 
       # Create the modified script with the updated last argument
+      count=1
       while IFS= read -r line || [ -n "$line" ]; do
         if [[ "$line" =~ [[:space:]]$ ]]; then
-          line="${line% }"  # Remove trailing space if present
+          line="${line% }"  # Remove the trailing space
         fi
-        #modified_line=$(echo "$line" | sed -E "s/[0-9]+$/ $k/") # Replace last number with $k
-        #modified_line=$(echo "$line" | sed -E "s/[[:space:]]([[:digit:]]+)$/\1$k/")
-        # Correctly replace the last argument and remove double spaces
-        modified_line=$(echo "$line" | sed -E "s/[[:space:]]([[:digit:]]+)$/ $k/" | sed -E "s/  +/ /g")
+        # Append priorities; type_fun and k to the end of the line
+        priority_file_1="../../../../../data/priorities/$file/pri1-$count"
+        priority_file_2="../../../../../data/priorities/$file/pri2-$count"
+        priority_file_3="../../../../../data/priorities/$file/pri3-$count"
+        priority_file_4="../../../../../data/priorities/$file/pri4-$count"
+        modified_line=""
+        # Check if the i-th argument is emtpy
+        if [ -z "$t2" ]; then # 1 dataset
+          modified_line="$line $priority_file_1 $type_fun $k"
+        elif [ -z "$t3" ]; then # 2 datasets
+          modified_line="$line $priority_file_1 $priority_file_2 $type_fun $k"
+        elif [ -z "$t4" ]; then # 3 datasets
+          modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $type_fun $k"
+        else # 4 datasets
+          modified_line="$line $priority_file_1 $priority_file_2 $priority_file_3 $priority_file_4 $type_fun $k"
+        fi
         echo "$modified_line"
+        count=$(($count + 1))
       done < "$input_file" > "$output_file"
+
 
       chmod +x $output_file
 
