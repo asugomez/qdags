@@ -16,20 +16,14 @@ for type_fun in 0; do
       # get the number of datasets for each query
       echo "file: $file"
 
-      output_file="./runqueries-$file-bfs-sorted.sh"
-      input_file="./runqueries-$file-bfs-sorted-args.sh"
+      input_file="./runqueries-$file-bfs-sorted.sh"
+      output_file="./runqueries-$file-bfs-sorted-args.sh"
 
       results_file="../../../../outputs/query1000results/ranked/dfuds/backtracking/$file-f$type_fun-k$k-v1000-time.txt"
 
       # Create the modified script with the updated last argument
       while IFS= read -r line || [ -n "$line" ]; do
-        if [[ "$line" =~ [[:space:]]$ ]]; then
-          line="${line% }"  # Remove trailing space if present
-        fi
-        #modified_line=$(echo "$line" | sed -E "s/[0-9]+$/ $k/") # Replace last number with $k
-        #modified_line=$(echo "$line" | sed -E "s/[[:space:]]([[:digit:]]+)$/\1$k/")
-        # Correctly replace the last argument and remove double spaces
-        modified_line=$(echo "$line" | sed -E "s/[[:space:]]([[:digit:]]+)$/ $k/" | sed -E "s/  +/ /g")
+        modified_line=$(awk -v k="$k" '{ $NF = k; print }' <<< "$line")
         echo "$modified_line"
       done < "$input_file" > "$output_file"
 
