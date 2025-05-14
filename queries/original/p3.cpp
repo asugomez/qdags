@@ -149,7 +149,7 @@ int main(int argc, char** argv)
 
 //	Join_Result = multiJoin(Q, true, k, nodes_visited);
 //	Join_Result = multiJoin(Q, false, k);
-	multiJoin(Q, false, k);
+	multiJoin(Q, true, k);
 
 	stop = high_resolution_clock::now();
 	time_span = duration_cast<microseconds>(stop - start);
