@@ -180,7 +180,7 @@ int main(int argc, char **argv) {
 
 //    multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds);
     results_ranked_louds.clear();
-//	uint256_t nodes_visited = 0;
+	uint256_t nodes_visited = 0;
 
     start = high_resolution_clock::now();
 
