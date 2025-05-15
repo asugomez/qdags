@@ -36,8 +36,8 @@ bool AND_ranked(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint256_t>& results_points){
-//		uint256_t& nodes_visited) {
+        vector<uint256_t>& results_points,//){
+		uint256_t& nodes_visited) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
@@ -48,7 +48,7 @@ bool AND_ranked(
     uint16_t cur_level;
     uint64_t results = 0;
     while(!pq.empty()){
-//		nodes_visited+=1;
+		nodes_visited+=1;
         children = 0xffffffff;
         qdagWeight tupleQdags = pq.top();
         pq.pop();
@@ -205,8 +205,8 @@ bool multiJoinRankedResults(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint256_t> &results_points){
-//		uint256_t& nodes_visited) {
+        vector<uint256_t> &results_points,//){
+		uint256_t& nodes_visited) {
 
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -254,10 +254,10 @@ bool multiJoinRankedResults(
                max_level, A.size(),
                bounded_result, UPPER_BOUND,
                pq, type_priority_fun,
-               priorities, rMq, results_points);
-//			   nodes_visited);
+               priorities, rMq, results_points,//);
+			   nodes_visited);
 
-//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 //    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
@@ -307,9 +307,9 @@ AND_ranked_backtracking(
         uint64_t size_queue,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        priority_queue<qdagResults> &top_results){
-//		uint256_t& nodes_visited) {
-//	nodes_visited+=1;
+        priority_queue<qdagResults> &top_results,//){
+		uint256_t& nodes_visited) {
+	nodes_visited+=1;
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag (extended)
     bool just_zeroes = true;
@@ -465,8 +465,8 @@ AND_ranked_backtracking(
 										newPath[order_to_traverse[i].first],
 										size_queue,
 										priorities, rMq,
-										top_results);
-//										nodes_visited);
+										top_results,//);
+										nodes_visited);
 			}
 
     }
@@ -489,8 +489,8 @@ bool multiJoinRankedResultsBacktracking(
         int64_t size_queue,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        priority_queue<qdagResults>& top_results){
-//		uint256_t& nodes_visited) {
+        priority_queue<qdagResults>& top_results,//){
+		uint256_t& nodes_visited) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     // iterar por el vector de los qdags
@@ -540,10 +540,10 @@ bool multiJoinRankedResultsBacktracking(
 							size_queue,
                             priorities,
 							rMq,
-                            top_results);
-//							nodes_visited);
+                            top_results,//);
+							nodes_visited);
 
-//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
 //    uint64_t size_queue_top = top_results.size();
 //    cout << "number of results: " << top_results.size() << endl;

@@ -150,14 +150,14 @@ int main(int argc, char** argv)
 	uint256_t nodes_visited = 0;
 	start = high_resolution_clock::now();
 
-//	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
-	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
+//	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
 
 	stop = high_resolution_clock::now();
 	time_span = duration_cast<microseconds>(stop - start);
 	total_time = time_span.count();
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
 
     return 0;
 }

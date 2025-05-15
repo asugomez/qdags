@@ -71,20 +71,20 @@ int main(int argc, char** argv)
     qdag::att_set att_S; // S(Z,X)
     qdag::att_set att_T; // T(X,V)
 
-    
-    att_R.push_back(AT_Y); att_R.push_back(AT_X); 
-    att_S.push_back(AT_Z); att_S.push_back(AT_X); 
+
+    att_R.push_back(AT_Y); att_R.push_back(AT_X);
+    att_S.push_back(AT_Z); att_S.push_back(AT_X);
     att_T.push_back(AT_X); att_T.push_back(AT_V);
-    
+
     std::string strRel_R(argv[1]), strRel_S(argv[2]), strRel_T(argv[3]); // nombre de los archivos
-    
+
     // lee desde el disco la relacion R que tiene tal cantidad de atributoss --> con eso genero la relación r rel_R
-    std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion 
+    std::vector<std::vector<uint64_t>>* rel_R = read_relation(strRel_R, att_R.size()); // att_R.sizecantidad de atributos que tiene la relacion
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
-    
-    uint64_t grid_side = 52000000; // es como +infty para wikidata 
-    
+
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
+
     //cout << "R" << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     //cout << "S" << endl;
@@ -162,25 +162,25 @@ int main(int argc, char** argv)
     priority_queue<qdagResults> results_ranked_louds_back;
 
     high_resolution_clock::time_point start, stop;
-    double total_time = 0.0;       
+    double total_time = 0.0;
     duration<double> time_span;
 
 
-   
+
     // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
 //    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);  // warmup join -> activar el caché
     results_ranked_louds_back = priority_queue<qdagResults>();
 	uint256_t nodes_visited = 0;
     start = high_resolution_clock::now();
 
-//    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
-	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
+    multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
+//	multiJoinRankedResultsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();
 
-    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     
     return 0;
 
