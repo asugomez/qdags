@@ -30,8 +30,8 @@ bool AND_partial(
         uint64_t grid_size,
         uint8_t type_order_fun,
         priority_queue<qdagWeight> &pq,
-        vector<uint256_t> &results_points){
-//		uint256_t& nodes_visited) {
+        vector<uint256_t> &results_points,//){
+		uint256_t& nodes_visited) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
@@ -42,7 +42,7 @@ bool AND_partial(
     uint16_t cur_level;
 	uint64_t results = 0;
     while(!pq.empty()){
-//		nodes_visited+=1;
+		nodes_visited+=1;
         children = 0xffffffff;
         qdagWeight tupleQdags = pq.top();
         pq.pop();
@@ -106,7 +106,6 @@ bool AND_partial(
 			// push the coordinates if it's a leaf
 			if(cur_level == max_level){
 				for (i = 0; i < children_to_recurse_size; ++i) {
-//					nodes_visited+=1;
 					child = children_to_recurse[i];
 					uint256_t newPath = tupleQdags.path;
 					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t)child);
@@ -148,7 +147,6 @@ bool AND_partial(
 						}
 					}
 					// insert the tuple
-//					nodes_visited+=1;
 					qdagWeight this_node = {next_level, root_temp, total_weight, newPath} ;
 					pq.push(this_node); // add the tuple to the queue
 				}
@@ -176,8 +174,8 @@ bool multiJoinPartialResults(
         uint64_t UPPER_BOUND,
         uint64_t grid_size,
         uint8_t type_order_fun,
-        vector<uint256_t> &results_points){
-//		uint256_t& nodes_visited) {
+        vector<uint256_t> &results_points,//){
+		uint256_t& nodes_visited) {
 
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -223,11 +221,11 @@ bool multiJoinPartialResults(
     bool res = AND_partial(Q_star, Q.size(), A.size(),
                 bounded_result, UPPER_BOUND,
                 max_level, grid_size, type_order_fun,
-                pq, results_points);
-//				nodes_visited);
+                pq, results_points,//);
+				nodes_visited);
 
 
-//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 //    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
@@ -275,9 +273,9 @@ AND_partial_backtracking(
         uint8_t type_order_fun,
 		uint256_t path,
         uint64_t size_queue,
-        vector<uint256_t> &results_points){//){
-//		uint256_t& nodes_visited) {
-//	nodes_visited+=1;
+        vector<uint256_t> &results_points,//){
+		uint256_t& nodes_visited) {
+	nodes_visited+=1;
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool just_zeroes = true;
@@ -395,8 +393,8 @@ AND_partial_backtracking(
 										 type_order_fun,
 										 newPath[order_to_traverse[i].first],
 										 size_queue,
-										 results_points);
-//											 nodes_visited);
+										 results_points,//);
+											 nodes_visited);
 			}
 		}
 
@@ -420,8 +418,8 @@ multiJoinPartialResultsBacktracking(
         uint64_t grid_size,
         uint8_t type_order_fun,
         int64_t size_queue,
-        vector<uint256_t> &results_points){
-//		uint256_t& nodes_visited) {
+        vector<uint256_t> &results_points,//){
+		uint256_t& nodes_visited) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
     //iterar por el vector de los qdags
@@ -467,10 +465,10 @@ multiJoinPartialResultsBacktracking(
 							 0, max_level, grid_size, type_order_fun,
 							 0,
 							 size_queue,
-							 results_points);
-//							 nodes_visited);
+							 results_points,//);
+							 nodes_visited);
 
-//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
 //    cout << "number of results: " << top_results.size() << endl;
 //    uint64_t i=0;
