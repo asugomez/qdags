@@ -133,7 +133,7 @@ int main(int argc, char** argv)
     p.push_back(priorities_S);
 
     uint8_t type_fun = argv[5] ? atoi(argv[5]) : 1;
-    int64_t k = argv[8] ? atoi(argv[8]) : 1000;
+    int64_t k = argv[6] ? atoi(argv[6]) : 1000;
 
     vector<rmq_succinct_sct<false>> rMq;
     for(uint64_t i = 0; i < Q.size(); i++)
