@@ -290,7 +290,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 return false;
             else if (cur_level == max_level ||
                      AND(Q, root_temp, nQ, cur_level + 1, max_level, bv, last_pos, nAtt, bounded_result,
-                         UPPER_BOUND, nodes_visited)) // recursive call
+                         UPPER_BOUND))//, nodes_visited)) // recursive call
             {
                 bv[cur_level].push_back(last_pos[cur_level]++); // we write the current result in the output bitvector
                 just_zeroes = false;
