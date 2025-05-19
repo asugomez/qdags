@@ -41,8 +41,8 @@ bool AND_ranked_dfuds(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint256_t>& top_results,//){
-		uint256_t& nodes_visited) {
+        vector<uint256_t>& top_results){
+//		uint256_t& nodes_visited) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
@@ -55,7 +55,7 @@ bool AND_ranked_dfuds(
     while(!pq.empty()){
         children = 0xffffffff;
         qdagWeight tupleQdags = pq.top();
-		nodes_visited +=1;
+//		nodes_visited +=1;
         pq.pop();
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
@@ -208,8 +208,8 @@ bool multiJoinRankedResultsDfuds(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint256_t>& top_results,//){
-		uint256_t& nodes_visited) {
+        vector<uint256_t>& top_results){
+//		uint256_t& nodes_visited) {
 
     qdag_dfuds::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -257,10 +257,10 @@ bool multiJoinRankedResultsDfuds(
                max_level, A.size(),
                bounded_result, UPPER_BOUND,
                pq, type_priority_fun,
-               priorities, rMq, top_results,//);
-			   nodes_visited);
+               priorities, rMq, top_results);
+//			   nodes_visited);
 
-	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
 //    cout << "number of results: " << top_results.size() << endl;
 //    uint64_t i=0;
