@@ -36,7 +36,7 @@ bool AND_ranked(
         uint8_t type_priority_fun,
         vector<int_vector<>> &priorities,
         vector<rmq_succinct_sct<false>> &rMq,
-        vector<uint256_t>& results_points,//){
+        vector<uint256_t>& top_results,//){
 		uint256_t& nodes_visited) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
@@ -55,7 +55,7 @@ bool AND_ranked(
         cur_level = tupleQdags.level;
         // if it's a leaf, output the point coordenates
         if(cur_level > max_level){
-            results_points.push_back(tupleQdags.path);
+			top_results.push_back(tupleQdags.path);
             if(bounded_result && ++results >= UPPER_BOUND)
                 return true;
         }
@@ -112,6 +112,7 @@ bool AND_ranked(
 				uint16_t next_level = cur_level + 1;
 
 				double total_weight = 0;
+
 				// compute the coordinates if it's a leaf
 				if(cur_level == max_level){
 					for (i = 0; i < children_to_recurse_size; ++i) {
@@ -120,9 +121,9 @@ bool AND_ranked(
 						getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
 						// priority
-						uint64_t priority_ith_node;
+						uint64_t priority_ith_node,min_idx;
 						for (uint64_t j = 0; j < nQ; j++) {
-							uint64_t min_idx = Q[j]->get_index_pri(tupleQdags.roots[j] + Q[j]->getM(child));
+							min_idx = Q[j]->get_index_pri(tupleQdags.roots[j] + Q[j]->getM(child));
 							priority_ith_node = priorities[j][min_idx];
 
 							if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
@@ -146,10 +147,9 @@ bool AND_ranked(
 						uint256_t newPath = tupleQdags.path;
 						getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
-
 						// compute the weight of the tuple (ONLY if it's not a leaf)
 						// calculate the weight of the tuple
-						uint64_t init, end, priority_ith_node;
+						uint64_t init, end, priority_ith_node, min_idx;
 						bool success;
 						for (uint64_t j = 0; j < nQ; j++) {
 							// we store the parent node that corresponds in the original quadtree of each qdag
@@ -159,7 +159,7 @@ bool AND_ranked(
 							priority_ith_node = 0;
 							success = Q[j]->get_range_leaves(cur_level + 1, root_temp[j], init, end);
 							if (success) {
-								bit_vector::size_type min_idx = rMq[j](init, end);
+								min_idx = rMq[j](init, end);
 								priority_ith_node = priorities[j][min_idx];
 							} else {
 								cout << "error in get range leaves and_ranked (louds)" << endl;
