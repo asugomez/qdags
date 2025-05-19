@@ -172,9 +172,9 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
 bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
          uint16_t cur_level, uint16_t max_level,
          vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
-         bool bounded_result, uint64_t UPPER_BOUND,//){
-		 uint256_t& nodes_visited) {
-	nodes_visited+=1;
+         bool bounded_result, uint64_t UPPER_BOUND){
+//		 uint256_t& nodes_visited) {
+//	nodes_visited+=1;
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool result = false;
@@ -575,7 +575,8 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
  * @param UPPER_BOUND the limit of the result if bounded.
  * @return a quadtree (qdag not extended) with the result of the multi join.
  */
-qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND, uint256_t& nodes_visited) {
+qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND){//},
+	// uint256_t& nodes_visited) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
@@ -621,9 +622,10 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND, uint
         last_pos[i] = 0; // initialize the last position
 
     // array of extended qdags, array of roots, current level, height, the output bitvector path, arreglo de ult. posicion, number of attributs,
-    AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND,nodes_visited);
+//    AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND,nodes_visited);
+	AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
 
-	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
     // we create a new qdag with the output store in path (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
