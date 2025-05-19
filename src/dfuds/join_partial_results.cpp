@@ -31,8 +31,8 @@ bool AND_partial_dfuds(
         uint64_t grid_size,
         uint8_t type_order_fun,
         priority_queue<qdagWeight> &pq,
-        vector<uint256_t> &results_points,//){
-		uint256_t& nodes_visited) {
+        vector<uint256_t> &results_points){
+//		uint256_t& nodes_visited) {
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag extended
     uint64_t k_d[nQ];
@@ -43,7 +43,7 @@ bool AND_partial_dfuds(
     uint16_t cur_level;
     uint64_t results = 0;
     while(!pq.empty()){
-		nodes_visited+=1;
+//		nodes_visited+=1;
         children = 0xffffffff;
         qdagWeight tupleQdags = pq.top();
         pq.pop();
@@ -171,8 +171,8 @@ bool multiJoinPartialResultsDfuds(
         uint64_t UPPER_BOUND,
         uint64_t grid_size,
         uint8_t type_order_fun,
-        vector<uint256_t> &results_points,//){
-		uint256_t& nodes_visited) {
+        vector<uint256_t> &results_points){
+//		uint256_t& nodes_visited) {
 
     qdag_dfuds::att_set A;
     map<uint64_t, uint8_t> attr_map;
@@ -219,10 +219,10 @@ bool multiJoinPartialResultsDfuds(
     AND_partial_dfuds(Q_star, Q.size(), A.size(),
                       bounded_result, UPPER_BOUND,
                       max_level, grid_size, type_order_fun,
-                      pq, results_points,//);
-					  nodes_visited);
+                      pq, results_points);
+//					  nodes_visited);
 
-	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
 //    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
