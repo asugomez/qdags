@@ -309,6 +309,7 @@ AND_ranked_backtracking(
         vector<rmq_succinct_sct<false>> &rMq,
         priority_queue<qdagResults> &top_results,//){
 		uint256_t& nodes_visited) {
+
 	nodes_visited+=1;
 
     uint64_t p = Q[0]->nChildren(); // number of children of the qdag (extended)
@@ -320,6 +321,7 @@ AND_ranked_backtracking(
     uint32_t children = 0xffffffff; // each bit represent a node (empty or not)
     // last level --> add result to the priority queue
     if (cur_level == max_level){
+
         for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
             if (nAtt == 3)
@@ -367,9 +369,9 @@ AND_ranked_backtracking(
 			}
 			// queue full --> compare priorities
 			if(top_results.size() >= size_queue ){
-				qdagResults minResult = top_results.top();
+				qdagResults minResult = top_results.top(); // queue full
 				// add result if the priority is higher than the minimum priority in the queue
-				if(this_weight > minResult.weight){
+				if(minResult.weight < this_weight){
 					top_results.pop();
 					top_results.push({newPath, this_weight});
 				}
@@ -394,9 +396,9 @@ AND_ranked_backtracking(
             else if (nAtt == 5)
                 children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
         }
+
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
-
 		i = 0;
 		uint64_t msb;
 
@@ -421,7 +423,7 @@ AND_ranked_backtracking(
 
 			// compute the weight of the tuple
 			double total_weight = 0;
-			uint64_t init, end, priority_ith_node;
+			uint64_t init, end, priority_ith_node, min_idx;
 			bool success;
 			for (uint64_t j = 0; j < nQ; j++) {
 				root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
@@ -429,34 +431,25 @@ AND_ranked_backtracking(
 				end = priorities[j].size()-1;
 				priority_ith_node = 0;
 				success = Q[j]->get_range_leaves(cur_level+1,root_temp[i][j],init,end);
-				if(success){
-					bit_vector::size_type min_idx = rMq[j](init, end);
-					priority_ith_node = priorities[j][min_idx];
-				} else {
+				if(!success){
 					cout << "error in get range leaves and_backtracking (louds)" << endl;
 					exit(1);
 				}
+				min_idx = rMq[j](init, end);
+				priority_ith_node = priorities[j][min_idx];
 				if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
 					total_weight += priority_ith_node;
 				else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
-					if (total_weight < priority_ith_node) {
+					if (priority_ith_node > total_weight) {
 						total_weight = priority_ith_node;
 					}
 				}
 			}
-			// queue full --> compare priorities
-			if(top_results.size() >= size_queue ){
-				qdagResults minResult = top_results.top();
-				if(total_weight >= minResult.weight){ // if it has a higher priority, then we enter into this branch of the tree
-					order_to_traverse.push_back({i,total_weight}); // add the tuple to the queue
-				}
-			}
-			else{
-				order_to_traverse.push_back({i,total_weight}); // add the tuple to the queue
-			}
+			order_to_traverse.push_back({i,total_weight}); // add the tuple to the queue
 		}
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
+			if(top_results.size() < size_queue || order_to_traverse.at(i).second > top_results.top().weight) {
 				AND_ranked_backtracking(Q,
 										nQ,
 										nAtt,
@@ -468,6 +461,7 @@ AND_ranked_backtracking(
 										top_results,//);
 										nodes_visited);
 			}
+		}
 
     }
     return !just_zeroes;
