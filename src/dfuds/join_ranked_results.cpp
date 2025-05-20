@@ -389,6 +389,7 @@ AND_ranked_dfuds_backtracking(
         // call recursively in DFS order
     else {
         uint64_t rank_vector[16 /*nQ*/][64];
+
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
@@ -398,6 +399,7 @@ AND_ranked_dfuds_backtracking(
             else if (nAtt == 5)
                 children &= Q[i]->materialize_node_5(roots[i], rank_vector[i]);
         }
+
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
         i = 0;
@@ -413,7 +415,8 @@ AND_ranked_dfuds_backtracking(
         uint16_t child;
         uint16_t next_level = cur_level + 1;
 
-        uint64_t root_temp[children_to_recurse_size][nQ];
+        uint64_t root_temp[children_to_recurse_size][16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
+
 		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
 		uint256_t newPath[children_to_recurse_size];
         for (i = 0; i < children_to_recurse_size; ++i) {
@@ -431,42 +434,35 @@ AND_ranked_dfuds_backtracking(
                 end = priorities[j].size()-1;
                 priority_ith_node = 0;
                 success = Q[j]->get_range_leaves(root_temp[i][j],init,end);
-                if(success){
-                    min_idx = rMq[j](init, end);
-                    priority_ith_node = priorities[j][min_idx];
-                } else {
+                if(!success){
                     cout << "error in get range leaves and_ranked_backtracking dfuds" << endl;
                     exit(1);
                 }
+				min_idx = rMq[j](init, end);
+				priority_ith_node = priorities[j][min_idx];
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
                     total_weight += priority_ith_node;
                 else if (type_priority_fun == TYPE_FUN_PRI_MAX_DFUDS) { // max
-                    if (total_weight < priority_ith_node) {
+                    if (priority_ith_node > total_weight) {
                         total_weight = priority_ith_node;
                     }
                 }
             }
-            // queue full --> compare priorities
-            if(top_results.size() >= size_queue ){
-                qdagResults minResult = top_results.top();
-                if(total_weight >= minResult.weight){ // if it has a higher priority, then we enter into this branch of the tree
-                    order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
-                }
-            }
-            else{
-				order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
-            }
+			order_to_traverse.push_back({i, total_weight}); // add the tuple to the queue
         }
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
-            AND_ranked_dfuds_backtracking(Q, nQ, nAtt,
-										  root_temp[order_to_traverse.at(i).first],
-										  next_level, max_level,
-										  type_priority_fun,
-										  newPath[order_to_traverse.at(i).first],
-										size_queue,
-                                    	priorities, rMq, top_results,//);
-										nodes_visited);
+			if(top_results.size() < size_queue || order_to_traverse.at(i).second > top_results.top().weight){
+				AND_ranked_dfuds_backtracking(Q, nQ, nAtt,
+											  root_temp[order_to_traverse.at(i).first],
+											  next_level, max_level,
+											  type_priority_fun,
+											  newPath[order_to_traverse.at(i).first],
+											size_queue,
+											priorities, rMq, top_results,//);
+											nodes_visited);
+
+			}
         }
     }
     return !just_zeroes;
