@@ -40,58 +40,65 @@ bool AND_partial(
     uint64_t children_to_recurse_size;
 	uint64_t i;
     uint16_t cur_level;
-	uint64_t results = 0;
-    while(!pq.empty()){
+	bool just_zeroes = true;
+    while(!pq.empty() && (!bounded_result || results_points.size() < UPPER_BOUND)){
 		nodes_visited+=1;
         children = 0xffffffff;
         qdagWeight tupleQdags = pq.top();
         pq.pop();
         cur_level = tupleQdags.level;
+		// last level --> add result to the priority queue
+		if(cur_level == max_level){
+			for (i = 0; i < nQ && children; ++i){
+				//k_d[i] = Q[i]->getKD();
+				if (nAtt == 3)
+					children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
+				else if (nAtt == 4)
+					children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
+				else if (nAtt == 5)
+					children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
+			}
 
-        uint64_t rank_vector[16 /*nQ*/][64];
-        for (i = 0; i < nQ && children; ++i){
-            k_d[i] = Q[i]->getKD(); // k^d del i-esimo qdag
-            if (nAtt == 3) {
-                if (cur_level == max_level) {
-                    children &= Q[i]->materialize_node_3_lastlevel(cur_level, tupleQdags.roots[i]);
-                } else {
-                    children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                }
-            }
-            else if (nAtt == 4) {
-                if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_4_lastlevel(cur_level, tupleQdags.roots[i]);
-                }
-                else {
-                    children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                }
-            }
-            else if (nAtt == 5) {
-                if(cur_level == max_level){
-                    children &= Q[i]->materialize_node_5_lastlevel(cur_level, tupleQdags.roots[i]);
-                }
-                else {
-                    children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
-                }
-            }
-            else {
-                cout << "Code only works for queries of up to 5 attributes..." << endl;
-                return false;
-            }
-        }
+			children_to_recurse_size = bits::cnt((uint64_t) children);
+			i = 0;
+			uint64_t msb; // most significant bit
+			while (i < children_to_recurse_size) {
+				msb = __builtin_clz(children);
+				children_to_recurse[i] = msb;
+				++i;
+				children &= (((uint32_t) 0xffffffff) >> (msb + 1));
+			}
 
+			uint16_t child;
 
-        // in children we have the actual non empty nodes
-        // in children_to_recurse we store the index of these non emtpy nodes
-        children_to_recurse_size = bits::cnt((uint64_t) children);
-
-
-		// if children_to_recurse_size is 0, delete coordinates and roots
-		if(children_to_recurse_size == 0) {
-			// TODO: check memory leaks
-//			delete[] tupleQdags.roots;
+			for (i = 0; i < children_to_recurse_size; ++i) {
+				child = children_to_recurse[i];
+				uint256_t newPath = tupleQdags.path;
+				getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t)child);
+				// if it's a leaf, output the point coordenates
+				results_points.push_back(newPath);
+				just_zeroes = false;
+				if(bounded_result && results_points.size() >= UPPER_BOUND){
+					return false;
+				}
+			}
 		}
-		else{
+		// process the tuples
+		else {
+			uint64_t rank_vector[16 /*nQ*/][64];
+			for (i = 0; i < nQ && children; ++i){
+				k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
+				if (nAtt == 3) {
+					children &= Q[i]->materialize_node_3(cur_level, tupleQdags.roots[i],rank_vector[i]); // entero de 32 bits, y se hace &,
+				} else if (nAtt == 4)
+					children &= Q[i]->materialize_node_4(cur_level, tupleQdags.roots[i], rank_vector[i]);
+				else if (nAtt == 5)
+					children &= Q[i]->materialize_node_5(cur_level, tupleQdags.roots[i], rank_vector[i]);
+			}
+
+			// number of 1s in the children
+			children_to_recurse_size = bits::cnt((uint64_t) children);
+
 			i = 0;
 			uint64_t msb; // most significant bit
 			while (i < children_to_recurse_size) {
@@ -103,59 +110,36 @@ bool AND_partial(
 
 			uint16_t child;
 			uint16_t next_level = cur_level + 1;
-			// push the coordinates if it's a leaf
-			if(cur_level == max_level){
-				for (i = 0; i < children_to_recurse_size; ++i) {
-					child = children_to_recurse[i];
-					uint256_t newPath = tupleQdags.path;
-					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t)child);
 
-					results_points.push_back(newPath);
+			for (i = 0; i < children_to_recurse_size; ++i) {
+				uint64_t* root_temp = new uint64_t[nQ];
+				child = children_to_recurse[i];
+				uint256_t newPath = tupleQdags.path;
+				getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
 
-					if(bounded_result && ++results >= UPPER_BOUND){
-//							delete[] tupleQdags.coordinates;
-//							delete[] tupleQdags.roots;
-//							while(!pq.empty()) {
-//								pq.pop();
-//							}
-						return true;
-					}
-				}
-			}
-			else {
-				// Allocate 2D array for
-				for (i = 0; i < children_to_recurse_size; ++i) {
-					uint64_t* root_temp = new uint64_t[nQ];
-					child = children_to_recurse[i];
-					uint256_t newPath = tupleQdags.path;
-					getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
-
-					// compute the weight of the tuple (ONLY if it's not a leaf)
-					double total_weight = (type_order_fun == TYPE_FUN_NUM_LEAVES) ? DBL_MAX : 1;
-					uint64_t n_leaves_child_node;
-					// calculate the weight of the tuple
-					for (uint64_t j = 0; j < nQ; j++) {
-						// we store the parent node that corresponds in the original quadtree of each qdag
-						root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-						n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1, root_temp[j]);
-						if(type_order_fun == TYPE_FUN_NUM_LEAVES){ // gets the minimum number of leaves of the tuple
-							if (n_leaves_child_node < total_weight) {
-								total_weight = n_leaves_child_node;
-							}
-						} else { // density estimator
-							total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
+				// compute the weight of the tuple (ONLY if it's not a leaf)
+				double total_weight = (type_order_fun == TYPE_FUN_NUM_LEAVES) ? DBL_MAX : 1;
+				uint64_t n_leaves_child_node;
+				// calculate the weight of the tuple
+				for (uint64_t j = 0; j < nQ; j++) {
+					// we store the parent node that corresponds in the original quadtree of each qdag
+					root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
+					n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1, root_temp[j]);
+					if(type_order_fun == TYPE_FUN_NUM_LEAVES){ // gets the minimum number of leaves of the tuple
+						if (n_leaves_child_node < total_weight) {
+							total_weight = n_leaves_child_node;
 						}
+					} else { // density estimator
+						total_weight *= (n_leaves_child_node / pow(grid_size/(pow(2,cur_level)),2));
 					}
-					// insert the tuple
-					qdagWeight this_node = {next_level, root_temp, total_weight, newPath} ;
-					pq.push(this_node); // add the tuple to the queue
 				}
+				// insert the tuple
+				qdagWeight this_node = {next_level, root_temp, total_weight, newPath} ;
+				pq.push(this_node); // add the tuple to the queue
 			}
-
 		}
-
-    }
-    return true;
+	}
+	return !just_zeroes;
 }
 
 /**
@@ -266,6 +250,7 @@ AND_partial_backtracking(
         qdag *Q[],
         uint16_t nQ,
         uint64_t nAtt,
+		bool bounded_result,
         uint64_t *roots,
         uint16_t cur_level,
         uint16_t max_level,
@@ -298,10 +283,8 @@ AND_partial_backtracking(
 
         // number of results
         children_to_recurse_size = bits::cnt((uint64_t) children);
-
 		i = 0;
 		uint64_t msb;
-
 		while (i < children_to_recurse_size) {
 			msb = __builtin_clz(children);
 			children_to_recurse[i] = msb; // write the position of the 1s
@@ -316,38 +299,31 @@ AND_partial_backtracking(
 			child = children_to_recurse[i];
 			uint256_t newPath = path;
 			getNewMortonCodePath(newPath, nAtt, cur_level, (uint256_t) child);
-
+			// if it's a leaf, output the point coordenates
 			results_points.push_back(newPath);
 			just_zeroes = false;
 			// queue full
-			if(results_points.size() >= size_queue){
-//					delete[] coordinates;
-//					delete[] roots;
-				return !just_zeroes;
+			if(bounded_result && results_points.size() >= size_queue){
+				return false;
 			}
 		}
-
     }
     // call recursively in DFS order
     else {
 		uint64_t rank_vector[16 /*nQ*/][64];
-
         for (i = 0; i < nQ && children; ++i){
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
                 children &= Q[i]->materialize_node_3(cur_level, roots[i],rank_vector[i]); // entero de 32 bits, y se hace &,
-            }else if (nAtt == 4)
+            } else if (nAtt == 4)
                 children &= Q[i]->materialize_node_4(cur_level, roots[i], rank_vector[i]);
             else if (nAtt == 5)
                 children &= Q[i]->materialize_node_5(cur_level, roots[i], rank_vector[i]);
         }
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
-
-
 		i = 0;
 		uint64_t msb;
-
 		while (i < children_to_recurse_size) {
 			msb = __builtin_clz(children); // the most significant bit of children
 			children_to_recurse[i] = msb; // we store the position of the msb in children_to_recurse
@@ -358,9 +334,9 @@ AND_partial_backtracking(
 		uint16_t child;
 		uint16_t next_level = cur_level + 1;
 
+
 		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
-		// veo cada hijo en común que tiene el nodo actual
-		uint64_t root_temp[children_to_recurse_size][nQ]; // CUIDADO, solo hasta 16 relaciones por query
+		uint64_t root_temp[children_to_recurse_size][16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
 		uint256_t newPath[children_to_recurse_size];
 		for (i = 0; i < children_to_recurse_size; ++i) {
 			child = children_to_recurse[i]; // the position of the 1s in children
@@ -373,7 +349,6 @@ AND_partial_backtracking(
 			for (uint64_t j = 0; j < nQ; j++) {
 				root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
 				n_leaves_child_node = Q[j]->get_num_leaves(cur_level+1,root_temp[i][j]);
-//				cout << "n leaves : " << n_leaves_child_node << endl;
 				if(type_order_fun == TYPE_FUN_NUM_LEAVES){ // gets the minimum number of leaves of the tuple
 					if (n_leaves_child_node < total_weight) {
 						total_weight = n_leaves_child_node;
@@ -386,8 +361,8 @@ AND_partial_backtracking(
 		}
 		sortBySecond(order_to_traverse);
 		for(i=0; i<order_to_traverse.size(); i++){
-			if(results_points.size() < size_queue){
-				AND_partial_backtracking(Q, nQ, nAtt,
+			if(!bounded_result || results_points.size() < size_queue){
+				AND_partial_backtracking(Q, nQ, nAtt, bounded_result,
 										 root_temp[order_to_traverse[i].first],
 										 next_level, max_level, grid_size,
 										 type_order_fun,
@@ -397,7 +372,6 @@ AND_partial_backtracking(
 											 nodes_visited);
 			}
 		}
-
     }
     return !just_zeroes;
 }
@@ -415,6 +389,7 @@ AND_partial_backtracking(
 bool
 multiJoinPartialResultsBacktracking(
         vector<qdag> &Q,
+		bool bounded_result,
         uint64_t grid_size,
         uint8_t type_order_fun,
         int64_t size_queue,
@@ -460,7 +435,7 @@ multiJoinPartialResultsBacktracking(
     uint64_t max_level = Q_star[0]->getHeight() - 1;
 
 
-    AND_partial_backtracking(Q_star, Q.size(), A.size(),
+    AND_partial_backtracking(Q_star, Q.size(), A.size(), bounded_result,
 							 Q_roots,
 							 0, max_level, grid_size, type_order_fun,
 							 0,
@@ -470,7 +445,7 @@ multiJoinPartialResultsBacktracking(
 
 	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
-//    cout << "number of results: " << top_results.size() << endl;
+//    cout << "number of results: " << results_points.size() << endl;
 //    uint64_t i=0;
 //    while(i < results_points.size()){
 //		cout << results_points[i] << endl;
