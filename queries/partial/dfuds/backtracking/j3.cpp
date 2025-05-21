@@ -114,13 +114,13 @@ int main(int argc, char** argv)
     start = high_resolution_clock::now();
 
 //	multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);
-    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back, nodes_visited);
+    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, true, grid_side, type_fun, size_queue, results_partial_dfuds_back, nodes_visited);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     
     return 0;
 
