@@ -1,10 +1,8 @@
 #!/bin/bash
 chmod a+x *.sh
 
-time_csv="../../outputs/query1000results/original/results-f$type_fun-time.csv"
-nodes_csv="../../outputs/query1000results/original/results-f$type_fun-nodes-gradual.csv"
-
-echo "type_fun : $type_fun"
+time_csv="../../outputs/query1000results/original/results-time.csv"
+nodes_csv="../../outputs/query1000results/original/results-nodes-gradual.csv"
 
 # CSV headers
 echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" > "$time_csv"
@@ -23,10 +21,10 @@ for k in 1 10 100 1000; do
     # Agregar args
     while IFS= read -r line || [ -n "$line" ]; do
       line="${line%" "}"
-      echo "$line $type_fun $k"
+      echo "$line $k"
     done < "$input_file" > "$output_file"
 
-    results_file="../../outputs/query1000results/original/$file-f$type_fun-k$k-results-gradual.txt"
+    results_file="../../outputs/query1000results/original/$file-k$k-results-gradual.txt"
     chmod +x "$output_file"
     > "$results_file"
 
