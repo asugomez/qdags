@@ -172,8 +172,8 @@ void parANDCount(uint16_t totalThreads, uint16_t threadId, uint16_t levelOfCut,
 bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
          uint16_t cur_level, uint16_t max_level,
          vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
-         bool bounded_result, uint64_t UPPER_BOUND){
-//		 uint256_t& nodes_visited) {
+         bool bounded_result, uint64_t UPPER_BOUND,//){
+		 uint256_t& nodes_visited) {
 //	nodes_visited+=1;
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
@@ -191,6 +191,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
     // in the last level we materialize the node
     if (cur_level == max_level){
+		nodes_visited +=1; // count the tuple
         for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
             if (nAtt == 3)
@@ -219,6 +220,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         // we do not call recursively the function AND as we do in the other levels
         for (i = 0; i < children_to_recurse_size; ++i){
+//			nodes_visited +=1; // count the final leaves --> for RANKED
             child = children_to_recurse[i];
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1);
@@ -235,6 +237,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         if (p - last_child > 1)
             last_pos[cur_level] += (p - last_child - 1);
     } else {
+		nodes_visited +=1; // count the tuple
         uint64_t root_temp[16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
         uint64_t rank_vector[16][64];
 
@@ -290,7 +293,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
                 return false;
             else if (cur_level == max_level ||
                      AND(Q, root_temp, nQ, cur_level + 1, max_level, bv, last_pos, nAtt, bounded_result,
-                         UPPER_BOUND))//, nodes_visited)) // recursive call
+                         UPPER_BOUND, nodes_visited)) // recursive call
             {
                 bv[cur_level].push_back(last_pos[cur_level]++); // we write the current result in the output bitvector
                 just_zeroes = false;
@@ -575,8 +578,8 @@ uint64_t parMultiJoinCount(vector<qdag> &Q) {
  * @param UPPER_BOUND the limit of the result if bounded.
  * @return a quadtree (qdag not extended) with the result of the multi join.
  */
-qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND){//},
-	// uint256_t& nodes_visited) {
+qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND,
+	 uint256_t& nodes_visited) {
     qdag::att_set A;
     map<uint64_t, uint8_t> attr_map;
 
@@ -622,10 +625,10 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND){//},
         last_pos[i] = 0; // initialize the last position
 
     // array of extended qdags, array of roots, current level, height, the output bitvector path, arreglo de ult. posicion, number of attributs,
-//    AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND,nodes_visited);
-	AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
+    AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND,nodes_visited);
+//	AND(Q_star, Q_roots, Q.size(), 0, Q_star[0]->getHeight() - 1, bv, last_pos, A.size(), bounded_result, UPPER_BOUND);
 
-//	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
+	cout << /*"Nodes visited " <<*/ nodes_visited << endl;
 
     // we create a new qdag with the output store in path (position of 1s on each level)
     qdag *qResult = new qdag(bv, A, Q_star[0]->getGridSide(), Q_star[0]->getK(), (uint8_t) A.size());
@@ -643,7 +646,7 @@ qdag *multiJoin(vector<qdag> &Q, bool bounded_result, uint64_t UPPER_BOUND){//},
 //    }
 //    cout << endl;
 
-//    cout << " number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
+    cout << " number of results: " << bv[Q_star[0]->getHeight()-1].size() << endl;
 //    cout << bv[Q_star[0]->getHeight()-1].size() << endl;
 
     //cout << endl;

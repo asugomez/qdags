@@ -78,9 +78,6 @@ bool AND_partial(
 				// if it's a leaf, output the point coordenates
 				results_points.push_back(newPath);
 				just_zeroes = false;
-				if(bounded_result && results_points.size() >= UPPER_BOUND){
-					return false;
-				}
 			}
 		}
 		// process the tuples
@@ -260,9 +257,9 @@ AND_partial_backtracking(
         uint64_t size_queue,
         vector<uint256_t> &results_points,//){
 		uint256_t& nodes_visited) {
+
 	nodes_visited+=1;
-    // number of children of the qdag (extended)
-    uint64_t p = Q[0]->nChildren();
+    uint64_t p = Q[0]->nChildren(); // number of children of the qdag (extended)
     bool just_zeroes = true;
     uint64_t k_d[nQ];
     uint16_t children_to_recurse[p];
@@ -334,9 +331,9 @@ AND_partial_backtracking(
 		uint16_t child;
 		uint16_t next_level = cur_level + 1;
 
+		uint64_t root_temp[children_to_recurse_size][16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
 
 		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
-		uint64_t root_temp[children_to_recurse_size][16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
 		uint256_t newPath[children_to_recurse_size];
 		for (i = 0; i < children_to_recurse_size; ++i) {
 			child = children_to_recurse[i]; // the position of the 1s in children

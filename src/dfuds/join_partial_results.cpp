@@ -268,8 +268,8 @@ bool AND_partial_dfuds_backtracking(
         uint64_t size_queue,
         vector<uint256_t> &results_points,//){
 		uint256_t& nodes_visited) {
-	nodes_visited+=1;
 
+	nodes_visited+=1;
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool just_zeroes = true;
@@ -324,11 +324,12 @@ bool AND_partial_dfuds_backtracking(
             k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
             if (nAtt == 3) {
                 children &= Q[i]->materialize_node_3(roots[i],rank_vector[i]); // entero de 32 bits, y se hace &,
-            }else if (nAtt == 4)
+            } else if (nAtt == 4)
                 children &= Q[i]->materialize_node_4(roots[i], rank_vector[i]);
             else if (nAtt == 5)
                 children &= Q[i]->materialize_node_5(roots[i], rank_vector[i]);
         }
+
         // number of 1s in the children
         children_to_recurse_size = bits::cnt((uint64_t) children);
         i = 0;
@@ -343,9 +344,9 @@ bool AND_partial_dfuds_backtracking(
         uint16_t child;
         uint16_t next_level = cur_level + 1;
 
+        uint64_t root_temp[children_to_recurse_size][16 /*nQ*/];
+
 		std::vector<std::pair<uint64_t, uint64_t>> order_to_traverse;
-        // veo cada hijo en común que tiene el nodo actual
-        uint64_t root_temp[children_to_recurse_size][nQ];
 		uint256_t newPath[children_to_recurse_size];
         for (i = 0; i < children_to_recurse_size; ++i) {
             child = children_to_recurse[i]; // the position of the 1s in children
