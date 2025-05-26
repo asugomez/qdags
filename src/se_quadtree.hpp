@@ -254,6 +254,8 @@ public:
 
         build_from_edges(edges, grid_side, __k, __d);
         ref_count = 1;
+
+		uint64_t init = 0, end = 0;
     }
 
 
@@ -350,7 +352,7 @@ public:
     }
 
     inline uint64_t rank(uint16_t level, uint64_t node) { // number of 1s in path[level][0,node-1]
-        if(bv[level].size() == node)
+        if(bv[level].size() == node) // border case --> at the end of the level
             return bv[level].n_ones();
         return bv[level].rank(node); //bv[level].u
     }
@@ -630,6 +632,10 @@ public:
      * get_num_leaves(2,8) --> 1
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node){
+		if(level > getHeight()-1){
+			cout << "error in get num leaves (louds)" << endl;
+			exit(1);
+		}
         uint64_t n_children;
         uint64_t children_array[k_d];
         get_children(level,node, children_array,n_children);
@@ -696,7 +702,11 @@ public:
      *
      */
     bool get_range_leaves(uint16_t level, uint64_t node, uint64_t& init, uint64_t& end){
-        uint64_t n_children;
+        if(level > getHeight()-1){
+			cout << "error in get range leaves (louds)" << endl;
+			exit(1);
+		}
+		uint64_t n_children;
         uint64_t children_array[k_d];
         get_children(level,node, children_array,n_children);
         if(level == getHeight()-1){

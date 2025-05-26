@@ -285,17 +285,34 @@ public:
 
 
     // we need the number of 1s of the level (until the node position)
+	/**
+	 *
+	 * @param node the node in the bitvector B
+	 * @param rank_vector
+	 * @return
+	 */
     inline uint32_t materialize_node_3(uint64_t node, uint64_t *rank_vector) {
         // get the number of 1s of that level
         return tab_extend_3[Q->get_node(node, rank_vector)];
     }
 
-
+	/**
+	 *
+	 * @param node the node in the bitvector B
+	 * @param rank_vector
+	 * @return
+	 */
     inline uint32_t materialize_node_4(uint64_t node, uint64_t *rank_vector) {
         return tab_extend_4[Q->get_node(node, rank_vector)];
     }
 
 
+	/**
+	 *
+	 * @param node the node in the bitvector B
+	 * @param rank_vector
+	 * @return
+	 */
     inline uint32_t materialize_node_5(uint64_t node, uint64_t *rank_vector) {
         return tab_extend_5[Q->get_node(node, rank_vector)];
     }
@@ -352,7 +369,7 @@ public:
      */
     uint64_t get_index_pri(uint64_t node, uint64_t t){
         uint64_t ind = Q->get_rank_node_child(node, t);
-        return Q->leaf_rank(Q->child(node, ind+1));
+		return Q->leaf_rank(node) + ind;
     }
 
 

@@ -410,10 +410,12 @@ public:
      * @param node_v
      * @param t the t-th child (first child should be t=1)
      * @return The t-th child of node v, if it exists
-     * Asuming t <= children(node_v)
+     * Asuming t < children(node_v)
      */
     size_type_bv child(size_type_bv node_v, size_type_bv t) const{
-        return bp_b.find_close(succ_zero(node_v) - t) + 1;
+		// TODO: check this
+		// t = t+1 to work, the index here starts in 1, therefore we have to add 1
+        return bp_b.find_close(succ_zero(node_v) - t - 1) + 1;
     }
 
     /**
@@ -632,7 +634,14 @@ public:
      * If the node is 1001, and t = 3, the index will be 1
      */
     uint64_t get_rank_node_child(uint64_t node, uint64_t t){
-        return bp_b.rank(node+t) - bp_b.rank(node);
+		if(k_d == 2)
+			return bits::cnt((uint64_t) get_node_last_level(node)<<(k_d-(t+1)) & 3)-1;
+		else if(k_d == 4)
+			return bits::cnt((uint64_t) get_node_last_level(node)<<(k_d-(t+1)) & 15)-1;
+		else{
+			cout << "k_d not supported";
+			exit(1);
+		}
     }
 
 

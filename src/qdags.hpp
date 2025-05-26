@@ -494,8 +494,8 @@ public:
      * @return the index of the priority of that node.
      * Assume the node is in the last level of the tree.
      */
-    inline uint64_t get_index_pri(uint64_t node){
-        return rank(getHeight()-1, node);
+    inline uint64_t get_index_pri(uint64_t parent, uint64_t t){
+        return rank(getHeight()-1, parent+t);
     }
 
     void test_rank(){
