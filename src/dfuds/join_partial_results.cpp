@@ -89,12 +89,10 @@ bool AND_partial_dfuds(
 			// process the tuples
 		else {
 			uint64_t rank_vector[16 /*nQ*/][64];
-
 			for (i = 0; i < nQ && children; ++i) {
 				k_d[i] = Q[i]->getKD(); // k^d del i-esimo quadtree original
 				if (nAtt == 3) {
-					children &= Q[i]->materialize_node_3(tupleQdags.roots[i],
-														 rank_vector[i]); // entero de 32 bits, y se hace &,
+					children &= Q[i]->materialize_node_3(tupleQdags.roots[i],rank_vector[i]); // entero de 32 bits, y se hace &,
 				} else if (nAtt == 4)
 					children &= Q[i]->materialize_node_4(tupleQdags.roots[i], rank_vector[i]);
 				else if (nAtt == 5)
