@@ -1,18 +1,24 @@
 #!/bin/bash
-# ./runqueries-$file-bfs-sorted.sh > ../../../outputs/ranked/louds/backtracking/$file.txt
-# run tests for each type_fun and each k
-for type_fun in 0; do
+
+for type_fun in 0 1; do
   chmod a+x *.sh
-  data_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-nodes.csv"
-  # echo type fun
+  time_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-time.csv"
+  nodes_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-nodes.csv"
+
   echo "type_fun : $type_fun"
-  echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" >> $data_csv
+
+  # CSV headers
+  echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" > "$time_csv"
+  echo "k;j3;j4;p2;p3;p4;s1;s2;s3;s4;t2;t3;t4;ti2;ti3;ti4;tr1;tr2" > "$nodes_csv"
+
   for k in 1 10 100 1000; do
     # echo k
-    echo "size queue: $k"
-    printf "$k;" >> $data_csv
+    echo "k: $k"
+    printf "$k;" >> "$time_csv"
+    printf "$k;" >> "$nodes_csv"
+
     for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
-      #get the number of datasets for each query
+      # get the number of datasets for each query
       echo "file: $file"
       read -r t1 t2 t3 t4 <<< "$(awk 'NR==1 {print $2 " " $3 " " $4 " " $5 }' ./runqueries-$file-bfs-sorted.sh)"
 
@@ -46,34 +52,45 @@ for type_fun in 0; do
         count=$(($count + 1))
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/ranked/louds/backtracking/$file-f$type_fun-k$k-nodes.txt"
-
+      results_file="../../../outputs/ranked/louds/backtracking/$file-f$type_fun-k$k-results.txt"
       chmod +x $output_file
 
+      # Ejecutar una o más veces (aquí solo una)
       $output_file >> $results_file
 
-      # Calculate the mean of hexadecimal numbers
+
+      # Crear archivos temporales para nodos (a1 = hex, odd lines) y tiempo (a2 = float, even lines)
+      nodes_file=$(mktemp)
+      times_file=$(mktemp)
+
+      awk 'NR % 2 == 1 { print }' "$results_file" > "$nodes_file"
+      awk 'NR % 2 == 0 { print }' "$results_file" > "$times_file"
+
+      ## Calcular media de nodos (hexadecimal)
       sum=0
       count=0
-
       while IFS= read -r hex_number || [ -n "$hex_number" ]; do
-        # Convert the hexadecimal number to decimal
-        decimal_value=$((0x$hex_number))
+        decimal_value=$((16#$hex_number))
         sum=$((sum + decimal_value))
         count=$((count + 1))
-      done < "$results_file"
+      done < "$nodes_file"
 
-      # Calculate mean and handle division by zero
       if [ $count -gt 0 ]; then
-        mean=$((sum / count))
+        mean_nodes=$((sum / count))
       else
-        mean=0
+        mean_nodes=0
       fi
 
-      # Calculate mean using awk
-#      mean=$(awk '{ suma += $(('0'x1)) } END { print suma / NR }' "$results_file")
-      printf "$mean;" >> $data_csv
+      ## Calcular media de tiempo (flotante)
+      mean_time=$(awk '{sum += $1} END {if (NR > 0) printf "%.6f", sum / NR; else print 0}' "$times_file")
+
+      ## Escribir a CSV
+      printf "$mean_time;" >> "$time_csv"
+      printf "$mean_nodes;" >> "$nodes_csv"
+
+      rm "$nodes_file" "$times_file"
     done
-    echo "" >> $data_csv
+    echo "" >> "$time_csv"
+    echo "" >> "$nodes_csv"
   done
 done
