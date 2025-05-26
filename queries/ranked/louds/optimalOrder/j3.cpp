@@ -82,8 +82,9 @@ int main(int argc, char** argv)
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
     
-    uint64_t grid_side = 52000000; // es como +infty para wikidata 
-    
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
+//	uint64_t grid_side = 8;
+
     //cout << "R" << endl;
     qdag qdag_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdags
     //cout << "S" << endl;
@@ -111,7 +112,7 @@ int main(int argc, char** argv)
     }
 
     // get number of priorities of each file
-    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+	uint64_t number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
     std::string line;
     while(std::getline(data_file_R, line))
         ++number_of_lines_R;
@@ -131,8 +132,8 @@ int main(int argc, char** argv)
     data_file_T.seekg(0, std::ios::beg);
 
     // put the priorities in the int_vector
-    int value;
-    int i=0;
+    uint64_t value;
+	uint64_t i=0;
     while(data_file_R >> value){
         priorities_R[i]=value;
         i++;
@@ -156,22 +157,19 @@ int main(int argc, char** argv)
     uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
     int64_t k = argv[8] ? atoi(argv[8]) : 1000;
     vector<rmq_succinct_sct<false>> rMq;
-    for(uint64_t i = 0; i < Q.size(); i++)
-        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    for(uint64_t j = 0; j < Q.size(); j++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[j]));
     vector<uint256_t> results_ranked_louds;
 
     high_resolution_clock::time_point start, stop;
     double total_time = 0.0;       
     duration<double> time_span;
 
-   // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-//    multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds,nodes_visited);  // warmup join -> activar el caché
-    results_ranked_louds.clear();
 	uint256_t nodes_visited = 0;
+    results_ranked_louds.clear();
     start = high_resolution_clock::now();
 
     multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds,nodes_visited);
-//	multiJoinRankedResults(Q, true, k, type_fun, p, rMq, results_ranked_louds);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);

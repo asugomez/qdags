@@ -82,7 +82,8 @@ int main(int argc, char** argv)
     std::vector<std::vector<uint64_t>>* rel_S = read_relation(strRel_S, att_S.size());
     std::vector<std::vector<uint64_t>>* rel_T = read_relation(strRel_T, att_T.size());
     
-    uint64_t grid_side = 52000000; // es como +infty para wikidata 
+    uint64_t grid_side = 52000000; // es como +infty para wikidata
+//	uint64_t grid_side = 8;
     
     //cout << "R" << endl;
     qdag_dfuds qdag_dfuds_rel_R(*rel_R, att_R, grid_side, 2, att_R.size()); // construyo los qdag_dfudss
@@ -111,7 +112,7 @@ int main(int argc, char** argv)
     }
 
     // get number of priorities of each file
-    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    uint64_t number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
     std::string line;
     while(std::getline(data_file_R, line))
         ++number_of_lines_R;
@@ -122,6 +123,7 @@ int main(int argc, char** argv)
     int_vector<> priorities_R(number_of_lines_R,0);
     int_vector<> priorities_S(number_of_lines_S,0);
     int_vector<> priorities_T(number_of_lines_T,0);
+
     data_file_R.clear();
     data_file_R.seekg(0, std::ios::beg);
     data_file_S.clear();
@@ -130,8 +132,8 @@ int main(int argc, char** argv)
     data_file_T.seekg(0, std::ios::beg);
 
     // put the priorities in the int_vector
-    int value;
-    int i=0;
+    uint64_t value;
+	uint64_t i=0;
     while(data_file_R >> value){
         priorities_R[i]=value;
         i++;
@@ -156,8 +158,8 @@ int main(int argc, char** argv)
     int64_t k = argv[8] ? atoi(argv[8]) : 1000;
 
     vector<rmq_succinct_sct<false>> rMq;
-    for(uint64_t i = 0; i < Q.size(); i++)
-        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    for(uint64_t j = 0; j < Q.size(); j++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[j]));
     vector<uint256_t> results_ranked_louds;
 
     high_resolution_clock::time_point start, stop;
@@ -165,14 +167,9 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
 	uint256_t nodes_visited = 0;
-   // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-//    multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds, nodes_visited);  // warmup join -> activar el caché
-
 	results_ranked_louds.clear();
-//	nodes_visited = 0;
 	start = high_resolution_clock::now();
 
-//	multiJoinRankedResultsDfuds(Q, true, k, type_fun,p,rMq,results_ranked_louds);
     multiJoinRankedResultsDfuds(Q, true, k, type_fun, p, rMq, results_ranked_louds, nodes_visited);
 
     stop = high_resolution_clock::now();
@@ -183,6 +180,4 @@ int main(int argc, char** argv)
     
     return 0;
 
-    // en runquery le paso cada una de las 3 tablas
-    // no entiendo los valores de las tablas, aah si son el mismo numero entonces se comparte, pero como
 }

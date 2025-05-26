@@ -66,6 +66,11 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char** argv)
 {
+	if (argc < 9) {
+		std::cerr << "Usage: " << argv[0] << " relR relS relT prioR prioS prioT type_fun size_queue" << std::endl;
+		return 1;
+	}
+
     // 3 tablas R, S y T
     qdag_dfuds::att_set att_R; // R(Y,X)
     qdag_dfuds::att_set att_S; // S(Z,X)
@@ -111,7 +116,7 @@ int main(int argc, char** argv)
     }
 
     // get number of priorities of each file
-    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+    uint64_t number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
     std::string line;
     while(std::getline(data_file_R, line))
         ++number_of_lines_R;
@@ -132,8 +137,8 @@ int main(int argc, char** argv)
 
 
     // put the priorities in the int_vector
-    int value;
-    int i=0;
+	uint64_t value;
+	uint64_t i=0;
     while(data_file_R >> value){
         priorities_R[i]=value;
         i++;
@@ -156,8 +161,8 @@ int main(int argc, char** argv)
 
     uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
     vector<rmq_succinct_sct<false>> rMq;
-    for(uint64_t i = 0; i < Q.size(); i++)
-        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    for(uint64_t j = 0; j < Q.size(); j++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[j]));
     int64_t size_queue = argv[8] ? atoi(argv[8]) : 1000;
     priority_queue<qdagResults> results_ranked_louds_back;
 
@@ -166,23 +171,19 @@ int main(int argc, char** argv)
     duration<double> time_span;
 
 	uint256_t nodes_visited = 0;
-   // se está ejecutando en paralelo, pero se puede modificar para usar el multiJoin
-//    multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);  // warmup join -> activar el caché
-
     results_ranked_louds_back = priority_queue<qdagResults>();
 
-//	nodes_visited  = 0;
 
     start = high_resolution_clock::now();
 
-    multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
+    multiJoinRankedResultsDfudsBacktracking(Q, true, type_fun, size_queue, p, rMq, results_ranked_louds_back,nodes_visited);
 //	multiJoinRankedResultsDfudsBacktracking(Q, type_fun, size_queue, p, rMq, results_ranked_louds_back);
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
-//    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
+    cout << /*"Multiway Join ended in " <<*/ total_time /*<< " seconds"*/ << endl;
     
     return 0;
 

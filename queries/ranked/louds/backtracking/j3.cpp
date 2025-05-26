@@ -66,7 +66,13 @@ uint64_t maximum_in_table(std::vector<std::vector<uint64_t>> &table, uint16_t n_
 
 int main(int argc, char** argv)
 {
-    // 3 tablas R, S y T
+
+	if (argc < 9) {
+		std::cerr << "Usage: " << argv[0] << " relR relS relT prioR prioS prioT type_fun size_queue" << std::endl;
+		return 1;
+	}
+
+	// 3 tablas R, S y T
     qdag::att_set att_R; // R(Y,X)
     qdag::att_set att_S; // S(Z,X)
     qdag::att_set att_T; // T(X,V)
@@ -112,7 +118,7 @@ int main(int argc, char** argv)
     }
 
     // get number of priorities of each file
-    int number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
+	uint64_t number_of_lines_R = 0, number_of_lines_S = 0, number_of_lines_T = 0;
     std::string line;
     while(std::getline(data_file_R, line))
         ++number_of_lines_R;
@@ -132,8 +138,8 @@ int main(int argc, char** argv)
     data_file_T.seekg(0, std::ios::beg);
 
     // put the priorities in the int_vector
-    int value;
-    int i=0;
+	uint64_t value;
+	uint64_t i=0;
     while(data_file_R >> value){
         priorities_R[i]=value;
         i++;
@@ -156,8 +162,8 @@ int main(int argc, char** argv)
 
     uint8_t type_fun = argv[7] ? atoi(argv[7]) : 1;
     vector<rmq_succinct_sct<false>> rMq;
-    for(uint64_t i = 0; i < Q.size(); i++)
-        rMq.push_back(rmq_succinct_sct<false>(&p[i]));
+    for(uint64_t j = 0; j < Q.size(); j++)
+        rMq.push_back(rmq_succinct_sct<false>(&p[j]));
     int64_t size_queue = argv[8] ? atoi(argv[8]) : 1000;
     priority_queue<qdagResults> results_ranked_louds_back;
 
