@@ -142,7 +142,7 @@ int main(int argc, char** argv)
 
 	uint256_t nodes_visited = 0;
 
-//    Join_Result = multiJoin(Q, true, k,nodes_visited);  // cache warmup
+//    Join_Result = multiJoin(Q, false, k,nodes_visited);;  // cache warmup
 
 //	nodes_visited = 0;
 	start = high_resolution_clock::now();
