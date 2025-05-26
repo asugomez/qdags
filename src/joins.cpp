@@ -174,7 +174,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
          vector<uint64_t> bv[], uint64_t last_pos[], uint64_t nAtt,
          bool bounded_result, uint64_t UPPER_BOUND,//){
 		 uint256_t& nodes_visited) {
-//	nodes_visited+=1;
+	nodes_visited +=1; // count the tuple
     // number of children of the qdag (extended)
     uint64_t p = Q[0]->nChildren();
     bool result = false;
@@ -191,7 +191,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
     // in the last level we materialize the node
     if (cur_level == max_level){
-		nodes_visited +=1; // count the tuple
         for (i = 0; i < nQ && children; ++i){
             //k_d[i] = Q[i]->getKD();
             if (nAtt == 3)
@@ -220,7 +219,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         // we do not call recursively the function AND as we do in the other levels
         for (i = 0; i < children_to_recurse_size; ++i){
-//			nodes_visited +=1; // count the final leaves --> for RANKED
+			nodes_visited +=1; // count the final leaves --> for RANKED
             child = children_to_recurse[i];
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1);
@@ -237,7 +236,6 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
         if (p - last_child > 1)
             last_pos[cur_level] += (p - last_child - 1);
     } else {
-		nodes_visited +=1; // count the tuple
         uint64_t root_temp[16 /*nQ*/]; // CUIDADO, solo hasta 16 relaciones por query
         uint64_t rank_vector[16][64];
 
