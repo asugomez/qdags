@@ -114,8 +114,8 @@ int main(int argc, char** argv)
     start = high_resolution_clock::now();
 
 
-    lqdag* join = compute_dfs_join(Q, k , res);
-//    lqdag* join = compute_dfs_join_nodes_visited(Q, k , res, nodes_visited);
+//    lqdag* join = compute_dfs_join(Q, k , res);
+    lqdag* join = compute_dfs_join_nodes_visited(Q, k , res, nodes_visited);
 
 
     stop = high_resolution_clock::now();
