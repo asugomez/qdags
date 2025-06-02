@@ -2,8 +2,8 @@
 
 for type_fun in 0 1; do
   chmod a+x *.sh
-  time_csv="../../../outputs/ranked/dfuds/backtracking/results-f$type_fun-time.csv"
-  nodes_csv="../../../outputs/ranked/dfuds/backtracking/results-f$type_fun-nodes.csv"
+  time_csv="../../../outputs/ranked/dfuds/backtracking/results-f$type_fun-time-pri-exp.csv"
+  nodes_csv="../../../outputs/ranked/dfuds/backtracking/results-f$type_fun-nodes-pri-exp.csv"
 
   echo "type_fun : $type_fun"
 
@@ -33,10 +33,10 @@ for type_fun in 0 1; do
           line="${line% }"  # Remove the trailing space
         fi
         # Append priorities; type_fun and k to the end of the line
-        priority_file_1="../../../../data/priorities/$file/pri1-$count"
-        priority_file_2="../../../../data/priorities/$file/pri2-$count"
-        priority_file_3="../../../../data/priorities/$file/pri3-$count"
-        priority_file_4="../../../../data/priorities/$file/pri4-$count"
+        priority_file_1="../../../../data/pri-exp/$file/pri1-$count"
+        priority_file_2="../../../../data/pri-exp/$file/pri2-$count"
+        priority_file_3="../../../../data/pri-exp/$file/pri3-$count"
+        priority_file_4="../../../../data/pri-exp/$file/pri4-$count"
         modified_line=""
         # Check if the i-th argument is emtpy
         if [ -z "$t2" ]; then # 1 dataset
@@ -52,7 +52,7 @@ for type_fun in 0 1; do
         count=$(($count + 1))
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/ranked/dfuds/backtracking/$file-f$type_fun-k$k-results.txt"
+      results_file="../../../outputs/ranked/dfuds/backtracking/$file-f$type_fun-k$k-results-pri-exp.txt"
       chmod +x $output_file
 
       # Ejecutar una o más veces (aquí solo una)
