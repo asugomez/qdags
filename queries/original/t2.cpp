@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 	start = high_resolution_clock::now();
 
 //	multiJoin(Q, true, k);
-	multiJoin(Q, false, k,nodes_visited);;
+	multiJoin(Q, true, k,nodes_visited);;
 
 	stop = high_resolution_clock::now();
 	time_span = duration_cast<microseconds>(stop - start);
