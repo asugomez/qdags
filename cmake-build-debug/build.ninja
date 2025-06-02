@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_qdags: phony || CMakeFiles/qdags.dir
 
 build CMakeFiles/qdags.dir/main.cpp.o: CXX_COMPILER__qdags_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/main.cpp || cmake_object_order_depends_target_qdags
   DEP_FILE = CMakeFiles/qdags.dir/main.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/qdags.dir
   OBJECT_FILE_DIR = CMakeFiles/qdags.dir
@@ -65,7 +65,7 @@ build CMakeFiles/qdags.dir/main.cpp.o: CXX_COMPILER__qdags_unscanned_Debug /User
 # Link the executable qdags
 
 build qdags: CXX_EXECUTABLE_LINKER__qdags_Debug CMakeFiles/qdags.dir/main.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/qdags.dir
@@ -85,7 +85,7 @@ build cmake_object_order_depends_target_j3-original: phony || CMakeFiles/j3-orig
 
 build CMakeFiles/j3-original.dir/queries/original/j3.cpp.o: CXX_COMPILER__j3-original_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/original/j3.cpp || cmake_object_order_depends_target_j3-original
   DEP_FILE = CMakeFiles/j3-original.dir/queries/original/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-original.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-original.dir/queries/original
@@ -99,7 +99,7 @@ build CMakeFiles/j3-original.dir/queries/original/j3.cpp.o: CXX_COMPILER__j3-ori
 # Link the executable j3-original
 
 build j3-original: CXX_EXECUTABLE_LINKER__j3-original_Debug CMakeFiles/j3-original.dir/queries/original/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-original.dir
@@ -119,7 +119,7 @@ build cmake_object_order_depends_target_j3-partial-louds-back: phony || CMakeFil
 
 build CMakeFiles/j3-partial-louds-back.dir/queries/partial/louds/backtracking/j3.cpp.o: CXX_COMPILER__j3-partial-louds-back_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/partial/louds/backtracking/j3.cpp || cmake_object_order_depends_target_j3-partial-louds-back
   DEP_FILE = CMakeFiles/j3-partial-louds-back.dir/queries/partial/louds/backtracking/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-partial-louds-back.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-partial-louds-back.dir/queries/partial/louds/backtracking
@@ -133,7 +133,7 @@ build CMakeFiles/j3-partial-louds-back.dir/queries/partial/louds/backtracking/j3
 # Link the executable j3-partial-louds-back
 
 build j3-partial-louds-back: CXX_EXECUTABLE_LINKER__j3-partial-louds-back_Debug CMakeFiles/j3-partial-louds-back.dir/queries/partial/louds/backtracking/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-partial-louds-back.dir
@@ -153,7 +153,7 @@ build cmake_object_order_depends_target_j3-partial-louds-optOrder: phony || CMak
 
 build CMakeFiles/j3-partial-louds-optOrder.dir/queries/partial/louds/optimalOrder/j3.cpp.o: CXX_COMPILER__j3-partial-louds-optOrder_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/partial/louds/optimalOrder/j3.cpp || cmake_object_order_depends_target_j3-partial-louds-optOrder
   DEP_FILE = CMakeFiles/j3-partial-louds-optOrder.dir/queries/partial/louds/optimalOrder/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-partial-louds-optOrder.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-partial-louds-optOrder.dir/queries/partial/louds/optimalOrder
@@ -167,7 +167,7 @@ build CMakeFiles/j3-partial-louds-optOrder.dir/queries/partial/louds/optimalOrde
 # Link the executable j3-partial-louds-optOrder
 
 build j3-partial-louds-optOrder: CXX_EXECUTABLE_LINKER__j3-partial-louds-optOrder_Debug CMakeFiles/j3-partial-louds-optOrder.dir/queries/partial/louds/optimalOrder/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-partial-louds-optOrder.dir
@@ -187,7 +187,7 @@ build cmake_object_order_depends_target_j3-partial-dfuds-back: phony || CMakeFil
 
 build CMakeFiles/j3-partial-dfuds-back.dir/queries/partial/dfuds/backtracking/j3.cpp.o: CXX_COMPILER__j3-partial-dfuds-back_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/partial/dfuds/backtracking/j3.cpp || cmake_object_order_depends_target_j3-partial-dfuds-back
   DEP_FILE = CMakeFiles/j3-partial-dfuds-back.dir/queries/partial/dfuds/backtracking/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-partial-dfuds-back.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-partial-dfuds-back.dir/queries/partial/dfuds/backtracking
@@ -201,7 +201,7 @@ build CMakeFiles/j3-partial-dfuds-back.dir/queries/partial/dfuds/backtracking/j3
 # Link the executable j3-partial-dfuds-back
 
 build j3-partial-dfuds-back: CXX_EXECUTABLE_LINKER__j3-partial-dfuds-back_Debug CMakeFiles/j3-partial-dfuds-back.dir/queries/partial/dfuds/backtracking/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-partial-dfuds-back.dir
@@ -221,7 +221,7 @@ build cmake_object_order_depends_target_j3-partial-dfuds-optOrder: phony || CMak
 
 build CMakeFiles/j3-partial-dfuds-optOrder.dir/queries/partial/dfuds/optimalOrder/j3.cpp.o: CXX_COMPILER__j3-partial-dfuds-optOrder_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/partial/dfuds/optimalOrder/j3.cpp || cmake_object_order_depends_target_j3-partial-dfuds-optOrder
   DEP_FILE = CMakeFiles/j3-partial-dfuds-optOrder.dir/queries/partial/dfuds/optimalOrder/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-partial-dfuds-optOrder.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-partial-dfuds-optOrder.dir/queries/partial/dfuds/optimalOrder
@@ -235,7 +235,7 @@ build CMakeFiles/j3-partial-dfuds-optOrder.dir/queries/partial/dfuds/optimalOrde
 # Link the executable j3-partial-dfuds-optOrder
 
 build j3-partial-dfuds-optOrder: CXX_EXECUTABLE_LINKER__j3-partial-dfuds-optOrder_Debug CMakeFiles/j3-partial-dfuds-optOrder.dir/queries/partial/dfuds/optimalOrder/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-partial-dfuds-optOrder.dir
@@ -255,7 +255,7 @@ build cmake_object_order_depends_target_j3-ranked-louds-backtracking: phony || C
 
 build CMakeFiles/j3-ranked-louds-backtracking.dir/queries/ranked/louds/backtracking/j3.cpp.o: CXX_COMPILER__j3-ranked-louds-backtracking_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/ranked/louds/backtracking/j3.cpp || cmake_object_order_depends_target_j3-ranked-louds-backtracking
   DEP_FILE = CMakeFiles/j3-ranked-louds-backtracking.dir/queries/ranked/louds/backtracking/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-ranked-louds-backtracking.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-ranked-louds-backtracking.dir/queries/ranked/louds/backtracking
@@ -269,7 +269,7 @@ build CMakeFiles/j3-ranked-louds-backtracking.dir/queries/ranked/louds/backtrack
 # Link the executable j3-ranked-louds-backtracking
 
 build j3-ranked-louds-backtracking: CXX_EXECUTABLE_LINKER__j3-ranked-louds-backtracking_Debug CMakeFiles/j3-ranked-louds-backtracking.dir/queries/ranked/louds/backtracking/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-ranked-louds-backtracking.dir
@@ -289,7 +289,7 @@ build cmake_object_order_depends_target_j3-ranked-louds-optOrder: phony || CMake
 
 build CMakeFiles/j3-ranked-louds-optOrder.dir/queries/ranked/louds/optimalOrder/j3.cpp.o: CXX_COMPILER__j3-ranked-louds-optOrder_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/ranked/louds/optimalOrder/j3.cpp || cmake_object_order_depends_target_j3-ranked-louds-optOrder
   DEP_FILE = CMakeFiles/j3-ranked-louds-optOrder.dir/queries/ranked/louds/optimalOrder/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-ranked-louds-optOrder.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-ranked-louds-optOrder.dir/queries/ranked/louds/optimalOrder
@@ -303,7 +303,7 @@ build CMakeFiles/j3-ranked-louds-optOrder.dir/queries/ranked/louds/optimalOrder/
 # Link the executable j3-ranked-louds-optOrder
 
 build j3-ranked-louds-optOrder: CXX_EXECUTABLE_LINKER__j3-ranked-louds-optOrder_Debug CMakeFiles/j3-ranked-louds-optOrder.dir/queries/ranked/louds/optimalOrder/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-ranked-louds-optOrder.dir
@@ -323,7 +323,7 @@ build cmake_object_order_depends_target_j3-ranked-dfuds-backtracking: phony || C
 
 build CMakeFiles/j3-ranked-dfuds-backtracking.dir/queries/ranked/dfuds/backtracking/j3.cpp.o: CXX_COMPILER__j3-ranked-dfuds-backtracking_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/ranked/dfuds/backtracking/j3.cpp || cmake_object_order_depends_target_j3-ranked-dfuds-backtracking
   DEP_FILE = CMakeFiles/j3-ranked-dfuds-backtracking.dir/queries/ranked/dfuds/backtracking/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-ranked-dfuds-backtracking.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-ranked-dfuds-backtracking.dir/queries/ranked/dfuds/backtracking
@@ -337,7 +337,7 @@ build CMakeFiles/j3-ranked-dfuds-backtracking.dir/queries/ranked/dfuds/backtrack
 # Link the executable j3-ranked-dfuds-backtracking
 
 build j3-ranked-dfuds-backtracking: CXX_EXECUTABLE_LINKER__j3-ranked-dfuds-backtracking_Debug CMakeFiles/j3-ranked-dfuds-backtracking.dir/queries/ranked/dfuds/backtracking/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-ranked-dfuds-backtracking.dir
@@ -357,7 +357,7 @@ build cmake_object_order_depends_target_j3-ranked-dfuds-optOrder: phony || CMake
 
 build CMakeFiles/j3-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/j3.cpp.o: CXX_COMPILER__j3-ranked-dfuds-optOrder_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/ranked/dfuds/optimalOrder/j3.cpp || cmake_object_order_depends_target_j3-ranked-dfuds-optOrder
   DEP_FILE = CMakeFiles/j3-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-ranked-dfuds-optOrder.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder
@@ -371,7 +371,7 @@ build CMakeFiles/j3-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/
 # Link the executable j3-ranked-dfuds-optOrder
 
 build j3-ranked-dfuds-optOrder: CXX_EXECUTABLE_LINKER__j3-ranked-dfuds-optOrder_Debug CMakeFiles/j3-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-ranked-dfuds-optOrder.dir
@@ -391,7 +391,7 @@ build cmake_object_order_depends_target_t4-ranked-dfuds-optOrder: phony || CMake
 
 build CMakeFiles/t4-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/t4.cpp.o: CXX_COMPILER__t4-ranked-dfuds-optOrder_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/ranked/dfuds/optimalOrder/t4.cpp || cmake_object_order_depends_target_t4-ranked-dfuds-optOrder
   DEP_FILE = CMakeFiles/t4-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/t4.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/t4-ranked-dfuds-optOrder.dir
   OBJECT_FILE_DIR = CMakeFiles/t4-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder
@@ -405,7 +405,7 @@ build CMakeFiles/t4-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/
 # Link the executable t4-ranked-dfuds-optOrder
 
 build t4-ranked-dfuds-optOrder: CXX_EXECUTABLE_LINKER__t4-ranked-dfuds-optOrder_Debug CMakeFiles/t4-ranked-dfuds-optOrder.dir/queries/ranked/dfuds/optimalOrder/t4.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/t4-ranked-dfuds-optOrder.dir
@@ -425,7 +425,7 @@ build cmake_object_order_depends_target_j3-lqdags: phony || CMakeFiles/j3-lqdags
 
 build CMakeFiles/j3-lqdags.dir/queries/lqdags/j3.cpp.o: CXX_COMPILER__j3-lqdags_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/queries/lqdags/j3.cpp || cmake_object_order_depends_target_j3-lqdags
   DEP_FILE = CMakeFiles/j3-lqdags.dir/queries/lqdags/j3.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/j3-lqdags.dir
   OBJECT_FILE_DIR = CMakeFiles/j3-lqdags.dir/queries/lqdags
@@ -439,7 +439,7 @@ build CMakeFiles/j3-lqdags.dir/queries/lqdags/j3.cpp.o: CXX_COMPILER__j3-lqdags_
 # Link the executable j3-lqdags
 
 build j3-lqdags: CXX_EXECUTABLE_LINKER__j3-lqdags_Debug CMakeFiles/j3-lqdags.dir/queries/lqdags/j3.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/j3-lqdags.dir
@@ -459,7 +459,7 @@ build cmake_object_order_depends_target_main: phony || CMakeFiles/main.dir
 
 build CMakeFiles/main.dir/main.cpp.o: CXX_COMPILER__main_unscanned_Debug /Users/asugomez/Documentos/Magister/Tesis/qdags/main.cpp || cmake_object_order_depends_target_main
   DEP_FILE = CMakeFiles/main.dir/main.cpp.o.d
-  FLAGS = -O3 -DNDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  FLAGS = -DDEBUG -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   INCLUDES = -I/opt/homebrew/include
   OBJECT_DIR = CMakeFiles/main.dir
   OBJECT_FILE_DIR = CMakeFiles/main.dir
@@ -473,7 +473,7 @@ build CMakeFiles/main.dir/main.cpp.o: CXX_COMPILER__main_unscanned_Debug /Users/
 # Link the executable main
 
 build main: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main.cpp.o
-  FLAGS = -O3 -DNDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
+  FLAGS = -DDEBUG -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -lsdsl  -ldivsufsort  -ldivsufsort64
   LINK_PATH = -L/opt/homebrew/lib
   OBJECT_DIR = CMakeFiles/main.dir
