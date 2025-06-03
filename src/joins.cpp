@@ -219,7 +219,7 @@ bool AND(qdag *Q[], uint64_t *roots, uint16_t nQ,
 
         // we do not call recursively the function AND as we do in the other levels
         for (i = 0; i < children_to_recurse_size; ++i){
-			nodes_visited +=1; // count the final leaves --> for RANKED
+//			nodes_visited +=1; // count the final leaves --> for RANKED
             child = children_to_recurse[i];
             if (child - last_child > 1)
                 last_pos[cur_level] += (child - last_child - 1);

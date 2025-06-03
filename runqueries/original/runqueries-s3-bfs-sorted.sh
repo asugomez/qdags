@@ -19,11 +19,11 @@
 ./s3 ../../data/all/prop-direct-P169 ../../data/all/prop-direct-P1151 ../../data/all/prop-direct-P1204 ../../data/all/prop-direct-P488
 ./s3 ../../data/all/prop-direct-P2868 ../../data/all/prop-direct-P264 ../../data/all/prop-direct-P159 ../../data/all/prop-direct-P551
 ./s3 ../../data/all/prop-direct-P194 ../../data/all/prop-direct-P263 ../../data/all/prop-direct-P159 ../../data/all/prop-direct-P36
-./s3 ../../data/all/prop-direct-P688 ../../data/all/prop-direct-P682 ../../data/all/prop-direct-P128 ../../data/all/prop-direct-P680
+#./s3 ../../data/all/prop-direct-P688 ../../data/all/prop-direct-P682 ../../data/all/prop-direct-P128 ../../data/all/prop-direct-P680
 ./s3 ../../data/all/prop-direct-P4908 ../../data/all/prop-direct-P840 ../../data/all/prop-direct-P1376 ../../data/all/prop-direct-P495
 ./s3 ../../data/all/prop-direct-P1049 ../../data/all/prop-direct-P740 ../../data/all/prop-direct-P2936 ../../data/all/prop-direct-P103
 ./s3 ../../data/all/prop-direct-P156 ../../data/all/prop-direct-P767 ../../data/all/prop-direct-P108 ../../data/all/prop-direct-P155
-./s3 ../../data/all/prop-direct-P58 ../../data/all/prop-direct-P69 ../../data/all/prop-direct-P140 ../../data/all/prop-direct-P750
+#./s3 ../../data/all/prop-direct-P58 ../../data/all/prop-direct-P69 ../../data/all/prop-direct-P140 ../../data/all/prop-direct-P750
 ./s3 ../../data/all/prop-direct-P1080 ../../data/all/prop-direct-P495 ../../data/all/prop-direct-P2936 ../../data/all/prop-direct-P1412
 ./s3 ../../data/all/prop-direct-P5138 ../../data/all/prop-direct-P286 ../../data/all/prop-direct-P3373 ../../data/all/prop-direct-P505
 ./s3 ../../data/all/prop-direct-P1411 ../../data/all/prop-direct-P664 ../../data/all/prop-direct-P136 ../../data/all/prop-direct-P101
