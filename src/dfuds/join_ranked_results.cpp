@@ -145,19 +145,19 @@ bool AND_ranked_dfuds(
 				// compute the weight of the tuple (ONLY if it's not a leaf)
 				// calculate the weight of the tuple
 				uint64_t init, end, priority_ith_node, min_idx;
-				bool success;
 				double total_weight = 0;
 				for (uint64_t j = 0; j < nQ; j++) {
 					// we store the parent node that corresponds in the original quadtree of each qdag
 					root_temp[j] = (rank_vector[j][Q[j]->getM(child)]); // new roots
-					success = Q[j]->get_range_leaves(root_temp[j],init,end);
-					if(!success){
-						cout << "error in get range leaves and_ranked dfuds" << endl;
-						exit(1);
+					if(Q[j]->get_weight_nodes(root_temp[j]) != 0)
+						priority_ith_node = Q[j]->get_weight_nodes(root_temp[j]);
+					else{
+						Q[j]->get_range_leaves(root_temp[j],init,end);
+						min_idx = rMq[j](init, end);
+						priority_ith_node = priorities[j][min_idx];
+						Q[j]->set_weight_nodes(root_temp[j], priority_ith_node); // store the weight of the node
 					}
-					min_idx = rMq[j](init, end);
-					priority_ith_node = priorities[j][min_idx];
-					
+
 					if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
 						total_weight += priority_ith_node;
 					else if (type_priority_fun == TYPE_FUN_PRI_MAX_DFUDS) { // max
@@ -415,18 +415,17 @@ AND_ranked_dfuds_backtracking(
             // compute the weight of the tuple
             double total_weight = 0;
 			uint64_t init, end, priority_ith_node, min_idx;
-			bool success;
             for (uint64_t j = 0; j < nQ; j++) {
                 root_temp[i][j] = (rank_vector[j][Q[j]->getM(child)]);
-                init = 0;
-                end = priorities[j].size()-1;
-                success = Q[j]->get_range_leaves(root_temp[i][j],init,end);
-                if(!success){
-                    cout << "error in get range leaves and_ranked_backtracking dfuds" << endl;
-                    exit(1);
-                }
-				min_idx = rMq[j](init, end);
-				priority_ith_node = priorities[j][min_idx];
+				if(Q[j]->get_weight_nodes(root_temp[i][j]) != 0)
+					priority_ith_node = Q[j]->get_weight_nodes(root_temp[i][j]);
+				else{
+					Q[j]->get_range_leaves(root_temp[i][j],init,end);
+					min_idx = rMq[j](init, end);
+					priority_ith_node = priorities[j][min_idx];
+					Q[j]->set_weight_nodes(root_temp[i][j], priority_ith_node); // store the weight of the node
+				}
+
 
                 if (type_priority_fun == TYPE_FUN_PRI_SUM_DFUDS) // sum
                     total_weight += priority_ith_node;

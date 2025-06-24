@@ -29,6 +29,8 @@ private:
     const bit_vector* bit_vector_b;
     asu::bp_support_sada_v2<> bp_b; // array B in pre-order with the description of each node 1^c 0, with c the number of children.
 
+//	uint64_t* weight_nodes;
+	vector<uint64_t> weight_nodes;
     uint16_t height;   // number of levels of the tree [0,..., height-1]
 
     uint8_t k; // k_d--tree
@@ -266,6 +268,7 @@ protected:
         // bitvectors
 //        bv_s = rank_bv_64(k_t_s);
         bv_s = k_t_s;
+		weight_nodes.resize(size_bv_s,0);
         bit_vector_b = new bit_vector(k_t_b);
 
         // construct bp
@@ -292,6 +295,7 @@ public:
     }
 
     ~se_quadtree_dfuds() {
+		// TODO!!
         ref_count--;
         //bit_vector_b
         //bp_b
@@ -446,6 +450,14 @@ public:
     size_type_bv leaf_num(size_type_bv node_v) const{
         return leaf_rank(bp_b.next_sibling(node_v)) - leaf_rank(node_v);
     }
+
+	uint64_t get_num_leaves(uint64_t node) {
+		if(weight_nodes[node] != 0)
+			return weight_nodes[node];
+		size_type_bv res = leaf_num(node);
+		weight_nodes[node] = res;
+		return res;
+	}
 
     // rank_0(B,v) (de B[0,v-1])
     size_type_bv rank_zero(size_type_bv node_v) const{
@@ -606,6 +618,14 @@ public:
             return bv_s.get_int(start_pos,2);
         }
     }
+
+	uint64_t get_weight_nodes(uint64_t node){
+		return weight_nodes[node];
+	}
+
+	void set_weight_nodes(uint64_t node, uint64_t res){
+		weight_nodes[node] = res;
+	}
 
     /**
      * Get the range of leaves in the last level of the tree that are descendants of the node.
