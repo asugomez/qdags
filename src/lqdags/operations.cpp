@@ -4,6 +4,7 @@
 
 #include "../lqdag.hpp"
 #include "formula_lqdag.hpp"
+#include "projection.hpp"
 
 // ---------- QUADTREE  ---------- //
 
@@ -119,24 +120,14 @@ lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPP
 	return join->completion_selection_dfs(pred,join->getMaxLevel(),0,UPPER_BOUND,results);
 }
 
+lqdag* lqdag_join(lqdag* l1, lqdag* l2){
+	// TODO: como es el join between two lqdags?
+	// DO we have to extend them first?
+}
 
+// ---------- DIFFERENCE ---------- //
 
-//lqdag* projection(){
-//    // TODO
-//}
-//
-//lqdag* semijoin(){
-//    // TODO
-//}
-//
-//lqdag* antijoin(){
-//    // TODO
-//}
-//
-//lqdag* division(){
-//    // TODO
-//}
-
+// TODO: finish diff --> implement (NOT!)
 //// (DIFF, L1(A), L2(A)) = (AND, L1, (NOT, L2))
 //lqdag* diff(qdag q1, qdag q2, bool bounded_result, uint64_t UPPER_BOUND) {
 //	subQuadtreeChild* subQ1 = new subQuadtreeChild{&q1, 0, 0};
@@ -150,4 +141,74 @@ lqdag* compute_dfs_selection_join(vector<qdag> &Q, predicate* pred, uint64_t UPP
 //	uint64_t p = std::pow(q1.getK(), q1.nAttr());
 //	return diff_res->completion(p, q1.getHeight()-1, 0, UPPER_BOUND, results);
 //}
+
+
+// ---------- PROJECTION ---------- //
+/**
+ * Projection of the first qdag of the vector Q
+ * @param Q
+ * @param attribute_set_A
+ * @param attribute_set_A_prime
+ * @return
+ */
+projection* projection_qdag(vector<qdag> &Q, att_set attribute_set_A, att_set attribute_set_A_prime){
+
+	qdag** arr_qdags = new qdag*[1];
+	arr_qdags[0] = &Q.at(0);
+
+	uint8_t k = Q.at(0).getK();
+	uint16_t max_level = Q.at(0).getHeight()-1;
+	uint64_t grid_side = Q.at(0).getGridSide();
+	formula_lqdag form = formula_lqdag(&Q.at(0), 0);
+	lqdag* lqdag_root = new lqdag{arr_qdags, &form, Q.size()}; // check LQDAG as leaf --> LQDAG -> QTREE
+
+	projection* new_proj = new projection(lqdag_root, attribute_set_A, attribute_set_A_prime);
+
+	return new_proj;
+}
+
+projection* projection_lqdag(lqdag* lqdag_pi, att_set attribute_set_A, att_set attribute_set_A_prime){
+	projection* new_proj = new projection(lqdag_pi, attribute_set_A, attribute_set_A_prime);
+	return new_proj;
+}
+
+/**
+ * Compute the semi join of L1 and L2
+ * (SEMIJOIN, L1(A1), L2(A2)) = (PROJECT, (JOIN, L1, L2), A1)
+ * @param lqdag_1
+ * @param lqdag_2
+ * @param attribute_set_A_lqdag_1
+ * @param attribute_set_A_lqdag_2
+ * @return
+ */
+projection* semijoin(lqdag* lqdag_1, lqdag* lqdag_2,  att_set attribute_set_A_lqdag_1, att_set attribute_set_A_lqdag_2){
+	lqdag* join_l1_l2 = lqdag_join(lqdag_1, lqdag_2);
+	// TODO: change first attribute by the attributes A1 and A2
+	projection* res = projection_lqdag(join_l1_l2, attribute_set_A_lqdag_1, attribute_set_A_lqdag_1);
+	return res;
+}
+
+projection* antijoin(lqdag* lqdag_1, lqdag* lqdag_2,  att_set attribute_set_A_lqdag_1, att_set attribute_set_A_lqdag_2){
+	// create NOT l2
+	// TODO: change lqdag_2 by NOT L2
+	lqdag* join_l1_l2 = lqdag_join(lqdag_1, lqdag_2);
+	// TODO: change first attribute by the attributes A1 and A2
+	projection* res = projection_lqdag(join_l1_l2, attribute_set_A_lqdag_1, attribute_set_A_lqdag_1);
+	return res;
+}
+
+lqdag* division(lqdag* lqdag_1, lqdag* lqdag_2,  att_set attribute_set_A_lqdag_1, att_set attribute_set_A_lqdag_2){
+	indexes diff; // A1 \ A2
+	std::sort(attribute_set_A_lqdag_1.begin(), attribute_set_A_lqdag_1.end());
+	std::sort(attribute_set_A_lqdag_2.begin(), attribute_set_A_lqdag_2.end());
+	set_difference(attribute_set_A_lqdag_1.begin(), attribute_set_A_lqdag_1.end(), attribute_set_A_lqdag_2.begin(), attribute_set_A_lqdag_2.end(),
+				   back_inserter(diff));
+
+	projection* proj_l1_prime = projection_lqdag(lqdag_1, attribute_set_A_lqdag_1, diff);
+
+	// TODO: join of a projection and a lqdag
+
+}
+
+
 

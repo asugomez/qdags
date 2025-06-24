@@ -72,6 +72,11 @@ public:
 		// destructor
 		~node_completion(){
 			if(lqdag_children != nullptr){
+				// TODO: check if this for is correct
+				for(uint64_t i = 0; i < n_children; i++){
+					if(lqdag_children[i] != nullptr)
+						delete lqdag_children[i];
+				}
 				delete[] lqdag_children;
 			}
 		}
@@ -79,11 +84,12 @@ public:
 
 
 private:
-	qdag** arr_qdags; // array of qdags
-    formula_lqdag *form_lqdag; // expression, syntax tree, formula of the lqdag (the same for its children)
-	position** pos_qdags; // each qdag will have a space in this vector with its position (level and coordinates)
+	qdag** arr_qdags = nullptr; // array of qdags
+    formula_lqdag *form_lqdag = nullptr; // expression, syntax tree, formula of the lqdag (the same for its children)
+	position** pos_qdags ; // each qdag will have a space in this vector with its position (level and coordinates)
 	node_completion* node_completion_lqdag; // children of the lqdag (computed)
 	uint64_t nQdags;
+	lqdag* lqdag_leaf = nullptr;
 	// TODO: see number for lqdags leaves
 
 
@@ -127,6 +133,18 @@ public:
 //		this->node_completion_lqdag->operator=(*completion_children_lqdag);
 		this->node_completion_lqdag = completion_children_lqdag;
 		this->nQdags = nQdags;
+	}
+
+	//lqdag(qdag** arr_qdags, formula_lqdag *form_lqdag, uin
+	// TODO: check this constructor
+	lqdag(lqdag* lqdag){
+		this->lqdag_leaf = lqdag;
+		this->arr_qdags = lqdag->arr_qdags;
+		this->form_lqdag = lqdag->form_lqdag;
+		this->form_lqdag->inc_ref_count();
+		this->pos_qdags = lqdag->pos_qdags;
+		this->node_completion_lqdag->operator=(*lqdag->node_completion_lqdag);
+		this->nQdags = lqdag->nQdags;
 	}
 
 	~lqdag(){
@@ -173,6 +191,10 @@ public:
 
 	node_completion* get_node_completion_lqdag(){
 		return this->node_completion_lqdag;
+	}
+
+	double val_node(){
+		return this->node_completion_lqdag->val_node;
 	}
 
 	double val_lqdag1(){
@@ -268,7 +290,6 @@ public:
 	 * @return a new lqdag that corresponds to the ith-child of the current lqdag.
 	 */
 	lqdag* get_child_lqdag(uint64_t ith_child){
-		// TODO: check empty and full, isnt it?
 		if(this->node_completion_lqdag->val_node == EMPTY_LEAF || this->node_completion_lqdag->val_node == FULL_LEAF)
 			return this;
 		// check if the ith_child has been computed
@@ -380,7 +401,7 @@ public:
 				return get_child_lqdag_aux(formula_pos->get_formula_lqdag1(), ith_child, m_pos_qdag);
 			}
 			default:
-				throw "error: value_lqdag non valid functor";
+				throw "error: get_child_lqdag_aux non valid functor";
 		}
 	}
 

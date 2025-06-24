@@ -19,6 +19,7 @@ target_link_libraries(qdags sdsl divsufsort divsufsort64)
 
 # ORIGINAL
 add_executable(j3-original ./queries/original/j3.cpp)
+add_executable(p2-original ./queries/original/p2.cpp)
 
 # GRADUAL RETRIEVAL
 add_executable(j3-partial-louds-back ./queries/partial/louds/backtracking/j3.cpp)
@@ -42,6 +43,7 @@ add_executable(main ./main.cpp)
 
 # Link libraries
 target_link_libraries(j3-original sdsl divsufsort divsufsort64)
+target_link_libraries(p2-original sdsl divsufsort divsufsort64)
 
 target_link_libraries(j3-partial-louds-back sdsl divsufsort divsufsort64)
 target_link_libraries(j3-partial-louds-optOrder sdsl divsufsort divsufsort64)

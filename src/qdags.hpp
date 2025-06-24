@@ -214,7 +214,7 @@ public:
             mask = 1 << (dim_prime - 1); // equivalent to 2^(dim_prime-1)
             i_prime = 0;
 
-            for (uint16_t j = 0; j < dim_prime; ++j) {
+            for (uint16_t j = 0; j < dim_prime; ++j) { // esto es m_d' ?
                 if (i & (1 << (dim - attribute_set[j] - 1)))
                     i_prime |= mask;
 
