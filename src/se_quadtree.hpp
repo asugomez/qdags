@@ -53,6 +53,7 @@ public:
 
 private:
     rank_bv_64 *bv;   // arreglo de bitvector por nivel
+	vector<uint64_t>* weight_nodes; // weight of each node in the quadtree, used for the join operation (number of leaves or priority)
 
     //rank_support_v<> *bv_rank;
 
@@ -113,6 +114,8 @@ protected:
 //        total_ones.reserve(height);
 		total_ones.resize(height,0);
 
+		weight_nodes = new vector<uint64_t>[height];
+
         k_d = std::pow(k, d);
 
         bit_vector k_t_ = bit_vector(k_d, 0);  // OJO, cuidado con esto
@@ -141,6 +144,7 @@ protected:
                 k_t_.resize(t);
                 bv[cur_level] = rank_bv_64(k_t_);
                 total_ones[cur_level] = bv[cur_level].n_ones();
+				weight_nodes[cur_level].resize(t,0);
                 cur_level++;
                 t = 0;
                 k_t_.resize(0);
@@ -220,6 +224,7 @@ protected:
 
         k_t_.resize(t);
         bv[height - 1] = rank_bv_64(k_t_);
+		weight_nodes[height-1].resize(t,0);
         total_ones[height - 1] = bv[height - 1].n_ones();
 //        cout << total_ones[height - 1] << endl;
     }
@@ -317,6 +322,8 @@ public:
 		if (ref_count == 0){
 			delete[] bv;
 			bv = nullptr;
+			delete[] weight_nodes;
+			weight_nodes = nullptr;
 			total_ones.clear();
 		}
 	}
@@ -632,6 +639,8 @@ public:
      * get_num_leaves(2,8) --> 1
      */
     uint64_t get_num_leaves(uint16_t level, uint64_t node){
+		if(weight_nodes[level][node] != 0)
+			return weight_nodes[level][node];
 		if(level > getHeight()-1){
 			cout << "error in get num leaves (louds)" << endl;
 			exit(1);
@@ -644,7 +653,9 @@ public:
         }
         uint64_t start_pos_next_level = rank(level,node); // start position in the next level
         level++;
-        return get_num_leaves_aux(level, start_pos_next_level, n_children);
+		uint64_t res = get_num_leaves_aux(level, start_pos_next_level, n_children);
+		weight_nodes[level-1][node] = res; //level-1 cause of the line 655
+		return res;
     }
 
     /**
