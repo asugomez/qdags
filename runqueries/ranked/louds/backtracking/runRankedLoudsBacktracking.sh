@@ -2,8 +2,8 @@
 
 for type_fun in 0 1; do
   chmod a+x *.sh
-  time_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-time.csv"
-  nodes_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-nodes.csv"
+  time_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-time-opt.csv"
+  nodes_csv="../../../outputs/ranked/louds/backtracking/results-f$type_fun-nodes-opt.csv"
 
   echo "type_fun : $type_fun"
 
@@ -52,7 +52,7 @@ for type_fun in 0 1; do
         count=$(($count + 1))
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/ranked/louds/backtracking/$file-f$type_fun-k$k-results.txt"
+      results_file="../../../outputs/ranked/louds/backtracking/$file-f$type_fun-k$k-results-opt.txt"
       chmod +x $output_file
 
       # Ejecutar una o más veces (aquí solo una)

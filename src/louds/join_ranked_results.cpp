@@ -141,20 +141,18 @@ bool AND_ranked(
 				// compute the weight of the tuple (ONLY if it's not a leaf)
 				// calculate the weight of the tuple
 				uint64_t init, end, priority_ith_node, min_idx;
-				bool success;
 				double total_weight = 0;
 				for (uint64_t j = 0; j < nQ; j++) {
 					// we store the parent node that corresponds in the original quadtree of each qdag
 					root_temp[j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-
-					success = Q[j]->get_range_leaves(next_level, root_temp[j], init, end);
-					if (!success) {
-						cout << "error in get range leaves and_ranked (louds)" << endl;
-						exit(1);
+					if(Q[j]->get_weight_nodes(cur_level+1, root_temp[j]) != 0)
+						priority_ith_node = Q[j]->get_weight_nodes(cur_level+1, root_temp[j]);
+					else{
+						Q[j]->get_range_leaves(cur_level+1,root_temp[j],init,end);
+						min_idx = rMq[j](init, end);
+						priority_ith_node = priorities[j][min_idx];
+						Q[j]->set_weight_nodes(cur_level+1, root_temp[j], priority_ith_node); // store the weight of the node
 					}
-					min_idx = rMq[j](init, end);
-					priority_ith_node = priorities[j][min_idx];
-
 					if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
 						total_weight += priority_ith_node;
 					else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max
@@ -409,18 +407,16 @@ AND_ranked_backtracking(
 			// compute the weight of the tuple
 			double total_weight = 0;
 			uint64_t init, end, priority_ith_node, min_idx;
-			bool success;
 			for (uint64_t j = 0; j < nQ; j++) {
 				root_temp[i][j] = k_d[j] * (rank_vector[j][Q[j]->getM(child)] - 1);
-				init = 0;
-				end = priorities[j].size()-1;
-				success = Q[j]->get_range_leaves(cur_level+1,root_temp[i][j],init,end);
-				if(!success){
-					cout << "error in get range leaves and_backtracking (louds)" << endl;
-					exit(1);
+				if(Q[j]->get_weight_nodes(cur_level+1, root_temp[i][j]) != 0)
+					priority_ith_node = Q[j]->get_weight_nodes(cur_level+1, root_temp[i][j]);
+				else{
+					Q[j]->get_range_leaves(cur_level+1,root_temp[i][j],init,end);
+					min_idx = rMq[j](init, end);
+					priority_ith_node = priorities[j][min_idx];
+					Q[j]->set_weight_nodes(cur_level+1, root_temp[i][j], priority_ith_node); // store the weight of the node
 				}
-				min_idx = rMq[j](init, end);
-				priority_ith_node = priorities[j][min_idx];
 				if (type_priority_fun == TYPE_FUN_PRI_SUM) // sum
 					total_weight += priority_ith_node;
 				else if (type_priority_fun == TYPE_FUN_PRI_MAX) { // max

@@ -696,6 +696,15 @@ public:
         return get_num_leaves(level+1,parent*k_d+child);
     }
 
+	uint64_t get_weight_nodes(uint16_t level, uint64_t node){
+		return weight_nodes[level][node];
+	}
+
+	void set_weight_nodes(uint16_t level, uint64_t node, uint64_t res){
+		weight_nodes[level][node] = res;
+	}
+
+
     /**
      * Get the range of leaves in the last level of the tree that are descendants of the node.
      * Useful for the range Maximum query
