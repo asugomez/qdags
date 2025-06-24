@@ -1,10 +1,11 @@
 #!/bin/bash
 
 for k in 1; do
-  for file in t4 ti4; do
-    results_file="../../outputs/query1000results/original/${file}-k${k}-results-gradual.txt"
-    nodes_file="../../outputs/query1000results/original/${file}-k${k}-nodes.txt"
-    time_file="../../outputs/query1000results/original/${file}-k${k}-time.txt"
+  for file in j3 j4 p2 p3 p4 s1 s2 s3 s4 t2 t3 t4 ti2 ti3 ti4 tr1 tr2; do
+    #results_file="../../outputs/query1000results/original/${file}-k${k}-results-gradual.txt"
+    results_file="../../outputs/query1000results/original/${file}-results-ranked.txt"
+    nodes_file="../../outputs/query1000results/original/${file}-nodes-ranked.txt"
+    time_file="../../outputs/query1000results/original/${file}-time-ranked.txt"
 
     if [ -f "$results_file" ]; then
       # Extract odd lines (1, 3, 5, ...) → nodes
