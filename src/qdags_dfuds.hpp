@@ -337,8 +337,17 @@ public:
     }
 
     uint64_t get_num_leaves(uint64_t node) {
-        return Q->leaf_num(node);
+		return Q->get_num_leaves(node);
+//        return Q->leaf_num(node);
     }
+
+	uint64_t get_weight_nodes(uint64_t node){
+		return Q->get_weight_nodes(node);
+	}
+
+	void set_weight_nodes(uint64_t node, uint64_t res){
+		return Q->set_weight_nodes(node, res);
+	}
 
     /**
      * Get the range of leaves in the last level of the tree that are descendants of the node.
