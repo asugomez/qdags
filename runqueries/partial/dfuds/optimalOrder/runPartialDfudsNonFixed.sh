@@ -3,8 +3,8 @@
 for type_fun in 0 1; do
   chmod a+x *.sh
 
-  time_csv="../../../outputs/partial/dfuds/optimalOrder/results-f$type_fun-time.csv"
-  nodes_csv="../../../outputs/partial/dfuds/optimalOrder/results-f$type_fun-nodes.csv"
+  time_csv="../../../outputs/partial/dfuds/optimalOrder/results-f$type_fun-time-opt.csv"
+  nodes_csv="../../../outputs/partial/dfuds/optimalOrder/results-f$type_fun-nodes-opt.csv"
 
   echo "type_fun : $type_fun"
 
@@ -28,7 +28,7 @@ for type_fun in 0 1; do
         echo "$line $type_fun $k"
       done < "$input_file" > "$output_file"
 
-      results_file="../../../outputs/partial/dfuds/optimalOrder/$file-f$type_fun-k$k-results.txt"
+      results_file="../../../outputs/partial/dfuds/optimalOrder/$file-f$type_fun-k$k-results-opt.txt"
       chmod +x "$output_file"
       > "$results_file"
 
