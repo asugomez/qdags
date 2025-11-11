@@ -9,6 +9,9 @@
 #include<ratio>
 #include<chrono>
 #include<ctime>
+#include "../../../../../CAT_cpu/src/CPUBenchmark.h"
+//#include "../../../../../CAT_cpu/include/argparse/argparse.hpp"
+#include "../../../../../CAT_cpu/src/Rapl.h"
 
 using namespace std::chrono;
 
@@ -111,12 +114,34 @@ int main(int argc, char** argv)
 //    multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back, nodes_visited); // warmup join -> activar el caché
     results_partial_dfuds_back.clear();
 //	nodes_visited = 0;
+//
+//
+    srand(seed);
+    reset();
+    lDebug(1, "Benchmark started");
+
+    lDebug(1, "Initial state:");
+    if (n <= PRINT_LIMIT)
+    {
+        fDebug(1, solver->printCurrentState());
+    }
+    std::string radiusStr = "AMX-radius-" + std::to_string(RADIUS) + "-threads-" + std::to_string(threads);
+
+
+	// Call CPUPowerBegin with the correct string format
+    CPUPowerBegin(radiusStr.c_str(), 50);
     start = high_resolution_clock::now();
 
 //	multiJoinPartialResultsDfudsBacktracking(Q_dfuds, grid_side, type_fun, size_queue, results_partial_dfuds_back);
     multiJoinPartialResultsDfudsBacktracking(Q_dfuds, true, grid_side, type_fun, size_queue, results_partial_dfuds_back, nodes_visited);
 
     stop = high_resolution_clock::now();
+    CPUPowerEnd();
+    lDebug(1, "Benchmark finished. Results:");
+    if (n <= PRINT_LIMIT)
+    {
+        fDebug(1, solver->printCurrentState());
+    }
     time_span = duration_cast<microseconds>(stop - start);
     total_time = time_span.count();    
 
