@@ -8,7 +8,7 @@
 #include<ratio>
 #include<chrono>
 #include<ctime>
-
+#include "../../src/rapl/Rapl.h"
 using namespace std::chrono;
 
 
@@ -113,10 +113,14 @@ int main(int argc, char** argv)
 //    Join_Result = multiJoin(Q, true, k, nodes_visited); // warmup join -> activar el caché
 
 //	nodes_visited = 0;
-    start = high_resolution_clock::now();    
+    start = high_resolution_clock::now();
+	Rapl rapl;
+	CPUPowerBegin("AMX-radius-1-threads-1", 50);
 
 //	multiJoin(Q, true, k);
 	multiJoin(Q, true, k,nodes_visited);
+
+	CPUPowerEnd();
 
     stop = high_resolution_clock::now();
     time_span = duration_cast<microseconds>(stop - start);
