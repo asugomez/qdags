@@ -2,8 +2,8 @@
 # run tests for each type_fun and each k
 for type_fun in 0 1; do
   chmod a+x *.sh
-  time_csv="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/results-f$type_fun-time.csv"
-  nodes_csv="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/results-f$type_fun-nodes.csv"
+  time_csv="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/results-f$type_fun-time-opt.csv"
+  nodes_csv="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/results-f$type_fun-nodes-opt.csv"
 
   echo "type_fun : $type_fun"
 
@@ -31,7 +31,7 @@ for type_fun in 0 1; do
         echo "$modified_line"
       done < "$input_file" > "$output_file"
 
-      results_file="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-v1000-results.txt"
+      results_file="../../../../outputs/query1000results/ranked/dfuds/optimalOrder/$file-f$type_fun-k$k-v1000-results-opt.txt"
       chmod +x $output_file
       > "$results_file"
 
